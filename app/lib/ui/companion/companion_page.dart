@@ -52,7 +52,6 @@ import '../../state/settings_state.dart';
 import '../../state/voice_model_state.dart';
 import '../../state/voice_settings.dart';
 import '../../state/voice_state.dart';
-import '../../usage/usage_stats.dart';
 import '../chat/voice/voice_controller.dart';
 import '../common/app_dialog.dart';
 import '../common/app_sheet.dart';
@@ -302,7 +301,6 @@ class _CompanionPageState extends ConsumerState<CompanionPage> implements Compan
   void initState() {
     super.initState();
     // Anonymous usage statistics: the room was opened once more.
-    ref.read(usageStatsProvider.notifier).count(UsageCount.room);
     _initiative = ref.read(companionInitiativeProvider);
     // How often she may speak up: the person's pick, followed as it changes.
     _initiative.pace = ref.read(companionInitiativePaceProvider);
@@ -1023,7 +1021,6 @@ class _CompanionPageState extends ConsumerState<CompanionPage> implements Compan
         note: note,
         current: probe.adapted ? await companionAdapterRead(store.pack) : null,
         onUsage: (input, output) {
-          if (mounted) ref.read(usageStatsProvider.notifier).tokens(input, output);
         },
       );
       await companionAdapterWrite(store.pack, probe, adapter);
@@ -2159,7 +2156,6 @@ class _CompanionPageState extends ConsumerState<CompanionPage> implements Compan
           lines: history.context(),
           context: turnContext,
           onUsage: (input, output) {
-            if (mounted) ref.read(usageStatsProvider.notifier).tokens(input, output);
           },
         ).listen(
           (delta) {

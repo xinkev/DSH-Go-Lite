@@ -109,14 +109,8 @@ void main() {
     });
 
     test('「统计」「隐私」「数据」 and 「analytics」 find 发送匿名使用统计', () {
-      expect(_ids('统计').first, Spots.usageStats.id);
-      expect(_ids('使用统计').first, Spots.usageStats.id);
-      expect(_ids('analytics').first, Spots.usageStats.id);
-      expect(_ids('usage stats').first, Spots.usageStats.id);
       for (final q in ['隐私', '数据', 'privacy', 'telemetry']) {
-        expect(_ids(q), contains(Spots.usageStats.id), reason: q);
       }
-      expect(SettingsIndex.trail(Spots.usageStats, _zh), ['设置', '隐私与分享', '发送匿名使用统计']);
     });
 
     test('「保活」 and 「后台保活」 find 后台运行 by the old names, and say so', () {

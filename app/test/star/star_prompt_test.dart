@@ -44,7 +44,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../phone/support.dart' show FixedActiveHost;
 import '../shell/golden_harness.dart';
 import '../support/test_fonts.dart';
-import '../usage/support.dart' show NoPhone;
 
 // ── Fakes ────────────────────────────────────────────────────────────────────
 
@@ -668,7 +667,6 @@ void main() {
               settingsProvider.overrideWith(
                 () => FakeSettings(AppSettings(loaded: true, apiKey: connected ? 'sk-0123456789abcdef' : '')),
               ),
-              phoneChannelProvider.overrideWithValue(NoPhone()),
             ],
           ),
         );

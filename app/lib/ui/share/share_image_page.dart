@@ -17,7 +17,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
 import '../../state/artifacts.dart' show saveWindowDismissed;
-import '../../usage/usage_stats.dart';
 import '../common/app_sheet.dart';
 import '../common/pressable.dart';
 import '../common/scroll_edge_fade.dart';
@@ -152,7 +151,6 @@ class _ShareImagePageState extends ConsumerState<ShareImagePage> {
       } else {
         await exporter.save(file);
       }
-      if (mounted) ref.read(usageStatsProvider.notifier).count(UsageCount.share);
     } on PlatformException catch (e) {
       dismissed = busy == _Busy.saving && saveWindowDismissed(e);
       if (!dismissed) {

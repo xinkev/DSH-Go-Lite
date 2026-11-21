@@ -13,7 +13,6 @@ import '../l10n/l10n.dart';
 import '../runtime/runtime_state.dart';
 import '../share_code/share_net.dart';
 import '../update/version.dart';
-import '../usage/usage_stats.dart';
 import 'android_features.dart';
 import 'app_info.dart';
 import 'connection_state.dart';

@@ -17,7 +17,6 @@ import '../../share_code/share_codec.dart';
 import '../../share_code/share_link.dart';
 import '../../share_code/share_models.dart';
 import '../../share_code/share_net.dart';
-import '../../usage/usage_stats.dart';
 import '../common/app_sheet.dart';
 import '../common/discard_guard.dart';
 import '../common/expand_reveal.dart';
@@ -138,7 +137,6 @@ class _ShareCodePanelState extends ConsumerState<ShareCodePanel> {
 
   /// It went out (usage statistics).
   void _shared() {
-    if (mounted) ref.read(usageStatsProvider.notifier).count(UsageCount.share);
   }
 
   Future<void> _share() async {

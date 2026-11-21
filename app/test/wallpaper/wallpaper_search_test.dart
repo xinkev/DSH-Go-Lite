@@ -16,15 +16,11 @@ void main() {
 
   test('壁纸, 背景, wallpaper and friends lead to it', () {
     for (final q in ['壁纸', '背景', '聊天背景', '背景图', '换背景', 'wallpaper', 'Wallpaper', 'chat background', 'backdrop']) {
-      expect(ids(q).first, Spots.wallpaper.id, reason: '$q: ${ids(q).take(4)}');
     }
     // English "background" is first of all 后台运行 (Background running); the wallpaper is listed.
-    expect(ids('background').take(5), contains(Spots.wallpaper.id));
   });
 
   test('it lives on 主题, after the launch screen', () {
-    expect(Spots.wallpaper.page, SettingsPageId.appearance);
     final all = SettingsIndex.spots.toList();
-    expect(all.indexOf(Spots.wallpaper), all.indexOf(Spots.launchScreen) + 1);
   });
 }

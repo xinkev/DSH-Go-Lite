@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../diagnostics/app_error_log.dart';
 import '../l10n/l10n.dart';
-import '../usage/usage_stats.dart';
 import 'attachments.dart';
 import 'chat_error_text.dart';
 import 'connection_state.dart';
@@ -843,7 +842,6 @@ class ChatController extends Notifier<ChatState> {
             pulse.observe(event, skew: _sameClock ? Duration.zero : _skew);
             _trackModel(event);
             _trackCommands(event);
-            _countTokens(event);
             final reconcile =
                 (event is InboxSplicedEvent && event.seq > _transcript.cursor) ||
                 (event is SessionSnapshotEvent && event.isResync);
@@ -1497,23 +1495,12 @@ class ChatController extends Notifier<ChatState> {
   /// A message went out: one more turn in the usage statistics (only how
   /// many).
   void _sent() {
-    if (ref.mounted) ref.read(usageStatsProvider.notifier).count(UsageCount.turns);
   }
 
   /// A model call finished on the host: the tokens its provider reported go
   /// to the usage statistics. Only a new log record (after the cursor, before
   /// [Transcript.apply] moves it), never a snapshot's history, so a
   /// reconnect replays nothing twice. A call that reported no usage adds
-  /// nothing.
-  void _countTokens(DshEvent event) {
-    if (event is! AssistantMessageEvent || event.seq <= _transcript.cursor || !ref.mounted) return;
-    final usage = event.usage;
-    if (usage == null) return;
-    ref
-        .read(usageStatsProvider.notifier)
-        .tokens(usage.inputTokens + (usage.cacheReadTokens ?? 0) + (usage.cacheWriteTokens ?? 0), usage.outputTokens);
-  }
-
   /// Retry the same text and attachment selections. Picking again is a new
   /// intent even if the name matches; encoding preserves text boundaries.
   static String _contentKey(String text, List<DraftAttachment> attachments) => jsonEncode([

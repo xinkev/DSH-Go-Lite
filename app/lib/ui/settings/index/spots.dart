@@ -1044,13 +1044,6 @@ abstract final class Spots {
     title: (l) => l.hubSettingsShareConfig,
     keywords: (l) => l.searchKwShareConfig,
   );
-  static final usageStats = SettingSpot(
-    'usage-stats',
-    page: SettingsPageId.privacy,
-    title: (l) => l.usageStatsTitle,
-    keywords: (l) => l.searchKwUsageStats,
-    link: 'usage-stats',
-  );
   static final chatLogUpload = SettingSpot(
     'chat-log-upload',
     page: SettingsPageId.privacy,
@@ -1240,7 +1233,6 @@ final _rows = <SettingSpot>[
   Spots.notifyLive,
   Spots.notifySystem,
   Spots.shareConfig,
-  Spots.usageStats,
   Spots.chatLogUpload,
   Spots.autoStart,
   Spots.autoSafe,

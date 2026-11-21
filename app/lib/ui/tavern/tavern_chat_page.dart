@@ -46,7 +46,6 @@ import '../../tavern/tavern_settings.dart';
 import '../../tavern/tavern_tool_turns.dart';
 import '../../tavern/tavern_slash.dart';
 import '../../tavern/tavern_sprites.dart';
-import '../../usage/usage_stats.dart';
 import '../bots/bot_chat_kit.dart';
 import '../chat/composer.dart';
 import '../chat/render/markdown_body.dart';
@@ -677,7 +676,6 @@ class _TavernChatPageState extends ConsumerState<TavernChatPage> {
               _thinkingTick = Timer.periodic(const Duration(seconds: 1), (_) => _thinking.value = _thinking.value! + 1);
             }
           case TavernTurnDone(:final message, :final finishReason):
-            _countTokens(message);
             // Cut short by the reply limit, or by the provider's filter: say
             // so over the composer, with the way on.
             final l10n = context.l10n;
@@ -808,7 +806,6 @@ class _TavernChatPageState extends ConsumerState<TavernChatPage> {
             _thinkingTick = Timer.periodic(const Duration(seconds: 1), (_) => _thinking.value = _thinking.value! + 1);
           }
         case TavernTurnDone(:final message):
-          _countTokens(message);
           if (_replyCost(message) case final cost? when cost > most) {
             costliest = message;
             most = cost;
@@ -911,22 +908,7 @@ class _TavernChatPageState extends ConsumerState<TavernChatPage> {
     unawaited(HapticFeedback.selectionClick());
     final text = _input.text;
     _input.clear();
-    _countMessage();
     _runGroup(() => _tavern.sendGroup(widget.chatId, text, speakerCharacterId: characterId), draft: text);
-  }
-
-  /// Anonymous usage statistics (lib/usage/usage_stats.dart): one more
-  /// message the person sent here. Not in the preview.
-  void _countMessage() {
-    if (_tavern is! TavernPreview) ref.read(usageStatsProvider.notifier).count(UsageCount.tavern);
-  }
-
-  /// The tokens [message]'s provider reported, when it did; never estimated.
-  void _countTokens(TavernMessage message) {
-    if (_tavern is TavernPreview || !mounted) return;
-    if (message.reportedUsage case final usage?) {
-      ref.read(usageStatsProvider.notifier).tokens(usage.promptTokens, usage.completionTokens);
-    }
   }
 
   /// 小说: into the story by the reader's own hand hides the header and the
@@ -1090,7 +1072,6 @@ class _TavernChatPageState extends ConsumerState<TavernChatPage> {
     }
     final text = _input.text;
     _input.clear();
-    _countMessage();
     // A group: the line goes to all of them, who answer in turn.
     if (_groupChat) {
       _runGroup(() => _tavern.sendGroup(widget.chatId, text), draft: text);
@@ -1219,7 +1200,6 @@ class _TavernChatPageState extends ConsumerState<TavernChatPage> {
   void _sendQuick(String text) {
     if (_running) return;
     unawaited(HapticFeedback.selectionClick());
-    _countMessage();
     if (_groupChat) {
       _runGroup(() => _tavern.sendGroup(widget.chatId, text), draft: text);
       return;
@@ -1327,8 +1307,7 @@ class _TavernChatPageState extends ConsumerState<TavernChatPage> {
               case TavernTextDelta(:final text):
                 _setDraft(_input.text + text);
               case TavernTurnDone(:final message):
-                _countTokens(message);
-                _setDraft(message.text);
+                    _setDraft(message.text);
                 _endDraft();
               case TavernTurnFailed(:final kind, :final detail):
                 if (kind == TavernFailure.cancelled) return _endDraft();

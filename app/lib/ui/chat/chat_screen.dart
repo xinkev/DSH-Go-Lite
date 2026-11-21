@@ -59,7 +59,6 @@ import '../../state/voice_state.dart';
 import '../../state/voice_model_state.dart';
 import '../../state/voice_settings.dart';
 import '../../state/workspaces_state.dart' show selectedWorkspaceProvider, workspaceTitle;
-import '../../usage/usage_stats.dart';
 import '../common/app_sheet.dart';
 import '../common/brief_notice.dart';
 import '../common/fluid_bits.dart';
@@ -400,7 +399,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
       client: () => mounted ? ref.read(activeConnectionProvider).value?.client : null,
       inputOwner: () => mounted ? ref.read(activeHostProvider) : null,
       onRecognized: () {
-        if (mounted) ref.read(usageStatsProvider.notifier).count(UsageCount.voice);
       },
     );
     // A download or deletion changes capabilities without replacing the host.
@@ -790,7 +788,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
     } else {
       ok = await chat.send(text, attachments: drafts, mode: mode);
       // A generation request, counted on top of its turn.
-      if (ok && generate != null && mounted) ref.read(usageStatsProvider.notifier).count(UsageCount.gen);
     }
     if (!ok && _sameHost(client)) _giveBack(sessionId, typed, drafts, quote: quote);
   }
