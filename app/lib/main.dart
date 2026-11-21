@@ -28,9 +28,6 @@ Future<void> _startApp() async {
   // The first frame is already in the chosen language (设置 → 语言), and is the launch
   // window's own picture (启动画面, lib/launch/launch_state.dart).
   await Future.wait([AppLanguageController.load(), LaunchController.begin(), LocalPaths.load()]);
-  // MIT / OFL notices must ship with the APK, not just the sources.
-  registerThirdPartyLicenses();
-  registerFontLicenses();
   // dshgo://open/tavern: the page lives in ui/, which links/ does not import.
   registerPageLink(tavernPageLink, () => const TavernHomePage());
   // Edge-to-edge with transparent system bars; pages refine the icon brightness
@@ -38,6 +35,12 @@ Future<void> _startApp() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   SystemChrome.setSystemUIOverlayStyle(dshSystemOverlay(PlatformDispatcher.instance.platformBrightness));
   runApp(const ProviderScope(child: DshApp()));
+  // MIT / OFL notices must ship with the APK, not just the sources; registering
+  // them is not needed before the first frame.
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    registerThirdPartyLicenses();
+    registerFontLicenses();
+  });
   // Effects shaders compile after the first frame: on a cold start they used to
   // compete with layout and the engine boot on the same isolate.
   WidgetsBinding.instance.addPostFrameCallback((_) {
