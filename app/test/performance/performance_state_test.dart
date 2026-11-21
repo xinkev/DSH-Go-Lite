@@ -28,7 +28,6 @@ void main() {
       test('${tier.name} selects the expected automatic defaults', () {
         final policy = PerformanceDefaults.resolve(snapshot(tier), const PerformancePrefs());
         final full = tier != DeviceTier.low;
-        expect(policy.blur, full);
         expect(policy.reduceMotion, !full);
         expect(policy.fluidMotion, full);
         expect(policy.petEnabled, full);
@@ -43,23 +42,20 @@ void main() {
         snapshot(DeviceTier.low),
         const PerformancePrefs(mode: PerformanceMode.full),
       );
-      expect(full.blur, isTrue);
       expect(full.reduceMotion, isFalse);
       final light = PerformanceDefaults.resolve(
         snapshot(DeviceTier.high),
         const PerformancePrefs(mode: PerformanceMode.light),
       );
-      expect(light.blur, isFalse);
       expect(light.autoStartLocal, isFalse);
     });
 
     test('a temporary thermal profile does not rewrite explicit effect choices', () {
       final policy = PerformanceDefaults.resolve(
         snapshot(DeviceTier.high, hot: true),
-        const PerformancePrefs(mode: PerformanceMode.full, blur: true, animations: true),
+        const PerformancePrefs(mode: PerformanceMode.full, animations: true),
       );
       expect(policy.lightweight, isTrue);
-      expect(policy.blur, isTrue);
       expect(policy.reduceMotion, isFalse);
       expect(policy.autoStartLocal, isFalse);
     });
@@ -136,7 +132,6 @@ void main() {
       await loaded(container);
       expect(container.read(settingsProvider).autoStartLocal, isFalse);
       expect(container.read(petPrefsProvider).enabled, isFalse);
-      expect(container.read(performanceDefaultsProvider).blur, isTrue);
     });
 
     test('heat and recovery derive current defaults without persisting them', () async {
@@ -237,21 +232,17 @@ void main() {
     test('resetting effects removes only their overrides', () async {
       SharedPreferences.setMockInitialValues({
         'performance.mode': 'light',
-        'performance.blur': true,
         'performance.animations': true,
         'auto_start_local': true,
         'pet.pack': 'whale-girl',
       });
       start();
       await loaded(container);
-      expect(container.read(performanceDefaultsProvider).blur, isTrue);
       await container.read(performancePrefsProvider.notifier).resetEffects();
-      expect(container.read(performanceDefaultsProvider).blur, isFalse);
       expect(container.read(performanceDefaultsProvider).reduceMotion, isTrue);
       expect(container.read(settingsProvider).autoStartLocal, isTrue);
       expect(container.read(petPrefsProvider).packId, 'whale-girl');
       final prefs = await SharedPreferences.getInstance();
-      expect(prefs.containsKey('performance.blur'), isFalse);
       expect(prefs.containsKey('performance.animations'), isFalse);
     });
 

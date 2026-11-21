@@ -548,7 +548,6 @@ void main() {
       await _pump(tester, const PerformancePage(), android: false);
       expect(refreshRate(), findsOneWidget);
       expect(find.text(_zh.performanceRefreshHintOhos), findsOneWidget);
-      expect(find.byKey(const ValueKey('performance-blur')), findsOneWidget);
     });
 
     testWidgets('on HarmonyOS: the frame cache, on until it is turned off', (tester) async {

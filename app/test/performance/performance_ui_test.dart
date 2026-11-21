@@ -298,16 +298,10 @@ void main() {
             expect(tester.takeException(), isNull);
           }
           expect(widths.toSet(), hasLength(1));
-          final blur = find.byKey(const ValueKey('performance-blur'));
-          await tester.ensureVisible(blur);
-          await tester.tap(blur);
-          await tester.pumpAndSettle();
-          expect(c.read(performancePrefsProvider).blur, isTrue);
           final reset = find.byKey(const ValueKey('performance-reset-effects'));
           await tester.ensureVisible(reset);
           await tester.tap(reset);
           await tester.pumpAndSettle();
-          expect(c.read(performancePrefsProvider).blur, isNull);
           expect(tester.takeException(), isNull);
         });
       }

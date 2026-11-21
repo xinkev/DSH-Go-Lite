@@ -32,19 +32,10 @@ class GlassSurface extends StatelessWidget {
     this.child,
   }) : assert(!(circle && stadium), 'circle 与 stadium 只能二选一' /* l10n:keep developer-only assertion */);
 
-  /// 材质层级,决定默认的填充 / 圆角。
   final GlassTier tier;
-
-  /// 连续圆角半径。缺省按层级:chrome / sheet 用 xl(28)、card 用 md(14)、
-  /// pill 用胶囊。
   final BorderRadiusGeometry? borderRadius;
-
-  /// 圆形(顶栏圆钮、发送键底座)。
   final bool circle;
-
-  /// 胶囊(半径永远等于高度一半)。
   final bool stadium;
-
   final EdgeInsetsGeometry? padding;
 
   /// 保留字段:不再有模糊,取值不影响渲染。
@@ -56,7 +47,6 @@ class GlassSurface extends StatelessWidget {
   /// 保留字段:不再有过渡中的模糊,取值不影响渲染。
   final double? settled;
 
-  /// 覆盖主题给的材质(极少用;例如审批卡要换警示色描边)。
   final GlassStyle? style;
 
   final VoidCallback? onTap;
@@ -214,8 +204,7 @@ class SlidingGlass extends StatelessWidget {
   final Widget? child;
 
   @override
-  Widget build(BuildContext context) =>
-      GlassSurface(tier: tier, borderRadius: borderRadius, child: child);
+  Widget build(BuildContext context) => GlassSurface(tier: tier, borderRadius: borderRadius, child: child);
 }
 
 /// Kept for call sites: chrome floating over a web page, which used to drop its blur
