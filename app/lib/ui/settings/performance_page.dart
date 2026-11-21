@@ -103,12 +103,6 @@ class PerformancePage extends ConsumerWidget {
           title: l10n.performanceEffects,
           children: [
             SettingsSwitchTile(
-              key: const ValueKey('performance-blur'),
-              spot: Spots.blur,
-              value: defaults.blur,
-              onChanged: (value) => unawaited(notifier.setBlur(value)),
-            ),
-            SettingsSwitchTile(
               key: const ValueKey('performance-animations'),
               spot: Spots.animations,
               subtitle: l10n.performanceSystemMotion,
@@ -124,7 +118,7 @@ class PerformancePage extends ConsumerWidget {
                 value: defaults.fluidMotion,
                 onChanged: (value) => unawaited(notifier.setFluid(value)),
               ),
-            if (prefs.blur != null || prefs.animations != null || prefs.fluid != null)
+            if (prefs.animations != null || prefs.fluid != null)
               SettingsTile(
                 key: const ValueKey('performance-reset-effects'),
                 title: l10n.performanceFollowMode,

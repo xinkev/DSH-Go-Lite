@@ -96,11 +96,7 @@ class _CallKeyState extends State<CallKey> {
               scale: _down ? 0.88 : 1,
               duration: AppMotion.of(context, _down ? AppMotion.press : AppMotion.standard),
               curve: _down ? Curves.easeOut : Curves.easeOutBack,
-              child: widget.blur && !on
-                  ? ClipOval(
-                      child: BackdropFilter(filter: ui.ImageFilter.blur(sigmaX: 18, sigmaY: 18), child: disc),
-                    )
-                  : disc,
+              child: disc,
             ),
             const SizedBox(height: 10),
             ExcludeSemantics(

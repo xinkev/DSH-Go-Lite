@@ -802,11 +802,7 @@ class _Frosted extends StatelessWidget {
       ),
       child: child,
     );
-    if (!blur) return glass;
-    return ClipPath(
-      clipper: ShapeBorderClipper(shape: shape),
-      child: BackdropFilter(filter: ui.ImageFilter.blur(sigmaX: 18, sigmaY: 18), child: glass),
-    );
+    return glass;
   }
 }
 

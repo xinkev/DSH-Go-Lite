@@ -58,7 +58,6 @@ enum RefreshRateMode {
 class PerformancePrefs {
   const PerformancePrefs({
     this.mode = PerformanceMode.auto,
-    this.blur,
     this.animations,
     this.fluid,
     this.refreshRate = RefreshRateMode.auto,
@@ -67,7 +66,6 @@ class PerformancePrefs {
   });
 
   final PerformanceMode mode;
-  final bool? blur;
   final bool? animations;
 
   /// 灵动动效(见 `AppMotion.fluid`)。
@@ -81,7 +79,6 @@ class PerformancePrefs {
 
   PerformancePrefs copyWith({
     PerformanceMode? mode,
-    bool? blur,
     bool? animations,
     bool? fluid,
     RefreshRateMode? refreshRate,
@@ -90,7 +87,6 @@ class PerformancePrefs {
     bool resetEffects = false,
   }) => PerformancePrefs(
     mode: mode ?? this.mode,
-    blur: resetEffects ? null : blur ?? this.blur,
     animations: resetEffects ? null : animations ?? this.animations,
     fluid: resetEffects ? null : fluid ?? this.fluid,
     refreshRate: refreshRate ?? this.refreshRate,
@@ -102,7 +98,6 @@ class PerformancePrefs {
 class PerformanceDefaults {
   const PerformanceDefaults({
     required this.lightweight,
-    required this.blur,
     required this.reduceMotion,
     required this.fluidMotion,
     required this.petEnabled,
@@ -121,7 +116,6 @@ class PerformanceDefaults {
     final reduceMotion = !(prefs.animations ?? !light);
     return PerformanceDefaults(
       lightweight: light,
-      blur: prefs.blur ?? !light,
       reduceMotion: reduceMotion,
       fluidMotion: !reduceMotion && (prefs.fluid ?? !light),
       petEnabled: !light,
@@ -131,7 +125,6 @@ class PerformanceDefaults {
   }
 
   final bool lightweight;
-  final bool blur;
   final bool reduceMotion;
 
   /// 灵动档:动效没关,且用户选了或当前档位默认开(低端机、发热时默认关)。
@@ -145,7 +138,6 @@ class PerformanceDefaults {
 
   Map<String, Object?> toMap() => {
     'lightweight': lightweight,
-    'blur': blur,
     'reduceMotion': reduceMotion,
     'fluidMotion': fluidMotion,
     'petEnabledDefault': petEnabled,

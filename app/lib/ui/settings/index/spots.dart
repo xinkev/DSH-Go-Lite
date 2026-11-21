@@ -1015,12 +1015,6 @@ abstract final class Spots {
     keywords: (l) => l.searchKwRefreshRate,
     iosLacks: true,
   );
-  static final blur = SettingSpot(
-    'blur',
-    page: SettingsPageId.performance,
-    title: (l) => l.performanceBlur,
-    keywords: (l) => l.searchKwBlur,
-  );
   static final animations = SettingSpot(
     'animations',
     page: SettingsPageId.performance,
@@ -1280,7 +1274,6 @@ final _rows = <SettingSpot>[
   Spots.webCollapse,
   Spots.webBusySend,
   Spots.refreshRate,
-  Spots.blur,
   Spots.animations,
   Spots.fluidMotion,
   Spots.notifyEnabled,

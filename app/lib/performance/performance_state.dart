@@ -115,7 +115,6 @@ final performanceProvider = NotifierProvider<PerformanceController, PerformanceS
 
 class PerformancePrefsController extends Notifier<PerformancePrefs> {
   static const modeKey = 'performance.mode';
-  static const blurKey = 'performance.blur';
   static const animationsKey = 'performance.animations';
   static const fluidKey = 'performance.fluid';
   static const refreshRateKey = 'performance.refresh_rate';
@@ -134,7 +133,6 @@ class PerformancePrefsController extends Notifier<PerformancePrefs> {
       if (!ref.mounted) return;
       state = PerformancePrefs(
         mode: PerformanceMode.values.asNameMap()[prefs.getString(modeKey)] ?? PerformanceMode.auto,
-        blur: prefs.getBool(blurKey),
         animations: prefs.getBool(animationsKey),
         fluid: prefs.getBool(fluidKey),
         refreshRate: RefreshRateMode.values.asNameMap()[prefs.getString(refreshRateKey)] ?? RefreshRateMode.auto,
@@ -164,7 +162,6 @@ class PerformancePrefsController extends Notifier<PerformancePrefs> {
 
   Future<void> setMode(PerformanceMode mode) =>
       _save((s) => s.copyWith(mode: mode), (p) => p.setString(modeKey, mode.name));
-  Future<void> setBlur(bool value) => _save((s) => s.copyWith(blur: value), (p) => p.setBool(blurKey, value));
   Future<void> setAnimations(bool value) =>
       _save((s) => s.copyWith(animations: value), (p) => p.setBool(animationsKey, value));
   Future<void> setFluid(bool value) => _save((s) => s.copyWith(fluid: value), (p) => p.setBool(fluidKey, value));
@@ -181,7 +178,6 @@ class PerformancePrefsController extends Notifier<PerformancePrefs> {
   }
 
   Future<void> resetEffects() => _save((s) => s.copyWith(resetEffects: true), (p) async {
-    await p.remove(blurKey);
     await p.remove(animationsKey);
     await p.remove(fluidKey);
   });
@@ -208,7 +204,6 @@ Map<String, Object?> performanceDiagnostics(Ref ref) {
     ...ref.read(performanceProvider).toMap(),
     'preferences': {
       'mode': prefs.mode.name,
-      'blurOverride': prefs.blur,
       'animationsOverride': prefs.animations,
       'fluidOverride': prefs.fluid,
       'refreshRate': prefs.refreshRate.name,

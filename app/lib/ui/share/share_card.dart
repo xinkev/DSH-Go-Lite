@@ -401,10 +401,7 @@ class _GlassPanel extends StatelessWidget {
       ),
       child: ClipRSuperellipse(
         borderRadius: radius,
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-          child: CustomPaint(painter: _GlassPainter(radius), foregroundPainter: _GlassRimPainter(radius), child: child),
-        ),
+        child: CustomPaint(painter: _GlassPainter(radius), foregroundPainter: _GlassRimPainter(radius), child: child),
       ),
     );
   }
