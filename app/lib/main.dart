@@ -33,12 +33,15 @@ Future<void> _startApp() async {
   registerFontLicenses();
   // dshgo://open/tavern: the page lives in ui/, which links/ does not import.
   registerPageLink(tavernPageLink, () => const TavernHomePage());
-  // The effects' shaders load now, so the first wave or metal word is not a plain fallback.
-  unawaited(DistortionWave.precache());
-  unawaited(MetalShader.load());
   // Edge-to-edge with transparent system bars; pages refine the icon brightness
   // through AnnotatedRegion(dshSystemOverlay(...)).
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   SystemChrome.setSystemUIOverlayStyle(dshSystemOverlay(PlatformDispatcher.instance.platformBrightness));
   runApp(const ProviderScope(child: DshApp()));
+  // Effects shaders compile after the first frame: on a cold start they used to
+  // compete with layout and the engine boot on the same isolate.
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    unawaited(DistortionWave.precache());
+    unawaited(MetalShader.load());
+  });
 }

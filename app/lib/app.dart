@@ -70,10 +70,15 @@ class _DshAppState extends ConsumerState<DshApp> with WidgetsBindingObserver {
     ref.read(tileStyleProvider);
     // Anonymous usage statistics live as long as the app, in either 界面
     // (release builds: today is noted, and earlier days go out).
-    // 公测版: the star prompt counts time in front from launch, in either 界面.
-    if (ref.read(starPromptGateProvider)) ref.read(starPromptProvider);
-    // 伙伴小屋: her invitation ledger is read now, so it is known before the room opens.
-    ref.read(companionInitiativeProvider);
+    // Not needed for the first frame: read after it, so cold start does no
+    // ledger or prompt work before the home is up.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      // 公测版: the star prompt counts time in front from launch, in either 界面.
+      if (ref.read(starPromptGateProvider)) ref.read(starPromptProvider);
+      // 伙伴小屋: her invitation ledger, known before the room opens.
+      ref.read(companionInitiativeProvider);
+    });
     // 刷新率: some systems cap third-party apps at 60 Hz and then show their per-app
     // switch as an in-app setting; the app answers frames to run at the fastest rate
     // while it is actually drawing (see RefreshRateService).
