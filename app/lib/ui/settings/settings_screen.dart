@@ -33,7 +33,6 @@ import '../engine/engine_status.dart';
 import '../engine_settings/engine_settings_hub.dart';
 import '../engine_settings/web_search_page.dart';
 import 'media_settings_page.dart';
-import '../features/feature_catalog.dart' show communityPage;
 import '../features/feature_format.dart' show permissionName;
 import '../features/permission_page.dart';
 import '../onboarding/api_key_page.dart' show maskApiKey;
@@ -50,7 +49,6 @@ import '../shell/brand_mark.dart';
 import '../shell/page_frame.dart';
 import '../theme/app_icons.dart';
 import '../theme/theme.dart';
-import '../update/update_tiles.dart' show UpdateBadge;
 import 'about_page.dart';
 import 'appearance/appearance_page.dart';
 import 'background_guide_page.dart';
@@ -130,7 +128,6 @@ class SettingsScreen extends ConsumerWidget {
     final hostName = host.isLocal ? l10n.commonThisPhone : ref.watch(hostNameProvider(host)) ?? l10n.commonRemoteHost;
     // 帮助与关于.
     final update = ref.watch(appUpdateProvider);
-    final newVersion = update.hasUpdate && !update.isSkipped;
 
     final page = AppPage.list(
       title: l10n.commonSettings,
@@ -319,12 +316,6 @@ class SettingsScreen extends ConsumerWidget {
                 onTap: () => unawaited(askAi(context, AskAiTopic.overview)),
               ),
             SettingsTile(
-              icon: AppIcons.community,
-              tint: SettingsHues.help,
-              spot: Spots.community,
-              onTap: () => _push(context, communityPage()),
-            ),
-            SettingsTile(
               icon: AppIcons.diagnostics,
               tint: SettingsHues.help,
               spot: SettingsIndex.entry(SettingsPageId.diagnostics),
@@ -334,9 +325,7 @@ class SettingsScreen extends ConsumerWidget {
               icon: AppIcons.info,
               tint: SettingsHues.help,
               spot: SettingsIndex.entry(SettingsPageId.about),
-              value: newVersion
-                  ? UpdateBadge(l10n.hubAboutNewVersion)
-                  : Text(update.current.name, style: AppType.tabular(Theme.of(context).textTheme.bodyMedium!)),
+              value: Text(update.current.name, style: AppType.tabular(Theme.of(context).textTheme.bodyMedium!)),
               onTap: () => _push(context, const AboutPage()),
             ),
           ],
