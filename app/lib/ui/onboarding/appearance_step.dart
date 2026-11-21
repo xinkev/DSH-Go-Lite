@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
 import '../../performance/performance_state.dart';
-import '../settings/appearance/appearance_page.dart' show PalettePicker, ThemeModePicker;
+import '../settings/appearance/appearance_page.dart' show ThemeModePicker;
 import '../settings/settings_widgets.dart';
 import '../theme/app_icons.dart';
 import 'onboarding_scaffold.dart';
@@ -57,9 +57,6 @@ class AppearanceStepPage extends ConsumerWidget {
           margin: EdgeInsets.zero,
           children: [
             const ThemeModePicker(),
-            // The page's column measures intrinsic heights; the palette's
-            // own layout can't answer, so it gets its height here.
-            SizedBox(height: PalettePicker.heightFor(context), child: const PalettePicker(custom: false)),
           ],
         ),
         if (lowEnd) ...[

@@ -33,11 +33,7 @@ import 'package:dsh_app/ui/phone/phone_control_screen.dart';
 import 'package:dsh_app/ui/phone/system_actions_page.dart';
 import 'package:dsh_app/ui/plugins/native/native_taps.dart' show openNativePage;
 import 'package:dsh_app/ui/safe_mode/engine_failure_card.dart';
-import 'package:dsh_app/ui/settings/appearance/app_icon_picker.dart';
 import 'package:dsh_app/ui/settings/appearance/appearance_page.dart';
-import 'package:dsh_app/ui/settings/appearance/icon_shortcut_sheet.dart';
-import 'package:dsh_app/ui/settings/appearance/launch_screen_section.dart';
-import 'package:dsh_app/ui/settings/appearance/wallpaper_section.dart';
 import 'package:dsh_app/ui/settings/background_guide_page.dart';
 import 'package:dsh_app/ui/settings/index/spot_anchor.dart';
 import 'package:dsh_app/ui/settings/index/spots.dart';
@@ -460,29 +456,16 @@ void main() {
   });
 
   group('主题', () {
-    testWidgets('on Android: launcher icon, picture shortcut, launch screen', (tester) async {
+    testWidgets('only the light / dark choice is left', (tester) async {
       await _pump(tester, const AppearancePage(), android: true);
-      expect(find.byType(AppIconPicker), findsOneWidget);
-      expect(find.byType(IconShortcutTile), findsOneWidget);
-      expect(find.byType(LaunchScreenSection), findsOneWidget);
-    });
-
-    testWidgets('on HarmonyOS: the launcher icon, picture shortcut and launch screen, the rest of the page stays', (
-      tester,
-    ) async {
-      await _pump(tester, const AppearancePage(), android: false);
-      expect(find.byType(AppIconPicker), findsOneWidget);
-      expect(find.text(_zh.pluginsAppIcon), findsOneWidget);
-      expect(find.byType(IconShortcutTile), findsOneWidget);
-      expect(find.byType(LaunchScreenSection), findsOneWidget);
-      expect(find.text(_zh.launchScreenTitle), findsOneWidget);
       expect(find.byType(ThemeModePicker), findsOneWidget);
-      expect(find.byType(WallpaperSection), findsOneWidget);
+      expect(find.text(_zh.pluginsAppIcon), findsNothing);
+      expect(find.text(_zh.launchScreenTitle), findsNothing);
+      expect(find.text(_zh.wallpaperTitle), findsNothing);
+      expect(find.text(_zh.pluginsColors), findsNothing);
     });
-  });
 
-  group('主题 on iOS', () {
-    Future<void> pump(WidgetTester tester) async {
+    testWidgets('on iOS: the same single choice', (tester) async {
       tester.view.devicePixelRatio = 2;
       tester.view.physicalSize = const Size(390 * 2, 3600 * 2);
       addTearDown(tester.view.reset);
@@ -494,19 +477,8 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-    }
-
-    testWidgets('its own launch screen: Flutter draws it. No picture shortcut: nothing can pin one', (tester) async {
-      await pump(tester);
-      expect(find.byType(AppIconPicker), findsOneWidget);
-      expect(find.byType(LaunchScreenSection), findsOneWidget);
-      expect(find.byType(IconShortcutTile), findsNothing);
-      expect(find.byType(WallpaperSection), findsOneWidget);
-    });
-
-    testWidgets('no 跟随壁纸: no wallpaper colour to follow', (tester) async {
-      await pump(tester);
-      expect(find.text(_zh.pluginsFollowWallpaper), findsNothing);
+      expect(find.byType(ThemeModePicker), findsOneWidget);
+      expect(find.text(_zh.launchScreenTitle), findsNothing);
     });
 
     test(

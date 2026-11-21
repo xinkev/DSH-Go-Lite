@@ -835,44 +835,6 @@ abstract final class Spots {
     freq: Freq.medium,
     link: 'dark-mode',
   );
-  static final accent = SettingSpot(
-    'accent',
-    page: SettingsPageId.appearance,
-    title: (l) => l.pluginsColors,
-    keywords: (l) => l.searchKwAccent,
-    ohosKeywords: (l) => l.harmonyKwAccent,
-  );
-  static final tileStyle = SettingSpot(
-    'tile-style',
-    page: SettingsPageId.appearance,
-    title: (l) => l.pluginsFeatureIcons,
-    keywords: (l) => l.searchKwTileStyle,
-  );
-  static final appIcon = SettingSpot(
-    'app-icon',
-    page: SettingsPageId.appearance,
-    title: (l) => l.pluginsAppIcon,
-    keywords: (l) => l.searchKwAppIcon,
-  );
-  static final iconShortcut = SettingSpot(
-    'icon-shortcut',
-    page: SettingsPageId.appearance,
-    title: (l) => l.iconShortcutRow,
-    keywords: (l) => l.searchKwIconShortcut,
-    iosLacks: true,
-  );
-  static final launchScreen = SettingSpot(
-    'launch-screen',
-    page: SettingsPageId.appearance,
-    title: (l) => l.launchScreenTitle,
-    keywords: (l) => l.searchKwLaunchScreen,
-  );
-  static final wallpaper = SettingSpot(
-    'wallpaper',
-    page: SettingsPageId.appearance,
-    title: (l) => l.wallpaperTitle,
-    keywords: (l) => l.searchKwWallpaper,
-  );
 
   // 宠物.
   static final petSize = SettingSpot(
@@ -1248,12 +1210,6 @@ final _rows = <SettingSpot>[
   Spots.pluginsMarket,
   Spots.webSearchKey,
   Spots.darkMode,
-  Spots.accent,
-  Spots.tileStyle,
-  Spots.appIcon,
-  Spots.iconShortcut,
-  Spots.launchScreen,
-  Spots.wallpaper,
   Spots.petSize,
   Spots.petQuiet,
   Spots.petOutsideApp,
