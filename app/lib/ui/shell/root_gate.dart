@@ -240,9 +240,9 @@ class _RootGateState extends ConsumerState<RootGate> {
   /// runtime nor a key before the first message (it asks then). The app runs
   /// without the runtime, as on a remote host, until 工作 installs it; every
   /// launch opens in 酒馆 until the person picks another mode.
-  void _chooseTavern() {
+  void _chooseCompanion() {
     if (_beside) _leaveBeside();
-    unawaited(ref.read(appModeProvider.notifier).setStartup(AppMode.tavern));
+    unawaited(ref.read(appModeProvider.notifier).setStartup(AppMode.companion));
     unawaited(_prefs.setLocalDeclined(true));
     _autoStartDone = true;
     _goTo(null);
@@ -367,7 +367,6 @@ class _RootGateState extends ConsumerState<RootGate> {
           chooseRuntime: _chooseRuntime,
           beside: _beside,
           onLocal: _chooseRuntime ? _chooseLocal : null,
-          onTavern: _chooseRuntime ? _chooseTavern : null,
           onAppearanceDone: _afterAppearance,
           onAccessDone: _afterAccess,
           onFinished: _afterFinishing,

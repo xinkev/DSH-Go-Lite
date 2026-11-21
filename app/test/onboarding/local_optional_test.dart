@@ -365,7 +365,7 @@ void main() {
       await _frames(tester);
       expect(find.text('home'), findsOneWidget);
       expect(container.read(onboardingPrefsProvider).localDeclined, isTrue);
-      expect(container.read(appModeProvider).startup, AppMode.tavern);
+      expect(container.read(appModeProvider).startup, AppMode.companion);
       expect(runtime.calls, isEmpty);
     });
 
