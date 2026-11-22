@@ -21,7 +21,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../pets/pet_mood.dart';
-import '../../pets/pet_overlay_bridge.dart';
 import '../../pets/pet_pack.dart';
 import '../../pets/pet_prefs.dart';
 import '../../pets/pet_sheets.dart';
@@ -36,7 +35,6 @@ import '../chat/widgets/question_card.dart';
 import '../common/discard_guard.dart';
 import '../theme/theme.dart';
 import 'pet_bubble.dart';
-import 'pet_menu.dart';
 import 'pet_perch.dart';
 import 'pet_sprite.dart';
 
@@ -805,12 +803,7 @@ class PetLayerState extends ConsumerState<PetLayer> with TickerProviderStateMixi
     if (_lastState == PetStateName.idle) _armIdle();
   }
 
-  Future<void> _menu() async {
-    final pack = _pack;
-    if (pack == null) return;
-    ref.read(petInteractionProvider.notifier).touch();
-    await showPetMenu(context, pack: pack);
-  }
+  Future<void> _menu() async {}
 
   // ── Build ──────────────────────────────────────────────────────────────────
 

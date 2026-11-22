@@ -7,7 +7,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../l10n/l10n.dart';
 import '../../plugins/native/native_state.dart';
-import '../../plugins/seams/seams.dart' show PluginSeat, SeatPlacement, Slots, seatPlanProvider;
 import '../../share_code/plugin_share.dart' show sharedPluginFromBundle;
 import '../../state/plugins_state.dart';
 import '../../state/runtime_capabilities_state.dart';

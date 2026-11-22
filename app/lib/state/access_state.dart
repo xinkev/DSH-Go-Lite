@@ -22,7 +22,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../pets/overlay_channel.dart';
-import '../pets/pet_prefs.dart';
 import '../runtime/background_net.dart' show backgroundSettingsProvider;
 import '../runtime/runtime_bridge.dart' show RuntimePhase;
 import '../runtime/runtime_state.dart';

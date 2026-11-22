@@ -29,8 +29,6 @@ import '../../l10n/l10n.dart';
 import '../../links/app_links.dart';
 import '../../links/launcher_entries.dart';
 import '../../links/share_intake.dart';
-import '../../pets/overlay_channel.dart' show petOverlayChannelProvider;
-import '../../pets/pet_overlay_bridge.dart';
 import '../../state/android_features.dart';
 import '../../state/compose_inbox.dart';
 import '../../state/hosts_state.dart';
