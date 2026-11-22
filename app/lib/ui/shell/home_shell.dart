@@ -29,7 +29,6 @@ import '../forum/forum_link_host.dart';
 import '../notify/background_net_host.dart';
 import '../notify/background_pause_host.dart';
 import '../notify/chat_alert_host.dart';
-import '../pets/pet_settings_page.dart';
 import '../phone/phone_stop_watcher.dart';
 import '../phone/system_actions_host.dart';
 import '../remote/host_switcher.dart' show showHostSheet;
@@ -101,7 +100,6 @@ class _HomeShellState extends ConsumerState<HomeShell> with TickerProviderStateM
   final _identityBar = ValueNotifier<double>(0);
 
   /// 「宠物设置」 from the floating pet's menu (every tap, not deduplicated).
-  StreamSubscription<void>? _petSettings;
 
   @override
   void initState() {
@@ -114,14 +112,10 @@ class _HomeShellState extends ConsumerState<HomeShell> with TickerProviderStateM
       final open = _quickPanel.value > 0;
       if (open != _quickPanelOpen) setState(() => _quickPanelOpen = open);
     });
-    _petSettings = ref.read(petOverlayChannelProvider).settingsRequests.listen((_) {
-      if (mounted) unawaited(PetSettingsPage.open(context));
-    });
   }
 
   @override
   void dispose() {
-    unawaited(_petSettings?.cancel());
     _drawer.dispose();
     _quickPanel.dispose();
     _identityBar.dispose();
