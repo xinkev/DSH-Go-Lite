@@ -6,11 +6,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:dsh_client/dsh_client.dart' show PluginBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
-import '../../platform/native_icons.dart';
 import '../../state/android_features.dart';
 import '../common/feature_tile.dart';
 import '../agents/team_page.dart';

@@ -1,11 +1,9 @@
 // Live activity is retired with the pet layer: nothing is pushed to
 // `dsh/notify`, and the native side keeps its own lifecycle.
 
-import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'android_features.dart';
 import 'notify_state.dart';
 
 

@@ -5,14 +5,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../l10n/l10n.dart';
 import '../../state/community_state.dart';
-import '../../state/plugins_state.dart';
 import '../common/app_sheet.dart';
-import '../common/list_page_row.dart';
 import '../settings/settings_widgets.dart' show SettingsTile;
 import '../share/qr_code.dart';
 import '../theme/app_icons.dart';
