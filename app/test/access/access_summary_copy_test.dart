@@ -12,11 +12,8 @@ void main() {
       final l10n = lookupL10n(locale);
       String way(SettingsPageId id) => SettingsIndex.path(SettingsIndex.entry(id), l10n).join(' › ');
       final access = way(SettingsPageId.systemAccess);
-      final voice = way(SettingsPageId.voice);
       expect(access, locale == AppLocale.en ? 'Settings › General › System permissions' : '设置 › 通用 › 系统权限');
-      expect(voice, locale == AppLocale.en ? 'Settings › General › Voice' : '设置 › 通用 › 语音');
       expect(l10n.accessSummaryMessage, contains(access));
-      expect(l10n.accessVoiceDownload(241), contains(voice));
     });
   }
 }

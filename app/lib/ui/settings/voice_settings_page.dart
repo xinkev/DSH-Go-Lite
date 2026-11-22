@@ -99,7 +99,7 @@ class VoiceSettingsTile extends ConsumerWidget {
     key: const ValueKey('settings-voice'),
     icon: AppIcons.voice,
     tint: tint,
-    spot: SettingsIndex.entry(SettingsPageId.voice),
+    spot: SettingsIndex.entry(SettingsPageId.hub),
     value: Text(voiceModeLabel(context.l10n, wordsForIos ? VoiceMode.system : ref.watch(voiceSettingsProvider))),
     onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const VoiceSettingsPage())),
   );
@@ -144,7 +144,7 @@ class _VoiceSettingsPageState extends ConsumerState<VoiceSettingsPage> {
               key: const ValueKey('speech-voice'),
               icon: AppIcons.readAloud,
               tinted: false,
-              spot: SettingsIndex.entry(SettingsPageId.voiceReading),
+              spot: SettingsIndex.entry(SettingsPageId.hub),
               value: Text(speechVoiceLabel(l10n, ref.watch(speechVoiceSettingsProvider))),
               onTap: () =>
                   Navigator.of(context)

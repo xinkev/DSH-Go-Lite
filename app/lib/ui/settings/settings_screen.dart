@@ -63,7 +63,6 @@ import 'privacy_page.dart';
 import 'search/settings_search_page.dart';
 import 'settings_widgets.dart';
 import 'system_access_page.dart';
-import 'voice_settings_page.dart';
 
 /// One hue per group on the hub: rows of a group share it.
 abstract final class SettingsHues {
@@ -251,7 +250,6 @@ class SettingsScreen extends ConsumerWidget {
             ),
             const LanguageSettingsTile(tint: SettingsHues.general),
             const NotificationSettingsTile(tint: SettingsHues.general),
-            const VoiceSettingsTile(tint: SettingsHues.general),
             const PerformanceSettingsTile(tint: SettingsHues.general),
             SettingsTile(
               icon: AppIcons.keepAlive,

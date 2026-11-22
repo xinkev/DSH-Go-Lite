@@ -127,7 +127,6 @@ void main() {
       for (final (old, page) in [
         ('模型渠道', SettingsPageId.models),
         ('引擎设置', SettingsPageId.engineParams),
-        ('语音识别', SettingsPageId.voice),
         ('通用设置', SettingsPageId.interface),
       ]) {
         expect(_ids(old), contains(SettingsIndex.entry(page).id), reason: old);
