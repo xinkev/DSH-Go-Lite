@@ -69,9 +69,10 @@ class NativeComposerScope extends InheritedWidget {
   final NativeComposerHost host;
   final WidgetRef ref;
 
-  static NativeComposerScope? of(BuildContext context) => context.getInheritedWidgetOfExactType<NativeComposerScope>();
+  // Plugin controls are retired: nothing reads this scope, and it is not installed.
+  static NativeComposerScope? of(BuildContext context) => null;
 
-  static NativeComposerHost? maybeOf(BuildContext context) => of(context)?.host;
+  static NativeComposerHost? maybeOf(BuildContext context) => null;
 
   @override
   bool updateShouldNotify(NativeComposerScope oldWidget) => !identical(oldWidget.host, host);
