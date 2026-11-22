@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../companion/companion_state.dart';
 import '../runtime/runtime_state.dart';
 import 'connection_state.dart';
 import 'hosts_state.dart';
@@ -192,11 +191,7 @@ class SessionsController extends AsyncNotifier<List<SessionSummary>> {
       }
     });
     ref.onDispose(_retireArchives);
-    // Which conversation is the companion's is read from preferences after
     // launch: hide it from the drawer as soon as that's known.
-    ref.listen(companionSessionFilterProvider, (_, _) {
-      if (state.hasValue && !state.isLoading) state = AsyncData(_visible());
-    });
     final seq = ++_loadSeq;
     final host = ref.watch(activeHostProvider);
     if (host != _host) {
@@ -334,7 +329,7 @@ class SessionsController extends AsyncNotifier<List<SessionSummary>> {
   List<SessionSummary> _visible() {
     final pendingIds = {for (final pending in _archives) ...pending.ids};
     // Her conversation lives in 伙伴小屋, not the drawer.
-    final companion = ref.read(companionSessionFilterProvider);
+    bool companion(HostRef host, String id) => false;
     final host = ref.read(activeHostProvider);
     return ref
         .read(readListCacheProvider)

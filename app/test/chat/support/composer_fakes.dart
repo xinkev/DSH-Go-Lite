@@ -6,7 +6,6 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:dsh_app/ui/chat/voice/voice_bridge.dart';
 import 'package:dsh_client/dsh_client.dart';
 
 typedef RpcHandler = Object? Function(Map<String, Object?> args);
@@ -144,54 +143,6 @@ String _parent(String path) {
   return slash < 0 ? '' : path.substring(0, slash);
 }
 
-/// A voice bridge driven by the test.
-class FakeVoiceBridge implements VoiceBridge {
-  FakeVoiceBridge({
-    this.caps = const VoiceCapabilities(recognizer: true, recorder: true),
-    this.permission = VoicePermission.granted,
-  });
-
-  VoiceCapabilities caps;
-  VoicePermission permission;
-
-  /// What `stop` returns in recorder mode.
-  Uint8List? recording;
-
-  final calls = <String>[];
-  final _events = StreamController<VoiceEvent>.broadcast();
-
-  void emit(VoiceEvent event) => _events.add(event);
-
-  @override
-  Future<VoiceCapabilities> capabilities() async => caps;
-
-  @override
-  Future<VoicePermission> requestPermission() async {
-    calls.add('permission');
-    return permission;
-  }
-
-  @override
-  Future<void> openSettings() async => calls.add('settings');
-
-  @override
-  Stream<VoiceEvent> get events => _events.stream;
-
-  @override
-  Future<void> startRecognizer({String? language}) async => calls.add('recognizer');
-
-  @override
-  Future<void> startRecorder({required int maxSeconds}) async => calls.add('recorder:$maxSeconds');
-
-  @override
-  Future<Uint8List?> stop() async {
-    calls.add('stop');
-    return recording;
-  }
-
-  @override
-  Future<void> cancel() async => calls.add('cancel');
-}
 
 /// A canonical 16 kHz mono PCM16 WAV of [seconds] of silence.
 Uint8List silentWav(double seconds) {

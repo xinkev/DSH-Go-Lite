@@ -25,7 +25,6 @@ import '../state/app_info.dart';
 import '../state/connection_state.dart';
 import '../state/settings_state.dart';
 import '../state/phone_state.dart' show phoneChannelProvider;
-import '../state/voice_settings.dart';
 import 'diagnostics_channel.dart';
 import 'app_error_log.dart';
 import 'redact.dart';
@@ -46,7 +45,6 @@ class DiagnosticsSnapshot {
     this.phone = const PhoneStatus.notReady(),
     this.connection = const {},
     this.performance = const {},
-    this.voiceMode = VoiceMode.auto,
     this.engineLog = const [],
     this.failureLog = const [],
     this.appErrors = const [],
@@ -65,7 +63,6 @@ class DiagnosticsSnapshot {
   /// `not_observed` means no active observation is currently retained.
   final Map<String, Object?> connection;
   final Map<String, Object?> performance;
-  final VoiceMode voiceMode;
   final List<String> engineLog;
   final List<String> failureLog;
   final List<AppErrorRecord> appErrors;
@@ -119,7 +116,6 @@ abstract final class DiagnosticsBundle {
       },
       'connection': s.connection,
       'performance': s.performance,
-      'voice': {...voiceDiagnosticsFacts(s.native.voice), 'mode': s.voiceMode.name},
       'evidence': diagnosticEvidenceFacts(s.native.evidence),
     };
   }
@@ -233,7 +229,6 @@ Future<DiagnosticsSnapshot> collectDiagnostics(Ref ref, DateTime at, {bool inclu
     phone: phone,
     connection: ref.read(connectionDiagnosticsProvider).snapshot,
     performance: performanceDiagnostics(ref),
-    voiceMode: await attempt(() => ref.read(voiceSettingsProvider.notifier).ready(), VoiceMode.auto),
     engineLog: engineLog,
     failureLog: failureLog,
     appErrors: appErrorLog.snapshot(),

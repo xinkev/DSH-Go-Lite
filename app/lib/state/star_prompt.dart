@@ -23,7 +23,6 @@ import 'draft_store.dart';
 import 'notify_state.dart' show appForegroundProvider, chatOnScreenProvider;
 import 'phone_state.dart' show phoneChannelProvider;
 import 'sessions_state.dart' show currentSessionProvider;
-import 'voice_state.dart';
 
 /// The release switch: `--dart-define=DSH_STAR_PROMPT=true` on the public build.
 const starPromptEnabled = bool.fromEnvironment('DSH_STAR_PROMPT');
@@ -384,7 +383,6 @@ final starPromptSceneProvider = Provider<StarPromptScene>((ref) {
     waiting: ref.watch(petPendingProvider).isNotEmpty,
     phoneActive: phone.active,
     phoneLastActive: phone.lastActive,
-    voice: ref.watch(voiceInputActiveProvider),
     composing: draft != null && (draft.text.trim().isNotEmpty || draft.attachments.isNotEmpty),
   );
 });

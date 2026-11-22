@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../companion/companion_float.dart' show companionFloatStoreProvider;
 import '../pets/overlay_channel.dart' show petOverlayChannelProvider;
 import '../pets/pet_library.dart';
 import '../pets/pet_prefs.dart';
@@ -62,10 +61,8 @@ final workshopClientProvider = FutureProvider<WorkshopClient>((ref) async {
 /// Stores are borrowed; this provider never closes a companion reader/store.
 final workshopPackagesProvider = FutureProvider<WorkshopPackages>((ref) async {
   final pets = ref.watch(petLibraryProvider);
-  final loadCompanion = ref.watch(companionFloatStoreProvider);
-  final companion = await loadCompanion();
   if (!ref.mounted) workshopInvalid('workshop_cancelled');
-  return LocalWorkshopPackages(pets: pets, companion: companion);
+  return LocalWorkshopPackages(pets: pets);
 }, retry: (_, _) => null);
 
 final workshopRepositoryProvider = FutureProvider<WorkshopRepository>((ref) async {

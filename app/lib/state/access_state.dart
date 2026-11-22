@@ -28,26 +28,14 @@ import '../pets/pet_prefs.dart';
 import '../runtime/background_net.dart' show backgroundSettingsProvider;
 import '../runtime/runtime_bridge.dart' show RuntimePhase;
 import '../runtime/runtime_state.dart';
-import '../ui/chat/voice/voice_bridge.dart' show VoicePermission;
 import 'android_features.dart';
 import 'engine_control.dart';
 import 'notify_state.dart';
 import 'phone_state.dart';
 import 'settings_state.dart';
 import 'system_actions_state.dart';
-import 'voice_model_state.dart' show VoiceModelController, voiceModelDefaultBytes;
-import 'voice_state.dart';
 
 /// The offline voice model's download in MB as the voice settings show it,
-/// said before it is chosen (the voice feature downloads it once the engine
-/// is up).
-final voiceModelApproxMb = (voiceModelDefaultBytes / 1000000).round();
-
-/// First run's answer about voice input, which [VoiceModelController] picks
-/// up: true when 语音输入 was picked (it starts the download once), false when
-/// the page was confirmed without it, absent when the page was skipped.
-const onboardingWantsVoiceKey = VoiceModelController.onboardingKey;
-
 /// What a person picks on first run: things DSH Go does, not permission names.
 /// What [os] offers is [accessFeaturesFor]'s, never all of these.
 enum AccessFeature { files, pet, phone, background, voice, alerts, systemActions }
@@ -363,9 +351,6 @@ class SystemAccessDriver implements AccessDriver {
     final opened = await _safe<bool>(() async {
       switch (item) {
         case AccessItem.mic:
-          final voice = ref.read(voiceBridgeProvider);
-          // Denied for good: only the app's permission page can turn it on.
-          if (await voice.requestPermission() == VoicePermission.blocked) await voice.openSettings();
           return true;
         case AccessItem.storage:
           final access = await bridge.requestStorage();
@@ -536,7 +521,6 @@ class AccessSetupController extends Notifier<AccessSetup> {
     try {
       final prefs = await SharedPreferences.getInstance();
       final os = ref.read(operatingSystemProvider);
-      await prefs.setBool(onboardingWantsVoiceKey, features.contains(AccessFeature.voice) && accessVoiceDownloads(os));
     } catch (_) {}
     if (phoneMode != null && features.contains(AccessFeature.phone)) {
       try {

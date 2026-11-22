@@ -11,7 +11,6 @@ import '../notify/answer_native_request.dart';
 import '../notify/notify_channel.dart';
 import '../phone/phone_channel.dart';
 import '../phone/phone_approval.dart';
-import '../companion/companion_state.dart';
 import '../pets/pet_signals.dart' show petHearAlert, petOnScreenProvider, petEventBusProvider;
 import 'app_info.dart';
 import 'android_features.dart';
@@ -511,15 +510,6 @@ class ChatAlertsController extends Notifier<ChatAlert?> {
   void _attach(HostRef host, HostConnection? connection) {
     final current = _trackers[host];
     if (current != null && identical(current.$1, connection)) return;
-    if (current != null &&
-        connection != null &&
-        identical(current.$1.client, connection.client) &&
-        current.$2.updateCompanionConnection(previous: current.$1, next: connection)) {
-      // A name/cwd refresh wraps the same live client. Keep its pending scopes,
-      // phone card and alert history; future metadata uses the new wrapper.
-      _trackers[host] = (connection, current.$2);
-      return;
-    }
     if (current != null) {
       _cancelPhonePrompt(host: host);
       _trackers.remove(host);
@@ -551,11 +541,6 @@ class ChatAlertsController extends Notifier<ChatAlert?> {
       },
       onRequestEpochChanged: (host) {
         if (attached()) _cancelPhonePrompt(host: host);
-      },
-      companionConnection: connection,
-      isCompanionAttached: attached,
-      onCompanionSignal: (delivery) {
-        if (attached()) scope.read(petEventBusProvider).companionSignal(delivery);
       },
       skipApproval: (sessionId) =>
           attached() && scope.exists(chatProvider(sessionId)) && scope.read(chatProvider(sessionId)).autoApprove,
@@ -784,7 +769,6 @@ class ChatAlertsController extends Notifier<ChatAlert?> {
     // The companion's reply is on her page; it isn't a finished task. A request
     // that really waits on the person (an older host's preset has tools) still
     // goes through.
-    if (!alert.kind.attention && ref.read(companionSessionFilterProvider)(alert.host, alert.sessionId)) return;
     final prefs = ref.read(notifyPrefsProvider);
     final foreground = ref.read(appForegroundProvider);
     final delivery = deliveryFor(

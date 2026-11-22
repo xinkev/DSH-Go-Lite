@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'companion/companion_initiative_owner.dart' show companionInitiativeProvider;
 import 'l10n/l10n.dart';
 import 'performance/performance_state.dart';
 import 'performance/refresh_rate.dart';
@@ -76,7 +75,6 @@ class _DshAppState extends ConsumerState<DshApp> with WidgetsBindingObserver {
       // 公测版: the star prompt counts time in front from launch, in either 界面.
       if (ref.read(starPromptGateProvider)) ref.read(starPromptProvider);
       // 伙伴小屋: her invitation ledger, known before the room opens.
-      ref.read(companionInitiativeProvider);
     });
     // 刷新率: some systems cap third-party apps at 60 Hz and then show their per-app
     // switch as an in-app setting; the app answers frames to run at the fastest rate

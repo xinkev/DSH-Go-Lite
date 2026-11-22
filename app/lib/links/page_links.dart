@@ -18,7 +18,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../l10n/l10n.dart';
 import '../state/android_features.dart';
-import '../ui/companion/companion_page.dart';
 import '../ui/features/feature_catalog.dart';
 import '../ui/settings/index/settings_pages.dart';
 import 'app_links.dart';
@@ -69,7 +68,6 @@ String? pageLinkId(Uri uri) {
 /// the chat, as 全部功能 passes it.
 Widget? pageForId(String id, String? sessionId) {
   if (settingsPageForLink(id, sessionId: sessionId) case final page?) return page;
-  if (id == companionPageLink) return const CompanionPage();
   if (_registeredPages[id] case final page?) return page();
   if (!catalogPageLinks.contains(id)) return null;
   for (final section in featureSections) {

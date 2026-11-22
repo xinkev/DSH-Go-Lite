@@ -16,13 +16,9 @@ import 'package:flutter/services.dart';
 import '../../l10n/l10n.dart';
 import '../common/expand_reveal.dart';
 import '../common/smooth_size.dart';
-import '../fx/voice_glow/voice_beam.dart';
 import '../pets/pet_perch.dart';
-import '../settings/voice_settings_page.dart';
 import '../theme/app_icons.dart';
 import '../theme/theme.dart';
-import 'voice/voice_controller.dart';
-import 'voice/voice_widgets.dart';
 
 /// The editor's line height, as a multiple of its font size.
 const _lineHeight = 1.45;
@@ -56,7 +52,6 @@ class Composer extends StatefulWidget {
     this.tray,
     this.hasAttachments = false,
     this.onSendOptions,
-    this.voice,
     this.onKeyEvent,
     this.placeholder,
     this.waiting = false,
@@ -106,9 +101,6 @@ class Composer extends StatefulWidget {
 
   /// 长按发送键:生成中可选插话 / 停下先处理 / 排队。
   final VoidCallback? onSendOptions;
-
-  /// 语音输入;null 或不可用时没有麦克风。
-  final VoiceInputController? voice;
 
   /// Hardware keys in the text field first go here (the `@` picker's
   /// arrows / Enter / Esc).
@@ -271,7 +263,7 @@ class _ComposerState extends State<Composer> with SingleTickerProviderStateMixin
     if (sendEnter && (key == LogicalKeyboardKey.enter || key == LogicalKeyboardKey.numpadEnter)) {
       if (event is KeyRepeatEvent) return KeyEventResult.handled;
       final draft = widget.controller.text.trim().isNotEmpty || widget.hasAttachments || widget.sendWhenEmpty;
-      final dictating = widget.voice?.active ?? false;
+      const dictating = false;
       if (draft && widget.connected && !widget.busy && !dictating) _send();
       return KeyEventResult.handled;
     }
@@ -297,7 +289,6 @@ class _ComposerState extends State<Composer> with SingleTickerProviderStateMixin
   void initState() {
     super.initState();
     widget.controller.addListener(_draftChanged);
-    widget.voice?.onMessage = _voiceMessage;
     widget.focusNode?.addListener(_focusChanged);
   }
 
@@ -327,55 +318,10 @@ class _ComposerState extends State<Composer> with SingleTickerProviderStateMixin
     if ((oldWidget.footer == null) != (widget.footer == null)) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _syncOpen());
     }
-    if (oldWidget.voice != widget.voice) {
-      if (oldWidget.voice?.onMessage == _voiceMessage) {
-        oldWidget.voice?.onMessage = null;
-      }
-      widget.voice?.onMessage = _voiceMessage;
-    }
-  }
-
-  @override
-  void dispose() {
-    widget.controller.removeListener(_draftChanged);
-    _draftEmpty.dispose();
-    widget.focusNode?.removeListener(_focusChanged);
-    _openController.dispose();
-    if (widget.voice?.onMessage == _voiceMessage) {
-      widget.voice?.onMessage = null;
-    }
     super.dispose();
   }
 
-  void _voiceMessage(VoiceMessage message) {
-    if (!mounted) return;
-    final voice = widget.voice;
-    ScaffoldMessenger.maybeOf(context)
-      ?..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(message.text),
-          persist: false,
-          action: message.openSettings && voice != null
-              ? SnackBarAction(label: appL10n.chatGoToSettings, onPressed: () => voice.bridge.openSettings())
-              : message.change
-              ? SnackBarAction(
-                  label: appL10n.nearbyChange,
-                  onPressed: () =>
-                      Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const VoiceSettingsPage())),
-                )
-              : null,
-        ),
-      );
-  }
 
-  void _startVoice() {
-    final voice = widget.voice;
-    if (voice == null) return;
-    // Dictation shows the text in the field; the keyboard only covers it.
-    (widget.focusNode ?? FocusManager.instance.primaryFocus)?.unfocus();
-    voice.start();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -387,8 +333,6 @@ class _ComposerState extends State<Composer> with SingleTickerProviderStateMixin
     // the current text size (very large text just grows the row).
     final line = MediaQuery.textScalerOf(context).scale(_fontSize) * _lineHeight;
     final textPad = math.max(4.0, (_keySize - line) / 2);
-    final voice = widget.voice;
-    voice?.ensureFresh();
 
     // The chat page's pet stands on the composer's top edge (outside a pet
     // stage this is a plain pass-through).
@@ -399,21 +343,17 @@ class _ComposerState extends State<Composer> with SingleTickerProviderStateMixin
         child: ListenableBuilder(
           // The editor listens to text, selection and composing changes itself.
           // Its surrounding controls only need the draft's empty/nonempty edge.
-          listenable: Listenable.merge([_draftEmpty, ?voice]),
+          listenable: _draftEmpty,
           builder: (context, _) {
-            final phase = voice?.phase ?? VoicePhase.idle;
-            final dictating = phase == VoicePhase.listening || phase == VoicePhase.transcribing;
+            const dictating = false;
             final empty = _draftEmpty.value && !widget.hasAttachments;
             final showStop = widget.running && empty && !dictating;
-            final showMic = !dictating && !showStop && empty && !widget.busy && (voice?.available ?? false);
+            const showMic = false;
             final enabled =
                 !widget.busy && widget.connected && widget.sessionReady && (showStop || !empty || widget.sendWhenEmpty);
             final emptySend = empty && widget.sendWhenEmpty && !showStop && !showMic && !dictating;
             final waiting = widget.waiting || widget.waitHint != null;
-            final hint = switch (phase) {
-              VoicePhase.listening => l10n.chatListeningEllipsis,
-              VoicePhase.transcribing => l10n.chatTranscribingEllipsis,
-              _ =>
+            final hint =
                 !widget.connected
                     ? l10n.chatConnectToSend
                     : !widget.sessionReady
@@ -421,30 +361,19 @@ class _ComposerState extends State<Composer> with SingleTickerProviderStateMixin
                     : widget.waitHint ??
                           (widget.running && !waiting
                               ? l10n.chatGeneratingSteerHint
-                              : widget.placeholder ?? l10n.chatComposerHint),
-            };
-            final leading = dictating
-                ? VoiceCancelKey(key: const ValueKey('voice-cancel'), onPressed: voice!.cancel)
-                : widget.leading;
-            final accessory = dictating
-                ? VoiceWaveform(level: voice!.level, active: phase == VoicePhase.listening)
-                : widget.accessory;
+                              : widget.placeholder ?? l10n.chatComposerHint);
+            final leading = widget.leading;
+            final accessory = widget.accessory;
 
             final _KeyMode mode;
-            if (dictating) {
-              mode = _KeyMode.stopVoice;
-            } else if (showStop) {
+            if (showStop) {
               mode = _KeyMode.stopRun;
-            } else if (showMic) {
-              mode = _KeyMode.mic;
             } else {
               mode = _KeyMode.send;
             }
             final keyBusy =
                 widget.busy ||
-                (showStop && widget.stopping) ||
-                phase == VoicePhase.transcribing ||
-                phase == VoicePhase.starting;
+                (showStop && widget.stopping);
 
             final leadingKey = leading == null
                 ? null
@@ -479,7 +408,7 @@ class _ComposerState extends State<Composer> with SingleTickerProviderStateMixin
                     ),
                     null => null,
                   },
-                  readOnly: dictating || phase == VoicePhase.starting,
+                  readOnly: dictating,
                   minLines: 1,
                   maxLines: widget.maxLines,
                   keyboardType: TextInputType.multiline,
@@ -511,11 +440,7 @@ class _ComposerState extends State<Composer> with SingleTickerProviderStateMixin
               busy: keyBusy,
               quiet: (showStop && waiting && !widget.stopping) || emptySend,
               sendLabel: emptySend ? widget.emptySendLabel : null,
-              enabled: switch (mode) {
-                _KeyMode.mic => true,
-                _KeyMode.stopVoice => phase == VoicePhase.listening,
-                _ => enabled,
-              },
+              enabled: enabled,
               onLongPress: mode != _KeyMode.send || !enabled ? null : widget.onSendOptions,
               onTap: () {
                 switch (mode) {
@@ -523,10 +448,6 @@ class _ComposerState extends State<Composer> with SingleTickerProviderStateMixin
                     _stop();
                   case _KeyMode.send:
                     _send();
-                  case _KeyMode.mic:
-                    _startVoice();
-                  case _KeyMode.stopVoice:
-                    voice?.stop();
                 }
               },
             );
@@ -605,29 +526,7 @@ class _ComposerState extends State<Composer> with SingleTickerProviderStateMixin
             // Dictating: the pet steps away from the voice controls, and a soft light
             // (Libraries.dev Voice) rises from the glass's bottom edge with the voice,
             // under the text and keys.
-            return PetCover(
-              active: dictating,
-              child: voice == null
-                  ? padded
-                  : Stack(
-                      children: [
-                        Positioned.fill(
-                          child: IgnorePointer(
-                            child: VoiceBeam(
-                              active: dictating,
-                              level: voice.level,
-                              levelScale: voice.engine == VoiceEngine.system
-                                  ? VoiceLevelScale.linear
-                                  : VoiceLevelScale.playback,
-                              borderRadius: widget.footer != null && _open.value > 0.5 ? AppShape.lg : AppShape.xl,
-                              child: const SizedBox.expand(),
-                            ),
-                          ),
-                        ),
-                        padded,
-                      ],
-                    ),
-            );
+            return PetCover(active: false, child: padded);;
           },
         ),
       ),
@@ -821,10 +720,8 @@ enum _KeyMode {
   stopRun,
 
   /// 🎙 start dictating (draft empty).
-  mic,
 
   /// ■ stop dictating and keep the text.
-  stopVoice,
 }
 
 /// 40 圆键:↑ 发送 / ■ 停止(实心主色);🎙 麦克风是 ＋ 键那样的淡底圆。
@@ -866,7 +763,7 @@ class _SendButtonState extends State<_SendButton> {
     final fluid = AppMotion.fluid(context);
     final enabled = widget.enabled && !widget.busy;
     final mode = widget.mode;
-    final mic = mode == _KeyMode.mic || widget.quiet;
+    final mic = widget.quiet;
     final active = enabled || widget.busy;
     final bg = mic
         ? colors.onSurface.withValues(alpha: 0.06)
@@ -881,8 +778,6 @@ class _SendButtonState extends State<_SendButton> {
     final (icon, size, label) = switch (mode) {
       _KeyMode.send => (AppIcons.send, 20.0, widget.sendLabel ?? l10n.commonSend),
       _KeyMode.stopRun => (AppIcons.stopGenerating, 18.0, l10n.chatStopGenerating),
-      _KeyMode.mic => (AppIcons.voice, 20.0, l10n.chatVoiceInput),
-      _KeyMode.stopVoice => (AppIcons.stopGenerating, 18.0, l10n.chatStopVoiceInput),
     };
     return Semantics(
       button: true,

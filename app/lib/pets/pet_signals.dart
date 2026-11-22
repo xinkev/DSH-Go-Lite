@@ -23,7 +23,6 @@ import '../state/session_attention_state.dart';
 import '../ui/chat/run_info.dart';
 import 'overlay_channel.dart' show petOverlayChannelProvider;
 import 'pet_mood.dart';
-import 'pet_overlay_actions.dart';
 import 'pet_library.dart';
 import 'pet_pack.dart';
 import 'pet_prefs.dart';
@@ -144,13 +143,7 @@ final currentPetPackProvider = Provider<PetPack?>((ref) {
 /// Where `ChatAlertsController` hands every alert, for the pet.
 class PetEventBus {
   final _events = StreamController<PetEvent>.broadcast(sync: true);
-  final _companionSignals = StreamController<CompanionAlertDelivery>.broadcast(sync: true);
 
-  /// Independent metadata lane; it never calls old PetEvent text handlers.
-  Stream<CompanionAlertDelivery> get companionSignals => _companionSignals.stream;
-  void companionSignal(CompanionAlertDelivery delivery) {
-    if (!_companionSignals.isClosed && delivery.current) _companionSignals.add(delivery);
-  }
 
   Stream<PetEvent> get events => _events.stream;
 
@@ -202,7 +195,6 @@ class PetEventBus {
 
   void dispose() {
     unawaited(_events.close());
-    unawaited(_companionSignals.close());
   }
 }
 
@@ -672,7 +664,6 @@ final petScopedStateProvider = Provider.family<PetState, PetScope>((ref, scope) 
     quiet: prefs.quiet,
     reduceMotion: ref.watch(performanceDefaultsProvider.select((p) => p.reduceMotion)),
     canStop: signals.runs.any((r) => PetTarget(r.host, r.root) == petTarget(global, signals) && r.host == activeHost),
-    hosts: ref.watch(petHostChoicesProvider),
   );
 });
 

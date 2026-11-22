@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../l10n/l10n.dart';
-import '../../speech/speech_ui.dart';
 import '../../common/expand_reveal.dart';
 import '../../common/typing_indicator.dart';
 import '../../theme/app_icons.dart';
@@ -268,7 +267,6 @@ class _AssistantMessageState extends State<AssistantMessage> {
       case MessageAction.share:
         await shareReply(context, widget.item);
       case MessageAction.readAloud:
-        readAloudReply(context, widget.item.key, text);
       case MessageAction.regenerate:
         onRegenerate?.call();
       case MessageAction.branch:

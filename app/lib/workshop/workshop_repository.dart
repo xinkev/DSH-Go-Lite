@@ -5,7 +5,6 @@ import 'package:archive/archive.dart';
 import 'package:flutter/foundation.dart' show compute;
 import 'package:flutter/services.dart';
 
-import '../companion/companion_pack.dart';
 import '../pets/pet_library.dart';
 import '../update/downloader.dart';
 import '../update/installer.dart';
@@ -71,9 +70,8 @@ abstract interface class WorkshopPackages {
 }
 
 class LocalWorkshopPackages implements WorkshopPackages {
-  const LocalWorkshopPackages({required this.pets, required this.companion});
+  const LocalWorkshopPackages({required this.pets});
   final PetLibrary pets;
-  final CompanionPackStore companion;
 
   @override
   Future<List<WorkshopLocalEntry>> installed() async {
@@ -87,25 +85,10 @@ class LocalWorkshopPackages implements WorkshopPackages {
     ];
     // Listing isolates expected failures from this slot, including recovery.
     // Errors not converted by the store still escape this boundary.
-    try {
-      final character = await companion.workshopReceipt();
-      if (character != null) {
-        if (character.kind != 'companion') {
-          workshopInvalid('workshop_install_record');
-        }
-        result.add(WorkshopInstalled(localId: 'companion', receipt: character));
-      }
-    } on WorkshopException catch (error) {
-      result.add(WorkshopInstallationIssue(localId: 'companion', issue: workshopLocalError(error).code));
-    } on FileSystemException catch (error) {
-      result.add(WorkshopInstallationIssue(localId: 'companion', issue: workshopLocalError(error).code));
-    } on CompanionPackException catch (error) {
-      result.add(WorkshopInstallationIssue(localId: 'companion', issue: workshopLocalError(error).code));
-    }
     return result;
   }
   @override
-  Future<int> copyOverhead(String kind) async => kind == 'companion' ? await companion.runtimeBytes() : 0;
+  Future<int> copyOverhead(String kind) async => 0;
 
   @override
   Future<WorkshopInstalled> install(File archive, WorkshopReceipt receipt, {required bool replaceExisting}) async {
@@ -113,9 +96,6 @@ class LocalWorkshopPackages implements WorkshopPackages {
       case 'pet':
         final result = await pets.install(archive, workshop: receipt, replaceExisting: replaceExisting);
         return WorkshopInstalled(localId: result.id, receipt: receipt);
-      case 'companion':
-        await companion.install(archive.path, workshop: receipt, replaceExisting: replaceExisting);
-        return WorkshopInstalled(localId: 'companion', receipt: receipt);
       default: workshopInvalid('workshop_unsupported_kind');
     }
   }
@@ -123,7 +103,6 @@ class LocalWorkshopPackages implements WorkshopPackages {
   Future<void> remove(WorkshopInstalled installed) async {
     switch (installed.receipt.kind) {
       case 'pet': await pets.remove(installed.localId, expectedWorkshop: installed.receipt);
-      case 'companion': await companion.remove(expectedWorkshop: installed.receipt);
       default: workshopInvalid('workshop_unsupported_kind');
     }
   }
@@ -193,10 +172,6 @@ class WorkshopRepository {
       if (receipt.origin != client.origin) return WorkshopInstalledState(installed: item, unavailable: 'workshop_other_origin');
       final entry = catalog.find(receipt.kind, receipt.id);
       final withdrawn = catalog.blocked(receipt.kind, receipt.id, receipt.version);
-      if (receipt.kind == 'companion' && !catalog.features.companion) {
-        return WorkshopInstalledState(installed: item, entry: entry, installedWithdrawn: withdrawn,
-          unavailable: 'workshop_companion_disabled');
-      }
       if (entry == null) {
         return WorkshopInstalledState(installed: item, installedWithdrawn: withdrawn,
           unavailable: withdrawn ? 'workshop_version_withdrawn' : 'workshop_not_found');
@@ -225,7 +200,6 @@ class WorkshopRepository {
     final catalog = (await client.catalog(requireFresh: true)).catalog;
     final m = requested.metadata;
     if (!m.supported) workshopInvalid('workshop_unsupported_kind');
-    if (m.kind == 'companion' && !catalog.features.companion) workshopInvalid('workshop_companion_disabled');
     if (catalog.blocked(m.kind, m.id, m.version)) workshopInvalid('workshop_version_withdrawn');
     final now = catalog.find(m.kind, m.id);
     if (now == null) workshopInvalid('workshop_not_found');
@@ -304,46 +278,6 @@ class WorkshopRepository {
     return _prepared(file, publication);
   });
 
-  Future<WorkshopPreparedUpload> prepareCompanion(CompanionPackStore store, File destination, WorkshopPublication publication,
-    {String? name, String? persona, WorkshopPreviewInput? preview}) => _exclusive(() async {
-    if (publication.kind != 'companion') workshopInvalid('workshop_unsupported_kind');
-    if (publication.previewSource != null && preview == null) workshopInvalid('workshop_preview_missing');
-    if (preview?.source != publication.previewSource) workshopInvalid('workshop_bad_metadata');
-    if (preview == null) {
-      final file = await store.exportZip(destination, name: name, persona: persona,
-        author: publication.author, license: publication.license, source: publication.source);
-      return _prepared(file, publication);
-    }
-    final target = await workshopExportTarget(destination);
-    // Preserve exportZip's source-directory boundary before creating either
-    // the intermediate snapshot or the final ZIP. No live model is rewritten.
-    final home = await store.root.exists() ? await store.root.resolveSymbolicLinks()
-        : store.root.absolute.uri.normalizePath().toFilePath();
-    final prefix = home.endsWith(Platform.pathSeparator) ? home : '$home${Platform.pathSeparator}';
-    if (target.path == home || target.path.startsWith(prefix)) {
-      throw const CompanionPackException(CompanionPackProblem.storage);
-    }
-    Directory? owned;
-    try {
-      await target.parent.create(recursive: true);
-      final directory = await target.parent.createTemp('.workshop-preview-');
-      owned = directory;
-      final exported = await store.exportZip(File('${directory.path}/model.zip'), name: name, persona: persona,
-        author: publication.author, license: publication.license, source: publication.source);
-      final bytes = await compute(workshopCompanionPreviewZip, (await exported.readAsBytes(), preview));
-      // Export has already released its queue. This writer only writes its
-      // staging file; nesting store.exportZip here would wait on the same queue.
-      await workshopCommitExport(target, (staging) async {
-        await staging.writeAsBytes(bytes, flush: true);
-      });
-      return await _prepared(target, publication);
-    } finally {
-      final directory = owned;
-      try { if (directory != null && await directory.exists()) await directory.delete(recursive: true); }
-      on FileSystemException { /* Preserve the preparation result; only our private snapshot may remain. */ }
-    }
-  });
-
   Future<WorkshopPreparedUpload> _prepared(File file, WorkshopPublication publication) async {
     final size = await file.length();
     if (size < 1 || size > workshopArchiveBytes) workshopInvalid('workshop_body_too_large');
@@ -384,29 +318,6 @@ const Set<String> workshopPackageValidationCodes = {
   'workshop_pet_missing_sheet',
   'workshop_pet_bad_sheet',
   'workshop_pet_too_large',
-  'workshop_companion_bad_index',
-  'workshop_companion_bad_json',
-  'workshop_companion_bad_metadata',
-  'workshop_companion_bad_moc',
-  'workshop_companion_bad_model',
-  'workshop_companion_bad_png',
-  'workshop_companion_bad_reference',
-  'workshop_companion_changed',
-  'workshop_companion_empty_file',
-  'workshop_companion_forbidden_file',
-  'workshop_companion_legacy_model',
-  'workshop_companion_missing_file',
-  'workshop_companion_missing_index',
-  'workshop_companion_missing_model',
-  'workshop_companion_missing_reference',
-  'workshop_companion_missing_texture',
-  'workshop_companion_moc_version',
-  'workshop_companion_no_model',
-  'workshop_companion_not_a_pack',
-  'workshop_companion_runtime_incomplete',
-  'workshop_companion_runtime_mismatch',
-  'workshop_companion_too_large',
-  'workshop_companion_unsafe_path',
 };
 
 WorkshopException workshopLocalError(Object error) {
@@ -415,12 +326,6 @@ WorkshopException workshopLocalError(Object error) {
   if (error is PetImportException) {
     errno = error.osErrorCode;
     if (error.problem != PetImportProblem.storage) return WorkshopException('workshop_pet_${_problemName(error.problem.name)}');
-  } else if (error is CompanionPackException) {
-    errno = error.osErrorCode;
-    if (error.detail == 'companion_readers_busy') return const WorkshopException('workshop_readers_busy');
-    if (error.problem == CompanionPackProblem.noRuntime) return const WorkshopException('workshop_runtime_missing');
-    if (error.detail != null && RegExp(r'^companion_[a-z_]+$').hasMatch(error.detail!)) return WorkshopException('workshop_${error.detail}');
-    if (error.problem != CompanionPackProblem.storage) return WorkshopException('workshop_companion_${_problemName(error.problem.name)}');
   } else if (error is FileSystemException) {
     errno = error.osError?.errorCode;
   } else { return workshopTransportError(error); }

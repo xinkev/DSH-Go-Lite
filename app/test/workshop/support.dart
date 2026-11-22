@@ -5,7 +5,6 @@ import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
 import 'package:crypto/crypto.dart';
-import 'package:dsh_app/companion/companion_pack.dart';
 import 'package:dsh_app/update/update_http.dart';
 import 'package:dsh_app/workshop/workshop_http.dart';
 import 'package:dsh_app/workshop/workshop_models.dart';
@@ -86,8 +85,6 @@ Map<String, List<int>> workshopRuntime() => {
   'runtime/cubism-framework.js': utf8.encode('test framework'),
   'runtime/shaders/test.vert': utf8.encode('test shader'),
 };
-
-String workshopRuntimeDigest() => runtimeDigest({for (final e in workshopRuntime().entries) e.key: sha256.convert(e.value).toString()});
 
 Map<String, List<int>> workshopCharacter({String name = 'Private name', int moc = 6}) => {
   'character/character.json': utf8.encode(jsonEncode({'schema': 1, 'name': name, 'persona': 'PRIVATE_PERSONA',

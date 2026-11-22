@@ -21,7 +21,6 @@ import 'dart:convert';
 
 import 'package:dsh_client/dsh_client.dart';
 
-import '../companion/companion_signals.dart';
 import '../l10n/host_text.dart';
 import '../l10n/l10n.dart';
 import '../state/hosts_state.dart';
@@ -444,9 +443,6 @@ class HostAlertTracker {
     this.skipApproval,
     this.onReannounce,
     this.onRequestEpochChanged,
-    this.onCompanionSignal,
-    this._companionConnection,
-    this.isCompanionAttached,
     this.announceDelay = const Duration(milliseconds: 800),
     this.reconcileDelay = const Duration(seconds: 3),
   });
@@ -467,20 +463,6 @@ class HostAlertTracker {
   /// native card identity, without duplicating ordinary chat alerts.
   final void Function(ChatAlert alert)? onReannounce;
   final void Function(HostRef host)? onRequestEpochChanged;
-  final void Function(CompanionAlertDelivery delivery)? onCompanionSignal;
-  Object? _companionConnection;
-  Object? get companionConnection => _companionConnection;
-  final bool Function()? isCompanionAttached;
-
-  /// The attachment owner may refresh display metadata for the same Host and
-  /// actual client. This does not replace [source] or any request/delivery
-  /// history. Existing receipts keep their old wrapper and retire immediately.
-  bool updateCompanionConnection({required Object previous, required Object next}) {
-    if (_disposed || !identical(_companionConnection, previous)) return false;
-    _companionConnection = next;
-    return true;
-  }
-
   /// Requests wait this long before alerting, so one that is answered at once
   /// (auto-approve on this or another device) never pops up.
   final Duration announceDelay;
@@ -495,7 +477,6 @@ class HostAlertTracker {
 
   final Map<String, SessionSummary> _sessions = {};
   final Map<String, bool> _running = {};
-  final Map<String, MuxGeneration> _companionRunning = {};
   MuxEventProvenance? _readyProvenance;
   final Map<String, int> _statusRevision = {};
   final Set<String> _pendingIdle = {};
@@ -572,7 +553,6 @@ class HostAlertTracker {
     switch (event) {
       case HostReadyEvent():
         _generation++;
-        _companionRunning.clear();
         _readyProvenance = provenance;
         _requestScopes.clear();
         _phoneApprovals.clear();
@@ -622,22 +602,18 @@ class HostAlertTracker {
         if (session != null) onWithdraw(host, session, eventId);
       case SessionStatusEvent(:final sessionId, :final running):
         final was = _running[sessionId];
-        final wasLive = provenance != null && identical(_companionRunning[sessionId], provenance.generation);
-        if (running && provenance != null) _companionRunning[sessionId] = provenance.generation;
-        if (!running) _companionRunning.remove(sessionId);
         _running[sessionId] = running;
         if (running || was != false) _statusRevision[sessionId] = ++_revision;
         if (running) _pendingIdle.remove(sessionId);
         if (!running && was != false) {
           _pendingIdle.add(sessionId);
-          unawaited(_onIdle(sessionId, provenance: provenance, freshness: wasLive ? 'live' : 'reconciled'));
+          unawaited(_onIdle(sessionId, provenance: provenance, freshness: 'reconciled'));
         }
       case SessionAddedEvent(:final summary):
         _sessions[summary.sessionId] = summary;
       case SessionRemovedEvent(:final sessionId):
         _sessions.remove(sessionId);
         _running.remove(sessionId);
-        _companionRunning.remove(sessionId);
         _statusRevision[sessionId] = ++_revision;
         _pendingIdle.remove(sessionId);
         _requests.removeWhere((_, s) => s == sessionId);
@@ -858,21 +834,6 @@ class HostAlertTracker {
   void _publishTerminal(ChatAlert alert, MuxEventProvenance provenance) {
     final session = alert.sourceSessionId, seq = alert.endSeq, reason = alert.turnEndKind;
     if (session == null || seq == null || reason == null) return;
-    _publishMetadata({
-      'v': 1,
-      'id': '$session:$seq',
-      'kind': 'task.terminal',
-      'source': {
-        'type': 'dsh',
-        'hostKey': companionHostKey(host),
-        'sessionId': session,
-        'seq': seq,
-        'turn': alert.turn,
-      },
-      'observedAt': provenance.observedAt.toIso8601String(),
-      'freshness': alert.signalFreshness,
-      'payload': {'phase': terminalPhase(reason), 'endKind': reason, 'endSeq': seq, 'turn': alert.turn},
-    }, provenance);
   }
 
   void _publishRequest(
@@ -884,52 +845,6 @@ class HostAlertTracker {
     bool cleared = false,
     bool Function()? stillPending,
   }) {
-    _publishMetadata(
-      {
-        'v': 1,
-        'id': '${cleared ? 'clear' : 'waiting'}:$requestId',
-        'kind': cleared ? 'task.approval_cleared' : 'task.approval_waiting',
-        'source': {
-          'type': 'dsh',
-          'hostKey': companionHostKey(host),
-          'sessionId': sourceSession,
-          'requestId': requestId,
-        },
-        'observedAt': provenance.observedAt.toIso8601String(),
-        'freshness': 'live',
-        'payload': {
-          'requestId': requestId,
-          'openSessionId': openSession,
-          'requestKind': kind == AlertKind.approval ? 'approval' : 'question',
-        },
-      },
-      provenance,
-      stillPending: stillPending,
-    );
-  }
-
-  void _publishMetadata(Map<String, Object?> json, MuxEventProvenance provenance, {bool Function()? stillPending}) {
-    final actual = source, connection = companionConnection, attached = isCompanionAttached;
-    if (_disposed ||
-        actual is! DshAlertSource ||
-        connection == null ||
-        attached == null ||
-        !provenance.current ||
-        !identical(actual.client.mux, provenance.mux)) {
-      return;
-    }
-    CompanionSignalV1 signal;
-    try {
-      signal = CompanionSignalV1.fromJson(json);
-    } on FormatException {
-      return;
-    }
-    final delivery = CompanionAlertDelivery._(signal, provenance, actual.client, connection, () {
-      if (_disposed || !identical(companionConnection, connection)) return false;
-      final current = attached();
-      return current && !_disposed && identical(companionConnection, connection);
-    }, stillPending);
-    if (delivery.current) onCompanionSignal?.call(delivery);
   }
 
   /// The top-level conversation a (sub)agent belongs to.
@@ -942,41 +857,5 @@ class HostAlertTracker {
       id = parent;
     }
     return id;
-  }
-}
-
-/// Stable local Host identity, with no address, token, display name or path.
-String companionHostKey(HostRef host) => '${host.kind.name}:${host.id}';
-
-/// A metadata-only projection sealed by the actual tracker. Capture the gate
-/// ingress when installing a listener; do not mint an ingress in an old callback.
-final class CompanionAlertDelivery {
-  CompanionAlertDelivery._(this.signal, this.provenance, this.client, this.connection, this._attached, this._pending);
-  final CompanionSignalV1 signal;
-  final MuxEventProvenance provenance;
-  final DshClient client;
-  final Object connection;
-  final bool Function() _attached;
-  final bool Function()? _pending;
-  bool get current {
-    if (!provenance.current || !identical(client.mux, provenance.mux)) return false;
-    bool attached;
-    try {
-      attached = _attached();
-    } catch (_) {
-      attached = false;
-    }
-    return attached && provenance.current && identical(client.mux, provenance.mux);
-  }
-
-  CompanionSignalAdmission receive(CompanionSignalGate gate, CompanionSignalIngress ingress) {
-    if (!identical(ingress.source.client, client) ||
-        !identical(ingress.source.connection, connection) ||
-        !identical(ingress.source.generation, provenance.generation) ||
-        !current ||
-        !gate.ingressCurrent(ingress)) {
-      return CompanionSignalAdmission.stale;
-    }
-    return gate.receive(ingress, signal, provenance: provenance, stillPending: _pending, receiptCurrent: () => current);
   }
 }

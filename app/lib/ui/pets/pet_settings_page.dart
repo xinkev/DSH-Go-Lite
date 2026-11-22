@@ -23,7 +23,6 @@ import '../settings/settings_widgets.dart';
 import '../theme/app_icons.dart';
 import '../shell/page_frame.dart';
 import '../workshop/workshop_screen.dart';
-import 'overlay_settings_tile.dart';
 import 'pet_custom_size.dart';
 import 'pet_picker.dart';
 
@@ -130,7 +129,6 @@ class PetSettingsPage extends ConsumerWidget {
                 ],
               ),
               // App 外显示 (the overlay).
-              if (hasOutsideOverlay) const PetOverlaySettingsSection(),
             ],
           ),
         ),

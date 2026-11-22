@@ -5,8 +5,6 @@ import 'package:archive/archive.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../companion/companion_float.dart' show companionFloatStoreProvider;
-import '../companion/companion_pack.dart';
 import '../pets/pet_library.dart';
 import '../workshop/workshop_models.dart';
 import '../workshop/workshop_preview.dart';
@@ -17,7 +15,7 @@ import 'workshop_publication.dart';
 
 class WorkshopPublishSource {
   const WorkshopPublishSource({required this.kind, required this.localId,
-    this.name, this.author, this.license, this.source, this.preview, this.library, this.store});
+    this.name, this.author, this.license, this.source, this.preview, this.library});
   final String kind, localId;
   final String? name, author, license, source;
   final WorkshopPreviewInput? preview;
@@ -27,12 +25,11 @@ class WorkshopPublishSource {
   /// pet is packed from [library], the companion from [store], instead of
   /// the person's own.
   final PetLibrary? library;
-  final CompanionPackStore? store;
-  bool get fromFile => library != null || store != null;
+  bool get fromFile => library != null;
 
   WorkshopPublishSource withPreview(WorkshopPreviewInput? value) => WorkshopPublishSource(
     kind: kind, localId: localId, name: name, author: author, license: license, source: source, preview: value,
-    library: library, store: store);
+    library: library);
 
   WorkshopPublicationInput initialInput() {
     final candidate = kind == 'pet' && localId.startsWith(userPetPrefix)
@@ -55,7 +52,6 @@ class WorkshopPublishSources {
 
 final workshopSourcesLoaderProvider = Provider<Future<WorkshopPublishSources> Function()>((ref) {
   final pets = ref.watch(petLibraryProvider);
-  final companion = ref.watch(companionFloatStoreProvider);
   return () async {
     final values = <WorkshopPublishSource>[], issues = <String, WorkshopException>{};
     try {
@@ -65,18 +61,6 @@ final workshopSourcesLoaderProvider = Provider<Future<WorkshopPublishSources> Fu
       }
     } on Object catch (error) {
       issues['pet'] = workshopLocalError(error);
-    }
-    try {
-      final store = await companion();
-      if (await store.installed()) {
-        final character = await store.character();
-        values.add(WorkshopPublishSource(kind: 'companion', localId: 'companion',
-          author: character.author, license: character.license, source: character.source));
-      } else {
-        issues['companion'] = const WorkshopException('workshop_companion_unavailable');
-      }
-    } on Object catch (error) {
-      issues['companion'] = workshopLocalError(error);
     }
     return WorkshopPublishSources(values: values, issues: issues);
   };
@@ -160,19 +144,9 @@ class WorkshopPreparedDraft {
 typedef WorkshopFileStager = Future<WorkshopPublishSource> Function(File zip);
 
 final workshopFileStagerProvider = Provider<WorkshopFileStager>((ref) {
-  final companion = ref.watch(companionFloatStoreProvider);
   return (zip) async {
     final root = await (await getTemporaryDirectory()).createTemp('workshop-file-');
     try {
-      if (await _hasLive2DModel(zip)) {
-        final store = CompanionPackStore(Directory('${root.path}/companion'));
-        final runtime = Directory('${(await companion()).pack.path}/runtime');
-        if (await runtime.exists()) await _copyTree(runtime, Directory('${store.pack.path}/runtime'));
-        await store.install(zip.path);
-        final character = await store.character();
-        return WorkshopPublishSource(kind: 'companion', localId: 'file', name: character.name,
-          author: character.author, license: character.license, source: character.source, store: store);
-      }
       final library = PetLibrary(() async => Directory('${root.path}/pets'));
       final installed = await library.install(zip);
       final pack = await library.load(installed.id);
@@ -218,7 +192,6 @@ final workshopPrepareDraftProvider = Provider<WorkshopPrepareDraft>((ref) {
   // early factory failure now; invoking the function still reports that error.
   unawaited(repository.then<void>((_) {}, onError: (Object error, StackTrace stack) {}));
   final pets = ref.watch(petLibraryProvider);
-  final companion = ref.watch(companionFloatStoreProvider);
   final directory = ref.watch(workshopDirectoryProvider);
   return (source, publication) async {
     Directory? owned;
@@ -236,9 +209,6 @@ final workshopPrepareDraftProvider = Provider<WorkshopPrepareDraft>((ref) {
       final WorkshopPreparedUpload upload;
       if (source.kind == 'pet') {
         upload = await repo.preparePet(source.library ?? pets, source.localId, file, publication);
-      } else if (source.kind == 'companion' && (source.localId == 'companion' || source.store != null)) {
-        // No personal name, persona, runtime, or private preference is passed.
-        upload = await repo.prepareCompanion(source.store ?? await companion(), file, publication, preview: source.preview);
       } else {
         throw const WorkshopException('workshop_unsupported_kind');
       }

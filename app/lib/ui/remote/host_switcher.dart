@@ -11,7 +11,6 @@ import '../../state/hosts_state.dart';
 import '../common/app_sheet.dart';
 import '../common/sheet_title_bar.dart';
 import '../common/status_chip.dart';
-import '../companion/companion_page.dart';
 import '../onboarding/local_install.dart';
 import '../settings/settings_widgets.dart';
 import '../theme/app_icons.dart';
@@ -169,7 +168,6 @@ class HostSheet extends ConsumerWidget {
                     onTap: () {
                       final navigator = Navigator.of(context);
                       navigator.pop();
-                      unawaited(navigator.push(MaterialPageRoute<void>(builder: (_) => const CompanionPage())));
                     },
                   ),
                   SettingsTile(

@@ -133,7 +133,6 @@ class _AccessPickPageState extends ConsumerState<AccessPickPage> {
                 lines: feature == AccessFeature.voice && accessVoiceDownloads(os)
                     ? [
                         (text: l10n.accessFeatureVoiceNeeds, color: null),
-                        (text: l10n.accessVoiceModel(voiceModelApproxMb), color: null),
                         if (metered) (text: l10n.accessVoiceMetered, color: colors.warning),
                       ]
                     : const [],

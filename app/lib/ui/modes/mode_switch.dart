@@ -14,7 +14,6 @@ import '../../l10n/l10n.dart';
 import '../../state/app_mode_state.dart';
 import '../common/app_sheet.dart';
 import '../common/sheet_title_bar.dart';
-import '../companion/companion_page.dart';
 import '../settings/settings_widgets.dart';
 import '../shell/page_frame.dart';
 import '../fx/waves/distortion_wave.dart';
@@ -23,7 +22,6 @@ import '../theme/theme.dart';
 
 /// The page of a mode other than 工作.
 Widget appModePage(AppMode mode) => switch (mode) {
-  AppMode.companion => const CompanionPage(),
   AppMode.work => throw ArgumentError.value(mode, 'mode', '工作 is the home, not a page'),
 };
 
@@ -57,12 +55,10 @@ void openAppMode(BuildContext context, AppMode mode) {
 
 String appModeLabel(L10n l10n, AppMode mode) => switch (mode) {
   AppMode.work => l10n.modeWork,
-  AppMode.companion => l10n.companionTitle,
 };
 
 IconData appModeIcon(AppMode mode) => switch (mode) {
   AppMode.work => AppIcons.chat,
-  AppMode.companion => AppIcons.pet,
 };
 
 /// 模式: the three modes, [current] marked, and which one a launch opens in.
@@ -85,7 +81,6 @@ class ModeSheet extends ConsumerWidget {
     final startup = ref.watch(appModeProvider.select((s) => s.startup));
     String subtitle(AppMode mode) => switch (mode) {
       AppMode.work => l10n.modeWorkSubtitle,
-      AppMode.companion => l10n.companionEntrySubtitle,
     };
     return SafeArea(
       top: false,
@@ -138,7 +133,6 @@ class ModeSheet extends ConsumerWidget {
 /// One word per mode, for the startup switch.
 String appModeShortLabel(L10n l10n, AppMode mode) => switch (mode) {
   AppMode.work => l10n.modeWork,
-  AppMode.companion => l10n.modeCompanionShort,
 };
 
 /// The drawer's key to 模式, beside 网页模式.

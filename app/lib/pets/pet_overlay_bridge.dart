@@ -5,14 +5,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../companion/companion_float.dart';
 import '../state/live_activity_state.dart';
 import '../ui/common/app_dialog.dart';
 import 'overlay_channel.dart';
-import 'pet_overlay_actions.dart';
 import 'pet_signals.dart';
 import 'pet_state.dart';
-import 'pet_voice_dialog.dart';
 
 /// Where states go: the overlay's channel (`dsh/pet_overlay`).
 final petOverlayPushProvider = Provider<Future<void> Function(PetState state)>(
@@ -23,8 +20,6 @@ final petOverlayPushProvider = Provider<Future<void> Function(PetState state)>(
 /// change (equal states are not pushed twice). Failures are dropped: no
 /// native side in tests, or the overlay is off.
 final petOverlayBridgeProvider = Provider<void>((ref) {
-  ref.watch(companionFloatProvider.notifier);
-  ref.watch(petOverlayActionBridgeProvider);
   // The status bar's live activity tells the same state in words.
   ref.watch(liveActivityBridgeProvider);
   ref.listen<PetState>(petStateProvider, (previous, next) {
@@ -54,20 +49,7 @@ class _PetOverlayBridgeState extends ConsumerState<PetOverlayBridge> {
   void initState() {
     super.initState();
     _channel = ref.read(petOverlayChannelProvider);
-    _channel.voiceFallback = (text) async {
-      if (!mounted || _voiceOpen) return text;
-      _voiceOpen = true;
-      try {
-        return await showAppDialog<String>(
-              context: context,
-              barrierDismissible: false,
-              builder: (_) => PetVoiceDialog(text: text),
-            ) ??
-            text;
-      } finally {
-        _voiceOpen = false;
-      }
-    };
+    _channel.voiceFallback = (text) async => text;
   }
 
   @override

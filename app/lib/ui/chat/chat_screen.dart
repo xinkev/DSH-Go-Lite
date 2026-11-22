@@ -18,15 +18,8 @@ import '../../notify/chat_alerts.dart' show approvalText, questionText;
 import '../../runtime/local_footprint.dart' show RuntimeMissing;
 import '../../runtime/runtime_bridge.dart' show RuntimePhase;
 import '../../runtime/runtime_state.dart' show localRuntimeProvider;
-import '../../speech/read_aloud.dart';
-import '../../speech/voice_cloud.dart';
 import '../../state/android_features.dart';
 import '../../state/account_state.dart';
-import '../../state/streaming_asr_state.dart';
-import '../../state/streaming_pcm_state.dart';
-import '../../voice/live_words.dart';
-import '../../voice/live_words_model.dart';
-import '../../voice/streaming_pcm.dart';
 import '../../state/agents_state.dart' show subagentParentProvider;
 import '../../state/attachments.dart';
 import '../../state/balance_state.dart';
@@ -54,9 +47,6 @@ import '../../state/session_modes.dart';
 import '../../state/sessions_state.dart';
 import '../../state/settings_state.dart';
 import '../../state/usage_state.dart';
-import '../../state/voice_state.dart';
-import '../../state/voice_model_state.dart';
-import '../../state/voice_settings.dart';
 import '../../state/workspaces_state.dart' show selectedWorkspaceProvider, workspaceTitle;
 import '../common/app_sheet.dart';
 import '../common/brief_notice.dart';
@@ -106,7 +96,6 @@ import 'model_sheet.dart';
 import 'slash_palette.dart';
 import 'trajectory_sheet.dart';
 import 'usage_sheet.dart';
-import 'voice/voice_controller.dart';
 import 'widgets/activity_strip.dart';
 import 'widgets/attachments.dart';
 import 'widgets/notice_row.dart';
@@ -202,12 +191,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
   );
 
   /// Dictation into [_input]. Made in [initState], not on first use: a
-  /// read-only conversation never builds the composer, and [dispose] must not
-  /// create it from an unmounted ref.
-  late final VoiceInputController _voice;
-
-  /// Where [_voice] says it is on, for what waits for a quiet moment.
-  late final VoiceInputActiveController _voiceFlag;
   final _focus = FocusNode();
 
   // Keep this slash draft closed until it leaves slash input or starts again at "/".
@@ -335,8 +318,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
     );
   }
 
-  void _reportVoice() => _voiceFlag.set(_voice.active);
-
   void _switchDraft(String? sessionId) {
     final key = sessionId ?? 'new';
     if (key == _draftKey) return;
@@ -345,7 +326,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
     _creating = null;
     _syncWait = null;
     _composerToastWait?.cancel();
-    if (_voice.active) unawaited(_voice.cancel());
     _mentions.dismiss();
     _dismissedSlashText = null;
     _saveDraft();
@@ -364,50 +344,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
     WidgetsBinding.instance.addObserver(this);
     _scheduleInteraction();
     ref.listenManual(currentSessionProvider, (_, _) => _scheduleInteraction());
-    _voice = VoiceInputController(
-      input: _input,
-      bridge: ref.read(voiceBridgeProvider),
-      mode: () async {
-        final mode = await ref.read(voiceSettingsProvider.notifier).ready();
-        return mounted && ref.read(harmonyLocalVoiceProvider) ? voiceModeOnHarmonyLocal(mode) : mode;
-      },
-      harmony: () => ref.read(operatingSystemProvider) == 'ohos',
-      cloud: (mode) => ref.read(voiceCloudProvider)(mode),
-      cloudLikely: () => ref.read(voiceCloudLikelyProvider)(),
-      signedIn: () => ref.read(accountProvider).signedIn,
-      liveWords: (onWords) async {
-        final pcm = ref.read(streamingPcmCaptureProvider);
-        final asr = ref.read(streamingAsrProvider);
-        try {
-          final chosen = await liveWordsModel(ref);
-          if (chosen == null || !mounted) return null;
-          final live = LiveWords(pcm, asr, chosen.model, StreamingPcmSource.dictation, onWords, trial: chosen.trial);
-          await live.start();
-          return live;
-        } on Object {
-          // Without live words dictation works as before.
-          return null;
-        }
-      },
-      // The voice model lives in the on-device engine: it counts for that host only.
-      modelReady: () =>
-          mounted &&
-          (ref.read(activeConnectionProvider).value?.isLocal ?? false) &&
-          ref.read(voiceModelProvider).status == VoiceModelStatus.ready,
-      // The capability probe is async and can finish after this page is gone.
-      client: () => mounted ? ref.read(activeConnectionProvider).value?.client : null,
-      inputOwner: () => mounted ? ref.read(activeHostProvider) : null,
-      onRecognized: () {
-      },
-    );
-    // A download or deletion changes capabilities without replacing the host.
-    ref.listenManual(voiceModelProvider.select((s) => s.status == VoiceModelStatus.ready), (_, _) {
-      if (mounted && (ref.read(activeConnectionProvider).value?.isLocal ?? false)) {
-        unawaited(_voice.refreshAfterModelChange());
-      }
-    });
-    _voiceFlag = ref.read(voiceInputActiveProvider.notifier);
-    _voice.addListener(_reportVoice);
     _draftKey = ref.read(currentSessionProvider) ?? 'new';
     _draftStore = ref.read(draftStoreProvider.notifier);
     // Start reading what earlier sessions still owe before the first send.
@@ -540,11 +476,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
     _input.removeListener(_resetSlashDismissal);
     _input.removeListener(_saveDraft);
     _mentions.dispose();
-    _voice.removeListener(_reportVoice);
-    _voice.dispose();
-    // The page is gone, and its dictation with it.
-    final flag = _voiceFlag;
-    scheduleMicrotask(() => flag.set(false));
     _input.dispose();
     _focus.dispose();
     _scrolledUnder.dispose();
@@ -896,12 +827,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
           filesAllowed: canStageFiles(ref.read(activeConnectionProvider).value, ref.read(activeHostProvider)),
         );
         setState(() => _drafts = merged.attachments);
-        _compose(merged.text, quoteChip: false, focus: !request.voice);
+        _compose(merged.text, quoteChip: false, focus: true);
         _saveDraft();
-        if (request.voice) {
-          _focus.unfocus();
-          unawaited(_voice.start());
-        }
         if (merged.problem ?? request.note case final line?) {
           showComposerToast(context, line, composerHeight: _veilHeight.value + _ChatLayout.overlap);
         }

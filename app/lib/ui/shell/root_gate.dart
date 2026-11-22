@@ -240,14 +240,6 @@ class _RootGateState extends ConsumerState<RootGate> {
   /// runtime nor a key before the first message (it asks then). The app runs
   /// without the runtime, as on a remote host, until 工作 installs it; every
   /// launch opens in 酒馆 until the person picks another mode.
-  void _chooseCompanion() {
-    if (_beside) _leaveBeside();
-    unawaited(ref.read(appModeProvider.notifier).setStartup(AppMode.companion));
-    unawaited(_prefs.setLocalDeclined(true));
-    _autoStartDone = true;
-    _goTo(null);
-  }
-
   /// Writes the diagnostics snapshot once per engine run, after the frame that saw it.
   /// Widget tests have no rootfs and must not leave diagnostics timeouts behind.
   void _publishDiagnostics() {

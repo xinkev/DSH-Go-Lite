@@ -55,7 +55,6 @@ class AccessSummaryPage extends ConsumerWidget {
         SettingsSection(
           key: const ValueKey('access-summary-card'),
           margin: EdgeInsets.zero,
-          footer: voice ? Text(l10n.accessVoiceDownload(voiceModelApproxMb), key: const ValueKey('access-voice')) : null,
           children: [
             for (final (item, state) in rows)
               AccessItemTile(

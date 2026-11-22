@@ -7,7 +7,6 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../../../l10n/l10n.dart';
-import '../../speech/speech_ui.dart';
 import '../secret_mask.dart';
 import 'message_menu.dart';
 
@@ -65,7 +64,6 @@ class _MessageSelectionState extends State<MessageSelection> {
             onPressed: () {
               region.hideToolbar();
               // Its own id: another passage starts over, the same one stops.
-              readAloudReply(this.context, 'selection:$selected', speakableSelection(selected, widget.text));
             },
           ),
         // Before 全选: a narrow toolbar folds its last items away, and 「更多」
