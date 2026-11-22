@@ -225,7 +225,8 @@ class ToolView {
   /// 插件工具的原生卡片,见 [toolCardParse]。
   /// Read through the parse cache each time: it starts over when the
   /// person's palette changes (a card that asked for `accent: "app"`).
-  DshUiParse? get pluginView => toolCardParse(item);
+  // Plugin tool views are retired: the row always uses the plain tool card.
+  DshUiParse? get pluginView => null;
 
   /// 生成的媒体,见 [toolMedia]。
   late final MediaMeta? media = toolMedia(item);
