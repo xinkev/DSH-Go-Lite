@@ -63,7 +63,6 @@ import '../pets/pet_stage.dart';
 import '../plugins/native/composer_strip.dart' show ComposerStripSlot;
 import '../plugins/native/native_composer_bar.dart';
 import '../plugins/native/native_taps.dart' show NativeComposerHost, NativeComposerScope, runNativeAction;
-import '../plugins/seats/plugin_overlay_layer.dart';
 import '../safe_mode/engine_failure_card.dart';
 import '../safe_mode/safe_mode_banner.dart';
 import '../session/session_detail_page.dart';
@@ -1794,16 +1793,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
                               ),
                             ),
                           ),
-                  ),
-                  LayoutId(
-                    id: _Slot.pluginOverlay,
-                    child: ClipRect(
-                      child: MediaQuery(
-                        // The layout already reserves the native chrome and keyboard.
-                        data: MediaQuery.of(context).copyWith(padding: EdgeInsets.zero, viewInsets: EdgeInsets.zero),
-                        child: PluginOverlayLayer(sessionId: sessionId),
-                      ),
-                    ),
                   ),
                   // The page's own backdrop again under the composer area: content
                   // scrolled behind the composer and strip fades into it, so the
