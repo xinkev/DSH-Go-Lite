@@ -35,7 +35,6 @@ const uiSkillAssetDir = 'assets/skills/dsh-go-ui/';
 /// local native plugin (sdk/plugin-kit/skill, built into
 /// assets/skills/dsh-go-plugin/ by sdk/plugin-kit/scripts/sync-skill.mjs).
 /// Installed and kept current exactly like [uiSkillName], in its own folder.
-const pluginSkillName = 'dsh-go-plugin';
 
 /// The third: the app's own user guide (docs/guide, built into
 /// assets/skills/dsh-go-guide/ by tool/guide_sync.py), so the agent can answer
@@ -175,11 +174,9 @@ final uiSkillBundleLoaderProvider = Provider<UiSkillBundleLoader>((ref) => loadU
 final extraSkillLoadersProvider = Provider<List<UiSkillBundleLoader>>((ref) {
   final os = ref.watch(operatingSystemProvider);
   return [
-    () => loadUiSkillBundle(null, pluginSkillName),
     () => loadUiSkillBundle(null, guideSkillName, os),
     () => loadUiSkillBundle(null, supportSkillName),
     () => loadUiSkillBundle(null, companionAdaptSkillName),
-    () => loadUiSkillBundle(null, petThemeSkillName),
   ];
 });
 
