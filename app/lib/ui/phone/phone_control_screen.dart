@@ -36,7 +36,6 @@ import 'a11y_restore_sheet.dart';
 import 'always_allow_page.dart';
 import 'app_rules_page.dart';
 import 'dnd_mode_page.dart';
-import 'ios_pet_pip_section.dart';
 import 'ios_phone_link_section.dart';
 import 'phone_disclosure_sheet.dart';
 import 'phone_background_guide.dart';
@@ -668,7 +667,6 @@ class _PhoneControlScreenState extends ConsumerState<PhoneControlScreen> {
           const PhoneLinkSection(),
           PageFootnote(l10n.iosPhoneLinkIntro),
           const SizedBox(height: 24),
-          const IosPetPipSection(),
           PageFootnote(l10n.iosPetPipHint),
           const SizedBox(height: 24),
           ListPageCard(children: [returnRow]),
