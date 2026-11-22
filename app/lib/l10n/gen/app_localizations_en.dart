@@ -9545,10 +9545,6 @@ class L10nEn extends L10n {
   }
 
   @override
-  String get iosPetPipHint =>
-      'An optional pet window that can help with background execution. Phone control uses system continued tasks and does not require PiP or a selected pet.';
-
-  @override
   String get launchScreenTitle => 'Launch screen';
 
   @override

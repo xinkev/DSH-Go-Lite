@@ -351,14 +351,12 @@ final class IOSPhoneControl: NSObject, FlutterStreamHandler {
   func pausePhoneTask(id: Int) {
     guard id == taskID, active, !paused else { return }
     paused = true; requestID = nil
-    IOSPetOverlay.shared.updatePhoneTask(id: id, line: "已暂停，回 App 继续")
     bridge?.pausePhoneTask(); emit()
   }
   func resumePhoneTask(id: Int) {
     guard id == taskID, active, paused, UIApplication.shared.applicationState == .active,
       UIApplication.shared.isProtectedDataAvailable else { return }
     paused = false
-    IOSPetOverlay.shared.updatePhoneTask(id: id, line: "等待下一次确认")
     emit()
   }
   func stopPhoneTaskConfirmed(id: Int) { if id == taskID, active { stop() } }
@@ -399,7 +397,6 @@ final class IOSPhoneControl: NSObject, FlutterStreamHandler {
             self.finishing = false
             if reply["closed"] as? Bool == true {
               self.active = false; self.paused = false; self.requestID = nil
-              IOSPetOverlay.shared.endPhoneTask(id: id)
               self.emit()
             }
           }
@@ -417,8 +414,6 @@ final class IOSPhoneControl: NSObject, FlutterStreamHandler {
     if !active || owner != request.owner.sessionId || ownerRunID != request.runId {
       taskID += 1; owner = request.owner.sessionId; ownerRunID = request.runId
       active = true; stopped = false; finishing = false; paused = false
-      IOSPetOverlay.shared.beginPhoneTask(id: taskID, sessionID: request.owner.sessionId,
-        line: Phase.awaitingConfirmation.line)
       #if DSH_PHONE_SELF_RUNNER_DIAGNOSTICS
       IOSPhoneSelfRunner.diagnostic("phone task begin id=\(taskID)")
       #endif
@@ -433,19 +428,16 @@ final class IOSPhoneControl: NSObject, FlutterStreamHandler {
     guard self.bridge === bridge, active, !paused,
       owner == request.owner.sessionId, ownerRunID == request.runId,
       requestID == request.id else { return }
-    IOSPetOverlay.shared.updatePhoneTask(id: taskID, line: phase.line)
   }
   func retire(_ bridge: IOSPhoneBridge) {
     guard self.bridge === bridge else { return }
     active = false; stopped = false; finishing = false; paused = false; requestID = nil
-    IOSPetOverlay.shared.endPhoneTask(id: taskID)
     self.bridge = nil
     emit()
   }
   private func stop() {
     bridge?.stopPhoneTask()
     active = false; stopped = true; finishing = false; paused = false; requestID = nil
-    IOSPetOverlay.shared.endPhoneTask(id: taskID)
     emit()
   }
   private func status() -> [String: Any] {

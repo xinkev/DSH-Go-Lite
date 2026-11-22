@@ -8,8 +8,8 @@ import UserNotifications
 // The app's own platform channels on iOS. The Android side of each is under
 // android/app/src/main/kotlin/io/github/ccch1mneyyy/dsh_app/. A channel nobody
 // registers reaches Dart as MissingPluginException, which already means "not on
-// this platform": `dsh/runtime` (no local engine), `dsh/update`, `dsh/phone`,
-// `dsh/pet_overlay` and the rest stay that way until there is something to say.
+// this platform": `dsh/runtime` (no local engine), `dsh/update`, `dsh/phone`
+// and the rest stay that way until there is something to say.
 
 final class DshPlugin: NSObject, FlutterPlugin, FlutterSceneLifeCycleDelegate {
   private static var instance: DshPlugin?

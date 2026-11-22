@@ -667,8 +667,6 @@ class _PhoneControlScreenState extends ConsumerState<PhoneControlScreen> {
           const PhoneLinkSection(),
           PageFootnote(l10n.iosPhoneLinkIntro),
           const SizedBox(height: 24),
-          PageFootnote(l10n.iosPetPipHint),
-          const SizedBox(height: 24),
           ListPageCard(children: [returnRow]),
           const SizedBox(height: 24),
           const PhoneLinkExtrasSection(),

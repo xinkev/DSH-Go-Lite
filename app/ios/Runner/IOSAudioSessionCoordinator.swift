@@ -131,7 +131,7 @@ final class IOSAudioSessionCoordinator: NSObject, @unchecked Sendable {
   // A failed restore does not turn our old configuration into a new baseline.
   // It can be reused only while the exact last-owned tuple is still present.
   private var residual: Residual?
-  private var recovery = PetOverlayAudioRecoveryState()
+  private var recovery = AudioRecoveryState()
   private var observers: [NSObjectProtocol] = []
   private var timer: Timer?
   private var changePending = false
@@ -578,3 +578,28 @@ private final class IOSSystemAudioSessionBackend: IOSAudioSessionBackend {
     try audio.setActive(value, options: value ? [] : .notifyOthersOnDeactivation)
   }
 }
+
+
+/// Apple QA1749 requires a later user action before setActive after media reset.
+/// Keep that gate independent of the displayed error: another failure or a
+/// foreground/route/stop callback must not accidentally authorize activation.
+struct AudioRecoveryState {
+  var interrupted = false
+  private(set) var requiresUserAction = false
+
+  var blocker: String? {
+    if requiresUserAction { return "overlay_media_reset" }
+    return interrupted ? "overlay_audio_interrupted" : nil
+  }
+
+  mutating func mediaServicesReset() {
+    interrupted = false
+    requiresUserAction = true
+  }
+
+  mutating func retry(userInitiated: Bool) {
+    interrupted = false
+    if userInitiated { requiresUserAction = false }
+  }
+}
+

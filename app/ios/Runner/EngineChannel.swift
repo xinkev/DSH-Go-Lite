@@ -648,14 +648,6 @@ final class EngineChannel: NSObject, FlutterStreamHandler {
         self.continued.update(running: self.localTurnRunning || active)
         self.backgroundProtection.update(taskRunning: self.localTurnRunning || active)
       }
-      IOSPetOverlay.shared.onKeepingAliveChanged = { [weak self] active in
-        self?.queue.async { [weak self] in
-          self?.lifecycle.observe(pictureInPicture: active)
-          self?.emitStatus()
-        }
-      }
-      let active = IOSPetOverlay.shared.isKeepingAlive
-      queue.async { [self] in lifecycle.observe(pictureInPicture: active) }
     }
     let center = NotificationCenter.default
     center.addObserver(

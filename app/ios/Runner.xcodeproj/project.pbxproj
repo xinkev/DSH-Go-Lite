@@ -37,11 +37,6 @@
 		D55000000000000000000303 /* IOSPhoneDDI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55000000000000000000302 /* IOSPhoneDDI.swift */; };
 		D55000000000000000000305 /* IOSPhoneCoreDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55000000000000000000304 /* IOSPhoneCoreDevice.swift */; };
 		D55000000000000000000307 /* IOSPhoneLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55000000000000000000306 /* IOSPhoneLink.swift */; };
-		D55000000000000000000309 /* IOSPetOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55000000000000000000308 /* IOSPetOverlay.swift */; };
-		D5500000000000000000030B /* PetOverlayState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5500000000000000000030A /* PetOverlayState.swift */; };
-		D5500000000000000000030D /* PetOverlayPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5500000000000000000030C /* PetOverlayPack.swift */; };
-		D5500000000000000000030F /* PetOverlayFrameRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5500000000000000000030E /* PetOverlayFrameRenderer.swift */; };
-		D55000000000000000000311 /* PetOverlayPictureInPicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55000000000000000000310 /* PetOverlayPictureInPicture.swift */; };
 		D5480000000000000000F102 /* PhoneRunnerBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5480000000000000000F101 /* PhoneRunnerBootstrap.swift */; };
 		D5480000000000000000F103 /* PhoneRunnerBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5480000000000000000F101 /* PhoneRunnerBootstrap.swift */; };
 		D5480000000000000000F105 /* IOSPhoneSelfRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5480000000000000000F104 /* IOSPhoneSelfRunner.swift */; };
@@ -202,11 +197,6 @@
 		D55000000000000000000302 /* IOSPhoneDDI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IOSPhoneDDI.swift"; sourceTree = "<group>"; };
 		D55000000000000000000304 /* IOSPhoneCoreDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IOSPhoneCoreDevice.swift"; sourceTree = "<group>"; };
 		D55000000000000000000306 /* IOSPhoneLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IOSPhoneLink.swift"; sourceTree = "<group>"; };
-		D55000000000000000000308 /* IOSPetOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PetOverlay/IOSPetOverlay.swift"; sourceTree = "<group>"; };
-		D5500000000000000000030A /* PetOverlayState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PetOverlay/PetOverlayState.swift"; sourceTree = "<group>"; };
-		D5500000000000000000030C /* PetOverlayPack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PetOverlay/PetOverlayPack.swift"; sourceTree = "<group>"; };
-		D5500000000000000000030E /* PetOverlayFrameRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PetOverlay/PetOverlayFrameRenderer.swift"; sourceTree = "<group>"; };
-		D55000000000000000000310 /* PetOverlayPictureInPicture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PetOverlay/PetOverlayPictureInPicture.swift"; sourceTree = "<group>"; };
 		D5480000000000000000F101 /* PhoneRunnerBootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneRunnerBootstrap.swift; sourceTree = "<group>"; };
 		D5480000000000000000F104 /* IOSPhoneSelfRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOSPhoneSelfRunner.swift; sourceTree = "<group>"; };
 		D5480000000000000000F106 /* IOSPhoneSelfRunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOSPhoneSelfRunnerTests.swift; sourceTree = "<group>"; };
@@ -423,11 +413,6 @@
 				D55000000000000000000302 /* IOSPhoneDDI.swift */,
 				D55000000000000000000304 /* IOSPhoneCoreDevice.swift */,
 				D55000000000000000000306 /* IOSPhoneLink.swift */,
-				D55000000000000000000308 /* IOSPetOverlay.swift */,
-				D5500000000000000000030A /* PetOverlayState.swift */,
-				D5500000000000000000030C /* PetOverlayPack.swift */,
-				D5500000000000000000030E /* PetOverlayFrameRenderer.swift */,
-				D55000000000000000000310 /* PetOverlayPictureInPicture.swift */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
@@ -799,11 +784,6 @@
 				D55000000000000000000303 /* IOSPhoneDDI.swift in Sources */,
 				D55000000000000000000305 /* IOSPhoneCoreDevice.swift in Sources */,
 				D55000000000000000000307 /* IOSPhoneLink.swift in Sources */,
-				D55000000000000000000309 /* IOSPetOverlay.swift in Sources */,
-				D5500000000000000000030B /* PetOverlayState.swift in Sources */,
-				D5500000000000000000030D /* PetOverlayPack.swift in Sources */,
-				D5500000000000000000030F /* PetOverlayFrameRenderer.swift in Sources */,
-				D55000000000000000000311 /* PetOverlayPictureInPicture.swift in Sources */,
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
 				D5480000000000000000F002 /* GuestRootfsArchive.swift in Sources */,
 				D5480000000000000000F004 /* GuestRootfsInstaller.swift in Sources */,

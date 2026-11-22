@@ -9022,9 +9022,6 @@ class L10nZh extends L10n {
   }
 
   @override
-  String get iosPetPipHint => '可选的宠物小窗，可以辅助后台运行。手机操控使用系统持续任务，不需要先开启画中画或选择宠物。';
-
-  @override
   String get launchScreenTitle => '启动画面';
 
   @override

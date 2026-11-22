@@ -350,30 +350,6 @@ final class IOSPhoneTaskConsentTests: XCTestCase {
       eligible: true), .ready)
   }
 
-  func testOptionalOverlayUpgradeDefaultsOffAndPreservesLaterExplicitChoice() throws {
-    let name = "dsh-optional-pip-" + UUID().uuidString
-    let defaults = try XCTUnwrap(UserDefaults(suiteName: name))
-    defer { defaults.removePersistentDomain(forName: name) }
-    defaults.set(true, forKey: "dsh.ios.petOverlay.enabled")
-    defaults.set(true, forKey: "dsh.ios.petOverlay.alwaysShow")
-    let first = Runner.IOSPetOverlay.configuration(from: defaults)
-    XCTAssertFalse(first.enabled)
-    XCTAssertFalse(first.alwaysShow)
-    defaults.set(true, forKey: "dsh.ios.petOverlay.enabled")
-    let explicit = Runner.IOSPetOverlay.configuration(from: defaults)
-    XCTAssertTrue(explicit.enabled)
-    XCTAssertFalse(explicit.alwaysShow)
-  }
-
-  func testOptionalOverlayFreshInstallationDefaultsOff() throws {
-    let name = "dsh-optional-pip-" + UUID().uuidString
-    let defaults = try XCTUnwrap(UserDefaults(suiteName: name))
-    defer { defaults.removePersistentDomain(forName: name) }
-    let value = Runner.IOSPetOverlay.configuration(from: defaults)
-    XCTAssertFalse(value.enabled)
-    XCTAssertFalse(value.alwaysShow)
-  }
-
   func testInitialApprovalGrantsTheTaskWithOneExplicitSheet() async throws {
     try await withFixture { fixture in
       let operation = try self.start(fixture)

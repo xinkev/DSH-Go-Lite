@@ -16712,12 +16712,6 @@ abstract class L10n {
   /// **'没有完成（{code}）。'**
   String iosPhoneLinkErrorOther(String code);
 
-  /// No description provided for @iosPetPipHint.
-  ///
-  /// In zh, this message translates to:
-  /// **'可选的宠物小窗，可以辅助后台运行。手机操控使用系统持续任务，不需要先开启画中画或选择宠物。'**
-  String get iosPetPipHint;
-
   /// No description provided for @launchScreenTitle.
   ///
   /// In zh, this message translates to:

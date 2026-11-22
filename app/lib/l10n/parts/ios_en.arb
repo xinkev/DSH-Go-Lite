@@ -91,6 +91,5 @@
   "iosPhoneLinkErrorClipboardChanged": "Something else was copied since, so it wasn't restored.",
   "iosPhoneLinkFaulted": "The last connection didn't confirm it closed",
   "iosPhoneLinkFaultedHint": "So two connections never drive the phone at once, the app won't connect for now. If the last connection confirms it closed, this clears by itself; if it doesn't, close the app from the app switcher and open it again.",
-  "iosPhoneLinkErrorOther": "Didn't finish ({code}).",
-  "iosPetPipHint": "An optional pet window that can help with background execution. Phone control uses system continued tasks and does not require PiP or a selected pet."
+  "iosPhoneLinkErrorOther": "Didn't finish ({code})."
 }

@@ -61,14 +61,8 @@ import UserNotifications
       DshPlugin.register(with: registrar)
       IOSPhoneControl.shared.register(messenger: registrar.messenger())
       IOSPhoneLink.shared.register(messenger: registrar.messenger(), presenter: { topViewController() })
-      IOSPetOverlay.shared.register(registrar: registrar)
       companionVoice?.dispose()
-      companionVoice = IOSCompanionVoice(messenger: registrar.messenger(), pipAudioConfigured: {
-        IOSPetOverlay.shared.statusSnapshot["audioSessionConfigured"] as? Bool == true
-      })
-      IOSPetOverlay.shared.onTaskPauseRequested = { IOSPhoneControl.shared.pausePhoneTask(id: $0) }
-      IOSPetOverlay.shared.onTaskStopConfirmed = { IOSPhoneControl.shared.stopPhoneTaskConfirmed(id: $0) }
-      IOSPetOverlay.shared.onTaskResumeConfirmed = { IOSPhoneControl.shared.resumePhoneTask(id: $0) }
+      companionVoice = IOSCompanionVoice(messenger: registrar.messenger(), pipAudioConfigured: { false })
     }
   }
 }
