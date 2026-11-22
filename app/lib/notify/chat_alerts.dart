@@ -24,7 +24,7 @@ import 'package:dsh_client/dsh_client.dart';
 import '../l10n/host_text.dart';
 import '../l10n/l10n.dart';
 import '../state/hosts_state.dart';
-import '../ui/chat/media/media_format.dart' show chatTitleShown;
+import 'package:dsh_app/ui/chat/chat_title.dart' show chatTitleShown;
 import '../ui/chat/secret_mask.dart';
 import '../ui/chat/widgets/turn_failure_text.dart';
 

@@ -82,7 +82,7 @@ import 'new_chat_options.dart';
 import 'media/generate_mode.dart';
 import 'media/generate_sheet.dart';
 import 'media/media_card.dart' show MediaCardActions, mediaItemBytes;
-import 'media/media_format.dart' show chatTitleShown;
+import 'chat_title.dart' show chatTitleShown;
 import 'mention/mention_controller.dart';
 import 'mention/mention_picker.dart';
 import 'mention/mention_text_controller.dart';

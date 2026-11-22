@@ -10,7 +10,7 @@ import 'package:dsh_app/ui/chat/chat_rows.dart';
 import 'package:dsh_app/ui/chat/chat_screen.dart';
 import 'package:dsh_app/ui/chat/media/generate_mode.dart' show GenerateCapsule;
 import 'package:dsh_app/ui/chat/media/media_card.dart';
-import 'package:dsh_app/ui/chat/media/media_format.dart' show chatTitleShown;
+import 'package:dsh_app/ui/chat/chat_title.dart' show chatTitleShown;
 import 'package:dsh_app/ui/chat/media/media_grid.dart';
 import 'package:dsh_app/ui/chat/media/media_viewer.dart';
 import 'package:dsh_app/ui/chat/render/markdown_image.dart';

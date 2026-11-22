@@ -26,7 +26,7 @@ import '../../state/sessions_state.dart';
 import '../../state/read_list_identity.dart';
 import '../../state/workspaces_state.dart';
 import '../bots/bots_page.dart' show BotsPage, UnreadBadge;
-import '../chat/media/media_format.dart' show chatTitleShown;
+import 'package:dsh_app/ui/chat/chat_title.dart' show chatTitleShown;
 import '../common/app_sheet.dart';
 import '../common/empty_view.dart';
 import '../common/pressable.dart';

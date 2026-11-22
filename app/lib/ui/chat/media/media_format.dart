@@ -100,11 +100,3 @@ String mediaParamsLine({required bool video, String? aspect, int? count, int? se
   ],
 ].join(' · ');
 
-/// A conversation title as shown: one that begins with a generation
-/// request's header shows what follows it, or 「生成图像」 / 「生成视频」 when
-/// nothing does.
-String chatTitleShown(String title) => switch (GenerateHeader.splitTitle(title)) {
-  null => title,
-  (:final rest, kind: _) when rest.isNotEmpty => rest,
-  (:final kind, rest: _) => kind == GenerateKind.video ? appL10n.mediaTitleVideo : appL10n.mediaTitleImage,
-};
