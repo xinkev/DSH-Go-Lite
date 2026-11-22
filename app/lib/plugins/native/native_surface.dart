@@ -12,7 +12,7 @@ import 'package:flutter/foundation.dart' show immutable;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../state/hosts_state.dart';
-import 'native_model.dart';
+import '../../platform/native_model.dart';
 import 'native_state.dart';
 
 /// One surface instance: a plugin's strip or panel in a conversation.

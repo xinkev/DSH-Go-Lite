@@ -11,7 +11,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 import '../../../l10n/l10n.dart';
-import '../../../plugins/native/native_icons.dart' show nativeIcon;
+import '../../../platform/native_icons.dart' show nativeIcon;
 import '../../common/pressable.dart';
 import '../../theme/app_icons.dart';
 import '../../theme/theme.dart';

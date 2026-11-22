@@ -10,7 +10,7 @@ import 'dart:ui' as ui;
 import 'package:dsh_app/launch/custom_launch.dart';
 import 'package:dsh_app/launch/launch_import.dart';
 import 'package:dsh_app/launch/launch_media.dart';
-import 'package:dsh_app/plugins/native/native_effects.dart';
+import 'package:dsh_app/platform/native_effects.dart';
 import 'package:dsh_app/platform/native_file_platform.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_test/flutter_test.dart';

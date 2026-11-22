@@ -2,7 +2,7 @@
 // slots (nativeIcon: ui.json's names plus coin, speaker, …); only an unknown
 // or missing name falls back to the name's first character.
 
-import 'package:dsh_app/plugins/native/native_icons.dart';
+import 'package:dsh_app/platform/native_icons.dart';
 import 'package:dsh_app/ui/plugins/view/plugin_view.dart';
 import 'package:dsh_app/ui/theme/app_icons.dart';
 import 'package:flutter/material.dart';

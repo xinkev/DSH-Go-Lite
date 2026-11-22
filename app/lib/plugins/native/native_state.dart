@@ -30,7 +30,7 @@ import '../../state/locale_state.dart';
 import '../../state/plugins_state.dart';
 import '../../ui_config/ui_config_ignores.dart' show uiHostKey;
 import '../../ui/chat/dsh_ui/dsh_ui_model.dart' show dshUiPluginComponents;
-import 'native_model.dart';
+import '../../platform/native_model.dart';
 import 'native_platform.dart';
 
 // ── Capabilities ─────────────────────────────────────────────────────────────

@@ -2,8 +2,8 @@
 // its own second line of limits, non-native plugins empty, issue codes in
 // the app's words.
 
-import 'package:dsh_app/plugins/native/native_icons.dart';
-import 'package:dsh_app/plugins/native/native_model.dart';
+import 'package:dsh_app/platform/native_icons.dart';
+import 'package:dsh_app/platform/native_model.dart';
 import 'package:dsh_app/ui/theme/app_icons.dart';
 import 'package:flutter_test/flutter_test.dart';
 

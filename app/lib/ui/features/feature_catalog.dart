@@ -10,7 +10,7 @@ import 'package:dsh_client/dsh_client.dart' show PluginBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
-import '../../plugins/native/native_icons.dart';
+import '../../platform/native_icons.dart';
 import '../../plugins/seams/seams.dart';
 import '../../state/android_features.dart';
 import '../common/feature_tile.dart';

@@ -1,7 +1,7 @@
 // A phone's header and side panel: the title gets the header's width, the model moves
 // beside the composer, and the panel shows the conversation's panes.
 
-import 'package:dsh_app/plugins/native/native_model.dart';
+import 'package:dsh_app/platform/native_model.dart';
 import 'package:dsh_app/plugins/native/native_state.dart';
 import 'package:dsh_app/state/agents_state.dart';
 import 'package:dsh_app/state/chat_state.dart';

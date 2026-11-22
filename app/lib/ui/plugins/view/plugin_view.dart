@@ -5,7 +5,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../l10n/l10n.dart';
-import '../../../plugins/native/native_icons.dart' show nativeIcon;
+import '../../../platform/native_icons.dart' show nativeIcon;
 import '../../chat/dsh_ui/dsh_ui_blocks.dart';
 import '../../chat/dsh_ui/dsh_ui_model.dart';
 import '../../chat/dsh_ui/dsh_ui_plugin.dart';

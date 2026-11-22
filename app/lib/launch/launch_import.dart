@@ -10,7 +10,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../plugins/native/native_effects.dart';
+import '../platform/native_effects.dart';
 import '../platform/native_file_platform.dart';
 import 'custom_launch.dart';
 

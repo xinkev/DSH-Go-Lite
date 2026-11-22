@@ -24,7 +24,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../state/hosts_state.dart';
 import '../../state/sessions_state.dart';
 import '../../ui_config/ui_config_ignores.dart' show uiHostKey;
-import 'native_model.dart';
+import '../../platform/native_model.dart';
 import 'native_platform.dart';
 import '../../platform/native_file_platform.dart';
 import 'native_state.dart';

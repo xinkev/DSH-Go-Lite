@@ -9,7 +9,7 @@ import 'package:flutter/foundation.dart' show immutable, listEquals, setEquals;
 import 'package:flutter/widgets.dart' show IconData;
 
 import '../../l10n/l10n.dart';
-import 'native_icons.dart';
+import '../../platform/native_icons.dart';
 
 /// The four places of protocol v1 a plugin can show up in.
 enum NativeSurface {

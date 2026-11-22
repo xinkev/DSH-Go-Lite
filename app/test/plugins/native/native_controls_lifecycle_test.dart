@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:dsh_app/plugins/native/native_model.dart';
+import 'package:dsh_app/platform/native_model.dart';
 import 'package:dsh_app/plugins/native/native_state.dart';
 import 'package:dsh_app/plugins/native/native_surface.dart';
 import 'package:dsh_app/state/hosts_state.dart';

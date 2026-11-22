@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart' show immutable;
 
 import '../../l10n/l10n.dart';
 import '../../ui_config/ui_config_schema.dart' show UiSchema;
-import 'native_model.dart';
+import '../../platform/native_model.dart';
 
 /// One whitelisted effect.
 @immutable

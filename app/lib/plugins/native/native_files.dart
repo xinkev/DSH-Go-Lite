@@ -4,7 +4,7 @@ import 'package:dsh_client/dsh_client.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../plugins/native/native_effects.dart';
+import '../../platform/native_effects.dart';
 import '../../platform/native_file_platform.dart';
 import 'native_state.dart';
 

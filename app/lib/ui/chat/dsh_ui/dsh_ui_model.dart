@@ -11,7 +11,7 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import '../../../l10n/l10n.dart';
-import '../../../plugins/native/native_icons.dart' show nativeIcon;
+import '../../../platform/native_icons.dart' show nativeIcon;
 import 'dsh_ui_bind.dart';
 import 'dsh_ui_dialect_genui.dart';
 import 'dsh_ui_plugin_formula.dart';

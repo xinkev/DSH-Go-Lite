@@ -4,7 +4,7 @@
 // that revision, and its controls go back to the plugin with the action
 // name and value; `patch` and `stale` land on it.
 
-import 'package:dsh_app/plugins/native/native_model.dart';
+import 'package:dsh_app/platform/native_model.dart';
 import 'package:dsh_app/plugins/seams/seams.dart';
 import 'package:dsh_app/state/hosts_state.dart';
 import 'package:dsh_app/ui/features/feature_catalog.dart';

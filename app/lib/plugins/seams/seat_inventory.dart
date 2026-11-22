@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 
 import '../../ui/engine_settings/engine_settings_page.dart' show isPluginForm;
 import '../../ui/engine_settings/schema_form.dart' show schemaSections;
-import '../native/native_model.dart' show NativePanel;
+import '../../platform/native_model.dart' show NativePanel;
 import 'seat_models.dart';
 import 'slot_catalog.dart';
 

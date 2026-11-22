@@ -3,10 +3,10 @@ import 'dart:convert';
 
 import 'package:dsh_app/l10n/l10n.dart';
 import 'package:dsh_app/plugins/native/native_capabilities.dart';
-import 'package:dsh_app/plugins/native/native_effects.dart';
+import 'package:dsh_app/platform/native_effects.dart';
 import 'package:dsh_app/platform/native_file_platform.dart';
 import 'package:dsh_app/plugins/native/native_files.dart';
-import 'package:dsh_app/plugins/native/native_model.dart';
+import 'package:dsh_app/platform/native_model.dart';
 import 'package:dsh_app/plugins/native/native_platform.dart';
 import 'package:dsh_app/plugins/native/native_state.dart';
 import 'package:dsh_app/ui/plugins/native/native_taps.dart';
