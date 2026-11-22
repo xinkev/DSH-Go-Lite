@@ -194,33 +194,8 @@ export class CapabilityRuntime {
 
   message(conn, msg) {
     if (msg.t === 'cap.event') { this.event(conn, msg); return true; }
-    if (msg.t !== 'micro.sub' && msg.t !== 'micro.unsub') return false;
-    if (typeof msg.sub !== 'string' || msg.sub.length < 1 || msg.sub.length > 32) return true;
-    conn.microSubs ??= new Map();
-    const old = conn.microSubs.get(msg.sub);
-    if (old) { old.feed.detach(old); conn.microSubs.delete(msg.sub); }
-    if (msg.t === 'micro.unsub') return true;
-    const end = reason => conn.send({ t: 'micro.end', sub: msg.sub, reason });
-    const scope = normalizeScope(msg.scope);
-    const rec = typeof msg.pkg === 'string' && PKG.test(msg.pkg) && this.core.plugin(msg.pkg);
-    if (!conn.features?.includes('micro') || !scope || !rec || this.core.stateOf(rec) !== 'ok'
-      || !rec.parsed.capabilities?.includes('micro') || !(rec.parsed.items.micro ?? []).some(x => x.id === msg.id)) { end('unsupported'); return true; }
-    if (conn.microSubs.size >= L.microSubs || [...conn.microSubs.values()].filter(s => s.pkg === msg.pkg).length >= L.pluginMicroSubs) { end('limit'); return true; }
-    const reg = this.core.registration(msg.pkg, 'micro', msg.id);
-    if (!reg) { end('no-handler'); return true; }
-    const key = JSON.stringify([msg.pkg, msg.id, scope.key, conn.locale]);
-    let feed = this.feeds.get(key);
-    if (feed && (!this.alive(feed) || feed.token !== reg.token)) { feed.stop('not-found'); feed = undefined; }
-    if (!feed) {
-      feed = new MicroFeed(this, key, rec, msg.id, scope.scope, conn.locale, reg);
-      this.feeds.set(key, feed);
-    }
-    const sub = { pkg: msg.pkg, id: msg.sub, conn, feed };
-    conn.microSubs.set(msg.sub, sub);
-    feed.attach(sub);
-    return true;
+    return false;
   }
-}
 
 class MicroFeed {
   constructor(runtime, key, rec, id, scope, locale, reg) {
