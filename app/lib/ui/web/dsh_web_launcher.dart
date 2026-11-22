@@ -5,7 +5,6 @@ import '../../l10n/l10n.dart';
 import '../../remote/ssh/ssh_link.dart';
 import '../../state/connection_state.dart';
 import '../../state/hosts_state.dart';
-import '../../state/plugins_state.dart' show installedPluginsProvider;
 import '../../state/settings_state.dart';
 import '../../state/ui_mode_state.dart';
 import 'local_web_screen.dart';
@@ -85,7 +84,6 @@ void openDshWeb(BuildContext context, WidgetRef ref, {DshWebTarget target = cons
     return;
   }
   // A plugin's entry id is no name its card has: name its bundle.
-  if (target.pluginItem.isNotEmpty) target = target.withPluginNames(ref.read(installedPluginsProvider).value);
   if (ref.read(uiModeProvider).web) {
     ref.read(webOpenProvider.notifier).request(target);
     return;
