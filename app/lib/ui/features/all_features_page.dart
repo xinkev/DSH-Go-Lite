@@ -22,7 +22,6 @@ import '../theme/app_icons.dart';
 import '../theme/theme.dart';
 import '../web/dsh_web_launcher.dart';
 import '../web/web_target.dart';
-import '../plugins/seats/seat_probe.dart';
 import '../settings/search/settings_search_page.dart';
 import '../settings/settings_screen.dart';
 import 'feature_catalog.dart';
