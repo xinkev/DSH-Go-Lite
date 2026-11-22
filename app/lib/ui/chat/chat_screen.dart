@@ -55,8 +55,6 @@ import '../common/status_dot.dart';
 import '../features/all_features_page.dart';
 import '../features/session_export_page.dart';
 import '../onboarding/local_install.dart';
-import '../pets/pet_perch.dart';
-import '../pets/pet_stage.dart';
 import '../safe_mode/engine_failure_card.dart';
 import '../safe_mode/safe_mode_banner.dart';
 import '../session/session_detail_page.dart';
@@ -1457,87 +1455,82 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
         Scaffold(
           backgroundColor: Colors.transparent,
           resizeToAvoidBottomInset: true,
-          // The pet stands over the page on the capsules above the
-          // composer (they report themselves with PetPerch).
-          body: PetStage(
-              sessionId: sessionId,
-              aside: typing,
-              child: CustomMultiChildLayout(
+          body:  CustomMultiChildLayout(
                 delegate: _ChatLayout(_veilHeight),
                 children: [
                   LayoutId(
-                    id: _Slot.body,
-                    child: sessionId == null || idleBlank
-                        ? Padding(
-                            padding: EdgeInsets.only(top: headerHeight, bottom: _ChatLayout.overlap),
-                            child: Align(
-                              alignment: const Alignment(0, -0.25),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    // The on-device engine stopped on its
-                                    // own (a remote host has its own errors).
-                                    if (failureCard)
-                                      const EngineFailureCard(padding: EdgeInsets.fromLTRB(16, 0, 16, 20)),
-                                    ChatEmptyState(
-                                      connected: connected,
-                                      suggestions: ref.watch(settingsProvider.select((s) => s.chatSuggestions))
-                                          ? defaultSuggestions
-                                          : const [],
-                                      connecting: connAsync.isLoading,
-                                      starting: starting,
-                                      tidying: tidying,
-                                      idle: idle,
-                                      onReconnect: connAsync.hasError && !connAsync.isLoading && !failureCard
-                                          ? _reconnect
-                                          : null,
-                                      onSuggestion: _onSuggestion,
-                                      options: NewChatOptions(
-                                        folderLabel: !hasFolders
-                                            ? null
-                                            : newFolder == null
-                                            ? context.l10n.shellFolders
-                                            : context.l10n.shellFolderLabel(newFolder.name),
-                                        onFolder: hasFolders ? _pickNewChatFolder : null,
-                                      ),
-                                      workspace: workspace != null
-                                          ? workspaceTitle(workspace)
-                                          : inHostDefault
-                                          ? context.l10n.viewEmptyHostDefaultDirectory
-                                          : null,
-                                      onWorkspace: () => showWorkspaceSheet(
-                                        context,
-                                        onManage: () =>
-                                            Navigator.of(context)
-                                                .push(MaterialPageRoute<void>(builder: (_) => const WorkspacesPage())),
-                                      ),
+                  id: _Slot.body,
+                  child: sessionId == null || idleBlank
+                      ? Padding(
+                          padding: EdgeInsets.only(top: headerHeight, bottom: _ChatLayout.overlap),
+                          child: Align(
+                            alignment: const Alignment(0, -0.25),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  // The on-device engine stopped on its
+                                  // own (a remote host has its own errors).
+                                  if (failureCard)
+                                    const EngineFailureCard(padding: EdgeInsets.fromLTRB(16, 0, 16, 20)),
+                                  ChatEmptyState(
+                                    connected: connected,
+                                    suggestions: ref.watch(settingsProvider.select((s) => s.chatSuggestions))
+                                        ? defaultSuggestions
+                                        : const [],
+                                    connecting: connAsync.isLoading,
+                                    starting: starting,
+                                    tidying: tidying,
+                                    idle: idle,
+                                    onReconnect: connAsync.hasError && !connAsync.isLoading && !failureCard
+                                        ? _reconnect
+                                        : null,
+                                    onSuggestion: _onSuggestion,
+                                    options: NewChatOptions(
+                                      folderLabel: !hasFolders
+                                          ? null
+                                          : newFolder == null
+                                          ? context.l10n.shellFolders
+                                          : context.l10n.shellFolderLabel(newFolder.name),
+                                      onFolder: hasFolders ? _pickNewChatFolder : null,
                                     ),
-                                  ],
-                                ),
+                                    workspace: workspace != null
+                                        ? workspaceTitle(workspace)
+                                        : inHostDefault
+                                        ? context.l10n.viewEmptyHostDefaultDirectory
+                                        : null,
+                                    onWorkspace: () => showWorkspaceSheet(
+                                      context,
+                                      onManage: () =>
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute<void>(builder: (_) => const WorkspacesPage())),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          )
-                        : _ChatTextScale(
-                            child: FluidFadeIn(
-                                key: ValueKey(sessionId),
-                                child: ChatList(
-                                  key: ValueKey(sessionId),
-                                  sessionId: sessionId,
-                                  toTop: _toTop,
-                                  topInset: headerHeight,
-                                  bottomInset: _ChatLayout.overlap,
-                                  scrolledUnder: _scrolledUnder,
-                                  onWithdraw: _withdraw,
-                                  onSendNow: _sendNow,
-                                  onEditPrompt: _compose,
-                                  onResend: _resend,
-                                  onQuote: readOnly ? null : (passage) => _quote(sessionId, passage),
-                                  onToast: _composerToast,
-                                  onSwitchModel: readOnly ? null : _switchModel,
-                                ),
-                              )
                           ),
+                        )
+                      : _ChatTextScale(
+                          child: FluidFadeIn(
+                              key: ValueKey(sessionId),
+                              child: ChatList(
+                                key: ValueKey(sessionId),
+                                sessionId: sessionId,
+                                toTop: _toTop,
+                                topInset: headerHeight,
+                                bottomInset: _ChatLayout.overlap,
+                                scrolledUnder: _scrolledUnder,
+                                onWithdraw: _withdraw,
+                                onSendNow: _sendNow,
+                                onEditPrompt: _compose,
+                                onResend: _resend,
+                                onQuote: readOnly ? null : (passage) => _quote(sessionId, passage),
+                                onToast: _composerToast,
+                                onSwitchModel: readOnly ? null : _switchModel,
+                              ),
+                            )
+                        ),
                   ),
                   // The page's own backdrop again under the composer area: content
                   // scrolled behind the composer and strip fades into it, so the
@@ -1545,359 +1538,343 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
                   // Solid from 6 below the column's top; the fade above stays inside
                   // the list's 8dp bottom padding, so the last message is untouched.
                   LayoutId(
-                    id: _Slot.veil,
-                    child: BackdropVeil(solidHeight: _veilHeight),
+                  id: _Slot.veil,
+                  child: BackdropVeil(solidHeight: _veilHeight),
                   ),
                   LayoutId(
-                    id: _Slot.header,
-                    child: _HeaderAside(
-                      aside: typing,
-                      child: ChatHeader(
-                        scrolledUnder: sessionId == null ? null : _scrolledUnder,
-                        title: title,
-                        status: status,
-                        detail: !narrow || isChild
-                            ? null
-                            : folderLabel(
-                                ref.watch(
-                                  sessionsProvider.select(
-                                    (s) => s.value?.where((session) => session.sessionId == sessionId).firstOrNull?.cwd,
-                                  ),
+                  id: _Slot.header,
+                  child: _HeaderAside(
+                    aside: typing,
+                    child: ChatHeader(
+                      scrolledUnder: sessionId == null ? null : _scrolledUnder,
+                      title: title,
+                      status: status,
+                      detail: !narrow || isChild
+                          ? null
+                          : folderLabel(
+                              ref.watch(
+                                sessionsProvider.select(
+                                  (s) => s.value?.where((session) => session.sessionId == sessionId).firstOrNull?.cwd,
                                 ),
                               ),
-                        onOpenDrawer: widget.onOpenDrawer,
-                        onNewChat: sessionId == null || isChild
-                            ? null
-                            : () {
-                                HapticFeedback.selectionClick();
-                                ref.read(currentSessionProvider.notifier).select(null);
-                              },
-                        // The title pill opens the whole session's details (on a
-                        // wide window it folds and unfolds the panel beside us).
-                        onTitleTap: sessionId == null
-                            ? null
-                            : () => SessionDetailPage.open(context, sessionId, toggle: true),
-                        // A phone's conversation has no room for it beside its title: the
-                        // model is shown and picked at the composer's foot while typing.
-                        // A new chat's title is only 「新对话」, so the model takes the
-                        // header's right like on a wide window — picked before typing,
-                        // once there is an engine to send to.
-                        trailing: narrow && (sessionId != null || !connected)
-                            ? null
-                            : ModelChip(
-                                selection: sessionId == null ? pendingModel : chat?.model,
-                                onSelected: _modelTarget(),
-                                grouped: true,
-                              ),
-                      ),
-                    ),
-                  ),
-                  LayoutId(
-                    id: _Slot.palette,
-                    child: Center(
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: AppSpace.floatingWidth),
-                        child: ListenableBuilder(
-                          listenable: Listenable.merge([_input, _mentions]),
-                          builder: (context, _) {
-                            // The `@` word at the caret wins over a "/" line.
-                            final live = connected && !readOnly;
-                            final mention = live && _mentions.isOpen;
-                            final content = live && !mention ? _slashContent(commands) : null;
-                            // The pet steps aside while a panel is up.
-                            return PopScope<Object?>(
-                              canPop: content == null,
-                              onPopInvokedWithResult: (didPop, _) {
-                                if (!didPop) _dismissSlashPalette();
-                              },
-                              child: PetCover(
-                                active: mention || content != null,
-                                child: AnimatedSwitcher(
-                                  duration: AppMotion.of(context, AppMotion.quick),
-                                  switchInCurve: AppMotion.enter,
-                                  switchOutCurve: AppMotion.exit,
-                                  transitionBuilder: (child, animation) => FadeTransition(
-                                    opacity: animation,
-                                    child: ScaleTransition(
-                                      alignment: Alignment.bottomCenter,
-                                      scale: Tween(begin: 0.96, end: 1.0).animate(animation),
-                                      child: child,
-                                    ),
-                                  ),
-                                  child: mention
-                                      ? MentionPicker(key: const ValueKey('mention'), controller: _mentions)
-                                      : content == null
-                                      ? const SizedBox(key: ValueKey('none'), width: double.infinity)
-                                      : TextFieldTapRegion(
-                                          key: ValueKey(content is PaletteHint),
-                                          groupId: _composerGroup,
-                                          onTapOutside: (_) => _dismissSlashPalette(),
-                                          child: SlashPalette(content: content, onPick: _pick),
-                                        ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  LayoutId(
-                    id: _Slot.composer,
-                    child: SafeArea(
-                      top: false,
-                      minimum: const EdgeInsets.only(bottom: 8),
-                      child: Padding(
-                        // A little air above the (transparent) gesture bar;
-                        // 12 at the sides like the header's keys above.
-                        padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
-                        child: Center(
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: AppSpace.floatingWidth),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                // Banners are capsules too: the pet stands on
-                                // the topmost one (an empty slot is 0 high).
-                                PetPerch(
-                                  kind: PerchKind.banner,
-                                  child: SmoothSize(
-                                    duration: AppMotion.of(context, AppMotion.standard),
-                                    curve: AppMotion.std,
-                                    alignment: Alignment.bottomCenter,
-                                    child: connected && sessionId != null && !(chat?.controlReady ?? true)
-                                        ? Padding(
-                                            padding: const EdgeInsets.only(bottom: 8),
-                                            child: ErrorBanner(
-                                              maxLines: null,
-                                              info: !(chat?.streamLost ?? false),
-                                              message: chat?.streamLost ?? false
-                                                  ? chat?.syncError ?? l10n.stateChatSyncInterrupted
-                                                  : l10n.stateChatSynchronizing,
-                                              action: chat?.resyncing ?? false
-                                                  ? null
-                                                  : (
-                                                      label: l10n.stateChatSyncRetry,
-                                                      onPressed: () {
-                                                        unawaited(ref.read(chatProvider(sessionId).notifier).resync());
-                                                      },
-                                                    ),
-                                            ),
-                                          )
-                                        : error == null && notice == null
-                                        ? const SizedBox(width: double.infinity)
-                                        : notice != null
-                                        ? Padding(
-                                            padding: const EdgeInsets.only(bottom: 8),
-                                            child: ErrorBanner(
-                                              info: true,
-                                              message: notice,
-                                              onDismiss: () =>
-                                                  ref.read(chatProvider(sessionId!).notifier).dismissNotice(),
-                                            ),
-                                          )
-                                        : Padding(
-                                            padding: const EdgeInsets.only(bottom: 8),
-                                            child: ErrorBanner(
-                                              message: error!,
-                                              onDismiss: () {
-                                                if (sessionId == null) {
-                                                  setState(() => _localError = null);
-                                                } else if (modelDefaultWarning) {
-                                                  ref
-                                                      .read(chatProvider(sessionId).notifier)
-                                                      .dismissDefaultModelSaveWarning();
-                                                } else {
-                                                  ref.read(chatProvider(sessionId).notifier).dismissError();
-                                                }
-                                              },
-                                            ),
-                                          ),
-                                  ),
-                                ),
-                                PetPerch(
-                                  kind: PerchKind.banner,
-                                  child: SmoothSize(
-                                    duration: AppMotion.of(context, AppMotion.standard),
-                                    curve: AppMotion.std,
-                                    alignment: Alignment.bottomCenter,
-                                    child: connected
-                                        ? const _BalanceBannerSlot()
-                                        : const SizedBox(width: double.infinity),
-                                  ),
-                                ),
-                                // Safe mode / trial banner; draws nothing otherwise.
-                                const PetPerch(
-                                  kind: PerchKind.banner,
-                                  child: SafeModeBanner(padding: EdgeInsets.only(bottom: 8)),
-                                ),
-                                if (connected && sessionId != null)
-                                  PetPerch(
-                                    kind: PerchKind.banner,
-                                    child: UnknownResultsBanner(
-                                      sessionId: sessionId,
-                                      padding: const EdgeInsets.only(bottom: 8),
-                                    ),
-                                  ),
-                                SmoothSize(
-                                  duration: AppMotion.of(context, AppMotion.standard),
-                                  curve: AppMotion.std,
-                                  alignment: Alignment.bottomLeft,
-                                  child: switch (pillsInCapsules ? null : composerPills) {
-                                    final pill? => Padding(
-                                      padding: const EdgeInsets.only(bottom: 8),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: PetPerch(kind: PerchKind.banner, child: pill),
-                                      ),
-                                    ),
-                                    null => const SizedBox(width: double.infinity),
-                                  },
-                                ),
-                                // The status bars as one deck: the todo and
-                                // goal bars (official input dock), the
-                                // activity strip, a plugin's status line;
-                                // each zero high when empty. Folded, they take
-                                // one row (dock_stack.dart). They fold away
-                                // while a phone on its side types.
-                                _DockAside(
-                                  aside: typing,
-                                  child: BackdropGroup(
-                                    child: DockStack(
-                                      cards: [
-                                        if (sessionId != null) ...[
-                                          TodoDockSlot(sessionId: sessionId),
-                                          GoalDockSlot(sessionId: sessionId),
-                                          ActivityStripSlot(
-                                            sessionId: sessionId,
-                                            onTap: () => _openRunningTrajectory(sessionId),
-                                            // The todo bar shows it, unless it is folded behind the strip.
-                                            todoProgress: ref.watch(dockFoldedProvider),
-                                          ),
-                                        ],
-                                        // It gives the activity strip its place while a reply generates.
-                                      ],
-                                      accessory: pillsBesideStrip
-                                          ? _stripRisk(sessionId, autoApprove: chat?.autoApprove ?? false)
-                                          : null,
-                                    ),
-                                  ),
-                                ),
-                                // The capsules (ui.json's and plugins'), led
-                                // by the chat's pills; they step aside while a
-                                // reply generates; nothing at all without any.
-                                if (!readOnly && pillsInCapsules && composerPills != null)
-                                  _DockAside(aside: typing, child: composerPills),
-                                if (_preparedPhoneSkill case final prepared?)
-                                  Card(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(12),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text(l10n.phoneSkillReplayReview),
-                                          SelectableText(prepared.text),
-                                          Row(
-                                            children: [
-                                              TextButton(
-                                                onPressed: _phoneSkillSending
-                                                    ? null
-                                                    : () => setState(_dropPreparedPhoneSkill),
-                                                child: Text(l10n.commonClose),
-                                              ),
-                                              FilledButton(
-                                                onPressed: _phoneSkillSending || readOnly || !connected
-                                                    ? null
-                                                    : _sendPhoneSkill,
-                                                child: Text(l10n.phoneSkillReplayQueue),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                if (readOnly)
-                                  const ReadOnlyBar()
-                                else
-                                  Composer(
-                                    hardwareEnterSends: ref.watch(settingsProvider.select((s) => s.hardwareEnterSends)),
-                                    controller: _input,
-                                    groupId: _composerGroup,
-                                    // The page's context: Scaffold drops the keyboard inset below.
-                                    maxLines: Composer.linesFor(context),
-                                    focusNode: _focus,
-                                    connected: connected,
-                                    running: chat?.running ?? false,
-                                    stopping: chat?.stopping ?? false,
-                                    sessionReady: chat?.controlReady ?? true,
-                                    busy: _creating != null || _syncWait != null,
-                                    // The header, the tool row and the strip
-                                    // already say an approval waits: the hint
-                                    // stays the plain one.
-                                    waiting: approval != null || question != null,
-                                    modeLabel: question == null
-                                        ? null
-                                        : answerInComposer
-                                        ? l10n.chatAnswerMode
-                                        : l10n.chatMessageMode,
-                                    waitHint: approval != null
-                                        ? null
-                                        : answerInComposer
-                                        ? l10n.chatAnswerHint
-                                        : question != null
-                                        ? l10n.commonWaitingAnswer
-                                        : null,
-                                    placeholder: null,
-                                    onSend: _send,
-                                    onSendOptions: chat?.controlReady ?? true ? _sendOptions : null,
-                                    onKeyEvent: _composerKey,
-                                    onContentInserted: connected ? _pasteContent : null,
-                                    onStop: _stop,
-                                    hasAttachments: _drafts.isNotEmpty,
-                                    leading: AttachButton(onPressed: connected ? _attach : null),
-                                    keyboardInset: MediaQuery.viewInsetsOf(context).bottom,
-                                    footer: _composerOpens(context) && !isChild
-                                        ? ComposerModelPill(
-                                            selection: sessionId == null ? pendingModel : chat?.model,
-                                            onSelected: _modelTarget(),
-                                          )
-                                        : null,
-                                    tray: ComposerTrayStack.maybe(
-                                      quote: switch (quote) {
-                                        final quote? => QuoteChip(
-                                          quote: quote,
-                                          onRemove: () => ref.read(composerQuoteProvider.notifier).clear(_draftKey),
-                                        ),
-                                        null => null,
-                                      },
-                                      attachments: _drafts.isEmpty
-                                          ? null
-                                          : ComposerTray(
-                                              items: _drafts,
-                                              onRemove: _removeDraft,
-                                              labels: const [],
-                                            ),
-                                    ),
-                                    accessory: sessionId == null || contextFraction == null
-                                        ? null
-                                        : ContextRing(
-                                            fraction: contextFraction,
-                                            onTap: () => _openUsage(sessionId, chat?.model),
-                                          ),
-                                  ),
-                              ],
                             ),
+                      onOpenDrawer: widget.onOpenDrawer,
+                      onNewChat: sessionId == null || isChild
+                          ? null
+                          : () {
+                              HapticFeedback.selectionClick();
+                              ref.read(currentSessionProvider.notifier).select(null);
+                            },
+                      // The title pill opens the whole session's details (on a
+                      // wide window it folds and unfolds the panel beside us).
+                      onTitleTap: sessionId == null
+                          ? null
+                          : () => SessionDetailPage.open(context, sessionId, toggle: true),
+                      // A phone's conversation has no room for it beside its title: the
+                      // model is shown and picked at the composer's foot while typing.
+                      // A new chat's title is only 「新对话」, so the model takes the
+                      // header's right like on a wide window — picked before typing,
+                      // once there is an engine to send to.
+                      trailing: narrow && (sessionId != null || !connected)
+                          ? null
+                          : ModelChip(
+                              selection: sessionId == null ? pendingModel : chat?.model,
+                              onSelected: _modelTarget(),
+                              grouped: true,
+                            ),
+                    ),
+                  ),
+                  ),
+                  LayoutId(
+                  id: _Slot.palette,
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: AppSpace.floatingWidth),
+                      child: ListenableBuilder(
+                        listenable: Listenable.merge([_input, _mentions]),
+                        builder: (context, _) {
+                          // The `@` word at the caret wins over a "/" line.
+                          final live = connected && !readOnly;
+                          final mention = live && _mentions.isOpen;
+                          final content = live && !mention ? _slashContent(commands) : null;
+                          // The pet steps aside while a panel is up.
+                          return PopScope<Object?>(
+                            canPop: content == null,
+                            onPopInvokedWithResult: (didPop, _) {
+                              if (!didPop) _dismissSlashPalette();
+                            },
+                            child:  AnimatedSwitcher(
+                                duration: AppMotion.of(context, AppMotion.quick),
+                                switchInCurve: AppMotion.enter,
+                                switchOutCurve: AppMotion.exit,
+                                transitionBuilder: (child, animation) => FadeTransition(
+                                  opacity: animation,
+                                  child: ScaleTransition(
+                                    alignment: Alignment.bottomCenter,
+                                    scale: Tween(begin: 0.96, end: 1.0).animate(animation),
+                                    child: child,
+                                  ),
+                                ),
+                                child: mention
+                                    ? MentionPicker(key: const ValueKey('mention'), controller: _mentions)
+                                    : content == null
+                                    ? const SizedBox(key: ValueKey('none'), width: double.infinity)
+                                    : TextFieldTapRegion(
+                                      key: ValueKey(content is PaletteHint),
+                                      groupId: _composerGroup,
+                                      onTapOutside: (_) => _dismissSlashPalette(),
+                                      child: SlashPalette(content: content, onPick: _pick),
+                                      ),
+                              ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  ),
+                  LayoutId(
+                  id: _Slot.composer,
+                  child: SafeArea(
+                    top: false,
+                    minimum: const EdgeInsets.only(bottom: 8),
+                    child: Padding(
+                      // A little air above the (transparent) gesture bar;
+                      // 12 at the sides like the header's keys above.
+                      padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+                      child: Center(
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: AppSpace.floatingWidth),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              // Banners are capsules too: the pet stands on
+                              // the topmost one (an empty slot is 0 high).
+                               SmoothSize(
+                                duration: AppMotion.of(context, AppMotion.standard),
+                                curve: AppMotion.std,
+                                alignment: Alignment.bottomCenter,
+                                child: connected && sessionId != null && !(chat?.controlReady ?? true)
+                                    ? Padding(
+                                        padding: const EdgeInsets.only(bottom: 8),
+                                        child: ErrorBanner(
+                                          maxLines: null,
+                                          info: !(chat?.streamLost ?? false),
+                                          message: chat?.streamLost ?? false
+                                              ? chat?.syncError ?? l10n.stateChatSyncInterrupted
+                                              : l10n.stateChatSynchronizing,
+                                          action: chat?.resyncing ?? false
+                                              ? null
+                                              : (
+                                                  label: l10n.stateChatSyncRetry,
+                                                  onPressed: () {
+                                                    unawaited(ref.read(chatProvider(sessionId).notifier).resync());
+                                                  },
+                                                ),
+                                        ),
+                                      )
+                                    : error == null && notice == null
+                                    ? const SizedBox(width: double.infinity)
+                                    : notice != null
+                                    ? Padding(
+                                        padding: const EdgeInsets.only(bottom: 8),
+                                        child: ErrorBanner(
+                                          info: true,
+                                          message: notice,
+                                          onDismiss: () =>
+                                              ref.read(chatProvider(sessionId!).notifier).dismissNotice(),
+                                        ),
+                                      )
+                                    : Padding(
+                                        padding: const EdgeInsets.only(bottom: 8),
+                                        child: ErrorBanner(
+                                          message: error!,
+                                          onDismiss: () {
+                                            if (sessionId == null) {
+                                              setState(() => _localError = null);
+                                            } else if (modelDefaultWarning) {
+                                              ref
+                                                  .read(chatProvider(sessionId).notifier)
+                                                  .dismissDefaultModelSaveWarning();
+                                            } else {
+                                              ref.read(chatProvider(sessionId).notifier).dismissError();
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                ),
+                               SmoothSize(
+                                duration: AppMotion.of(context, AppMotion.standard),
+                                curve: AppMotion.std,
+                                alignment: Alignment.bottomCenter,
+                                child: connected
+                                    ? const _BalanceBannerSlot()
+                                    : const SizedBox(width: double.infinity),
+                                ),
+                              // Safe mode / trial banner; draws nothing otherwise.
+                               SafeModeBanner(padding: EdgeInsets.only(bottom: 8)),
+                              if (connected && sessionId != null)
+                                 UnknownResultsBanner(
+                                  sessionId: sessionId,
+                                  padding: const EdgeInsets.only(bottom: 8),
+                                  ),
+                              SmoothSize(
+                                duration: AppMotion.of(context, AppMotion.standard),
+                                curve: AppMotion.std,
+                                alignment: Alignment.bottomLeft,
+                                child: switch (pillsInCapsules ? null : composerPills) {
+                                  final pill? => Padding(
+                                    padding: const EdgeInsets.only(bottom: 8),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child:  pill,
+                                    ),
+                                  ),
+                                  null => const SizedBox(width: double.infinity),
+                                },
+                              ),
+                              // The status bars as one deck: the todo and
+                              // goal bars (official input dock), the
+                              // activity strip, a plugin's status line;
+                              // each zero high when empty. Folded, they take
+                              // one row (dock_stack.dart). They fold away
+                              // while a phone on its side types.
+                              _DockAside(
+                                aside: typing,
+                                child: BackdropGroup(
+                                  child: DockStack(
+                                    cards: [
+                                      if (sessionId != null) ...[
+                                        TodoDockSlot(sessionId: sessionId),
+                                        GoalDockSlot(sessionId: sessionId),
+                                        ActivityStripSlot(
+                                          sessionId: sessionId,
+                                          onTap: () => _openRunningTrajectory(sessionId),
+                                          // The todo bar shows it, unless it is folded behind the strip.
+                                          todoProgress: ref.watch(dockFoldedProvider),
+                                        ),
+                                      ],
+                                      // It gives the activity strip its place while a reply generates.
+                                    ],
+                                    accessory: pillsBesideStrip
+                                        ? _stripRisk(sessionId, autoApprove: chat?.autoApprove ?? false)
+                                        : null,
+                                  ),
+                                ),
+                              ),
+                              // The capsules (ui.json's and plugins'), led
+                              // by the chat's pills; they step aside while a
+                              // reply generates; nothing at all without any.
+                              if (!readOnly && pillsInCapsules && composerPills != null)
+                                _DockAside(aside: typing, child: composerPills),
+                              if (_preparedPhoneSkill case final prepared?)
+                                Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(l10n.phoneSkillReplayReview),
+                                        SelectableText(prepared.text),
+                                        Row(
+                                          children: [
+                                            TextButton(
+                                              onPressed: _phoneSkillSending
+                                                  ? null
+                                                  : () => setState(_dropPreparedPhoneSkill),
+                                              child: Text(l10n.commonClose),
+                                            ),
+                                            FilledButton(
+                                              onPressed: _phoneSkillSending || readOnly || !connected
+                                                  ? null
+                                                  : _sendPhoneSkill,
+                                              child: Text(l10n.phoneSkillReplayQueue),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              if (readOnly)
+                                const ReadOnlyBar()
+                              else
+                                Composer(
+                                  hardwareEnterSends: ref.watch(settingsProvider.select((s) => s.hardwareEnterSends)),
+                                  controller: _input,
+                                  groupId: _composerGroup,
+                                  // The page's context: Scaffold drops the keyboard inset below.
+                                  maxLines: Composer.linesFor(context),
+                                  focusNode: _focus,
+                                  connected: connected,
+                                  running: chat?.running ?? false,
+                                  stopping: chat?.stopping ?? false,
+                                  sessionReady: chat?.controlReady ?? true,
+                                  busy: _creating != null || _syncWait != null,
+                                  // The header, the tool row and the strip
+                                  // already say an approval waits: the hint
+                                  // stays the plain one.
+                                  waiting: approval != null || question != null,
+                                  modeLabel: question == null
+                                      ? null
+                                      : answerInComposer
+                                      ? l10n.chatAnswerMode
+                                      : l10n.chatMessageMode,
+                                  waitHint: approval != null
+                                      ? null
+                                      : answerInComposer
+                                      ? l10n.chatAnswerHint
+                                      : question != null
+                                      ? l10n.commonWaitingAnswer
+                                      : null,
+                                  placeholder: null,
+                                  onSend: _send,
+                                  onSendOptions: chat?.controlReady ?? true ? _sendOptions : null,
+                                  onKeyEvent: _composerKey,
+                                  onContentInserted: connected ? _pasteContent : null,
+                                  onStop: _stop,
+                                  hasAttachments: _drafts.isNotEmpty,
+                                  leading: AttachButton(onPressed: connected ? _attach : null),
+                                  keyboardInset: MediaQuery.viewInsetsOf(context).bottom,
+                                  footer: _composerOpens(context) && !isChild
+                                      ? ComposerModelPill(
+                                          selection: sessionId == null ? pendingModel : chat?.model,
+                                          onSelected: _modelTarget(),
+                                        )
+                                      : null,
+                                  tray: ComposerTrayStack.maybe(
+                                    quote: switch (quote) {
+                                      final quote? => QuoteChip(
+                                        quote: quote,
+                                        onRemove: () => ref.read(composerQuoteProvider.notifier).clear(_draftKey),
+                                      ),
+                                      null => null,
+                                    },
+                                    attachments: _drafts.isEmpty
+                                        ? null
+                                        : ComposerTray(
+                                            items: _drafts,
+                                            onRemove: _removeDraft,
+                                            labels: const [],
+                                          ),
+                                  ),
+                                  accessory: sessionId == null || contextFraction == null
+                                      ? null
+                                      : ContextRing(
+                                          fraction: contextFraction,
+                                          onTap: () => _openUsage(sessionId, chat?.model),
+                                        ),
+                                ),
+                            ],
                           ),
                         ),
                       ),
                     ),
                   ),
+                  ),
                 ],
               ),
-            ),
         ),
       ),
     );

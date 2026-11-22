@@ -1,5 +1,4 @@
 import 'package:dsh_app/ui/chat/composer.dart';
-import 'package:dsh_app/ui/pets/pet_perch.dart';
 import 'package:dsh_app/ui/theme/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -62,7 +61,7 @@ class _Builds {
     final previous = debugOnRebuildDirtyWidget;
     debugOnRebuildDirtyWidget = (element, builtOnce) {
       previous?.call(element, builtOnce);
-      if (element.widget is PetCover) chrome++;
+      if (element.widget is Composer) chrome++;
       if (element.widget is TextField) fields++;
       if (element.widget is EditableText) editors++;
     };
@@ -70,7 +69,7 @@ class _Builds {
   }
 
   void report(String scenario) =>
-      debugPrint('[WORK] $scenario: PetCover=$chrome TextField=$fields EditableText=$editors');
+      debugPrint('[WORK] $scenario: Composer=$chrome TextField=$fields EditableText=$editors');
 }
 
 void main() {

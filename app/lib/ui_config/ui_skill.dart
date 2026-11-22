@@ -53,7 +53,6 @@ const companionAdaptSkillName = 'companion-adapt';
 /// and its friends ship as text next to SKILL.md (app/tool/pet_theme_convert.py is
 /// the source of truth) and are written to the skill folder's scripts/ so the agent
 /// can run them on the host.
-const petThemeSkillName = 'pet-theme';
 
 /// The managed line inside SKILL.md's front matter.
 const uiSkillManagedMarker = '# dsh-go:managed';

@@ -16,7 +16,6 @@ import 'package:flutter/services.dart';
 import '../../l10n/l10n.dart';
 import '../common/expand_reveal.dart';
 import '../common/smooth_size.dart';
-import '../pets/pet_perch.dart';
 import '../theme/app_icons.dart';
 import '../theme/theme.dart';
 
@@ -332,11 +331,7 @@ class _ComposerState extends State<Composer> with SingleTickerProviderStateMixin
     final line = MediaQuery.textScalerOf(context).scale(_fontSize) * _lineHeight;
     final textPad = math.max(4.0, (_keySize - line) / 2);
 
-    // The chat page's pet stands on the composer's top edge (outside a pet
-    // stage this is a plain pass-through).
-    return PetPerch(
-      kind: PerchKind.composer,
-      child: _ComposerGlass(
+    return  _ComposerGlass(
         open: widget.footer == null ? null : _open,
         child: ListenableBuilder(
           // The editor listens to text, selection and composing changes itself.
@@ -348,18 +343,18 @@ class _ComposerState extends State<Composer> with SingleTickerProviderStateMixin
             final showStop = widget.running && empty && !dictating;
             const showMic = false;
             final enabled =
-                !widget.busy && widget.connected && widget.sessionReady && (showStop || !empty || widget.sendWhenEmpty);
+              !widget.busy && widget.connected && widget.sessionReady && (showStop || !empty || widget.sendWhenEmpty);
             final emptySend = empty && widget.sendWhenEmpty && !showStop && !showMic && !dictating;
             final waiting = widget.waiting || widget.waitHint != null;
             final hint =
-                !widget.connected
-                    ? l10n.chatConnectToSend
-                    : !widget.sessionReady
-                    ? l10n.stateChatSynchronizing
-                    : widget.waitHint ??
-                          (widget.running && !waiting
-                              ? l10n.chatGeneratingSteerHint
-                              : widget.placeholder ?? l10n.chatComposerHint);
+              !widget.connected
+                  ? l10n.chatConnectToSend
+                  : !widget.sessionReady
+                  ? l10n.stateChatSynchronizing
+                  : widget.waitHint ??
+                        (widget.running && !waiting
+                            ? l10n.chatGeneratingSteerHint
+                            : widget.placeholder ?? l10n.chatComposerHint);
             final leading = widget.leading;
             final accessory = widget.accessory;
 
@@ -370,67 +365,67 @@ class _ComposerState extends State<Composer> with SingleTickerProviderStateMixin
               mode = _KeyMode.send;
             }
             final keyBusy =
-                widget.busy ||
-                (showStop && widget.stopping);
+              widget.busy ||
+              (showStop && widget.stopping);
 
             final leadingKey = leading == null
-                ? null
-                : AnimatedSwitcher(
-                    duration: AppMotion.of(context, AppMotion.quick),
-                    transitionBuilder: (child, anim) => FadeTransition(
-                      opacity: anim,
-                      child: ScaleTransition(scale: anim, child: child),
-                    ),
-                    child: KeyedSubtree(key: ValueKey(dictating), child: leading),
-                  );
+              ? null
+              : AnimatedSwitcher(
+                  duration: AppMotion.of(context, AppMotion.quick),
+                  transitionBuilder: (child, anim) => FadeTransition(
+                    opacity: anim,
+                    child: ScaleTransition(scale: anim, child: child),
+                  ),
+                  child: KeyedSubtree(key: ValueKey(dictating), child: leading),
+                );
             final field = Focus(
               key: _fieldKey,
               canRequestFocus: false,
               skipTraversal: true,
               onKeyEvent: _hardwareKey,
               onFocusChange: (hasFocus) {
-                if (!hasFocus) _lastEscape = null;
+              if (!hasFocus) _lastEscape = null;
               },
               child: Focus(
-                canRequestFocus: false,
-                skipTraversal: true,
-                onKeyEvent: widget.onKeyEvent,
-                child: TextField(
-                  groupId: widget.groupId,
-                  controller: widget.controller,
-                  focusNode: widget.focusNode,
-                  contentInsertionConfiguration: switch (widget.onContentInserted) {
-                    final onInserted? => ContentInsertionConfiguration(
-                      onContentInserted: onInserted,
-                      allowedMimeTypes: const ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
-                    ),
-                    null => null,
-                  },
-                  readOnly: dictating,
-                  minLines: 1,
-                  maxLines: widget.maxLines,
-                  keyboardType: TextInputType.multiline,
-                  textInputAction: TextInputAction.newline,
-                  textCapitalization: TextCapitalization.sentences,
-                  style: textStyle,
-                  cursorColor: theme.colorScheme.primary,
-                  decoration: InputDecoration(
-                    hintText: hint,
-                    hintMaxLines: 1,
-                    hintStyle: theme.textTheme.bodyLarge?.copyWith(
-                      fontSize: _fontSize,
-                      color: dsh.textTertiary,
-                      height: 1.45,
-                    ),
-                    filled: false,
-                    isDense: true,
-                    border: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(vertical: textPad),
+              canRequestFocus: false,
+              skipTraversal: true,
+              onKeyEvent: widget.onKeyEvent,
+              child: TextField(
+                groupId: widget.groupId,
+                controller: widget.controller,
+                focusNode: widget.focusNode,
+                contentInsertionConfiguration: switch (widget.onContentInserted) {
+                  final onInserted? => ContentInsertionConfiguration(
+                    onContentInserted: onInserted,
+                    allowedMimeTypes: const ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
                   ),
+                  null => null,
+                },
+                readOnly: dictating,
+                minLines: 1,
+                maxLines: widget.maxLines,
+                keyboardType: TextInputType.multiline,
+                textInputAction: TextInputAction.newline,
+                textCapitalization: TextCapitalization.sentences,
+                style: textStyle,
+                cursorColor: theme.colorScheme.primary,
+                decoration: InputDecoration(
+                  hintText: hint,
+                  hintMaxLines: 1,
+                  hintStyle: theme.textTheme.bodyLarge?.copyWith(
+                    fontSize: _fontSize,
+                    color: dsh.textTertiary,
+                    height: 1.45,
+                  ),
+                  filled: false,
+                  isDense: true,
+                  border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(vertical: textPad),
                 ),
+              ),
               ),
             );
             final sendKey = _SendButton(
@@ -441,92 +436,90 @@ class _ComposerState extends State<Composer> with SingleTickerProviderStateMixin
               enabled: enabled,
               onLongPress: mode != _KeyMode.send || !enabled ? null : widget.onSendOptions,
               onTap: () {
-                switch (mode) {
-                  case _KeyMode.stopRun:
-                    _stop();
-                  case _KeyMode.send:
-                    _send();
-                }
+              switch (mode) {
+                case _KeyMode.stopRun:
+                  _stop();
+                case _KeyMode.send:
+                  _send();
+              }
               },
             );
             final footer = widget.footer;
             final row = footer == null
-                ? Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      if (leadingKey != null) ...[leadingKey, const SizedBox(width: 8)],
-                      Expanded(child: field),
-                      const SizedBox(width: 8),
-                      if (accessory != null) ...[accessory, const SizedBox(width: 2)],
-                      sendKey,
-                    ],
-                  )
-                : _ComposerRows(
-                    open: _open,
-                    // A new line grows the glass here: opening is its own motion, with no
-                    // second one chasing it.
-                    text: SmoothSize(
-                      duration: AppMotion.of(context, AppMotion.quick),
-                      curve: AppMotion.std,
-                      alignment: Alignment.bottomCenter,
-                      child: field,
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    if (leadingKey != null) ...[leadingKey, const SizedBox(width: 8)],
+                    Expanded(child: field),
+                    const SizedBox(width: 8),
+                    if (accessory != null) ...[accessory, const SizedBox(width: 2)],
+                    sendKey,
+                  ],
+                )
+              : _ComposerRows(
+                  open: _open,
+                  // A new line grows the glass here: opening is its own motion, with no
+                  // second one chasing it.
+                  text: SmoothSize(
+                    duration: AppMotion.of(context, AppMotion.quick),
+                    curve: AppMotion.std,
+                    alignment: Alignment.bottomCenter,
+                    child: field,
+                  ),
+                  leading: leadingKey ?? const SizedBox.shrink(),
+                  footer: FadeTransition(opacity: _open, child: footer),
+                  // Exactly a key tall, whatever sits beside the key: the row's height is
+                  // what keeps the gaps around it even.
+                  trailing: SizedBox(
+                    height: _keySize,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (accessory != null) ...[accessory, const SizedBox(width: _keyGap)],
+                        sendKey,
+                      ],
                     ),
-                    leading: leadingKey ?? const SizedBox.shrink(),
-                    footer: FadeTransition(opacity: _open, child: footer),
-                    // Exactly a key tall, whatever sits beside the key: the row's height is
-                    // what keeps the gaps around it even.
-                    trailing: SizedBox(
-                      height: _keySize,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (accessory != null) ...[accessory, const SizedBox(width: _keyGap)],
-                          sendKey,
-                        ],
-                      ),
-                    ),
-                  );
+                  ),
+                );
             // The tray unfolds above the text and folds away again: the
             // glass grows and shrinks, the text row never jumps.
             final content = Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                if (widget.modeLabel case final label?)
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(_keyGap, 2, _keyGap, _keyGap),
-                    child: Text(
-                      label,
-                      style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-                    ),
+              if (widget.modeLabel case final label?)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(_keyGap, 2, _keyGap, _keyGap),
+                  child: Text(
+                    label,
+                    style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                   ),
-                ExpandReveal(
-                  open: widget.tray != null,
-                  child: Padding(padding: const EdgeInsets.fromLTRB(_keyGap, 2, _keyGap, _keyGap), child: _tray),
                 ),
-                // A new line grows the glass instead of popping it: anchored
-                // at the bottom, where the caret and the keys stay put.
-                if (footer != null)
-                  row
-                else
-                  SmoothSize(
-                    duration: AppMotion.of(context, AppMotion.quick),
-                    curve: AppMotion.std,
-                    alignment: Alignment.bottomCenter,
-                    child: row,
-                  ),
+              ExpandReveal(
+                open: widget.tray != null,
+                child: Padding(padding: const EdgeInsets.fromLTRB(_keyGap, 2, _keyGap, _keyGap), child: _tray),
+              ),
+              // A new line grows the glass instead of popping it: anchored
+              // at the bottom, where the caret and the keys stay put.
+              if (footer != null)
+                row
+              else
+                SmoothSize(
+                  duration: AppMotion.of(context, AppMotion.quick),
+                  curve: AppMotion.std,
+                  alignment: Alignment.bottomCenter,
+                  child: row,
+                ),
               ],
             );
             final padded = Padding(
               padding: EdgeInsets.fromLTRB(leading == null ? 18 : _keyGap, _keyGap, _keyGap, _keyGap),
               child: content,
             );
-            // under the text and keys.
-            return PetCover(active: false, child: padded);;
+            return padded;
           },
         ),
-      ),
-    );
+      );
   }
 }
 

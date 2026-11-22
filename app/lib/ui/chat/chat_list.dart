@@ -29,7 +29,6 @@ import '../../state/settings_state.dart';
 import '../common/app_dialog.dart';
 import '../common/bleed.dart';
 import '../common/ui_trace.dart';
-import '../pets/pet_perch.dart';
 import '../theme/app_icons.dart';
 import '../theme/theme.dart';
 import '../update/update_sheet.dart' show checkForUpdates;
@@ -947,7 +946,6 @@ class _ChatListState extends ConsumerState<ChatList> with SingleTickerProviderSt
     }
 
     // Images in replies read this conversation's workspace.
-    const headroom = 0.0;
     // Back in the app to read a result (a finished phone task): the newest line.
     ref.listen(chatRevealProvider, (_, reveal) {
       if (reveal?.sessionId == widget.sessionId) jumpToBottom();
@@ -960,9 +958,7 @@ class _ChatListState extends ConsumerState<ChatList> with SingleTickerProviderSt
           if (_lastViewport != null && _lastViewport != viewport && _pinned) {
             _follow();
           }
-          // The chat page's pet stands over the composer: the last line
-          // stops clear of it (0 without a pet).
-          final bottomPad = widget.bottomInset + AppSpace.sm + headroom;
+          final bottomPad = widget.bottomInset + AppSpace.sm;
           final anchor = viewport <= 0 ? 1.0 : ((viewport - bottomPad) / viewport).clamp(0.0, 1.0);
           final anchorPixels = viewport * anchor;
           if (_lastViewport != null && !_pinned && _scroll.hasClients) {
@@ -1044,10 +1040,9 @@ class _ChatListState extends ConsumerState<ChatList> with SingleTickerProviderSt
               Positioned(
                 right: math.max(0.0, (constraints.maxWidth - AppSpace.readingWidth) / 2) + AppSpace.floatInset,
                 bottom: widget.bottomInset + 12,
-                // The pet keeps out of the key's way while it shows.
                 child: ValueListenableBuilder<bool>(
                   valueListenable: _showJump,
-                  builder: (context, visible, child) => PetAvoid(active: visible, child: child!),
+                  builder: (context, visible, child) =>  child!,
                   child: _JumpToBottom(
                     visible: _showJump,
                     hasNew: _hasNew,
