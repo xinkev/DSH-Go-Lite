@@ -1,5 +1,5 @@
 // Optional v1.2 capabilities (docs/design/native-plugins-protocol.md §11): manifest declarations,
-// capability effects and the micro data model. Pure; vendored byte for byte into the plugin kit.
+// capability effects. Pure; vendored byte for byte into the plugin kit.
 // A plugin that declares none of this parses, renders and validates exactly as under v1.1.
 import { ID } from "./limits.js";
 import { chars, isPlainObject, toJson } from "./util.js";
@@ -19,7 +19,7 @@ export const RESOURCE_KINDS = ["media", "overlays"];
 export const CAP_LIMITS = Object.freeze({
   mediaBytes: 16 * 1024 * 1024, mediaMs: 30000, mediaConcurrent: 2,
   leases: 8, pluginLeases: 2, eventBurst: 4, eventsPerSecond: 10,
-  microBytes: 1024, microMs: 100, microSubs: 8, pluginMicroSubs: 2, textChars: 240, perKind: 2,
+textChars: 240, perKind: 2,
 });
 export const AUDIO_TYPES = new Set(["audio/mpeg", "audio/wav", "audio/ogg", "audio/mp4", "audio/aac"]);
 export const CAP_EVENTS = Object.freeze({
@@ -31,18 +31,6 @@ export const TERMINAL_EVENTS = new Set(["audio.ended", "audio.stopped", "audio.e
 export const featuresOf = (value) => (Array.isArray(value) ? FEATURES.filter((x) => value.includes(x)) : []);
 export const KEY = /^[A-Za-z0-9_-]{1,128}$/;
 const FEATURE_OF = { media: "audio", overlays: "overlay" };
-
-/** A micro value -> the complete small model `{text?, progress?}`, or undefined. */
-export function microModel(value) {
-  if (!isPlainObject(value)) return undefined;
-  const keys = Object.keys(value);
-  if (keys.length === 0 || keys.some((k) => k !== "text" && k !== "progress")) return undefined;
-  if (value.text !== undefined && (typeof value.text !== "string" || chars(value.text) > CAP_LIMITS.textChars)) return undefined;
-  if (value.progress !== undefined && value.progress !== null
-    && (typeof value.progress !== "number" || !Number.isFinite(value.progress) || value.progress < 0 || value.progress > 1)) return undefined;
-  const json = toJson(value);
-  return json && json.bytes <= CAP_LIMITS.microBytes && Object.keys(json.value).length > 0 ? json.value : undefined;
-}
 
 /**
  * Reads `capabilities`, `contributes.{media,micro,overlays}`, action `requires` and panel `micro`

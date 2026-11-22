@@ -4,7 +4,7 @@
 // microphone, never proxies a URL and never executes what a capability callback returns.
 import { randomBytes } from 'node:crypto';
 import { performance } from 'node:perf_hooks';
-import { AUDIO_TYPES, CAP_EVENTS, CAP_LIMITS as L, KEY, TERMINAL_EVENTS, microModel } from './capabilities.js';
+import { AUDIO_TYPES, CAP_EVENTS, CAP_LIMITS as L, KEY, TERMINAL_EVENTS } from './capabilities.js';
 import { ID, PKG } from './limits.js';
 import { call, deepEqual, normalizeScope, withTimeout } from './util.js';
 
@@ -197,54 +197,3 @@ export class CapabilityRuntime {
     return false;
   }
 
-class MicroFeed {
-  constructor(runtime, key, rec, id, scope, locale, reg) {
-    Object.assign(this, { runtime, key, pkg: rec.pkg, uid: rec.uid, stamp: rec.stamp, id, scope, locale, reg, token: reg.token });
-    this.subs = new Set(); this.seq = 0; this.epoch = randomBytes(8).toString('hex'); this.last = undefined;
-  }
-  attach(sub) {
-    this.subs.add(sub);
-    if (this.current !== undefined) this.send(sub);
-    if (this.started) return;
-    this.started = true;
-    call(this.reg.def.data, { ...this.scope }, value => this.emit(value), { protocol: 1, locale: this.locale }).then(cancel => {
-      if (typeof cancel === 'function') { if (this.closed) { try { Promise.resolve(cancel()).catch(() => {}); } catch {} } else this.cancel = cancel; }
-    }, () => this.stop('error'));
-  }
-  // Registration hooks defer their sweep; a producer may settle in an earlier microtask.
-  checkCurrent() {
-    if (this.closed) return false;
-    if (this.runtime.alive(this)
-      && this.runtime.core.registration(this.pkg, 'micro', this.id)?.token === this.token) return true;
-    this.stop(this.runtime.core.health.get(this.pkg)?.degraded ? 'degraded' : 'not-found');
-    return false;
-  }
-  emit(value) {
-    if (!this.checkCurrent()) return;
-    const data = microModel(value);
-    if (!data) { this.runtime.core.violation(this.pkg, 'invalid-micro', 'micro data exceeds the small model budget'); return; }
-    this.pending = data;
-    if (this.timer) return;
-    const wait = this.last === undefined ? 0
-      : Math.max(0, Math.ceil(this.last + L.microMs - performance.now()));
-    if (wait === 0) this.flush();
-    else { this.timer = setTimeout(() => { this.timer = undefined; this.flush(); }, wait); this.timer.unref?.(); }
-  }
-  flush() {
-    const data = this.pending; this.pending = undefined;
-    if (!this.checkCurrent() || data === undefined || deepEqual(data, this.current)) return;
-    if (this.seq >= Number.MAX_SAFE_INTEGER) { this.stop('limit'); return; }
-    this.last = performance.now(); this.current = data; this.seq++;
-    for (const sub of this.subs) this.send(sub);
-  }
-  send(sub) { sub.conn.send({ t: 'micro.data', sub: sub.id, rev: `${this.epoch}.${this.seq}`, data: this.current }); }
-  detach(sub) { this.subs.delete(sub); if (this.subs.size === 0) this.stop(); }
-  stop(reason) {
-    if (this.closed) return;
-    this.closed = true; clearTimeout(this.timer);
-    try { if (this.cancel) Promise.resolve(this.cancel()).catch(() => {}); } catch {}
-    this.runtime.feeds.delete(this.key);
-    for (const sub of this.subs) { sub.conn.microSubs?.delete(sub.id); if (reason) sub.conn.send({ t: 'micro.end', sub: sub.id, reason }); }
-    this.subs.clear();
-  }
-}
