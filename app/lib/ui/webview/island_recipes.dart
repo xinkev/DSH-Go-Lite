@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import '../../../platform/seat_models.dart';
+import 'package:dsh_app/platform/seat_models.dart';
 import 'island_handle.dart' show IslandTiming;
 
 /// How island.js pins the slot to the WebView (`assets/islands/island.css`).

@@ -11,7 +11,7 @@ import '../../state/connection_state.dart';
 import '../../state/engine_settings_state.dart';
 import '../../state/hosts_state.dart';
 import '../../state/plugins_state.dart';
-import '../../ui/plugins/islands/island_host.dart' show liveIslandBudgetProvider;
+import '../../ui/webview/island_host.dart' show liveIslandBudgetProvider;
 import '../../ui/plugins/seats/seat_island.dart';
 import '../../ui/plugins/seats/seat_links.dart';
 import '../../ui_config/ui_config_state.dart' show uiConfigProvider, uiSeatOverridesProvider;

@@ -6,7 +6,7 @@ import 'dart:io';
 
 import 'package:dsh_app/platform/seat_models.dart';
 import 'package:dsh_app/state/hosts_state.dart';
-import 'package:dsh_app/ui/plugins/islands/islands.dart';
+import 'package:dsh_app/ui/webview/islands.dart';
 import 'package:dsh_app/ui/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

@@ -8,11 +8,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../l10n/l10n.dart';
-import '../../../platform/seat_models.dart';
-import '../../common/app_dialog.dart';
-import '../../common/smooth_size.dart';
-import '../../theme/theme.dart';
+import 'package:dsh_app/l10n/l10n.dart';
+import 'package:dsh_app/platform/seat_models.dart';
+import 'package:dsh_app/ui/common/app_dialog.dart';
+import 'package:dsh_app/ui/common/smooth_size.dart';
+import 'package:dsh_app/ui/theme/theme.dart';
 import 'island_gate.dart';
 import 'island_handle.dart';
 import 'island_host.dart';

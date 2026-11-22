@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../plugins/seams/seat_state.dart' show seatRouteGuardReportProvider;
-import '../../../remote/ssh/ssh_link.dart';
-import '../../../runtime/runtime_state.dart';
-import '../../../state/connection_state.dart';
-import '../../../state/hosts_state.dart';
+import 'package:dsh_app/remote/ssh/ssh_link.dart';
+import 'package:dsh_app/runtime/runtime_state.dart';
+import 'package:dsh_app/state/connection_state.dart';
+import 'package:dsh_app/state/hosts_state.dart';
 
 /// Whether a host's plugin routes refuse callers without the session cookie
 /// (the route guard, §9).

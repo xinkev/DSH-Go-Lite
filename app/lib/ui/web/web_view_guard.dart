@@ -3,8 +3,8 @@
 // webview_flutter doesn't handle `onRenderProcessGone`: when the renderer
 // crashes, or Android kills it for memory in the background, the whole app goes
 // with it. The web islands' platform side
-// (lib/ui/plugins/islands/island_platform.dart,
-// android/.../islands/IslandsPlugin.kt) wraps a WebView's client so the loss is
+// (lib/ui/webview/island_platform.dart,
+// android/.../webview/IslandsPlugin.kt) wraps a WebView's client so the loss is
 // reported instead; this attaches the app's own pages to it (the web page,
 // 网页模式's home, the chart preview).
 //
@@ -20,7 +20,7 @@ import 'dart:async';
 
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../plugins/islands/island_platform.dart';
+import '../webview/island_platform.dart';
 
 class WebViewGuard {
   WebViewGuard({required this.onGone});

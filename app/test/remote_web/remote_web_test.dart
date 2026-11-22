@@ -9,7 +9,7 @@ import 'package:dsh_app/state/connection_state.dart';
 import 'package:dsh_app/state/hosts_state.dart' show HostKind, HostRef;
 import 'package:dsh_app/state/read_list_identity.dart';
 import 'package:dsh_app/state/remote_web_state.dart';
-import 'package:dsh_app/ui/plugins/islands/island_platform.dart';
+import 'package:dsh_app/ui/webview/island_platform.dart';
 import 'package:dsh_app/ui/remote/remote_web/remote_web_entry.dart';
 import 'package:dsh_app/ui/remote/remote_web/remote_web_error.dart';
 import 'package:dsh_app/ui/remote/remote_web/remote_web_page.dart';

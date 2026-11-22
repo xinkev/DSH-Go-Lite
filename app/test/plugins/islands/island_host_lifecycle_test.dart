@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:dsh_app/ui/plugins/islands/islands.dart';
+import 'package:dsh_app/ui/webview/islands.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support/fakes.dart';

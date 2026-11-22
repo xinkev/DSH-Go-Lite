@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../plugins/seams/seams.dart';
 import '../../../state/sessions_state.dart';
 import '../../features/feature_widgets.dart' show openSessionInChat;
-import '../islands/island_view.dart';
+import '../../webview/island_view.dart';
 
 class SeatIslandView extends ConsumerWidget {
   const SeatIslandView({super.key, required this.spec, required this.items, required this.fallback});

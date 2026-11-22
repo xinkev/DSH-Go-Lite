@@ -4,7 +4,7 @@
 
 import 'dart:async';
 
-import 'package:dsh_app/ui/plugins/islands/island_platform.dart';
+import 'package:dsh_app/ui/webview/island_platform.dart';
 import 'package:dsh_app/ui/web/web_view_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

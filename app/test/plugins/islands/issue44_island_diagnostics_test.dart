@@ -2,7 +2,7 @@
 
 import 'package:dsh_app/plugins/seams/seams.dart';
 import 'package:dsh_app/state/hosts_state.dart';
-import 'package:dsh_app/ui/plugins/islands/islands.dart';
+import 'package:dsh_app/ui/webview/islands.dart';
 import 'package:dsh_app/ui/theme/theme.dart';
 import 'package:dsh_app/ui/web/web_view_page.dart';
 import 'package:flutter/material.dart';

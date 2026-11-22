@@ -4,7 +4,7 @@
 
 import 'package:dsh_app/plugins/seams/seams.dart';
 import 'package:dsh_app/state/hosts_state.dart';
-import 'package:dsh_app/ui/plugins/islands/island_gate.dart';
+import 'package:dsh_app/ui/webview/island_gate.dart';
 import 'package:dsh_app/ui/plugins/seats/seat_island.dart';
 import 'package:dsh_app/ui/plugins/seats/seat_links.dart';
 import 'package:dsh_app/ui/web/web_target.dart';

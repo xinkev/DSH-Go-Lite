@@ -2,7 +2,7 @@
 // a sidebar panel, a settings section, a right pane tab) against a model of
 // DSH Web 0.2.1-rc.4's page (node, no DOM library) and prints what the
 // island said and did, as JSON. Used by
-// test/plugins/islands/island_view_target_test.dart and
+// test/ui/webview/island_view_target_test.dart and
 // island_names_test.dart.
 //
 //   node island_page_harness.mjs <island.js> <scenario JSON>

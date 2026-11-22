@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../platform/seat_models.dart';
-import '../../web/web_file_chooser.dart';
+import 'package:dsh_app/platform/seat_models.dart';
+import 'package:dsh_app/ui/web/web_file_chooser.dart';
 import 'island_assets.dart';
 import 'island_messages.dart';
 import 'island_navigation.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
-import '../../theme/theme.dart';
+import 'package:dsh_app/ui/theme/theme.dart';
 
 /// What an island takes from the App's look (§8): light / dark, the accent,
 /// text colours, lines and surfaces as DSH Web's alias tokens, and the text

@@ -38,7 +38,7 @@ const _allowed = {
   'plugins/seams/adapters/schema_config_adapter.dart -> ui/theme/app_icons.dart',
   'plugins/seams/seat_inventory.dart -> ui/engine_settings/engine_settings_page.dart',
   'plugins/seams/seat_inventory.dart -> ui/engine_settings/schema_form.dart',
-  'plugins/seams/seat_state.dart -> ui/plugins/islands/island_host.dart',
+  'plugins/seams/seat_state.dart -> ui/webview/island_host.dart',
   'plugins/seams/seat_state.dart -> ui/plugins/seats/seat_island.dart',
   'plugins/seams/seat_state.dart -> ui/plugins/seats/seat_links.dart',
   'share_code/conversation_export.dart -> ui/chat/dsh_ui/dsh_ui_model.dart',

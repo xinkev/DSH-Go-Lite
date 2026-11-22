@@ -1,8 +1,8 @@
 // `dsh/islands` over a real channel: every call reaches the platform side on
 // Android, HarmonyOS and iOS, and nothing does anywhere else.
 
-import 'package:dsh_app/ui/plugins/islands/island_budget.dart';
-import 'package:dsh_app/ui/plugins/islands/island_platform.dart';
+import 'package:dsh_app/ui/webview/island_budget.dart';
+import 'package:dsh_app/ui/webview/island_platform.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';

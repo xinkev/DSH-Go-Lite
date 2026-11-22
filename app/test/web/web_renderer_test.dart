@@ -6,7 +6,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:dsh_app/ui/chat/render/mermaid_preview.dart';
-import 'package:dsh_app/ui/plugins/islands/island_platform.dart';
+import 'package:dsh_app/ui/webview/island_platform.dart';
 import 'package:dsh_app/ui/shell/page_frame.dart';
 import 'package:dsh_app/ui/web/web_target.dart';
 import 'package:dsh_app/ui/web/web_view_page.dart';

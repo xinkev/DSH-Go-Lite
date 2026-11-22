@@ -1,6 +1,6 @@
 // A conversation view's island (island.js `then.view`, CR-7881a22), run
 // against a model of DSH Web's conversation page under node
-// (test/plugins/islands/support/island_page_harness.mjs). View tabs carry
+// (test/ui/webview/support/island_page_harness.mjs). View tabs carry
 // no ids, so a name only picks the control to press; the view counts as
 // open when the client's own record of the conversation's view
 // (`dsh.conversation.<id>` `view`) is the cell asked for and the slot draws
@@ -28,7 +28,7 @@ void main() {
 
   Future<Map<String, Object?>> open(Map<String, Object?> scenario) async {
     final result = await Process.run(node!, [
-      'test/plugins/islands/support/island_page_harness.mjs',
+      'test/ui/webview/support/island_page_harness.mjs',
       'assets/islands/island.js',
       jsonEncode({
         'cell': 'gallery-target',

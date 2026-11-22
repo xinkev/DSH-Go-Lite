@@ -10,7 +10,7 @@ import 'dart:io';
 
 import 'package:dsh_app/plugins/seams/seams.dart';
 import 'package:dsh_app/state/hosts_state.dart';
-import 'package:dsh_app/ui/plugins/islands/islands.dart';
+import 'package:dsh_app/ui/webview/islands.dart';
 import 'package:dsh_app/ui/plugins/seats/plugin_seat_page.dart';
 import 'package:dsh_app/ui/plugins/seats/session_plugins_tab.dart';
 import 'package:dsh_app/ui/session/session_detail_page.dart';

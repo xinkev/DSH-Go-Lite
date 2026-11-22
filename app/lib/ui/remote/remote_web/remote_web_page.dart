@@ -18,7 +18,7 @@ import 'package:webview_flutter_android/webview_flutter_android.dart';
 import '../../../l10n/l10n.dart';
 import '../../../state/android_features.dart';
 import '../../../state/read_list_identity.dart';
-import '../../plugins/islands/island_platform.dart';
+import '../../webview/island_platform.dart';
 import '../../shell/page_frame.dart';
 import '../../theme/app_icons.dart';
 import '../../web/web_view_guard.dart';

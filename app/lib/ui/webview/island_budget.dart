@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '../../../platform/seat_models.dart';
+import 'package:dsh_app/platform/seat_models.dart';
 import 'island_messages.dart';
 import 'island_platform.dart';
 

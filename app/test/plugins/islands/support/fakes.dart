@@ -10,7 +10,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:dsh_app/ui/plugins/islands/islands.dart';
+import 'package:dsh_app/ui/webview/islands.dart';
 import 'package:flutter/widgets.dart';
 import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 
