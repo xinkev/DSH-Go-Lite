@@ -5,14 +5,12 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../notify/live_activity.dart';
 import 'android_features.dart';
 import 'notify_state.dart';
 
-export '../notify/live_activity.dart';
 
 /// What the live activity shows now: nothing (the feature is retired).
-final liveActivityProvider = Provider<LiveActivity?>((ref) => null);
+final liveActivityProvider = Provider<Object?>((ref) => null);
 
 /// What `dsh/notify` is told: always off.
 final livePushProvider = Provider<LivePush>((ref) => const LivePush(enabled: false));

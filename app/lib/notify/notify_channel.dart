@@ -11,7 +11,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import '../state/hosts_state.dart';
-import 'live_activity.dart';
 
 /// Whether the system lets DSH's chat notifications through.
 class NotifySystemStatus {
@@ -220,9 +219,9 @@ class LivePush {
 
   final bool enabled;
   final String? packId;
-  final LiveActivity? activity;
+  final Object? activity;
 
-  Map<String, Object?> toMap() => {'enabled': enabled, 'packId': ?packId, 'activity': ?activity?.toMap()};
+  Map<String, Object?> toMap() => {'enabled': enabled, 'packId': ?packId, 'activity': ?activity};
 
   @override
   bool operator ==(Object other) =>
