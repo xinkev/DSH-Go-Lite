@@ -12,7 +12,6 @@ import '../../l10n/l10n.dart';
 import '../../state/engine_settings_state.dart';
 import '../../state/plugins_state.dart';
 import '../features/feature_widgets.dart';
-import '../plugins/plugin_inventory_page.dart';
 import '../settings/index/spots.dart';
 import '../settings/settings_widgets.dart' as sw show SettingsSection, SettingsTile;
 import '../shell/page_frame.dart';
