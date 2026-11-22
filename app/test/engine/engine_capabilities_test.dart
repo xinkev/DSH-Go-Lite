@@ -53,24 +53,4 @@ void main() {
     expect(find.text(_zh.engineCapBackground), findsNothing);
   });
 
-  test('only a clear no refuses market installs', () async {
-    for (final (support, refused) in const [
-      (RuntimeSupport.unsupported, true),
-      (RuntimeSupport.supported, false),
-      (RuntimeSupport.unknown, false),
-    ]) {
-      final container = ProviderContainer(
-        overrides: [
-          runtimeCapabilitiesProvider.overrideWith(
-            (ref) async => RuntimeCapabilities(plugins: RuntimePluginCapabilities(marketInstall: support)),
-          ),
-        ],
-      );
-      addTearDown(container.dispose);
-      final sub = container.listen(marketInstallRefusedProvider, (_, _) {});
-      await container.read(runtimeCapabilitiesProvider.future);
-      expect(sub.read(), refused);
-      sub.close();
-    }
-  });
 }

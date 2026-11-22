@@ -1,6 +1,6 @@
 // Opening a share code: what would change on the chosen engine (the confirm
 // sheet's diff, per-item toggles) and applying the ticked changes in order:
-// restore point, plugins, settings, skills, AGENTS.md.
+// restore point, settings, skills, AGENTS.md.
 
 import 'dart:async';
 import 'dart:convert';
@@ -17,7 +17,7 @@ import 'settings_sanitizer.dart' show isSecretFieldName;
 import 'share_models.dart';
 import 'share_net.dart';
 
-enum ImportSection { plugins, presets, settings, skills, agentsMd }
+enum ImportSection { presets, settings, skills, agentsMd }
 
 enum ChangeKind {
   /// New on the target.
@@ -25,39 +25,26 @@ enum ChangeKind {
 
   /// Replaces something on the target.
   change,
-  install,
-  upgrade,
-  enable,
 
-  /// Already the same: shown for plugins, not applied.
+  /// Already the same: shown, not applied.
   unchanged,
 
   /// Can't be applied on this target ([ImportChange.blocked] says why).
   unavailable,
 }
 
-/// Whether the registry still serves the package the sharer had.
-enum IntegrityStatus { verified, unverifiable, mismatch }
-
 /// The engine an import goes to.
 class ImportTarget {
-  const ImportTarget(this.connection, {required this.isActive, this.safeMode = false, this.installRefused = false});
+  const ImportTarget(this.connection, {required this.isActive});
 
   final HostConnection connection;
 
-  /// The host the chat talks to (installs then show on the plugin pages).
+  /// The host the chat talks to.
   final bool isActive;
-
-  /// The on-device engine runs its repair profile: no installs.
-  final bool safeMode;
-
-  /// The engine takes no market installs (HarmonyOS's own).
-  final bool installRefused;
 
   bool get isLocal => connection.isLocal;
   String get label => connection.label;
   DshClient get client => connection.client;
-  bool get canInstall => !safeMode && !installRefused && client.canInstallPlugins;
 }
 
 /// One row of the diff.
@@ -72,18 +59,12 @@ class ImportChange {
     this.sensitive = false,
     this.blocked,
     this.monoTitle = false,
-    this.follows,
-    this.plugin,
-    this.fromVersion,
-    this.integrity,
-    this.facts,
-    this.installSpec,
     this.ops = const [],
     this.skill,
     this.text,
   });
 
-  /// `plugin:<name>`, `preset:<id>`, `settings:<ns>`, `skill:<name>`, `agents-md`.
+  /// `preset:<id>`, `settings:<ns>`, `skill:<name>`, `agents-md`.
   final String id;
   final ImportSection section;
   final String title;
@@ -98,18 +79,6 @@ class ImportChange {
   final String? blocked;
   final bool monoTitle;
 
-  /// A preset is applied with its plugin: the plugin change's id.
-  final String? follows;
-
-  // Plugins.
-  final SharedPlugin? plugin;
-  final String? fromVersion;
-  final IntegrityStatus? integrity;
-  final NpmFacts? facts;
-
-  /// What to install: the shared spec, or an official on-demand target.
-  final String? installSpec;
-
   // Settings.
   final List<SettingsOp> ops;
 
@@ -118,8 +87,7 @@ class ImportChange {
   final String? text;
 
   /// Has its own switch.
-  bool get toggleable =>
-      blocked == null && follows == null && kind != ChangeKind.unchanged && kind != ChangeKind.unavailable;
+  bool get toggleable => blocked == null && kind != ChangeKind.unchanged && kind != ChangeKind.unavailable;
 
   /// Does something when applied.
   bool get actionable => blocked == null && kind != ChangeKind.unchanged && kind != ChangeKind.unavailable;
@@ -139,10 +107,10 @@ class ImportPlan {
       if (c.toggleable && c.defaultOn) c.id,
   };
 
-  /// Changes that would run for [selected] (presets follow their plugin).
+  /// Changes that would run for [selected].
   List<ImportChange> selected(Set<String> selected) => [
     for (final c in changes)
-      if (c.actionable && (c.follows == null ? selected.contains(c.id) : selected.contains(c.follows))) c,
+      if (c.actionable && selected.contains(c.id)) c,
   ];
 
   bool get isProfile => payload is ProfileShare;
@@ -243,121 +211,8 @@ String _settingsDetail(List<_SettingChange> changes) {
 Future<ImportPlan> planImport(SharePayload payload, ImportTarget target, {required ShareNet net, GuestFs? fs}) async {
   final client = target.client;
   final changes = <ImportChange>[];
-  final plugins = switch (payload) {
-    PluginShare(:final plugin) => [plugin],
-    ProfileShare(:final plugins) => plugins,
-  };
-
-  // Plugins.
-  List<PluginBundle> bundles = const [];
-  try {
-    bundles = await client.listBundles();
-  } on DshException {
-    // Unknown: everything shows as an install.
-  }
-  final facts = <String, NpmFacts?>{};
-  await Future.wait([
-    for (final p in plugins)
-      if (p.source == PluginSourceKind.npm && p.version != null)
-        net
-            .npmFacts(p.name, p.version!)
-            .timeout(const Duration(seconds: 8), onTimeout: () => null)
-            .then((f) => facts[p.name] = f, onError: (Object _) => facts[p.name] = null),
-  ]);
-  final installedAny = <String>{};
-  for (final p in plugins) {
-    final have = bundles.where((b) => b.name == p.name).firstOrNull;
-    final id = 'plugin:${p.name}';
-    if (p.source == PluginSourceKind.official) {
-      if (have == null) {
-        changes.add(
-          ImportChange(
-            id: id,
-            section: ImportSection.plugins,
-            title: p.displayTitle,
-            kind: ChangeKind.unavailable,
-            plugin: p,
-            blocked: appL10n.pluginsOfficialUnavailable,
-          ),
-        );
-      } else if (have.isOnDemand) {
-        changes.add(
-          ImportChange(
-            id: id,
-            section: ImportSection.plugins,
-            title: p.displayTitle,
-            kind: ChangeKind.install,
-            plugin: p,
-            installSpec: have.installTargetSpec,
-            blocked: target.canInstall ? null : _cantInstall(target),
-          ),
-        );
-      } else if (have.enabled) {
-        changes.add(
-          ImportChange(
-            id: id,
-            section: ImportSection.plugins,
-            title: p.displayTitle,
-            kind: ChangeKind.unchanged,
-            plugin: p,
-            detail: appL10n.pluginsEnabled,
-          ),
-        );
-      } else {
-        changes.add(
-          ImportChange(
-            id: id,
-            section: ImportSection.plugins,
-            title: p.displayTitle,
-            kind: ChangeKind.enable,
-            plugin: p,
-            blocked: target.safeMode ? _cantInstall(target) : null,
-          ),
-        );
-      }
-      continue;
-    }
-    final f = facts[p.name];
-    final integrity = switch ((p.integrity, f?.integrity)) {
-      (final want?, final got?) => want == got ? IntegrityStatus.verified : IntegrityStatus.mismatch,
-      _ => IntegrityStatus.unverifiable,
-    };
-    final installed = have != null && have.installed;
-    final sameVersion = installed && p.version != null && have.version == p.version;
-    final kind = sameVersion ? ChangeKind.unchanged : (installed ? ChangeKind.upgrade : ChangeKind.install);
-    String? blocked;
-    if (kind != ChangeKind.unchanged) {
-      if (integrity == IntegrityStatus.mismatch) {
-        blocked = appL10n.pluginsVersionMismatch;
-      } else if (!target.canInstall) {
-        blocked = _cantInstall(target);
-      }
-    }
-    if (kind != ChangeKind.unchanged && blocked == null) installedAny.add(p.name);
-    changes.add(
-      ImportChange(
-        id: id,
-        section: ImportSection.plugins,
-        title: p.displayTitle,
-        kind: kind,
-        plugin: p,
-        fromVersion: installed ? have.version : null,
-        integrity: integrity,
-        facts: f,
-        installSpec: p.spec,
-        detail: switch (kind) {
-          ChangeKind.unchanged => appL10n.commonInstalled,
-          ChangeKind.upgrade =>
-            '${have?.version ?? appL10n.pluginsCurrentVersion} → ${p.version ?? p.gitRef ?? appL10n.pluginsNewVersion}',
-          _ => p.version ?? p.gitRef,
-        },
-        blocked: blocked,
-      ),
-    );
-  }
-
   if (payload is ProfileShare) {
-    // Presets ride with their plugin.
+    // Presets.
     List<AgentPresetInfo> existing = const [];
     try {
       existing = await client.listAgentPresets();
@@ -366,17 +221,12 @@ Future<ImportPlan> planImport(SharePayload payload, ImportTarget target, {requir
     }
     for (final preset in payload.presets) {
       if (existing.any((e) => e.id == preset.id)) continue;
-      final owner = preset.bundle == null ? null : 'plugin:${preset.bundle}';
-      final ownerChange = changes.where((c) => c.id == owner).firstOrNull;
-      if (ownerChange == null || !ownerChange.actionable) continue;
       changes.add(
         ImportChange(
           id: 'preset:${preset.id}',
           section: ImportSection.presets,
           title: preset.displayName,
           kind: ChangeKind.add,
-          detail: appL10n.pluginsAddedWith(ownerChange.title),
-          follows: owner,
         ),
       );
     }
@@ -403,20 +253,16 @@ Future<ImportPlan> planImport(SharePayload payload, ImportTarget target, {requir
       // Shown in full and left for the person to tick.
       final sensitive = diffs.any((d) => d.sensitive);
       if (view == null) {
-        final later = installedAny.isNotEmpty;
         changes.add(
           ImportChange(
             id: id,
             section: ImportSection.settings,
             title: title,
             monoTitle: mono,
-            kind: later ? ChangeKind.add : ChangeKind.unavailable,
-            detail: later ? appL10n.pluginsApplyAfterInstall(_settingsDetail(diffs)) : null,
+            kind: ChangeKind.unavailable,
             defaultOn: !sensitive,
             sensitive: sensitive,
-            blocked: settingsUnread
-                ? appL10n.pluginsSettingsReadFailed
-                : (later ? null : appL10n.pluginsSettingUnavailable),
+            blocked: settingsUnread ? appL10n.pluginsSettingsReadFailed : appL10n.pluginsSettingUnavailable,
             ops: [for (final d in diffs) SettingsOp.set(d.path, d.to)],
           ),
         );
@@ -527,14 +373,6 @@ Future<ImportPlan> planImport(SharePayload payload, ImportTarget target, {requir
 bool _sameFiles(Map<String, String> a, Map<String, String> b) =>
     a.length == b.length && a.entries.every((e) => b[e.key]?.trim() == e.value.trim());
 
-String _cantInstall(ImportTarget target) => target.safeMode
-    ? appL10n.pluginsSafeModeInstallBlocked
-    : target.installRefused
-    ? appL10n.marketInstallRefused
-    : appL10n.pluginsHostInstallBlocked;
-
-// ── Applying ─────────────────────────────────────────────────────────────────
-
 enum ImportStepState { pending, running, done, failed, skipped }
 
 class StepStatus {
@@ -593,7 +431,7 @@ Future<ImportResult> applyImport(
 
   final settingsSteps = steps.where((s) => s.section == ImportSection.settings).toList();
   if (settingsSteps.isNotEmpty && !(cancelled?.call() ?? false)) {
-    // Fresh revisions (and namespaces the plugins just added).
+    // Fresh revisions.
     Map<String, SettingsNamespaceView> views = const {};
     try {
       views = (await target.client.describeSettings()).namespaces;

@@ -46,14 +46,9 @@ String? _codeOf(String fileText) {
 final importTargetsProvider = Provider.autoDispose<List<ImportTarget>>((ref) {
   final local = ref.watch(localConnectionProvider).value;
   final active = ref.watch(activeConnectionProvider).value;
-  const safeMode = false;
-  // The capability is the active engine's; HarmonyOS's own refuses whichever is active.
-  final ohos = ref.watch(operatingSystemProvider) == 'ohos';
-  const refused = false;
   return [
-    if (active != null && !active.isLocal) ImportTarget(active, isActive: true, installRefused: refused),
-    if (local != null)
-      ImportTarget(local, isActive: active?.isLocal ?? false, safeMode: safeMode, installRefused: ohos),
+    if (active != null && !active.isLocal) ImportTarget(active, isActive: true),
+    if (local != null) ImportTarget(local, isActive: active?.isLocal ?? false),
   ];
 });
 

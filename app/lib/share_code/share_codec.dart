@@ -162,7 +162,6 @@ const shareFileExtension = 'dshgo';
 /// A conversation's file is written by `encodeConversationFile`.
 String encodeShareFile(SharePayload payload, {String? code}) {
   final name = switch (payload) {
-    PluginShare(:final plugin) => plugin.displayTitle,
     ProfileShare(:final name) => name,
   };
   return '${const JsonEncoder.withIndent('  ').convert({'dshgo': shareFormatVersion, 'kind': payload.kind.name, 'name': ?name, 'code': code ?? encodeShareCode(payload)})}\n';

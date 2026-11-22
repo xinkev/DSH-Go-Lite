@@ -39,9 +39,8 @@ Future<void> showProfileSharePreview(BuildContext context, ProfileShare share) =
   builder: (_) => SheetNavigator(root: (_) => ProfileSharePreview(share: share)),
 );
 
-/// `3 个插件 · 5 项设置 · 2 个技能 · AGENTS.md`.
+/// `5 项设置 · 2 个技能 · AGENTS.md`.
 String profileSummary(ProfileShare p) => [
-  if (p.plugins.isNotEmpty) appL10n.pluginsPluginCount(p.plugins.length),
   if (p.settings.isNotEmpty) appL10n.pluginsSettingsCount(p.settings.length),
   if (p.presets.isNotEmpty) appL10n.pluginsPresetCount(p.presets.length),
   if (p.skills.isNotEmpty) appL10n.pluginsSkillCount(p.skills.length),
@@ -50,7 +49,6 @@ String profileSummary(ProfileShare p) => [
 
 Map<ExportSection, String> get _sectionTitles => {
   ExportSection.settings: appL10n.commonSettings,
-  ExportSection.plugins: appL10n.pluginsTitle,
   ExportSection.skills: appL10n.pluginsSkills,
   ExportSection.agentsMd: appL10n.pluginsPersonalPreferences,
 };
@@ -227,17 +225,6 @@ class ProfileSharePreview extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                if (share.plugins.isNotEmpty)
-                  SheetGroup(
-                    title: l10n.pluginsTitle,
-                    children: [
-                      for (final p in share.plugins)
-                        ListPageRow(
-                          title: p.displayTitle,
-                          value: p.version ?? (p.source == PluginSourceKind.official ? l10n.pluginsOfficial : p.gitRef),
-                        ),
-                    ],
-                  ),
                 if (share.settings.isNotEmpty)
                   SheetGroup(
                     title: l10n.commonSettings,

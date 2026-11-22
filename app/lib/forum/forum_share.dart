@@ -19,39 +19,29 @@ import '../share_code/share_models.dart';
 
 /// What an install card shows for a share link.
 class ForumShareSummary {
-  const ForumShareSummary({required this.kind, required this.title, this.detail});
+  const ForumShareSummary({required this.title, this.detail});
 
-  final ShareKind kind;
   final String title;
 
-  /// `3 个插件 · 2 个技能`, the author, … (null when nothing to add).
+  /// `3 个技能 · 2 项设置` (null when nothing to add).
   final String? detail;
 
-  /// 「插件」 / 「配置」.
-  String get kindLabel => kind == ShareKind.plugin ? appL10n.statePluginLabel : appL10n.stateConfigLabel;
+  String get kindLabel => appL10n.stateConfigLabel;
 }
 
 /// Reads what it can from [link] without the network: inline codes decode
 /// locally; a Gist link only says it is a configuration.
 ForumShareSummary summarizeShareLink(ShareLink link, {String? label}) {
-  if (link.isGist) return ForumShareSummary(kind: ShareKind.profile, title: label ?? appL10n.stateConfigShare);
+  if (link.isGist) return ForumShareSummary(title: label ?? appL10n.stateConfigShare);
   try {
     final payload = decodeShareCode(link.code!);
     switch (payload) {
-      case PluginShare(:final plugin):
-        return ForumShareSummary(
-          kind: ShareKind.plugin,
-          title: plugin.displayTitle,
-          detail: [?plugin.author, ?plugin.summary].where((s) => s.trim().isNotEmpty).join(' · ').ifEmpty(),
-        );
       case ProfileShare():
         final parts = [
-          if (payload.plugins.isNotEmpty) appL10n.stateSharePluginCount(payload.plugins.length),
           if (payload.skills.isNotEmpty) appL10n.stateShareSkillCount(payload.skills.length),
           if (payload.settings.isNotEmpty) appL10n.stateShareSettingCount(payload.settings.length),
         ];
         return ForumShareSummary(
-          kind: ShareKind.profile,
           title: (payload.name?.trim().isNotEmpty ?? false)
               ? payload.name!.trim()
               : (label ?? appL10n.stateConfigShare),
@@ -59,12 +49,8 @@ ForumShareSummary summarizeShareLink(ShareLink link, {String? label}) {
         );
     }
   } catch (_) {
-    return ForumShareSummary(kind: link.kind ?? ShareKind.plugin, title: label ?? appL10n.stateShareCode);
+    return ForumShareSummary(title: label ?? appL10n.stateShareCode);
   }
-}
-
-extension on String {
-  String? ifEmpty() => trim().isEmpty ? null : this;
 }
 
 /// The Markdown a post gets for [link]: a titled link on its own line (a

@@ -65,7 +65,7 @@ class ShareLink {
       : Uri(
           scheme: appLinkScheme,
           host: shareLinkHost,
-          path: '/${(kind ?? ShareKind.plugin).name}',
+          path: '/${(kind ?? ShareKind.profile).name}',
           queryParameters: {'p': code},
         );
 

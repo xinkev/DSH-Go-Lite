@@ -100,19 +100,11 @@ class _ShareCodePanelState extends ConsumerState<ShareCodePanel> {
   String? get _web => widget.webLink ?? _link?.webLink;
 
   String get _shareText {
-    final what = widget.payload is PluginShare ? appL10n.pluginsPluginShareTitle : appL10n.pluginsProfileTitle;
+    final what = appL10n.pluginsProfileTitle;
     return '「${widget.title}」· $what\n${_web!}';
   }
 
-  String get _fileName => ref
-      .read(shareOutProvider)
-      .fileName(
-        profile: widget.payload is ProfileShare,
-        name: switch (widget.payload) {
-          PluginShare(:final plugin) => plugin.name,
-          _ => null,
-        },
-      );
+  String get _fileName => ref.read(shareOutProvider).fileName(profile: true);
 
   Future<void> _copy() async {
     final link = _web;
@@ -246,15 +238,14 @@ class _ShareCodePanelState extends ConsumerState<ShareCodePanel> {
               busy: _sharing,
               onTap: _share,
             ),
-            if (widget.payload is! PluginShare)
-              ShareAction(
-                key: const ValueKey('share-code-save'),
-                icon: AppIcons.download,
-                label: _done == _Done.saved ? l10n.commonSaved : l10n.pluginsSaveAsFile,
-                done: _done == _Done.saved,
-                busy: _saving,
-                onTap: _save,
-              ),
+            ShareAction(
+              key: const ValueKey('share-code-save'),
+              icon: AppIcons.download,
+              label: _done == _Done.saved ? l10n.commonSaved : l10n.pluginsSaveAsFile,
+              done: _done == _Done.saved,
+              busy: _saving,
+              onTap: _save,
+            ),
           ],
         ),
         if (_error case final error?)

@@ -423,7 +423,7 @@ class ForumShareCard extends ConsumerWidget {
     final theme = Theme.of(context);
     final colors = DshColors.of(context);
     final summary = summarizeShareLink(link, label: label);
-    final tint = summary.kind == ShareKind.plugin ? 3 : 6;
+    const tint = 6;
     final subtitle = [summary.kindLabel, ?summary.detail].join(' · ');
     Future<void> install() async {
       final messenger = ScaffoldMessenger.maybeOf(context);
@@ -446,7 +446,7 @@ class ForumShareCard extends ConsumerWidget {
               child: SizedBox.square(
                 dimension: glyphSize,
                 child: Icon(
-                  summary.kind == ShareKind.plugin ? AppIcons.plugin : AppIcons.configure,
+                  AppIcons.configure,
                   size: 22,
                   color: colors.onIdentity[tint],
                 ),

@@ -19,7 +19,7 @@ import 'settings_sanitizer.dart';
 import 'share_models.dart';
 import 'share_net.dart';
 
-enum ExportSection { settings, plugins, skills, agentsMd }
+enum ExportSection { settings, skills, agentsMd }
 
 /// One row of the checklist.
 class ExportItem {
@@ -34,7 +34,7 @@ class ExportItem {
     this.monoTitle = false,
   });
 
-  /// `settings:<ns>`, `plugin:<name>`, `skill:<name>`, `agents-md`.
+  /// `settings:<ns>`, `skill:<name>`, `agents-md`.
   final String id;
   final ExportSection section;
   final String title;
@@ -60,8 +60,6 @@ class ProfileExportSource {
     required this.isLocal,
     required this.items,
     required this.settings,
-    required this.plugins,
-    required this.presets,
     required this.skills,
     this.agentsMd,
   });
@@ -73,11 +71,6 @@ class ProfileExportSource {
   /// Cleaned user layers by namespace.
   final Map<String, Map<String, Object?>> settings;
 
-  /// Shareable plugins by bundle name.
-  final Map<String, SharedPlugin> plugins;
-
-  /// Presets each plugin declares.
-  final Map<String, List<SharedPreset>> presets;
   final Map<String, SharedSkill> skills;
   final String? agentsMd;
 
@@ -90,10 +83,6 @@ class ProfileExportSource {
 
   /// The share for the ticked [selected] item ids.
   ProfileShare build(Set<String> selected, {String? name, DateTime? now}) {
-    final chosen = [
-      for (final MapEntry(:key, :value) in plugins.entries)
-        if (selected.contains('plugin:$key')) value,
-    ];
     return ProfileShare(
       name: name,
       created: now ?? DateTime.now(),
@@ -101,8 +90,6 @@ class ProfileExportSource {
         for (final MapEntry(:key, :value) in settings.entries)
           if (selected.contains('settings:$key')) key: value,
       },
-      plugins: chosen,
-      presets: [for (final p in chosen) ...?presets[p.name]],
       skills: [
         for (final MapEntry(:key, :value) in skills.entries)
           if (selected.contains('skill:$key')) value,
@@ -125,8 +112,6 @@ Future<ProfileExportSource> loadProfileExport(
 }) async {
   final items = <ExportItem>[];
   final settings = <String, Map<String, Object?>>{};
-  final plugins = <String, SharedPlugin>{};
-  final presets = <String, List<SharedPreset>>{};
   final skills = <String, SharedSkill>{};
 
   // Settings.
@@ -191,8 +176,6 @@ Future<ProfileExportSource> loadProfileExport(
     isLocal: isLocal,
     items: items,
     settings: settings,
-    plugins: plugins,
-    presets: presets,
     skills: skills,
     agentsMd: agentsMd,
   );

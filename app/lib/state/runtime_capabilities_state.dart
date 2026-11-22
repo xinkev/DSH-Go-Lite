@@ -17,8 +17,3 @@ final runtimeCapabilitiesProvider = FutureProvider.autoDispose<RuntimeCapabiliti
     return null;
   }
 });
-
-/// The engine said it refuses market installs, so don't offer one to fail.
-final marketInstallRefusedProvider = Provider.autoDispose<bool>(
-  (ref) => ref.watch(runtimeCapabilitiesProvider).value?.plugins.marketInstall == RuntimeSupport.unsupported,
-);

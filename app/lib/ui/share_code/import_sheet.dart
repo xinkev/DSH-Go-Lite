@@ -43,11 +43,11 @@ enum ShareOrigin {
 
 Future<void> showShareImportSheet(
   BuildContext context,
-  SharePayload payload, {
+  ProfileShare payload, {
   ShareOrigin origin = ShareOrigin.link,
 }) => showAppSheet<void>(
   context,
-  heightFactor: payload is ProfileShare ? 0.9 : null,
+  heightFactor: 0.9,
   isScrollControlled: true,
   builder: (_) => ShareImportSheet(payload: payload, origin: origin),
 );
@@ -55,7 +55,7 @@ Future<void> showShareImportSheet(
 class ShareImportSheet extends ConsumerStatefulWidget {
   const ShareImportSheet({super.key, required this.payload, this.origin = ShareOrigin.link});
 
-  final SharePayload payload;
+  final ProfileShare payload;
   final ShareOrigin origin;
 
   @override
@@ -74,8 +74,6 @@ class _ShareImportSheetState extends ConsumerState<ShareImportSheet> {
   final _steps = <String, StepStatus>{};
   ImportResult? _result;
   bool _restarting = false;
-
-  bool get _isProfile => widget.payload is ProfileShare;
 
   Future<void> _planFor(ImportTarget target) async {
     final seq = ++_planSeq;
@@ -154,10 +152,7 @@ class _ShareImportSheetState extends ConsumerState<ShareImportSheet> {
         });
       }
     }
-    final title = switch (widget.payload) {
-      PluginShare() => l10n.pluginsInstallPlugin,
-      ProfileShare() => l10n.pluginsImportProfile,
-    };
+    final title = l10n.pluginsImportProfile;
     final content = <Widget>[
       Padding(padding: const EdgeInsets.fromLTRB(kSheetGutter, 4, kSheetGutter, 12), child: _hero()),
       SheetGroup(children: _facts()),
@@ -176,40 +171,19 @@ class _ShareImportSheetState extends ConsumerState<ShareImportSheet> {
             },
           ),
         ),
-      if (_isProfile) ..._diff(),
+      ..._diff(),
     ];
     final footer = SafeArea(
       top: false,
       child: Padding(padding: const EdgeInsets.fromLTRB(kSheetGutter, 12, kSheetGutter, 16), child: _footer(targets)),
     );
-    if (_isProfile) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SheetHeader(title),
-          Expanded(
-            child: ScrollEdgeFade(
-              child: ListView(padding: EdgeInsets.zero, children: content),
-            ),
-          ),
-          footer,
-        ],
-      );
-    }
     return Column(
-      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         SheetHeader(title),
-        Flexible(
+        Expanded(
           child: ScrollEdgeFade(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: content,
-              ),
-            ),
+            child: ListView(padding: EdgeInsets.zero, children: content),
           ),
         ),
         footer,
@@ -217,46 +191,31 @@ class _ShareImportSheetState extends ConsumerState<ShareImportSheet> {
     );
   }
 
-  Widget _hero() => switch (widget.payload) {
-    PluginShare() => const SizedBox.shrink(),
-    final ProfileShare p => ShareHero(
+  Widget _hero() {
+    final p = widget.payload;
+    return ShareHero(
       leading: const ProfileTile(),
       title: p.name ?? appL10n.pluginsProfileTitle,
       subtitle: profileSummary(p),
-    ),
-  };
-
-  ImportChange? get _pluginChange => _plan?.changes.where((c) => c.section == ImportSection.plugins).firstOrNull;
+    );
+  }
 
   List<Widget> _facts() {
     final payload = widget.payload;
     final target = _target;
-    final targetRow = ListPageRow(
-      key: const ValueKey('share-import-target-row'),
-      title: _isProfile ? appL10n.pluginsImportTo : appL10n.pluginsInstallTo,
-      value: target?.label ?? appL10n.commonNotConnected,
-    );
-    switch (payload) {
-        case PluginShare():
-        return const [];
-      case ProfileShare():
-        return [
-          ListPageRow(title: appL10n.pluginsSource, value: widget.origin.label),
-          ListPageRow(title: appL10n.pluginsSize, value: formatShareBytes(shareBodyBytes(payload).length)),
-          if (_target != null && _targets.length < 2) targetRow,
-        ];
-    }
+    return [
+      ListPageRow(title: appL10n.pluginsSource, value: widget.origin.label),
+      ListPageRow(title: appL10n.pluginsSize, value: formatShareBytes(shareBodyBytes(payload).length)),
+      if (target != null && _targets.length < 2)
+        ListPageRow(
+          key: const ValueKey('share-import-target-row'),
+          title: appL10n.pluginsImportTo,
+          value: target.label,
+        ),
+    ];
   }
 
-  Widget _integrityChip(IntegrityStatus? status) => switch (status) {
-    IntegrityStatus.verified => StatusChip(tone: StatusTone.ok, label: appL10n.pluginsVerified),
-    IntegrityStatus.mismatch => StatusChip(tone: StatusTone.error, label: appL10n.pluginsVerificationMismatch),
-    IntegrityStatus.unverifiable => StatusChip(tone: StatusTone.idle, label: appL10n.pluginsCannotVerify),
-    null => StatusChip(tone: StatusTone.idle, label: appL10n.pluginsVerifying),
-  };
-
   static Map<ImportSection, String> get _sectionTitles => {
-    ImportSection.plugins: appL10n.pluginsTitle,
     ImportSection.presets: appL10n.pluginsPresets,
     ImportSection.settings: appL10n.commonSettings,
     ImportSection.skills: appL10n.pluginsSkills,
@@ -266,9 +225,6 @@ class _ShareImportSheetState extends ConsumerState<ShareImportSheet> {
   static String _kindLabel(ChangeKind kind) => switch (kind) {
     ChangeKind.add => appL10n.pluginsAdded,
     ChangeKind.change => appL10n.pluginsModified,
-    ChangeKind.install => appL10n.commonInstall,
-    ChangeKind.upgrade => appL10n.commonUpdate,
-    ChangeKind.enable => appL10n.commonEnable,
     ChangeKind.unchanged => appL10n.pluginsNoChanges,
     ChangeKind.unavailable => appL10n.pluginsUnavailable,
   };
@@ -291,7 +247,7 @@ class _ShareImportSheetState extends ConsumerState<ShareImportSheet> {
     final theme = Theme.of(context);
     final colors = DshColors.of(context);
     final status = _steps[c.id];
-    final on = c.follows == null ? _selected.contains(c.id) : _selected.contains(c.follows);
+    final on = _selected.contains(c.id);
     String? subtitle;
     Color? subtitleColor;
     if (status?.state == ImportStepState.failed) {
@@ -399,13 +355,13 @@ class _ShareImportSheetState extends ConsumerState<ShareImportSheet> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           note(appL10n.commonEngineUnreachable),
-          primary(_isProfile ? appL10n.pluginsImport : appL10n.commonInstall, null),
+          primary(appL10n.pluginsImport, null),
         ],
       );
     }
     switch (_phase) {
       case _Phase.planning:
-        return primary(_isProfile ? appL10n.pluginsImport : appL10n.commonInstall, null);
+        return primary(appL10n.pluginsImport, null);
       case _Phase.ready:
         final plan = _plan;
         if (plan == null) {
@@ -418,43 +374,24 @@ class _ShareImportSheetState extends ConsumerState<ShareImportSheet> {
             ],
           );
         }
-        if (!_isProfile && _pluginChange != null) {
-          final c = _pluginChange!;
-          final label = switch (c.kind) {
-            ChangeKind.upgrade => appL10n.pluginsUpdateTo(
-              c.plugin?.version ?? c.plugin?.gitRef ?? appL10n.pluginsNewVersion,
-            ),
-            ChangeKind.enable => appL10n.commonEnable,
-            ChangeKind.unchanged => c.detail ?? appL10n.commonInstalled,
-            ChangeKind.unavailable => appL10n.commonInstall,
-            _ => appL10n.commonInstall,
-          };
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [if (c.blocked case final b?) note(b), primary(label, c.actionable ? _run : null)],
-          );
-        }
         final count = plan.selected(_selected).length;
         return primary(
           count == 0 ? appL10n.pluginsImport : appL10n.pluginsImportCount(count),
           count == 0 ? null : _run,
         );
       case _Phase.running:
-        return primary(_isProfile ? appL10n.pluginsImporting : appL10n.pluginsInstallingActive, null, busy: true);
+        return primary(appL10n.pluginsImporting, null, busy: true);
       case _Phase.done:
         final result = _result!;
         final failed = result.failed;
         final local = _target?.isLocal ?? true;
         final message = failed > 0
-            ? (_isProfile
-                  ? appL10n.pluginsImportFailedCount(failed)
-                  : (result.statuses.values.firstOrNull?.message ?? appL10n.pluginsCouldNotInstall))
+            ? appL10n.pluginsImportFailedCount(failed)
             : result.needsRestart
             ? (local
                   ? appL10n.pluginsEngineRestartToApply
                   : appL10n.pluginsRemoteRestartToApply(_target?.label ?? appL10n.pluginsThatComputer))
-            : (_isProfile ? appL10n.pluginsImportedCount(result.done) : appL10n.commonCompleted);
+            : appL10n.pluginsImportedCount(result.done);
         final done = OutlinedButton(
           key: const ValueKey('share-import-done'),
           style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48)),

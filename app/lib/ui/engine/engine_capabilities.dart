@@ -19,11 +19,6 @@ List<Widget> engineCapabilityRows(L10n l10n, RuntimeCapabilities? caps) {
     RuntimeNodeScripts.none => l10n.engineCapNone,
     RuntimeNodeScripts.unknown => null,
   };
-  final market = switch (caps.plugins.marketInstall) {
-    RuntimeSupport.supported => l10n.engineCapYes,
-    RuntimeSupport.unsupported => l10n.engineCapNone,
-    RuntimeSupport.unknown => null,
-  };
   final background = switch (caps.background.policy) {
     RuntimeBackgroundPolicy.mayFreeze => l10n.engineCapMayFreeze,
     RuntimeBackgroundPolicy.unrestricted => l10n.engineCapKeepsRunning,
@@ -32,7 +27,6 @@ List<Widget> engineCapabilityRows(L10n l10n, RuntimeCapabilities? caps) {
   return [
     if (shell != null) InfoRow(label: l10n.engineCapShell, value: shell),
     if (nodeScripts != null) InfoRow(label: l10n.engineCapNodeScripts, value: nodeScripts),
-    if (market != null) InfoRow(label: l10n.engineCapMarket, value: market),
     if (background != null) InfoRow(label: l10n.engineCapBackground, value: background),
   ];
 }

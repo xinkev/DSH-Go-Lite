@@ -222,21 +222,20 @@ void main() {
     });
 
     test('share links become install cards (link, plain text, onebox)', () {
-      final link = samplePluginLink();
+      final link = sampleShareLink();
       final cooked =
-          '<p>看这个：<a href="${link.webLink}">插件：ModSearch</a></p>'
+          '<p>看这个：<a href="${link.webLink}">配置：联网搜索</a></p>'
           '<p>${link.appLink}</p>'
           '<aside class="onebox" data-onebox-src="${link.webLink}"><header class="source"><a href="${link.webLink}">x</a></header></aside>';
       final blocks = parseCooked(cooked, base: forumBase);
       final shares = blocks.whereType<CookedShare>().toList();
       expect(shares, hasLength(3));
-      expect(shares.first.label, '插件：ModSearch');
+      expect(shares.first.label, '配置：联网搜索');
       expect((blocks.first as CookedMarkdown).markdown, '看这个：');
       final summary = summarizeShareLink(shares.first.link);
-      expect(summary.kind, ShareKind.plugin);
       expect(summary.title, 'ModSearch 联网搜索');
-      expect(summary.kindLabel, '插件');
-      expect(shareLinkMarkdown(link), '[插件：ModSearch 联网搜索](${link.webLink})');
+      expect(summary.kindLabel, '配置');
+      expect(shareLinkMarkdown(link), '[配置：ModSearch 联网搜索](${link.webLink})');
     });
 
     test('polls, videos and details', () {

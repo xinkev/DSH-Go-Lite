@@ -29,14 +29,6 @@ import '../shell/golden_harness.dart';
 
 const _channel = MethodChannel('dsh/links');
 
-const _plugin = SharedPlugin(
-  name: 'dsh-notes',
-  source: PluginSourceKind.npm,
-  spec: 'dsh-notes@1.4.2',
-  version: '1.4.2',
-  title: '读书笔记',
-  summary: '把对话整理成读书笔记',
-);
 
 List<Override> _shareOverrides(FakeEngine engine) => [
   importTargetsProvider.overrideWithValue([
@@ -137,38 +129,30 @@ void main() {
     expect(find.text('无法打开这个链接'), findsNothing);
   });
 
-  testWidgets('a cold-start dshgo://share/plugin link opens the install sheet', (tester) async {
+  testWidgets('a cold-start dshgo://share/profile link opens the confirm sheet', (tester) async {
     final native = _FakeLinksNative(tester);
-    final link = ShareLink.inline(ShareKind.plugin, encodeShareCode(const PluginShare(_plugin)));
+    final link = ShareLink.inline(ShareKind.profile, encodeShareCode(const ProfileShare(name: '读书笔记')));
     await native.arrive(link.appLink.toString());
 
     final engine = FakeEngine();
     await tester.pumpWidget(_shell(extra: _shareOverrides(engine)));
-    await _waitFor(tester, find.text('安装插件'));
+    await _waitFor(tester, find.text('导入配置'));
     expect(find.text('读书笔记'), findsOneWidget);
     await tester.pumpAndSettle();
-    expect(find.text('安装'), findsOneWidget);
     expect(find.text('无法打开这个链接'), findsNothing);
-
-    await tester.tap(find.byKey(const ValueKey('share-import-primary')));
-    await tester.pumpAndSettle();
-    expect(engine.argsOf('pluginManager/installBundle').single['spec'], 'dsh-notes@1.4.2');
-    expect(find.text('已完成'), findsOneWidget);
   });
 
-  testWidgets('a cold-start file with spaces and Unicode opens and installs', (tester) async {
+  testWidgets('a cold-start file with spaces and Unicode opens', (tester) async {
     final dir = Directory.systemTemp.createTempSync('share-links-');
     addTearDown(() => dir.deleteSync(recursive: true));
-    final file = File('${dir.path}/团队 配置.dshgo')..writeAsStringSync(encodeShareFile(const PluginShare(_plugin)));
+    final file = File('${dir.path}/团队 配置.dshgo')..writeAsStringSync(encodeShareFile(const ProfileShare(name: '团队 配置')));
     final native = _FakeLinksNative(tester);
     await native.arrive(file.uri.toString());
     final engine = FakeEngine();
     await tester.pumpWidget(_shell(extra: _shareOverrides(engine)));
-    await _waitFor(tester, find.text('安装插件'));
+    await _waitFor(tester, find.text('导入配置'));
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('share-import-primary')));
-    await _waitFor(tester, find.text('已完成'));
-    expect(engine.argsOf('pluginManager/installBundle').single['spec'], 'dsh-notes@1.4.2');
+    expect(find.text('团队 配置'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
@@ -194,10 +178,10 @@ void main() {
 
   testWidgets('the landing web link opens through the registered router', (tester) async {
     final native = _FakeLinksNative(tester);
-    final link = ShareLink.inline(ShareKind.plugin, encodeShareCode(const PluginShare(_plugin)));
+    final link = ShareLink.inline(ShareKind.profile, encodeShareCode(const ProfileShare(name: '读书笔记')));
     await native.arrive(link.webLink.toString());
     await tester.pumpWidget(_shell(extra: _shareOverrides(FakeEngine())));
-    await _waitFor(tester, find.text('安装插件'));
+    await _waitFor(tester, find.text('导入配置'));
   });
 
   testWidgets('the home shell without links leaves no timers or errors behind', (tester) async {

@@ -121,7 +121,6 @@ void main() {
   });
 
   for (final payload in <SharePayload>[
-    const PluginShare(SharedPlugin(name: 'test-bundle', source: PluginSourceKind.official)),
     const ProfileShare(
       name: 'Synthetic profile',
       settings: {

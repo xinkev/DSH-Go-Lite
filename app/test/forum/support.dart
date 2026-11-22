@@ -303,22 +303,10 @@ List<ForumTopic> sampleTopics() => [
 ForumTopicListPage sampleTopicPage({bool more = false}) =>
     ForumTopicListPage(topics: sampleTopics(), moreTopicsUrl: more ? '/latest?page=1' : null, canCreateTopic: true);
 
-/// A plugin share link, as a post would carry it.
-ShareLink samplePluginLink() => ShareLink.inline(
-  ShareKind.plugin,
-  encodeShareCode(
-    const PluginShare(
-      SharedPlugin(
-        name: '@liustack/modsearch',
-        source: PluginSourceKind.npm,
-        spec: '@liustack/modsearch@1.4.2',
-        version: '1.4.2',
-        title: 'ModSearch 联网搜索',
-        author: 'liustack',
-        summary: '免费的联网搜索',
-      ),
-    ),
-  ),
+/// A profile share link, as a post would carry it.
+ShareLink sampleShareLink() => ShareLink.inline(
+  ShareKind.profile,
+  encodeShareCode(const ProfileShare(name: 'ModSearch 联网搜索')),
 );
 
 ForumPost samplePost(
@@ -345,7 +333,7 @@ ForumPost samplePost(
 );
 
 ForumTopicDetail sampleTopicDetail({List<int>? stream, List<ForumPost>? posts}) {
-  final link = samplePluginLink();
+  final link = sampleShareLink();
   final list =
       posts ??
       [

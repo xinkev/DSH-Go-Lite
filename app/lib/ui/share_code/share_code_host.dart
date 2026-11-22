@@ -98,7 +98,7 @@ Object _decodeText((String, String) input) {
 Future<void> _open(BuildContext context, Object decoded, {required ShareOrigin origin}) =>
     decoded is DecodedConversation
     ? openConversationReplay(context, decoded)
-    : showShareImportSheet(context, decoded as SharePayload, origin: origin);
+    : showShareImportSheet(context, decoded as ProfileShare, origin: origin);
 
 /// Put it once inside the home route, next to [LinkHost]. It draws nothing:
 /// it registers the `share` host, the landing page and `.dshgo` files with

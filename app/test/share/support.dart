@@ -5,7 +5,6 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:dsh_app/share_code/share_models.dart' show PluginSourceKind, SharedPlugin;
 import 'package:dsh_app/state/attachments.dart' show sessionImageProvider;
 import 'package:dsh_app/state/chat_state.dart';
 import 'package:dsh_app/ui/share/share_card.dart';

@@ -183,7 +183,7 @@ void main() {
       expect(find.text('登录后回复'), findsOneWidget);
       await tester.tap(find.widgetWithText(FilledButton, '安装'));
       await settle(tester);
-      expect(installed?.code, samplePluginLink().code);
+      expect(installed?.code, sampleShareLink().code);
       await tester.tap(find.byTooltip('点赞').first);
       await settle(tester);
       expect(find.text('登录论坛'), findsOneWidget);
@@ -213,7 +213,7 @@ void main() {
     String body(WidgetTester tester) => tester.widget<TextField>(find.byType(TextField)).controller!.text;
 
     testWidgets('附上分享码 takes the share link from the clipboard', (tester) async {
-      final link = samplePluginLink();
+      final link = sampleShareLink();
       mockClipboard(tester, '来自 dsh-go 的分享：${link.webLink} 点开就能装');
       await openReply(tester, FakeForumApi(signedIn: true));
       await tester.enterText(find.byType(TextField), '推荐这个');
