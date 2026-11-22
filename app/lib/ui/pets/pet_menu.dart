@@ -15,7 +15,6 @@ import '../common/app_sheet.dart';
 import '../common/sheet_title_bar.dart';
 import '../theme/app_icons.dart';
 import 'pet_picker.dart';
-import 'pet_settings_page.dart';
 
 /// What the menu offers, in its order.
 enum PetMenuAction {
@@ -92,7 +91,7 @@ Future<void> showPetMenu(BuildContext context, {required PetPack pack}) async {
       final now = container.read(petClockProvider)();
       unawaited(container.read(petPrefsProvider.notifier).hideUntil(now.add(petHideFor)));
     case PetMenuAction.settings:
-      await PetSettingsPage.open(context);
+      break;
   }
 }
 
