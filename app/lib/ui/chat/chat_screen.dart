@@ -2053,16 +2053,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
                                 // The capsules (ui.json's and plugins'), led
                                 // by the chat's pills; they step aside while a
                                 // reply generates; nothing at all without any.
-                                if (!readOnly)
-                                  _DockAside(
-                                    aside: typing,
-                                    child: NativeComposerBar(
-                                      sessionId: sessionId,
-                                      visible: !running,
-                                      leading: pillsInCapsules ? composerPills : null,
-                                      strip: false,
-                                    ),
-                                  ),
+                                if (!readOnly && pillsInCapsules && composerPills != null)
+                                  _DockAside(aside: typing, child: composerPills),
                                 if (_preparedPhoneSkill case final prepared?)
                                   Card(
                                     child: Padding(
