@@ -328,6 +328,9 @@ class PluginToolCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Plugin views are retired: the tool keeps its plain fallback.
+    return fallback;
+    // ignore: dead_code
     return switch (parse) {
       DshUiParsed(:final view) when !details => _ToolCardSurface(view: view),
       DshUiParsed(:final view) => Column(
