@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
-import '../../pets/overlay_channel.dart';
 import '../../state/app_info.dart';
 import '../../state/phone_state.dart';
 import '../common/capsule_chip.dart';
@@ -51,20 +50,13 @@ enum RomFamily {
 /// Which switch the restricted setting greys out: phone control's accessibility
 /// service, or the floating pet's 「显示在其他应用上层」.
 enum RestrictedTarget {
-  accessibility,
-  overlay;
+  accessibility;
 
   /// Where the switch lives in system settings.
-  String get place => switch (this) {
-    RestrictedTarget.accessibility => appL10n.phoneRestrictedAccessibility,
-    RestrictedTarget.overlay => appL10n.phoneRestrictedOverlay,
-  };
+  String get place => appL10n.phoneRestrictedAccessibility;
 
   /// The page's main button.
-  String get action => switch (this) {
-    RestrictedTarget.accessibility => appL10n.phoneRestrictedOpenAccessibility,
-    RestrictedTarget.overlay => appL10n.phoneRestrictedOpenOverlay,
-  };
+  String get action => appL10n.phoneRestrictedOpenAccessibility;
 }
 
 /// Where the option sits on the App info page, for the drawn diagram.
@@ -79,10 +71,9 @@ class RomGuide {
   final NoteTone noteTone;
 
   /// [of] with the steps pointing at [target]'s switch.
-  static RomGuide forTarget(RomFamily rom, RestrictedTarget target) {
-    final overlay = target == RestrictedTarget.overlay;
-    final tryOnce = overlay ? appL10n.phoneRestrictedTryOverlay : appL10n.phoneRestrictedTryAccessibility;
-    final back = overlay ? appL10n.phoneRestrictedBackOverlay : appL10n.phoneRestrictedBackAccessibility;
+  static RomGuide forTarget(RomFamily rom) {
+    final tryOnce = appL10n.phoneRestrictedTryAccessibility;
+    final back = appL10n.phoneRestrictedBackAccessibility;
     final menuSteps = [tryOnce, appL10n.phoneRestrictedOpenInfoStep, appL10n.phoneRestrictedMenuStep, back];
     return switch (rom) {
       RomFamily.stock || RomFamily.honor => RomGuide(steps: menuSteps, spot: GuideSpot.overflowMenu),
@@ -99,14 +90,14 @@ class RomGuide {
       ),
       RomFamily.huawei => RomGuide(
         steps: [
-          overlay ? appL10n.phoneRestrictedHuaweiOverlay : appL10n.phoneRestrictedHuaweiAccessibility,
+          appL10n.phoneRestrictedHuaweiAccessibility,
           appL10n.phoneRestrictedHuaweiNote,
         ],
       ),
     };
   }
 
-  static RomGuide of(RomFamily rom) => forTarget(rom, RestrictedTarget.accessibility);
+  static RomGuide of(RomFamily rom) => forTarget(rom);
 }
 
 /// Step-by-step help for Android 13+'s "restricted settings", which greys out the
@@ -135,11 +126,7 @@ class _RestrictedSettingsGuidePageState extends ConsumerState<RestrictedSettings
   void initState() {
     super.initState();
     _lifecycle = AppLifecycleListener(
-      onResume: () => unawaited(
-        widget.target == RestrictedTarget.overlay
-            ? ref.read(petOverlayProvider.notifier).refresh()
-            : ref.read(phoneProvider.notifier).refreshStatus(),
-      ),
+      onResume: () => unawaited(ref.read(phoneProvider.notifier).refreshStatus()),
     );
   }
 
@@ -159,13 +146,10 @@ class _RestrictedSettingsGuidePageState extends ConsumerState<RestrictedSettings
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final overlay = widget.target == RestrictedTarget.overlay;
-    final done = overlay
-        ? ref.watch(petOverlayProvider.select((s) => s.permission.usable))
-        : ref.watch(phoneProvider.select((s) => s.status.a11y.enabled));
+    final done = ref.watch(phoneProvider.select((s) => s.status.a11y.enabled));
     final rom =
         _picked ?? widget.rom ?? RomFamily.of(ref.watch(phoneProvider.select((s) => s.status.device.manufacturer)));
-    final guide = RomGuide.forTarget(rom, widget.target);
+    final guide = RomGuide.forTarget(rom);
     final phone = ref.read(phoneProvider.notifier);
     return AppPage.list(
       title: l10n.phoneRestrictedTitle,
@@ -214,12 +198,7 @@ class _RestrictedSettingsGuidePageState extends ConsumerState<RestrictedSettings
               Expanded(
                 child: FilledButton(
                   style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(48)),
-                  onPressed: () => overlay
-                      ? _open(
-                          ref.read(petOverlayProvider.notifier).openPermission,
-                          l10n.phoneRestrictedOpenOverlayFailed,
-                        )
-                      : _open(phone.openAccessibilitySettings, l10n.phoneRestrictedOpenAccessibilityFailed),
+                  onPressed: () => _open(phone.openAccessibilitySettings, l10n.phoneRestrictedOpenAccessibilityFailed),
                   child: Text(widget.target.action),
                 ),
               ),
