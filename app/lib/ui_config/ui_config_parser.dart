@@ -55,7 +55,6 @@ abstract final class UiMessages {
   static String get badUrl => appL10n.shellConfigBadUrl;
   static String get accentFormat => appL10n.shellConfigAccentFormat;
   static String get accentBoth => appL10n.shellConfigAccentBoth;
-  static String get petId => appL10n.shellConfigPetId;
   static String get keysFormat => appL10n.shellConfigKeysFormat;
   static String get systemKey => appL10n.shellConfigSystemKey;
   static String get needModifier => appL10n.shellConfigNeedModifier;
@@ -109,7 +108,6 @@ final _commandName = RegExp(r'^[A-Za-z0-9][A-Za-z0-9:._-]{0,63}$');
 final _httpsUrl = RegExp(r'^https://([A-Za-z0-9-]+\.)*[A-Za-z0-9-]+(:[0-9]{1,5})?([/?#][^\s]*)?$');
 final _badPercent = RegExp(r'%(?![0-9A-Fa-f]{2})');
 final _hexColor = RegExp(r'^#[0-9A-Fa-f]{6}$');
-final _petId = RegExp(r'^[a-z0-9][a-z0-9-]{0,63}$');
 final _slot = RegExp(r'^[a-z][A-Za-z0-9-]*(\.[A-Za-z0-9-]+)*$');
 final _package = RegExp(r'^(@[a-z0-9][a-z0-9._~-]*/)?[a-z0-9][a-z0-9._~-]*$');
 
@@ -184,7 +182,6 @@ class _Validator {
     var hide = <UiHideItem>[];
     UiThemeMode? themeMode;
     UiAccent? accent;
-    UiPetSpec? pet;
     List<UiShortcut>? shortcuts;
     var seats = <String, Map<String, UiSeatMode>>{};
 
@@ -272,8 +269,6 @@ class _Validator {
               }
             }
           }
-        case 'pet':
-          pet = petSpec(value, p);
         case 'shortcuts':
           shortcuts = shortcutList(value, p);
         case 'plugins':
@@ -297,7 +292,6 @@ class _Validator {
       hide: List.unmodifiable(hide),
       themeMode: themeMode,
       accent: accent,
-      pet: pet,
       shortcuts: shortcuts,
       seats: seats,
       entries: Map.unmodifiable(entries),
@@ -628,45 +622,6 @@ class _Validator {
       entry(UiSettingKey.hide(hidden), ip, true);
     }
     return out;
-  }
-
-  // ── pet ──────────────────────────────────────────────────────────────────
-
-  UiPetSpec? petSpec(Object? value, String pointer) {
-    final map = object(value, pointer);
-    if (map == null) return null;
-    String? id;
-    UiPetPosition? position;
-    bool? quiet;
-    for (final MapEntry(key: k, value: field) in map.entries) {
-      final fp = child(pointer, k);
-      switch (k) {
-        case 'id':
-          if (field is! String) {
-            issue(fp, UiMessages.notString);
-          } else if (!_petId.hasMatch(field)) {
-            issue(fp, UiMessages.petId);
-          } else {
-            id = field;
-          }
-        case 'position':
-          if (choice(field, fp, UiSchema.petPositions) case final wire?) {
-            position = UiPetPosition.values.firstWhere((p) => p.wire == wire);
-          }
-        case 'quiet':
-          if (field is bool) {
-            quiet = field;
-          } else {
-            issue(fp, UiMessages.notBool);
-          }
-        default:
-          issue(fp, UiMessages.unknownKey, UiIssueKind.ignored);
-      }
-    }
-    if (id == null && position == null && quiet == null) return null;
-    final spec = UiPetSpec(id: id, position: position, quiet: quiet);
-    entry(UiSettingKey.pet, pointer, spec.toJson());
-    return spec;
   }
 
   // ── shortcuts ────────────────────────────────────────────────────────────

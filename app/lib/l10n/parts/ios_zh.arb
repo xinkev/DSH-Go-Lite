@@ -111,33 +111,5 @@
       }
     }
   },
-  "iosPetPipTitle": "宠物画中画",
-  "iosPetPipHint": "可选的宠物小窗，可以辅助后台运行。手机操控使用系统持续任务，不需要先开启画中画或选择宠物。",
-  "iosPetPipRequired": "可选，默认关闭",
-  "iosPetPipReady": "已就绪，手机任务开始时出现",
-  "iosPetPipKeepingAlive": "正在让 App 在后台继续运行",
-  "iosPetPipAlways": "任务结束后也留着",
-  "iosPetPipStart": "开始画中画",
-  "iosPetPipStartHint": "画中画没有自己出现时，点这里打开",
-  "iosPetPipPaused": "手机任务在画中画里暂停了",
-  "iosPetPipReview": "继续或停止",
-  "iosPetPipResume": "恢复",
-  "iosPetPipChoosePet": "选宠物",
-  "iosPetPipErrorNoPet": "先选一只宠物",
-  "iosPetPipErrorUnsupported": "这台手机不支持画中画",
-  "iosPetPipErrorLocked": "锁屏时画中画停了",
-  "iosPetPipErrorAudio": "录音、通话或别的声音占用时，画中画停了",
-  "iosPetPipErrorPack": "这只宠物的素材有问题，换一只试试",
-  "iosPetPipErrorStart": "画中画没能打开",
-  "iosPetPipErrorClosed": "画中画被关掉了",
-  "iosPetPipErrorOther": "画中画停了（{code}）",
-  "@iosPetPipErrorOther": {
-    "placeholders": {
-      "code": {
-        "type": "String"
-      }
-    }
-  },
-  "iosPetPipChoosePetHint": "在宠物设置里选一只",
-  "iosPetPipReopen": "重新准备画中画"
+  "iosPetPipHint": "可选的宠物小窗，可以辅助后台运行。手机操控使用系统持续任务，不需要先开启画中画或选择宠物。"
 }

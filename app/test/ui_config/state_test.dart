@@ -154,7 +154,6 @@ void main() {
     expect(c.read(uiDrawerFilterProvider).value, DrawerFilter.unread);
     expect(c.read(uiDensityProvider).value, UiDensity.compact);
     expect(c.read(uiSettingEntryProvider(UiSettingKey.drawerSort))!.pointer, '/drawer/sort');
-    expect(c.read(uiSettingEntryProvider(UiSettingKey.pet)), isNull);
 
     local.text('{"version": 1, "theme": {"accentPreset": "amber"}}');
     await settle();

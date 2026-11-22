@@ -78,12 +78,6 @@ class L10nEn extends L10n {
   String get accessFeatureFilesNeeds => 'Needs file access';
 
   @override
-  String get accessFeaturePet => 'Pet over other apps';
-
-  @override
-  String get accessFeaturePetNeeds => 'Needs display over other apps';
-
-  @override
   String get accessFeaturePhone => 'Phone control';
 
   @override
@@ -199,9 +193,6 @@ class L10nEn extends L10n {
 
   @override
   String get accessOverlayTitle => 'Allow display over other apps';
-
-  @override
-  String get accessOverlayWhy => 'Lets your pet appear over other apps';
 
   @override
   String get accessOverlayGreyed => 'Switch greyed out?';
@@ -3022,236 +3013,6 @@ class L10nEn extends L10n {
 
   @override
   String get botsCopyPath => 'Copy path';
-
-  @override
-  String get botsPetOutsideApp => 'Show outside the app';
-
-  @override
-  String get botsPetNotAuthorized => 'Not allowed';
-
-  @override
-  String get botsPetDisplayWhen => 'When to show';
-
-  @override
-  String get botsPetWhenActive => 'When active';
-
-  @override
-  String get botsPetAlways => 'Always';
-
-  @override
-  String get botsPetOverlayShows => 'Show in the floating window';
-
-  @override
-  String get botsPetOverlayPixel => 'Pixel pet';
-
-  @override
-  String get botsPetOverlayCompanion => 'Room companion';
-
-  @override
-  String botsPetOverlayCompanionNamed(String name) {
-    return '$name from the Room';
-  }
-
-  @override
-  String get botsPetOverlayNoPack => 'Invite a character in the Companion Room first';
-
-  @override
-  String get botsPetOverlayPackBroken => 'The character pack is incomplete. Import it again in the Companion Room';
-
-  @override
-  String get botsPetOverlayUnavailable => 'This phone can\'t show your companion right now';
-
-  @override
-  String get botsPetOverlayCompanionHint =>
-      'Tap to play with her, tap twice to open the chat. Uses more battery than the pixel pet. It stops when the screen is off or the window is hidden';
-
-  @override
-  String get botsPetOverlayLoading => 'Bringing your companion out…';
-
-  @override
-  String get botsPetOverlayFallback => 'Your companion couldn\'t come out. The pixel pet is filling in';
-
-  @override
-  String get botsPetOverlayFraming => 'Framing';
-
-  @override
-  String get botsPetOverlayFramingFull => 'Full body';
-
-  @override
-  String get botsPetOverlayFramingHalf => 'Half body';
-
-  @override
-  String get botsPetOverlayFramingHint => 'Changing the framing reloads the character';
-
-  @override
-  String get botsPetSwitchDisabled => 'Switch disabled';
-
-  @override
-  String get botsPetRestrictedSettings => 'Allow restricted settings';
-
-  @override
-  String get botsPetHiddenToday => 'Hidden for today';
-
-  @override
-  String get botsPetRestore => 'Restore';
-
-  @override
-  String get botsPetChange => 'Change pet';
-
-  @override
-  String get botsPetHideHour => 'Hide for 1 hour';
-
-  @override
-  String get botsPetSettings => 'Pet settings';
-
-  @override
-  String get botsPetDeepy => 'Deepy';
-
-  @override
-  String get botsPetWhaleGirl => 'Whale girl';
-
-  @override
-  String get botsPetPinkFish => 'Pink fish';
-
-  @override
-  String get botsPetNone => 'None';
-
-  @override
-  String get botsPets => 'Pets';
-
-  @override
-  String get botsPetSource => 'From DSH-TUI';
-
-  @override
-  String get botsPetImport => 'Import';
-
-  @override
-  String get botsPetImportHint =>
-      'Bring your own pixel pet: a zip with pack.json and PNG frame sheets; the format is in docs/design/pets.md in the repository. Long-press an imported pet to delete it.';
-
-  @override
-  String get botsPetMake => 'Make a pet with AI';
-
-  @override
-  String get botsPetMakeSubtitle => 'Turn GIFs, stickers or a theme into a pet pack';
-
-  @override
-  String botsPetImportDone(String name) {
-    return '$name is here';
-  }
-
-  @override
-  String botsPetCodexTitle(String name) {
-    return '$name was converted from a Codex pet';
-  }
-
-  @override
-  String get botsPetCodexBody => 'Most of it carries over as it was. A few things differ:';
-
-  @override
-  String get botsPetCodexOk => 'Got it';
-
-  @override
-  String get botsPetCodexLoops =>
-      'Motions loop until the state changes, instead of settling back to idle after a few rounds as in Codex';
-
-  @override
-  String get botsPetCodexRoamLeft => 'Walking left mirrors the walking-right row';
-
-  @override
-  String get botsPetCodexDrag => 'Dragging always uses the facing-right row';
-
-  @override
-  String get botsPetCodexSleep => 'Sleeping shows the first idle frame';
-
-  @override
-  String get botsPetCodexLook => 'The look-in-each-direction cells are not used';
-
-  @override
-  String get botsPetCodexWebp => 'The WebP sheet was converted to PNG';
-
-  @override
-  String get botsPetCodexCustomTracks => 'Custom motion rows are not tied to any state';
-
-  @override
-  String get botsPetCodexFps => 'Frame rates were rounded to whole milliseconds';
-
-  @override
-  String get botsPetCodexOneShot => 'Where a play-once motion returns to is decided by DSH';
-
-  @override
-  String get botsPetCodexMissingAuthor => 'The pack names no author';
-
-  @override
-  String get botsPetCodexMissingLicense => 'The pack names no license';
-
-  @override
-  String get botsPetCodexMissingSource => 'The pack names no source';
-
-  @override
-  String botsPetImportReplaced(String name) {
-    return '$name was updated';
-  }
-
-  @override
-  String get botsPetImportNotZip => 'That isn\'t a zip file';
-
-  @override
-  String get botsPetImportNoPack => 'There\'s no pack.json in the zip';
-
-  @override
-  String botsPetImportBadPack(String detail) {
-    return 'pack.json has a problem: $detail';
-  }
-
-  @override
-  String botsPetImportMissingSheet(String name) {
-    return 'The zip is missing the sheet $name';
-  }
-
-  @override
-  String botsPetImportBadSheet(String name) {
-    return 'A sheet isn\'t right: $name (a complete PNG, at most 4096 pixels a side, every frame inside it)';
-  }
-
-  @override
-  String get botsPetImportTooLarge => 'This pet pack is too big';
-
-  @override
-  String get botsPetImportStorage => 'Couldn\'t save it on the phone. Try again';
-
-  @override
-  String botsPetRemoveTitle(String name) {
-    return 'Delete $name?';
-  }
-
-  @override
-  String get botsPetRemoveBody => 'You can import it again later.';
-
-  @override
-  String botsPetRemoveFailed(String name) {
-    return 'Couldn\'t delete $name. Try again';
-  }
-
-  @override
-  String get botsPetSize => 'Size';
-
-  @override
-  String get botsPetCustomSize => 'Custom size';
-
-  @override
-  String get botsPetQuiet => 'Quiet mode';
-
-  @override
-  String get botsPetQuietSubtitle => 'Animations only, no bubbles';
-
-  @override
-  String get botsPetShowNow => 'Show now';
-
-  @override
-  String botsPetHiddenUntil(String time) {
-    return 'Hidden until $time';
-  }
 
   @override
   String get botsKeyEsc => 'Send Esc';
@@ -8988,9 +8749,6 @@ class L10nEn extends L10n {
   String get harmonyKwAccent => 'color,colour,accent,palette';
 
   @override
-  String get harmonyKwPets => 'pet,pets,companion,whale';
-
-  @override
   String get harmonyBackgroundSubtitleLong =>
       'A running conversation tries to keep going after the app leaves the screen';
 
@@ -9960,73 +9718,8 @@ class L10nEn extends L10n {
   }
 
   @override
-  String get iosPetPipTitle => 'Pet picture-in-picture';
-
-  @override
   String get iosPetPipHint =>
       'An optional pet window that can help with background execution. Phone control uses system continued tasks and does not require PiP or a selected pet.';
-
-  @override
-  String get iosPetPipRequired => 'Optional, off by default';
-
-  @override
-  String get iosPetPipReady => 'Ready; it appears when a phone task starts';
-
-  @override
-  String get iosPetPipKeepingAlive => 'Keeping the app running in the background';
-
-  @override
-  String get iosPetPipAlways => 'Keep it after tasks end';
-
-  @override
-  String get iosPetPipStart => 'Start picture-in-picture';
-
-  @override
-  String get iosPetPipStartHint => 'If picture-in-picture didn\'t appear on its own, open it here';
-
-  @override
-  String get iosPetPipPaused => 'The phone task was paused from picture-in-picture';
-
-  @override
-  String get iosPetPipReview => 'Resume or stop';
-
-  @override
-  String get iosPetPipResume => 'Resume';
-
-  @override
-  String get iosPetPipChoosePet => 'Choose';
-
-  @override
-  String get iosPetPipErrorNoPet => 'Choose a pet first';
-
-  @override
-  String get iosPetPipErrorUnsupported => 'This phone doesn\'t support picture-in-picture';
-
-  @override
-  String get iosPetPipErrorLocked => 'Picture-in-picture stopped when the phone locked';
-
-  @override
-  String get iosPetPipErrorAudio => 'Picture-in-picture stopped while recording, a call or other audio took over';
-
-  @override
-  String get iosPetPipErrorPack => 'This pet\'s artwork has a problem. Try another one.';
-
-  @override
-  String get iosPetPipErrorStart => 'Picture-in-picture couldn\'t open';
-
-  @override
-  String get iosPetPipErrorClosed => 'Picture-in-picture was closed';
-
-  @override
-  String iosPetPipErrorOther(String code) {
-    return 'Picture-in-picture stopped ($code)';
-  }
-
-  @override
-  String get iosPetPipChoosePetHint => 'Pick one in pet settings';
-
-  @override
-  String get iosPetPipReopen => 'Get picture-in-picture ready again';
 
   @override
   String get launchScreenTitle => 'Launch screen';
@@ -11386,18 +11079,6 @@ class L10nEn extends L10n {
 
   @override
   String get searchKwRefreshRate => 'refresh rate high refresh 120Hz 90Hz smooth';
-
-  @override
-  String get petActionSending => 'Sending…';
-
-  @override
-  String get petActionTargetChanged => 'Host changed. Reopen Quick ask; your text is kept.';
-
-  @override
-  String get petActionSendFailed => 'Couldn’t send. Your text is kept; try again.';
-
-  @override
-  String get petActionBusy => 'This chat is busy. Choose New chat.';
 
   @override
   String get phoneDiagnosticsCollecting => 'Collecting…';
@@ -14651,9 +14332,6 @@ class L10nEn extends L10n {
   String get pluginsAppIcon => 'App icon';
 
   @override
-  String get pluginsPet => 'Pet';
-
-  @override
   String get pluginsCustomColor => 'Custom';
 
   @override
@@ -17681,16 +17359,6 @@ class L10nEn extends L10n {
   String get riskAllowForChatAction => 'Allow all';
 
   @override
-  String get riskPetOverlayTitle => 'Show over other apps?';
-
-  @override
-  String get riskPetOverlayBody =>
-      'Turn on “Display over other apps” for DSH Go in system settings so your pet can appear outside the app.';
-
-  @override
-  String get riskPetOverlayAction => 'Open settings';
-
-  @override
   String get askAiTooltip => 'Ask AI';
 
   @override
@@ -17808,9 +17476,6 @@ class L10nEn extends L10n {
 
   @override
   String get searchKwTheme => 'appearance,colors,colours,accent,icons';
-
-  @override
-  String get searchKwPets => 'pet,pets,companion,whale,overlay';
 
   @override
   String get searchKwPerformance => 'battery,smooth,lag,lite,full,speed';
@@ -17956,24 +17621,6 @@ class L10nEn extends L10n {
 
   @override
   String get searchKwAppIcon => 'launcher icon,icon';
-
-  @override
-  String get searchKwPetSize => 'pet size';
-
-  @override
-  String get searchKwPetQuiet => 'quiet,pet quiet';
-
-  @override
-  String get searchKwPetOutside => 'overlay,floating pet,outside app';
-
-  @override
-  String get searchKwPetDisplayWhen => 'pet display,when to show';
-
-  @override
-  String get searchKwPetOverlayShows => 'floating companion,room companion,pixel pet,live2d';
-
-  @override
-  String get searchKwPetOverlayFraming => 'framing,full body,half body';
 
   @override
   String get searchKwWorkshop => 'workshop,download pets,download companions,share pets,submit';
@@ -19066,9 +18713,6 @@ class L10nEn extends L10n {
   String get shellAccentColor => 'Accent color';
 
   @override
-  String get shellPet => 'Pet';
-
-  @override
   String get shellConfigured => 'Set';
 
   @override
@@ -19193,9 +18837,6 @@ class L10nEn extends L10n {
 
   @override
   String get shellConfigAccentBoth => 'Choose either this or accentPreset; accentPreset used';
-
-  @override
-  String get shellConfigPetId => 'IDs can only use lowercase letters, numbers, and -';
 
   @override
   String get shellConfigKeysFormat => 'Invalid format, for example ctrl+k';
@@ -19636,12 +19277,6 @@ class L10nEn extends L10n {
 
   @override
   String get stateSizeCustom => 'Custom';
-
-  @override
-  String get statePetDone => 'Done';
-
-  @override
-  String get statePetFailed => 'Something went wrong';
 
   @override
   String get statePhoneNotReady => 'Phone control isn’t ready';
@@ -20533,50 +20168,6 @@ class L10nEn extends L10n {
   @override
   String stateAlertQuestionText(String question) {
     return 'Question for you: $question';
-  }
-
-  @override
-  String statePetChatsDone(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count chats finished',
-      one: '1 chat finished',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String statePetChatsFailed(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count chats failed',
-      one: '1 chat failed',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String statePetChatsApproval(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count chats need approval',
-      one: '1 chat needs approval',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String statePetChatsQuestion(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count chats need your answer',
-      one: '1 chat needs your answer',
-    );
-    return '$_temp0';
   }
 
   @override
@@ -26064,12 +25655,6 @@ class L10nEn extends L10n {
   String get viewTipLauncher => 'Long-press the app icon to ask by voice or start a new chat';
 
   @override
-  String get viewTipPetBubble => 'When the pet pops a bubble, tap it to jump to the chat that\'s waiting';
-
-  @override
-  String get viewTipPetPlay => 'Tap the pet three times to tickle it; long-press to swap it';
-
-  @override
   String get viewTipActivityStrip => 'While it works, tap the status strip to see this turn\'s full trace';
 
   @override
@@ -27093,9 +26678,6 @@ class L10nEn extends L10n {
   String get workshopKindAll => 'All';
 
   @override
-  String get workshopKindPet => 'Pixel pets';
-
-  @override
   String get workshopKindCompanion => 'Companions';
 
   @override
@@ -27199,9 +26781,6 @@ class L10nEn extends L10n {
 
   @override
   String get workshopInstallDone => 'Installed';
-
-  @override
-  String get workshopInstallDonePet => 'Installed. Pick it on the Pets page.';
 
   @override
   String get workshopInstallDoneCompanion => 'Installed. She\'s in the Companion room.';
@@ -27820,9 +27399,6 @@ class L10nEn extends L10n {
   String get workshopPublishSourcesIssue => 'Couldn\'t read what can be submitted from this phone.';
 
   @override
-  String get workshopPublishPetsIssue => 'Couldn\'t read the pixel pets on this phone.';
-
-  @override
   String get workshopPublishCompanionIssue => 'Couldn\'t read the companion on this phone.';
 
   @override
@@ -28073,10 +27649,6 @@ class L10nEn extends L10n {
 
   @override
   String get workshopPublishReviewPreviewNone => 'No preview';
-
-  @override
-  String get workshopPublishErrorPreviewPet =>
-      'This pet\'s frame is larger than 512 px, so it can\'t have a preview. Turn the preview off to submit as usual.';
 
   @override
   String get workshopPublishErrorPreviewConflict =>

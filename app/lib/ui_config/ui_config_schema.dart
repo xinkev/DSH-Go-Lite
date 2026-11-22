@@ -25,7 +25,6 @@ abstract final class UiSchema {
     'density',
     'hide',
     'theme',
-    'pet',
     'shortcuts',
     'plugins',
   ];
@@ -48,7 +47,7 @@ abstract final class UiSchema {
   static const suggestionTitleMax = 20;
   static const suggestionSubtitleMax = 40;
 
-  // ── drawer, density, hide, theme, pet ──────────────────────────────────
+  // ── drawer, density, hide, theme ──────────────────────────────────
 
   /// lib/state/drawer_view_state.dart: pinned, folders, then `SessionDay`.
   static const drawerGroups = ['pinned', 'folders', 'today', 'yesterday', 'thisWeek', 'earlier'];
@@ -79,7 +78,6 @@ abstract final class UiSchema {
 
   /// `AppAccent.presets` ids (lib/ui/theme/accent.dart).
   static const accentPresets = ['mist', 'daiqing', 'dusk', 'turquoise', 'amber', 'graphite'];
-  static const petPositions = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
 
   // ── shortcuts ──────────────────────────────────────────────────────────
 

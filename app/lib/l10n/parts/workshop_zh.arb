@@ -5,7 +5,6 @@
   "workshopTabBrowse": "发现",
   "workshopTabMine": "我的投稿",
   "workshopKindAll": "全部",
-  "workshopKindPet": "像素宠物",
   "workshopKindCompanion": "伙伴",
   "workshopSearchHint": "搜索名称或作者",
   "workshopGet": "获取",
@@ -81,7 +80,6 @@
     }
   },
   "workshopInstallDone": "装好了",
-  "workshopInstallDonePet": "装好了，到宠物页就能换上它。",
   "workshopInstallDoneCompanion": "装好了，到伙伴小屋就能见到她。",
   "workshopInstallDoneRefreshIssue": "装好了，但列表没能刷新，重新进来就能看到。",
   "workshopInstallCancelled": "已取消，没有改动本机的内容。",

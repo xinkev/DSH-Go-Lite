@@ -38,7 +38,6 @@
   "density": "cozy",
   "hide": ["turnFooter", "everything", 3, "turnFooter"],
   "theme": { "mode": "auto", "accent": "blue" },
-  "pet": { "id": "Deepy Whale", "position": "middle", "quiet": "yes" },
   "plugins": { "seats": { "Bad Slot": { "x": "hidden" }, "conversation.input.dock": { "Bad Pkg": "hidden", "@scope/pkg": "floating", "ok-pkg": "web" } } },
   "extras": {}
 }

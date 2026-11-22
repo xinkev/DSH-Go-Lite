@@ -26,7 +26,6 @@ void main() {
     expect(enumOf('hideItem'), UiSchema.hideItems);
     expect(enumOf('themeMode'), UiSchema.themeModes);
     expect(enumOf('accentPreset'), UiSchema.accentPresets);
-    expect(enumOf('petPosition'), UiSchema.petPositions);
     expect(enumOf('seatMode'), UiSchema.seatModes);
     expect(enumOf('page'), UiSchema.pages);
     expect(enumOf('actionType'), UiSchema.actionTypes);
@@ -64,7 +63,6 @@ void main() {
     expect(UiDensity.values.map((e) => e.name), UiSchema.densities);
     expect(UiHideItem.values.map((e) => e.name), UiSchema.hideItems);
     expect(UiThemeMode.values.map((e) => e.name), UiSchema.themeModes);
-    expect(UiPetPosition.values.map((e) => e.wire), UiSchema.petPositions);
     expect(UiSeatMode.values.map((e) => e.name), UiSchema.seatModes);
   });
 

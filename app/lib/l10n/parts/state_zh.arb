@@ -41,8 +41,6 @@
   "stateSizeStandard": "标准",
   "stateSizeLarge": "大",
   "stateSizeCustom": "自定义",
-  "statePetDone": "做完了",
-  "statePetFailed": "出错了",
   "statePhoneNotReady": "手机操控模块未就绪",
   "stateBackgroundRestricted": "后台联网被系统限制",
   "stateBackgroundFinish": "让对话在后台也能跑完",
@@ -406,38 +404,6 @@
     "placeholders": {
       "question": {
         "type": "String"
-      }
-    }
-  },
-  "statePetChatsDone": "{count} 个对话做完了",
-  "@statePetChatsDone": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "statePetChatsFailed": "{count} 个对话出错了",
-  "@statePetChatsFailed": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "statePetChatsApproval": "{count} 个对话等你确认",
-  "@statePetChatsApproval": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "statePetChatsQuestion": "{count} 个对话等你回答",
-  "@statePetChatsQuestion": {
-    "placeholders": {
-      "count": {
-        "type": "int"
       }
     }
   },

@@ -52,8 +52,7 @@ List<AccessFeature> accessFeaturesFor(String os) => switch (os) {
 
 /// One system permission or maker's switch, in the order first run walks
 /// them: the system's own dialogs first, then settings pages, the makers'
-/// pages after the system's, and the floating window last (with
-/// accessibility on, the pet needs no other permission).
+/// pages after the system's.
 enum AccessItem {
   storage,
   notifications,
@@ -172,7 +171,7 @@ class AccessReadings {
   final bool? battery;
   final bool? accessibility;
 
-  /// The pet can be drawn over other apps (the permission, or accessibility).
+  /// This app can be drawn over other apps (the permission, or accessibility).
   final bool? overlay;
 
   /// The system says the overlay is allowed but the window was refused: a
@@ -524,9 +523,8 @@ class AccessSetupController extends Notifier<AccessSetup> {
   }
 
   /// Turns on what was picked, as far as the phone allows: 访问手机文件 once
-  /// files may be reached, 手机操控 (its disclosure was accepted on the pick),
-  /// the default pet unless one was chosen, its floating window once it can
-  /// be drawn. An engine running or starting restarts once
+  /// files may be reached, 手机操控 (its disclosure was accepted on the pick).
+  /// An engine running or starting restarts once
   /// so its mounts and tools follow: one starting already took the old
   /// settings with it.
   Future<void> apply(AccessReadings readings) async {

@@ -407,7 +407,6 @@
   "pluginsColors": "配色",
   "pluginsFeatureIcons": "功能图标",
   "pluginsAppIcon": "桌面图标",
-  "pluginsPet": "宠物",
   "pluginsCustomColor": "自定义",
   "pluginsColorLabel": "配色：{label}",
   "@pluginsColorLabel": {

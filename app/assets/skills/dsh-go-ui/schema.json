@@ -77,15 +77,6 @@
       "not": { "required": ["accentPreset", "accent"] },
       "additionalProperties": false
     },
-    "pet": {
-      "type": "object",
-      "properties": {
-        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
-        "position": { "$ref": "#/$defs/petPosition" },
-        "quiet": { "type": "boolean" }
-      },
-      "additionalProperties": false
-    },
     "shortcuts": {
       "type": "array",
       "maxItems": 20,
@@ -147,7 +138,6 @@
     },
     "themeMode": { "enum": ["system", "light", "dark"] },
     "accentPreset": { "enum": ["mist", "daiqing", "dusk", "turquoise", "amber", "graphite"] },
-    "petPosition": { "enum": ["top-left", "top-right", "bottom-left", "bottom-right"] },
     "seatMode": { "enum": ["native", "island", "web", "hidden"] },
     "page": {
       "enum": [

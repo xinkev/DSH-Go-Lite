@@ -76,12 +76,6 @@ class L10nZh extends L10n {
   String get accessFeatureFilesNeeds => '需要文件访问权限';
 
   @override
-  String get accessFeaturePet => '桌宠与悬浮窗';
-
-  @override
-  String get accessFeaturePetNeeds => '需要悬浮窗权限';
-
-  @override
   String get accessFeaturePhone => '手机操控';
 
   @override
@@ -197,9 +191,6 @@ class L10nZh extends L10n {
 
   @override
   String get accessOverlayTitle => '允许显示在其他应用上层';
-
-  @override
-  String get accessOverlayWhy => '宠物才能出现在别的 App 上';
 
   @override
   String get accessOverlayGreyed => '开关是灰的？';
@@ -2840,233 +2831,6 @@ class L10nZh extends L10n {
 
   @override
   String get botsCopyPath => '复制路径';
-
-  @override
-  String get botsPetOutsideApp => 'App 外显示';
-
-  @override
-  String get botsPetNotAuthorized => '未授权';
-
-  @override
-  String get botsPetDisplayWhen => '显示时机';
-
-  @override
-  String get botsPetWhenActive => '有事时显示';
-
-  @override
-  String get botsPetAlways => '一直显示';
-
-  @override
-  String get botsPetOverlayShows => '悬浮窗里显示';
-
-  @override
-  String get botsPetOverlayPixel => '像素宠物';
-
-  @override
-  String get botsPetOverlayCompanion => '小屋里的她';
-
-  @override
-  String botsPetOverlayCompanionNamed(String name) {
-    return '小屋里的$name';
-  }
-
-  @override
-  String get botsPetOverlayNoPack => '先去伙伴小屋里请一位角色';
-
-  @override
-  String get botsPetOverlayPackBroken => '角色包不完整，去伙伴小屋里重新导入';
-
-  @override
-  String get botsPetOverlayUnavailable => '这台手机暂时请不出她';
-
-  @override
-  String get botsPetOverlayCompanionHint => '点一下和她互动，连点两下打开对话。比像素宠物更耗电，熄屏和隐藏时会停下来';
-
-  @override
-  String get botsPetOverlayLoading => '正在请她出来…';
-
-  @override
-  String get botsPetOverlayFallback => '她没能出来，先由像素宠物顶班';
-
-  @override
-  String get botsPetOverlayFraming => '取景';
-
-  @override
-  String get botsPetOverlayFramingFull => '全身';
-
-  @override
-  String get botsPetOverlayFramingHalf => '半身';
-
-  @override
-  String get botsPetOverlayFramingHint => '换取景会重新加载她';
-
-  @override
-  String get botsPetSwitchDisabled => '开关点不动';
-
-  @override
-  String get botsPetRestrictedSettings => '允许受限制的设置';
-
-  @override
-  String get botsPetHiddenToday => '今天不再显示';
-
-  @override
-  String get botsPetRestore => '恢复';
-
-  @override
-  String get botsPetChange => '换宠物';
-
-  @override
-  String get botsPetHideHour => '藏起来 1 小时';
-
-  @override
-  String get botsPetSettings => '宠物设置';
-
-  @override
-  String get botsPetDeepy => 'Deepy 小鲸鱼';
-
-  @override
-  String get botsPetWhaleGirl => '鲸娘';
-
-  @override
-  String get botsPetPinkFish => '小粉鱼';
-
-  @override
-  String get botsPetNone => '不显示';
-
-  @override
-  String get botsPets => '宠物';
-
-  @override
-  String get botsPetSource => '来自 DSH-TUI';
-
-  @override
-  String get botsPetImport => '导入';
-
-  @override
-  String get botsPetImportHint => '导入你自己的像素宠物：一个 zip，里面是 pack.json 和序列帧 PNG，格式见仓库里的 docs/design/pets.md。长按导入的宠物可以删除。';
-
-  @override
-  String get botsPetMake => '让 AI 做一只宠物';
-
-  @override
-  String get botsPetMakeSubtitle => '把 GIF、表情包或主题转成宠物包';
-
-  @override
-  String botsPetImportDone(String name) {
-    return '「$name」来了';
-  }
-
-  @override
-  String botsPetCodexTitle(String name) {
-    return '「$name」是从 Codex 宠物转过来的';
-  }
-
-  @override
-  String get botsPetCodexBody => '大部分照原样，有几处不完全一样：';
-
-  @override
-  String get botsPetCodexOk => '知道了';
-
-  @override
-  String get botsPetCodexLoops => '动作会一直循环到状态变化，不像 Codex 里跑几遍就回到待机';
-
-  @override
-  String get botsPetCodexRoamLeft => '往左走用的是往右走那一行的镜像';
-
-  @override
-  String get botsPetCodexDrag => '拖着它时一律用朝右的那一行';
-
-  @override
-  String get botsPetCodexSleep => '睡觉时用待机的第一帧';
-
-  @override
-  String get botsPetCodexLook => '看向不同方向的那些格子没用上';
-
-  @override
-  String get botsPetCodexWebp => 'WebP 图转成了 PNG';
-
-  @override
-  String get botsPetCodexCustomTracks => '自定义的动作行没接到任何状态上';
-
-  @override
-  String get botsPetCodexFps => '帧率换算成毫秒时取了整';
-
-  @override
-  String get botsPetCodexOneShot => '只播一次的动作，播完回到哪里由 DSH 决定';
-
-  @override
-  String get botsPetCodexMissingAuthor => '包里没写作者';
-
-  @override
-  String get botsPetCodexMissingLicense => '包里没写授权';
-
-  @override
-  String get botsPetCodexMissingSource => '包里没写来源';
-
-  @override
-  String botsPetImportReplaced(String name) {
-    return '「$name」换成了新的';
-  }
-
-  @override
-  String get botsPetImportNotZip => '这不是 zip 文件';
-
-  @override
-  String get botsPetImportNoPack => 'zip 里没有 pack.json';
-
-  @override
-  String botsPetImportBadPack(String detail) {
-    return 'pack.json 有问题：$detail';
-  }
-
-  @override
-  String botsPetImportMissingSheet(String name) {
-    return 'zip 里少了序列帧图 $name';
-  }
-
-  @override
-  String botsPetImportBadSheet(String name) {
-    return '序列帧图不对：$name（要完整的 PNG，每边不超过 4096 像素，每一帧都在图内）';
-  }
-
-  @override
-  String get botsPetImportTooLarge => '这个宠物包太大了';
-
-  @override
-  String get botsPetImportStorage => '没能存到手机上，再试一次';
-
-  @override
-  String botsPetRemoveTitle(String name) {
-    return '删除「$name」？';
-  }
-
-  @override
-  String get botsPetRemoveBody => '删除后可以再导入。';
-
-  @override
-  String botsPetRemoveFailed(String name) {
-    return '没能删除「$name」，再试一次';
-  }
-
-  @override
-  String get botsPetSize => '大小';
-
-  @override
-  String get botsPetCustomSize => '自定义大小';
-
-  @override
-  String get botsPetQuiet => '安静模式';
-
-  @override
-  String get botsPetQuietSubtitle => '只做动作，不冒气泡';
-
-  @override
-  String get botsPetShowNow => '立即显示';
-
-  @override
-  String botsPetHiddenUntil(String time) {
-    return '藏到 $time';
-  }
 
   @override
   String get botsKeyEsc => '发送 Esc';
@@ -8504,9 +8268,6 @@ class L10nZh extends L10n {
   String get harmonyKwAccent => '颜色,主题色,强调色';
 
   @override
-  String get harmonyKwPets => '宠物,小鲸,桌宠,鲸鱼';
-
-  @override
   String get harmonyBackgroundSubtitleLong => '应用离开屏幕后，正在跑的对话会尽量继续';
 
   @override
@@ -9414,72 +9175,7 @@ class L10nZh extends L10n {
   }
 
   @override
-  String get iosPetPipTitle => '宠物画中画';
-
-  @override
   String get iosPetPipHint => '可选的宠物小窗，可以辅助后台运行。手机操控使用系统持续任务，不需要先开启画中画或选择宠物。';
-
-  @override
-  String get iosPetPipRequired => '可选，默认关闭';
-
-  @override
-  String get iosPetPipReady => '已就绪，手机任务开始时出现';
-
-  @override
-  String get iosPetPipKeepingAlive => '正在让 App 在后台继续运行';
-
-  @override
-  String get iosPetPipAlways => '任务结束后也留着';
-
-  @override
-  String get iosPetPipStart => '开始画中画';
-
-  @override
-  String get iosPetPipStartHint => '画中画没有自己出现时，点这里打开';
-
-  @override
-  String get iosPetPipPaused => '手机任务在画中画里暂停了';
-
-  @override
-  String get iosPetPipReview => '继续或停止';
-
-  @override
-  String get iosPetPipResume => '恢复';
-
-  @override
-  String get iosPetPipChoosePet => '选宠物';
-
-  @override
-  String get iosPetPipErrorNoPet => '先选一只宠物';
-
-  @override
-  String get iosPetPipErrorUnsupported => '这台手机不支持画中画';
-
-  @override
-  String get iosPetPipErrorLocked => '锁屏时画中画停了';
-
-  @override
-  String get iosPetPipErrorAudio => '录音、通话或别的声音占用时，画中画停了';
-
-  @override
-  String get iosPetPipErrorPack => '这只宠物的素材有问题，换一只试试';
-
-  @override
-  String get iosPetPipErrorStart => '画中画没能打开';
-
-  @override
-  String get iosPetPipErrorClosed => '画中画被关掉了';
-
-  @override
-  String iosPetPipErrorOther(String code) {
-    return '画中画停了（$code）';
-  }
-
-  @override
-  String get iosPetPipChoosePetHint => '在宠物设置里选一只';
-
-  @override
-  String get iosPetPipReopen => '重新准备画中画';
 
   @override
   String get launchScreenTitle => '启动画面';
@@ -10796,18 +10492,6 @@ class L10nZh extends L10n {
 
   @override
   String get searchKwRefreshRate => '刷新率 高刷 120Hz 90Hz 流畅';
-
-  @override
-  String get petActionSending => '正在发送…';
-
-  @override
-  String get petActionTargetChanged => '主机已变化，重新打开「问一句」；文字已保留';
-
-  @override
-  String get petActionSendFailed => '没能发出，文字已保留，请重试';
-
-  @override
-  String get petActionBusy => '这个对话正在忙，请选择「新对话」';
 
   @override
   String get phoneDiagnosticsCollecting => '正在收集…';
@@ -13918,9 +13602,6 @@ class L10nZh extends L10n {
   String get pluginsAppIcon => '桌面图标';
 
   @override
-  String get pluginsPet => '宠物';
-
-  @override
   String get pluginsCustomColor => '自定义';
 
   @override
@@ -16776,15 +16457,6 @@ class L10nZh extends L10n {
   String get riskAllowForChatAction => '全部允许';
 
   @override
-  String get riskPetOverlayTitle => '显示在其他应用上层？';
-
-  @override
-  String get riskPetOverlayBody => '要在系统设置里为 DSH Go 打开「显示在其他应用上层」，宠物才能出现在别的 App 上。';
-
-  @override
-  String get riskPetOverlayAction => '去设置';
-
-  @override
   String get askAiTooltip => '问 AI';
 
   @override
@@ -16893,9 +16565,6 @@ class L10nZh extends L10n {
 
   @override
   String get searchKwTheme => '外观,配色,颜色,主题色,强调色,图标';
-
-  @override
-  String get searchKwPets => '宠物,小鲸,桌宠,悬浮,鲸鱼';
 
   @override
   String get searchKwPerformance => '省电,流畅,卡顿,发热,轻量,完整';
@@ -17040,24 +16709,6 @@ class L10nZh extends L10n {
 
   @override
   String get searchKwAppIcon => '启动图标,App 图标,图标';
-
-  @override
-  String get searchKwPetSize => '宠物大小,宠物尺寸';
-
-  @override
-  String get searchKwPetQuiet => '安静,宠物安静';
-
-  @override
-  String get searchKwPetOutside => '悬浮窗,桌面宠物,宠物悬浮';
-
-  @override
-  String get searchKwPetDisplayWhen => '宠物显示,显示时机';
-
-  @override
-  String get searchKwPetOverlayShows => '悬浮伙伴,小屋里的她,像素宠物,Live2D';
-
-  @override
-  String get searchKwPetOverlayFraming => '取景,全身,半身';
 
   @override
   String get searchKwWorkshop => '工坊,下载宠物,下载伙伴,分享宠物,投稿';
@@ -18062,9 +17713,6 @@ class L10nZh extends L10n {
   String get shellAccentColor => '强调色';
 
   @override
-  String get shellPet => '宠物';
-
-  @override
   String get shellConfigured => '已设置';
 
   @override
@@ -18171,9 +17819,6 @@ class L10nZh extends L10n {
 
   @override
   String get shellConfigAccentBoth => '和 accentPreset 二选一，已用 accentPreset';
-
-  @override
-  String get shellConfigPetId => 'id 只能用小写字母、数字和 -';
 
   @override
   String get shellConfigKeysFormat => '写法不对，例如 ctrl+k';
@@ -18586,12 +18231,6 @@ class L10nZh extends L10n {
 
   @override
   String get stateSizeCustom => '自定义';
-
-  @override
-  String get statePetDone => '做完了';
-
-  @override
-  String get statePetFailed => '出错了';
 
   @override
   String get statePhoneNotReady => '手机操控模块未就绪';
@@ -19462,26 +19101,6 @@ class L10nZh extends L10n {
   @override
   String stateAlertQuestionText(String question) {
     return '问你：$question';
-  }
-
-  @override
-  String statePetChatsDone(int count) {
-    return '$count 个对话做完了';
-  }
-
-  @override
-  String statePetChatsFailed(int count) {
-    return '$count 个对话出错了';
-  }
-
-  @override
-  String statePetChatsApproval(int count) {
-    return '$count 个对话等你确认';
-  }
-
-  @override
-  String statePetChatsQuestion(int count) {
-    return '$count 个对话等你回答';
   }
 
   @override
@@ -24688,12 +24307,6 @@ class L10nZh extends L10n {
   String get viewTipLauncher => '长按桌面图标，可以直接语音提问或开新对话';
 
   @override
-  String get viewTipPetBubble => '宠物冒泡时点一下，就跳到等你的那个对话';
-
-  @override
-  String get viewTipPetPlay => '连点宠物三下会挠痒痒，长按可以换宠物';
-
-  @override
   String get viewTipActivityStrip => '生成时点一下状态条，看这一轮的完整轨迹';
 
   @override
@@ -25679,9 +25292,6 @@ class L10nZh extends L10n {
   String get workshopKindAll => '全部';
 
   @override
-  String get workshopKindPet => '像素宠物';
-
-  @override
   String get workshopKindCompanion => '伙伴';
 
   @override
@@ -25782,9 +25392,6 @@ class L10nZh extends L10n {
 
   @override
   String get workshopInstallDone => '装好了';
-
-  @override
-  String get workshopInstallDonePet => '装好了，到宠物页就能换上它。';
 
   @override
   String get workshopInstallDoneCompanion => '装好了，到伙伴小屋就能见到她。';
@@ -26374,9 +25981,6 @@ class L10nZh extends L10n {
   String get workshopPublishSourcesIssue => '没能读出本机可以投稿的内容。';
 
   @override
-  String get workshopPublishPetsIssue => '没能读出本机的像素宠物。';
-
-  @override
   String get workshopPublishCompanionIssue => '没能读出本机的伙伴。';
 
   @override
@@ -26620,9 +26224,6 @@ class L10nZh extends L10n {
 
   @override
   String get workshopPublishReviewPreviewNone => '不带预览图';
-
-  @override
-  String get workshopPublishErrorPreviewPet => '这只宠物的画面超过 512 像素，做不了预览图。关掉预览图可以照常投稿。';
 
   @override
   String get workshopPublishErrorPreviewConflict => '伙伴的包里已经有一个 preview.png，封面放不进去。移除封面可以照常投稿。';

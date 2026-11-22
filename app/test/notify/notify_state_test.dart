@@ -445,8 +445,8 @@ void main() {
       await settle();
       expect(banners, hasLength(1));
       final first = banners.single;
-      final controller = container.read(chatAlertsProvider.notifier);
-      controller.dismissBanner(first);
+      container.read(chatAlertsProvider.notifier).dismissBanner(first);
+      final firstToken = first.requestToken;
       final renamed = HostConnection(
         client: old.client,
         isLocal: false,
@@ -459,23 +459,13 @@ void main() {
       expect(sources, 1);
       expect(banners, hasLength(1));
       expect(container.read(chatAlertsProvider), isNull);
-      // No ready generation in this fake; reaching 'failed' instead of 'gone'
-      // demonstrates that the original pet request scope/token survived rename.
-      expect(
-        await controller.answerFromPet(_ssh, 'q1', sessionId: 'r1', token: first.petToken!),
-        NotifyActionResult.failed,
-      );
 
       final replacement = fakeHostConnection(local: false, kind: HostKind.ssh, hostId: 'lab');
       container.read(selected.notifier).set(replacement);
       await settle();
       expect(sources, 2);
       expect(banners, hasLength(2));
-      expect(banners.last.petToken, isNot(first.petToken));
-      expect(
-        await controller.answerFromPet(_ssh, 'q1', sessionId: 'r1', token: first.petToken!),
-        NotifyActionResult.gone,
-      );
+      expect(banners.last.requestToken, isNot(firstToken));
     });
   });
 

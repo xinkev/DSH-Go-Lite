@@ -126,7 +126,6 @@ class PluginClientInfo {
     this.configNamespaces = const [],
     this.fallbackNamespaces = const [],
     this.panels = const [],
-    this.pet,
   });
 
   /// A package the inventory has not listed (a dynamic Cordis plugin, or a
@@ -142,8 +141,7 @@ class PluginClientInfo {
       rowIds = const [],
       configNamespaces = const [],
       fallbackNamespaces = const [],
-      panels = const [],
-      pet = null;
+      panels = const [];
 
   final String package;
 
@@ -172,8 +170,6 @@ class PluginClientInfo {
   /// Declarative panels the package registered with the bridge (§4.3).
   final List<String> panels;
 
-  /// Pet protocol the package declares (`codex`, `linxin`), when known.
-  final String? pet;
 }
 
 /// Everything a web island needs to open (§6). Items of one seat with equal

@@ -42,7 +42,6 @@ const S = {
   hideItems: defs.hideItem.enum,
   themeModes: defs.themeMode.enum,
   accentPresets: defs.accentPreset.enum,
-  petPositions: defs.petPosition.enum,
   seatModes: defs.seatMode.enum,
   pages: defs.page.enum,
   actionTypes: defs.actionType.enum,
@@ -91,7 +90,6 @@ const M = {
   badUrl: '链接格式不对',
   accentFormat: '颜色要写成 #RRGGBB',
   accentBoth: '和 accentPreset 二选一，已用 accentPreset',
-  petId: 'id 只能用小写字母、数字和 -',
   keysFormat: '写法不对，例如 ctrl+k',
   systemKey: '不能用系统键',
   needModifier: '要带 ctrl 或 alt',
@@ -360,7 +358,6 @@ const RX = {
   httpsUrl: /^https:\/\/([A-Za-z0-9-]+\.)*[A-Za-z0-9-]+(:[0-9]{1,5})?([/?#][^\s]*)?$/,
   badPercent: /%(?![0-9A-Fa-f]{2})/,
   hexColor: /^#[0-9A-Fa-f]{6}$/,
-  petId: /^[a-z0-9][a-z0-9-]{0,63}$/,
   slot: /^[a-z][A-Za-z0-9-]*(\.[A-Za-z0-9-]+)*$/,
   pkg: /^(@[a-z0-9][a-z0-9._~-]*\/)?[a-z0-9][a-z0-9._~-]*$/,
 };
@@ -707,32 +704,6 @@ function validate(root, duplicates) {
     });
   }
 
-  function pet(v, p) {
-    const map = object(v, p);
-    if (!map) return;
-    let any = false;
-    for (const [k, field] of map) {
-      const fp = child(p, k);
-      switch (k) {
-        case 'id':
-          if (!isString(field)) issue(fp, M.notString);
-          else if (!RX.petId.test(field)) issue(fp, M.petId);
-          else any = true;
-          break;
-        case 'position':
-          if (choice(field, fp, S.petPositions) !== null) any = true;
-          break;
-        case 'quiet':
-          if (typeof field === 'boolean') any = true;
-          else issue(fp, M.notBool);
-          break;
-        default:
-          issue(fp, M.unknownKey, 'ignored');
-      }
-    }
-    if (any) entry('pet', p);
-  }
-
   function shortcutKeys(v, p) {
     if (!isString(v)) {
       issue(p, M.notString);
@@ -916,9 +887,6 @@ function validate(root, duplicates) {
         }
         break;
       }
-      case 'pet':
-        pet(v, p);
-        break;
       case 'shortcuts':
         shortcuts(v, p);
         break;

@@ -5,7 +5,6 @@
   "workshopTabBrowse": "Browse",
   "workshopTabMine": "My uploads",
   "workshopKindAll": "All",
-  "workshopKindPet": "Pixel pets",
   "workshopKindCompanion": "Companions",
   "workshopSearchHint": "Search by name or author",
   "workshopGet": "Get",
@@ -81,7 +80,6 @@
     }
   },
   "workshopInstallDone": "Installed",
-  "workshopInstallDonePet": "Installed. Pick it on the Pets page.",
   "workshopInstallDoneCompanion": "Installed. She's in the Companion room.",
   "workshopInstallDoneRefreshIssue": "Installed, but the list couldn't refresh. Open this page again to see it.",
   "workshopInstallCancelled": "Cancelled. Nothing on this phone was changed.",

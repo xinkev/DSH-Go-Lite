@@ -272,12 +272,11 @@ void main() {
         expect(n.ask!.question, isNotEmpty);
       }
       expect(RiskNotices.autoReview.ask, isNull);
-      expect(RiskNotices.petOverlay.ask, isNull);
       expect(RiskNotices.rootChannel.ask, isNull);
       // High where a whole class of checks goes; medium where it is bounded.
       expect(
         {
-          for (final n in [...notices, RiskNotices.autoReview, RiskNotices.petOverlay, RiskNotices.rootChannel])
+          for (final n in [...notices, RiskNotices.autoReview, RiskNotices.rootChannel])
             n.id: n.level,
         },
         {
@@ -404,7 +403,6 @@ void main() {
       RiskNotices.appRule('Alipay', fromDeny: false),
       RiskNotices.phoneFiles,
       RiskNotices.allowForChat,
-      RiskNotices.petOverlay,
     ]) {
       final bench = await _pump(tester, () => notice, width: 320, scale: 2);
       await bench.open();

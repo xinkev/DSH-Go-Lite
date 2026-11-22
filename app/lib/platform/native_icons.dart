@@ -140,7 +140,6 @@ const _more = <String, IconData>{
   'theme': AppIcons.theme,
   'color': AppIcons.color,
   'text-size': AppIcons.textSize,
-  'pet': AppIcons.pet,
   'featured': AppIcons.featured,
   'badge': AppIcons.badgeEarned,
   'favorite': AppIcons.favorite,

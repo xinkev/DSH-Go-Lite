@@ -70,13 +70,12 @@ void main() {
       expect(c.hide, [UiHideItem.turnFooter, UiHideItem.tokenCount, UiHideItem.reasoningDetails]);
       expect(c.themeMode, UiThemeMode.system);
       expect(c.accent, const UiAccent.preset('daiqing'));
-      expect(c.pet, const UiPetSpec(id: 'deepy-whale', position: UiPetPosition.bottomRight, quiet: true));
       expect(c.shortcuts!.single.keys, 'ctrl+k');
       expect(c.shortcuts!.single.action, const UiOpenAction('search'));
       expect(c.seats, {
         'conversation.input.dock': {'dsh-cost-meter': UiSeatMode.hidden},
       });
-      expect(load.appliedCount, 15);
+      expect(load.appliedCount, 14);
       expect(c.entries[UiSettingKey.themeMode]!.pointer, '/theme/mode');
       expect(c.entries[UiSettingKey.hide(UiHideItem.tokenCount)]!.pointer, '/hide/1');
       expect(
@@ -101,7 +100,6 @@ void main() {
       expect(load.config.drawerSort, isNull);
       expect(load.config.hide, [UiHideItem.turnFooter]);
       expect(load.config.themeMode, isNull);
-      expect(load.config.pet, isNull);
       expect(load.config.seats, {
         'conversation.input.dock': {'ok-pkg': UiSeatMode.web},
       });

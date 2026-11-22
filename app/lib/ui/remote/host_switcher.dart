@@ -161,7 +161,7 @@ class HostSheet extends ConsumerWidget {
                 margin: const EdgeInsets.fromLTRB(SheetTitleBar.inset, 0, SheetTitleBar.inset, 12),
                 children: [
                   SettingsTile(
-                    icon: AppIcons.pet,
+                    icon: AppIcons.profile,
                     tinted: false,
                     title: l10n.companionTitle,
                     subtitle: l10n.companionEntrySubtitle,

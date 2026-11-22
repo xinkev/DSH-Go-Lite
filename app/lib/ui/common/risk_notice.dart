@@ -159,14 +159,6 @@ abstract final class RiskNotices {
     action: appL10n.phonePrivilegedRootPrepare,
   );
 
-  /// 宠物 › App 外显示, before the trip to 「显示在其他应用上层」.
-  static RiskNotice get petOverlay => RiskNotice(
-    id: 'pets.overlay-permission',
-    level: RiskLevel.medium,
-    title: appL10n.riskPetOverlayTitle,
-    body: appL10n.riskPetOverlayBody,
-    action: appL10n.riskPetOverlayAction,
-  );
 }
 
 /// What the sheet was left with (null: × or back).

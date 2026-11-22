@@ -224,18 +224,6 @@ abstract class L10n {
   /// **'需要文件访问权限'**
   String get accessFeatureFilesNeeds;
 
-  /// No description provided for @accessFeaturePet.
-  ///
-  /// In zh, this message translates to:
-  /// **'桌宠与悬浮窗'**
-  String get accessFeaturePet;
-
-  /// No description provided for @accessFeaturePetNeeds.
-  ///
-  /// In zh, this message translates to:
-  /// **'需要悬浮窗权限'**
-  String get accessFeaturePetNeeds;
-
   /// No description provided for @accessFeaturePhone.
   ///
   /// In zh, this message translates to:
@@ -445,12 +433,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'允许显示在其他应用上层'**
   String get accessOverlayTitle;
-
-  /// No description provided for @accessOverlayWhy.
-  ///
-  /// In zh, this message translates to:
-  /// **'宠物才能出现在别的 App 上'**
-  String get accessOverlayWhy;
 
   /// No description provided for @accessOverlayGreyed.
   ///
@@ -5269,420 +5251,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'复制路径'**
   String get botsCopyPath;
-
-  /// No description provided for @botsPetOutsideApp.
-  ///
-  /// In zh, this message translates to:
-  /// **'App 外显示'**
-  String get botsPetOutsideApp;
-
-  /// No description provided for @botsPetNotAuthorized.
-  ///
-  /// In zh, this message translates to:
-  /// **'未授权'**
-  String get botsPetNotAuthorized;
-
-  /// No description provided for @botsPetDisplayWhen.
-  ///
-  /// In zh, this message translates to:
-  /// **'显示时机'**
-  String get botsPetDisplayWhen;
-
-  /// No description provided for @botsPetWhenActive.
-  ///
-  /// In zh, this message translates to:
-  /// **'有事时显示'**
-  String get botsPetWhenActive;
-
-  /// No description provided for @botsPetAlways.
-  ///
-  /// In zh, this message translates to:
-  /// **'一直显示'**
-  String get botsPetAlways;
-
-  /// No description provided for @botsPetOverlayShows.
-  ///
-  /// In zh, this message translates to:
-  /// **'悬浮窗里显示'**
-  String get botsPetOverlayShows;
-
-  /// No description provided for @botsPetOverlayPixel.
-  ///
-  /// In zh, this message translates to:
-  /// **'像素宠物'**
-  String get botsPetOverlayPixel;
-
-  /// No description provided for @botsPetOverlayCompanion.
-  ///
-  /// In zh, this message translates to:
-  /// **'小屋里的她'**
-  String get botsPetOverlayCompanion;
-
-  /// No description provided for @botsPetOverlayCompanionNamed.
-  ///
-  /// In zh, this message translates to:
-  /// **'小屋里的{name}'**
-  String botsPetOverlayCompanionNamed(String name);
-
-  /// No description provided for @botsPetOverlayNoPack.
-  ///
-  /// In zh, this message translates to:
-  /// **'先去伙伴小屋里请一位角色'**
-  String get botsPetOverlayNoPack;
-
-  /// No description provided for @botsPetOverlayPackBroken.
-  ///
-  /// In zh, this message translates to:
-  /// **'角色包不完整，去伙伴小屋里重新导入'**
-  String get botsPetOverlayPackBroken;
-
-  /// No description provided for @botsPetOverlayUnavailable.
-  ///
-  /// In zh, this message translates to:
-  /// **'这台手机暂时请不出她'**
-  String get botsPetOverlayUnavailable;
-
-  /// No description provided for @botsPetOverlayCompanionHint.
-  ///
-  /// In zh, this message translates to:
-  /// **'点一下和她互动，连点两下打开对话。比像素宠物更耗电，熄屏和隐藏时会停下来'**
-  String get botsPetOverlayCompanionHint;
-
-  /// No description provided for @botsPetOverlayLoading.
-  ///
-  /// In zh, this message translates to:
-  /// **'正在请她出来…'**
-  String get botsPetOverlayLoading;
-
-  /// No description provided for @botsPetOverlayFallback.
-  ///
-  /// In zh, this message translates to:
-  /// **'她没能出来，先由像素宠物顶班'**
-  String get botsPetOverlayFallback;
-
-  /// No description provided for @botsPetOverlayFraming.
-  ///
-  /// In zh, this message translates to:
-  /// **'取景'**
-  String get botsPetOverlayFraming;
-
-  /// No description provided for @botsPetOverlayFramingFull.
-  ///
-  /// In zh, this message translates to:
-  /// **'全身'**
-  String get botsPetOverlayFramingFull;
-
-  /// No description provided for @botsPetOverlayFramingHalf.
-  ///
-  /// In zh, this message translates to:
-  /// **'半身'**
-  String get botsPetOverlayFramingHalf;
-
-  /// No description provided for @botsPetOverlayFramingHint.
-  ///
-  /// In zh, this message translates to:
-  /// **'换取景会重新加载她'**
-  String get botsPetOverlayFramingHint;
-
-  /// No description provided for @botsPetSwitchDisabled.
-  ///
-  /// In zh, this message translates to:
-  /// **'开关点不动'**
-  String get botsPetSwitchDisabled;
-
-  /// No description provided for @botsPetRestrictedSettings.
-  ///
-  /// In zh, this message translates to:
-  /// **'允许受限制的设置'**
-  String get botsPetRestrictedSettings;
-
-  /// No description provided for @botsPetHiddenToday.
-  ///
-  /// In zh, this message translates to:
-  /// **'今天不再显示'**
-  String get botsPetHiddenToday;
-
-  /// No description provided for @botsPetRestore.
-  ///
-  /// In zh, this message translates to:
-  /// **'恢复'**
-  String get botsPetRestore;
-
-  /// No description provided for @botsPetChange.
-  ///
-  /// In zh, this message translates to:
-  /// **'换宠物'**
-  String get botsPetChange;
-
-  /// No description provided for @botsPetHideHour.
-  ///
-  /// In zh, this message translates to:
-  /// **'藏起来 1 小时'**
-  String get botsPetHideHour;
-
-  /// No description provided for @botsPetSettings.
-  ///
-  /// In zh, this message translates to:
-  /// **'宠物设置'**
-  String get botsPetSettings;
-
-  /// No description provided for @botsPetDeepy.
-  ///
-  /// In zh, this message translates to:
-  /// **'Deepy 小鲸鱼'**
-  String get botsPetDeepy;
-
-  /// No description provided for @botsPetWhaleGirl.
-  ///
-  /// In zh, this message translates to:
-  /// **'鲸娘'**
-  String get botsPetWhaleGirl;
-
-  /// No description provided for @botsPetPinkFish.
-  ///
-  /// In zh, this message translates to:
-  /// **'小粉鱼'**
-  String get botsPetPinkFish;
-
-  /// No description provided for @botsPetNone.
-  ///
-  /// In zh, this message translates to:
-  /// **'不显示'**
-  String get botsPetNone;
-
-  /// No description provided for @botsPets.
-  ///
-  /// In zh, this message translates to:
-  /// **'宠物'**
-  String get botsPets;
-
-  /// No description provided for @botsPetSource.
-  ///
-  /// In zh, this message translates to:
-  /// **'来自 DSH-TUI'**
-  String get botsPetSource;
-
-  /// No description provided for @botsPetImport.
-  ///
-  /// In zh, this message translates to:
-  /// **'导入'**
-  String get botsPetImport;
-
-  /// No description provided for @botsPetImportHint.
-  ///
-  /// In zh, this message translates to:
-  /// **'导入你自己的像素宠物：一个 zip，里面是 pack.json 和序列帧 PNG，格式见仓库里的 docs/design/pets.md。长按导入的宠物可以删除。'**
-  String get botsPetImportHint;
-
-  /// No description provided for @botsPetMake.
-  ///
-  /// In zh, this message translates to:
-  /// **'让 AI 做一只宠物'**
-  String get botsPetMake;
-
-  /// No description provided for @botsPetMakeSubtitle.
-  ///
-  /// In zh, this message translates to:
-  /// **'把 GIF、表情包或主题转成宠物包'**
-  String get botsPetMakeSubtitle;
-
-  /// No description provided for @botsPetImportDone.
-  ///
-  /// In zh, this message translates to:
-  /// **'「{name}」来了'**
-  String botsPetImportDone(String name);
-
-  /// No description provided for @botsPetCodexTitle.
-  ///
-  /// In zh, this message translates to:
-  /// **'「{name}」是从 Codex 宠物转过来的'**
-  String botsPetCodexTitle(String name);
-
-  /// No description provided for @botsPetCodexBody.
-  ///
-  /// In zh, this message translates to:
-  /// **'大部分照原样，有几处不完全一样：'**
-  String get botsPetCodexBody;
-
-  /// No description provided for @botsPetCodexOk.
-  ///
-  /// In zh, this message translates to:
-  /// **'知道了'**
-  String get botsPetCodexOk;
-
-  /// No description provided for @botsPetCodexLoops.
-  ///
-  /// In zh, this message translates to:
-  /// **'动作会一直循环到状态变化，不像 Codex 里跑几遍就回到待机'**
-  String get botsPetCodexLoops;
-
-  /// No description provided for @botsPetCodexRoamLeft.
-  ///
-  /// In zh, this message translates to:
-  /// **'往左走用的是往右走那一行的镜像'**
-  String get botsPetCodexRoamLeft;
-
-  /// No description provided for @botsPetCodexDrag.
-  ///
-  /// In zh, this message translates to:
-  /// **'拖着它时一律用朝右的那一行'**
-  String get botsPetCodexDrag;
-
-  /// No description provided for @botsPetCodexSleep.
-  ///
-  /// In zh, this message translates to:
-  /// **'睡觉时用待机的第一帧'**
-  String get botsPetCodexSleep;
-
-  /// No description provided for @botsPetCodexLook.
-  ///
-  /// In zh, this message translates to:
-  /// **'看向不同方向的那些格子没用上'**
-  String get botsPetCodexLook;
-
-  /// No description provided for @botsPetCodexWebp.
-  ///
-  /// In zh, this message translates to:
-  /// **'WebP 图转成了 PNG'**
-  String get botsPetCodexWebp;
-
-  /// No description provided for @botsPetCodexCustomTracks.
-  ///
-  /// In zh, this message translates to:
-  /// **'自定义的动作行没接到任何状态上'**
-  String get botsPetCodexCustomTracks;
-
-  /// No description provided for @botsPetCodexFps.
-  ///
-  /// In zh, this message translates to:
-  /// **'帧率换算成毫秒时取了整'**
-  String get botsPetCodexFps;
-
-  /// No description provided for @botsPetCodexOneShot.
-  ///
-  /// In zh, this message translates to:
-  /// **'只播一次的动作，播完回到哪里由 DSH 决定'**
-  String get botsPetCodexOneShot;
-
-  /// No description provided for @botsPetCodexMissingAuthor.
-  ///
-  /// In zh, this message translates to:
-  /// **'包里没写作者'**
-  String get botsPetCodexMissingAuthor;
-
-  /// No description provided for @botsPetCodexMissingLicense.
-  ///
-  /// In zh, this message translates to:
-  /// **'包里没写授权'**
-  String get botsPetCodexMissingLicense;
-
-  /// No description provided for @botsPetCodexMissingSource.
-  ///
-  /// In zh, this message translates to:
-  /// **'包里没写来源'**
-  String get botsPetCodexMissingSource;
-
-  /// No description provided for @botsPetImportReplaced.
-  ///
-  /// In zh, this message translates to:
-  /// **'「{name}」换成了新的'**
-  String botsPetImportReplaced(String name);
-
-  /// No description provided for @botsPetImportNotZip.
-  ///
-  /// In zh, this message translates to:
-  /// **'这不是 zip 文件'**
-  String get botsPetImportNotZip;
-
-  /// No description provided for @botsPetImportNoPack.
-  ///
-  /// In zh, this message translates to:
-  /// **'zip 里没有 pack.json'**
-  String get botsPetImportNoPack;
-
-  /// No description provided for @botsPetImportBadPack.
-  ///
-  /// In zh, this message translates to:
-  /// **'pack.json 有问题：{detail}'**
-  String botsPetImportBadPack(String detail);
-
-  /// No description provided for @botsPetImportMissingSheet.
-  ///
-  /// In zh, this message translates to:
-  /// **'zip 里少了序列帧图 {name}'**
-  String botsPetImportMissingSheet(String name);
-
-  /// No description provided for @botsPetImportBadSheet.
-  ///
-  /// In zh, this message translates to:
-  /// **'序列帧图不对：{name}（要完整的 PNG，每边不超过 4096 像素，每一帧都在图内）'**
-  String botsPetImportBadSheet(String name);
-
-  /// No description provided for @botsPetImportTooLarge.
-  ///
-  /// In zh, this message translates to:
-  /// **'这个宠物包太大了'**
-  String get botsPetImportTooLarge;
-
-  /// No description provided for @botsPetImportStorage.
-  ///
-  /// In zh, this message translates to:
-  /// **'没能存到手机上，再试一次'**
-  String get botsPetImportStorage;
-
-  /// No description provided for @botsPetRemoveTitle.
-  ///
-  /// In zh, this message translates to:
-  /// **'删除「{name}」？'**
-  String botsPetRemoveTitle(String name);
-
-  /// No description provided for @botsPetRemoveBody.
-  ///
-  /// In zh, this message translates to:
-  /// **'删除后可以再导入。'**
-  String get botsPetRemoveBody;
-
-  /// No description provided for @botsPetRemoveFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'没能删除「{name}」，再试一次'**
-  String botsPetRemoveFailed(String name);
-
-  /// No description provided for @botsPetSize.
-  ///
-  /// In zh, this message translates to:
-  /// **'大小'**
-  String get botsPetSize;
-
-  /// No description provided for @botsPetCustomSize.
-  ///
-  /// In zh, this message translates to:
-  /// **'自定义大小'**
-  String get botsPetCustomSize;
-
-  /// No description provided for @botsPetQuiet.
-  ///
-  /// In zh, this message translates to:
-  /// **'安静模式'**
-  String get botsPetQuiet;
-
-  /// No description provided for @botsPetQuietSubtitle.
-  ///
-  /// In zh, this message translates to:
-  /// **'只做动作，不冒气泡'**
-  String get botsPetQuietSubtitle;
-
-  /// No description provided for @botsPetShowNow.
-  ///
-  /// In zh, this message translates to:
-  /// **'立即显示'**
-  String get botsPetShowNow;
-
-  /// No description provided for @botsPetHiddenUntil.
-  ///
-  /// In zh, this message translates to:
-  /// **'藏到 {time}'**
-  String botsPetHiddenUntil(String time);
 
   /// No description provided for @botsKeyEsc.
   ///
@@ -15716,12 +15284,6 @@ abstract class L10n {
   /// **'颜色,主题色,强调色'**
   String get harmonyKwAccent;
 
-  /// No description provided for @harmonyKwPets.
-  ///
-  /// In zh, this message translates to:
-  /// **'宠物,小鲸,桌宠,鲸鱼'**
-  String get harmonyKwPets;
-
   /// No description provided for @harmonyBackgroundSubtitleLong.
   ///
   /// In zh, this message translates to:
@@ -17432,137 +16994,11 @@ abstract class L10n {
   /// **'没有完成（{code}）。'**
   String iosPhoneLinkErrorOther(String code);
 
-  /// No description provided for @iosPetPipTitle.
-  ///
-  /// In zh, this message translates to:
-  /// **'宠物画中画'**
-  String get iosPetPipTitle;
-
   /// No description provided for @iosPetPipHint.
   ///
   /// In zh, this message translates to:
   /// **'可选的宠物小窗，可以辅助后台运行。手机操控使用系统持续任务，不需要先开启画中画或选择宠物。'**
   String get iosPetPipHint;
-
-  /// No description provided for @iosPetPipRequired.
-  ///
-  /// In zh, this message translates to:
-  /// **'可选，默认关闭'**
-  String get iosPetPipRequired;
-
-  /// No description provided for @iosPetPipReady.
-  ///
-  /// In zh, this message translates to:
-  /// **'已就绪，手机任务开始时出现'**
-  String get iosPetPipReady;
-
-  /// No description provided for @iosPetPipKeepingAlive.
-  ///
-  /// In zh, this message translates to:
-  /// **'正在让 App 在后台继续运行'**
-  String get iosPetPipKeepingAlive;
-
-  /// No description provided for @iosPetPipAlways.
-  ///
-  /// In zh, this message translates to:
-  /// **'任务结束后也留着'**
-  String get iosPetPipAlways;
-
-  /// No description provided for @iosPetPipStart.
-  ///
-  /// In zh, this message translates to:
-  /// **'开始画中画'**
-  String get iosPetPipStart;
-
-  /// No description provided for @iosPetPipStartHint.
-  ///
-  /// In zh, this message translates to:
-  /// **'画中画没有自己出现时，点这里打开'**
-  String get iosPetPipStartHint;
-
-  /// No description provided for @iosPetPipPaused.
-  ///
-  /// In zh, this message translates to:
-  /// **'手机任务在画中画里暂停了'**
-  String get iosPetPipPaused;
-
-  /// No description provided for @iosPetPipReview.
-  ///
-  /// In zh, this message translates to:
-  /// **'继续或停止'**
-  String get iosPetPipReview;
-
-  /// No description provided for @iosPetPipResume.
-  ///
-  /// In zh, this message translates to:
-  /// **'恢复'**
-  String get iosPetPipResume;
-
-  /// No description provided for @iosPetPipChoosePet.
-  ///
-  /// In zh, this message translates to:
-  /// **'选宠物'**
-  String get iosPetPipChoosePet;
-
-  /// No description provided for @iosPetPipErrorNoPet.
-  ///
-  /// In zh, this message translates to:
-  /// **'先选一只宠物'**
-  String get iosPetPipErrorNoPet;
-
-  /// No description provided for @iosPetPipErrorUnsupported.
-  ///
-  /// In zh, this message translates to:
-  /// **'这台手机不支持画中画'**
-  String get iosPetPipErrorUnsupported;
-
-  /// No description provided for @iosPetPipErrorLocked.
-  ///
-  /// In zh, this message translates to:
-  /// **'锁屏时画中画停了'**
-  String get iosPetPipErrorLocked;
-
-  /// No description provided for @iosPetPipErrorAudio.
-  ///
-  /// In zh, this message translates to:
-  /// **'录音、通话或别的声音占用时，画中画停了'**
-  String get iosPetPipErrorAudio;
-
-  /// No description provided for @iosPetPipErrorPack.
-  ///
-  /// In zh, this message translates to:
-  /// **'这只宠物的素材有问题，换一只试试'**
-  String get iosPetPipErrorPack;
-
-  /// No description provided for @iosPetPipErrorStart.
-  ///
-  /// In zh, this message translates to:
-  /// **'画中画没能打开'**
-  String get iosPetPipErrorStart;
-
-  /// No description provided for @iosPetPipErrorClosed.
-  ///
-  /// In zh, this message translates to:
-  /// **'画中画被关掉了'**
-  String get iosPetPipErrorClosed;
-
-  /// No description provided for @iosPetPipErrorOther.
-  ///
-  /// In zh, this message translates to:
-  /// **'画中画停了（{code}）'**
-  String iosPetPipErrorOther(String code);
-
-  /// No description provided for @iosPetPipChoosePetHint.
-  ///
-  /// In zh, this message translates to:
-  /// **'在宠物设置里选一只'**
-  String get iosPetPipChoosePetHint;
-
-  /// No description provided for @iosPetPipReopen.
-  ///
-  /// In zh, this message translates to:
-  /// **'重新准备画中画'**
-  String get iosPetPipReopen;
 
   /// No description provided for @launchScreenTitle.
   ///
@@ -20035,30 +19471,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'刷新率 高刷 120Hz 90Hz 流畅'**
   String get searchKwRefreshRate;
-
-  /// No description provided for @petActionSending.
-  ///
-  /// In zh, this message translates to:
-  /// **'正在发送…'**
-  String get petActionSending;
-
-  /// No description provided for @petActionTargetChanged.
-  ///
-  /// In zh, this message translates to:
-  /// **'主机已变化，重新打开「问一句」；文字已保留'**
-  String get petActionTargetChanged;
-
-  /// No description provided for @petActionSendFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'没能发出，文字已保留，请重试'**
-  String get petActionSendFailed;
-
-  /// No description provided for @petActionBusy.
-  ///
-  /// In zh, this message translates to:
-  /// **'这个对话正在忙，请选择「新对话」'**
-  String get petActionBusy;
 
   /// No description provided for @phoneDiagnosticsCollecting.
   ///
@@ -25688,12 +25100,6 @@ abstract class L10n {
   /// **'桌面图标'**
   String get pluginsAppIcon;
 
-  /// No description provided for @pluginsPet.
-  ///
-  /// In zh, this message translates to:
-  /// **'宠物'**
-  String get pluginsPet;
-
   /// No description provided for @pluginsCustomColor.
   ///
   /// In zh, this message translates to:
@@ -30776,24 +30182,6 @@ abstract class L10n {
   /// **'全部允许'**
   String get riskAllowForChatAction;
 
-  /// No description provided for @riskPetOverlayTitle.
-  ///
-  /// In zh, this message translates to:
-  /// **'显示在其他应用上层？'**
-  String get riskPetOverlayTitle;
-
-  /// No description provided for @riskPetOverlayBody.
-  ///
-  /// In zh, this message translates to:
-  /// **'要在系统设置里为 DSH Go 打开「显示在其他应用上层」，宠物才能出现在别的 App 上。'**
-  String get riskPetOverlayBody;
-
-  /// No description provided for @riskPetOverlayAction.
-  ///
-  /// In zh, this message translates to:
-  /// **'去设置'**
-  String get riskPetOverlayAction;
-
   /// No description provided for @askAiTooltip.
   ///
   /// In zh, this message translates to:
@@ -30997,12 +30385,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'外观,配色,颜色,主题色,强调色,图标'**
   String get searchKwTheme;
-
-  /// No description provided for @searchKwPets.
-  ///
-  /// In zh, this message translates to:
-  /// **'宠物,小鲸,桌宠,悬浮,鲸鱼'**
-  String get searchKwPets;
 
   /// No description provided for @searchKwPerformance.
   ///
@@ -31291,42 +30673,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'启动图标,App 图标,图标'**
   String get searchKwAppIcon;
-
-  /// No description provided for @searchKwPetSize.
-  ///
-  /// In zh, this message translates to:
-  /// **'宠物大小,宠物尺寸'**
-  String get searchKwPetSize;
-
-  /// No description provided for @searchKwPetQuiet.
-  ///
-  /// In zh, this message translates to:
-  /// **'安静,宠物安静'**
-  String get searchKwPetQuiet;
-
-  /// No description provided for @searchKwPetOutside.
-  ///
-  /// In zh, this message translates to:
-  /// **'悬浮窗,桌面宠物,宠物悬浮'**
-  String get searchKwPetOutside;
-
-  /// No description provided for @searchKwPetDisplayWhen.
-  ///
-  /// In zh, this message translates to:
-  /// **'宠物显示,显示时机'**
-  String get searchKwPetDisplayWhen;
-
-  /// No description provided for @searchKwPetOverlayShows.
-  ///
-  /// In zh, this message translates to:
-  /// **'悬浮伙伴,小屋里的她,像素宠物,Live2D'**
-  String get searchKwPetOverlayShows;
-
-  /// No description provided for @searchKwPetOverlayFraming.
-  ///
-  /// In zh, this message translates to:
-  /// **'取景,全身,半身'**
-  String get searchKwPetOverlayFraming;
 
   /// No description provided for @searchKwWorkshop.
   ///
@@ -33164,12 +32510,6 @@ abstract class L10n {
   /// **'强调色'**
   String get shellAccentColor;
 
-  /// No description provided for @shellPet.
-  ///
-  /// In zh, this message translates to:
-  /// **'宠物'**
-  String get shellPet;
-
   /// No description provided for @shellConfigured.
   ///
   /// In zh, this message translates to:
@@ -33361,12 +32701,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'和 accentPreset 二选一，已用 accentPreset'**
   String get shellConfigAccentBoth;
-
-  /// No description provided for @shellConfigPetId.
-  ///
-  /// In zh, this message translates to:
-  /// **'id 只能用小写字母、数字和 -'**
-  String get shellConfigPetId;
 
   /// No description provided for @shellConfigKeysFormat.
   ///
@@ -34117,18 +33451,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'自定义'**
   String get stateSizeCustom;
-
-  /// No description provided for @statePetDone.
-  ///
-  /// In zh, this message translates to:
-  /// **'做完了'**
-  String get statePetDone;
-
-  /// No description provided for @statePetFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'出错了'**
-  String get statePetFailed;
 
   /// No description provided for @statePhoneNotReady.
   ///
@@ -35827,30 +35149,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'问你：{question}'**
   String stateAlertQuestionText(String question);
-
-  /// No description provided for @statePetChatsDone.
-  ///
-  /// In zh, this message translates to:
-  /// **'{count} 个对话做完了'**
-  String statePetChatsDone(int count);
-
-  /// No description provided for @statePetChatsFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'{count} 个对话出错了'**
-  String statePetChatsFailed(int count);
-
-  /// No description provided for @statePetChatsApproval.
-  ///
-  /// In zh, this message translates to:
-  /// **'{count} 个对话等你确认'**
-  String statePetChatsApproval(int count);
-
-  /// No description provided for @statePetChatsQuestion.
-  ///
-  /// In zh, this message translates to:
-  /// **'{count} 个对话等你回答'**
-  String statePetChatsQuestion(int count);
 
   /// No description provided for @stateAttachmentEmpty.
   ///
@@ -45056,18 +44354,6 @@ abstract class L10n {
   /// **'长按桌面图标，可以直接语音提问或开新对话'**
   String get viewTipLauncher;
 
-  /// No description provided for @viewTipPetBubble.
-  ///
-  /// In zh, this message translates to:
-  /// **'宠物冒泡时点一下，就跳到等你的那个对话'**
-  String get viewTipPetBubble;
-
-  /// No description provided for @viewTipPetPlay.
-  ///
-  /// In zh, this message translates to:
-  /// **'连点宠物三下会挠痒痒，长按可以换宠物'**
-  String get viewTipPetPlay;
-
   /// No description provided for @viewTipActivityStrip.
   ///
   /// In zh, this message translates to:
@@ -46784,12 +46070,6 @@ abstract class L10n {
   /// **'全部'**
   String get workshopKindAll;
 
-  /// No description provided for @workshopKindPet.
-  ///
-  /// In zh, this message translates to:
-  /// **'像素宠物'**
-  String get workshopKindPet;
-
   /// No description provided for @workshopKindCompanion.
   ///
   /// In zh, this message translates to:
@@ -46969,12 +46249,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'装好了'**
   String get workshopInstallDone;
-
-  /// No description provided for @workshopInstallDonePet.
-  ///
-  /// In zh, this message translates to:
-  /// **'装好了，到宠物页就能换上它。'**
-  String get workshopInstallDonePet;
 
   /// No description provided for @workshopInstallDoneCompanion.
   ///
@@ -48110,12 +47384,6 @@ abstract class L10n {
   /// **'没能读出本机可以投稿的内容。'**
   String get workshopPublishSourcesIssue;
 
-  /// No description provided for @workshopPublishPetsIssue.
-  ///
-  /// In zh, this message translates to:
-  /// **'没能读出本机的像素宠物。'**
-  String get workshopPublishPetsIssue;
-
   /// No description provided for @workshopPublishCompanionIssue.
   ///
   /// In zh, this message translates to:
@@ -48601,12 +47869,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'不带预览图'**
   String get workshopPublishReviewPreviewNone;
-
-  /// No description provided for @workshopPublishErrorPreviewPet.
-  ///
-  /// In zh, this message translates to:
-  /// **'这只宠物的画面超过 512 像素，做不了预览图。关掉预览图可以照常投稿。'**
-  String get workshopPublishErrorPreviewPet;
 
   /// No description provided for @workshopPublishErrorPreviewConflict.
   ///

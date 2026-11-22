@@ -403,7 +403,6 @@ abstract final class AppIcons {
   static const chart = DshGlyphs.chartBar;
 
   /// 设置 › 宠物.
-  static const pet = DshGlyphs.smiley;
 
   /// 模式 › 酒馆 (role play).
   static const tavern = DshGlyphs.bookOpen;

@@ -89,7 +89,6 @@ Map<String, String> get _seatNames => {
       },
     ),
     'theme.accent' => (appL10n.shellAccentColor, _presetNames[value] ?? '$value'),
-    'pet' => (appL10n.shellPet, (value is Map ? value['id'] as String? : null) ?? appL10n.shellConfigured),
     'shortcuts' => (appL10n.shellShortcuts, appL10n.shellSettingCount(count())),
     _ => (id, entry.display),
   };

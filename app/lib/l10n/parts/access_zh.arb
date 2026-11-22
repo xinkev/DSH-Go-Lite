@@ -6,8 +6,6 @@
   "accessSkip": "跳过",
   "accessFeatureFiles": "读写手机里的文件",
   "accessFeatureFilesNeeds": "需要文件访问权限",
-  "accessFeaturePet": "桌宠与悬浮窗",
-  "accessFeaturePetNeeds": "需要悬浮窗权限",
   "accessFeaturePhone": "手机操控",
   "accessFeaturePhoneNeeds": "需要无障碍和通知权限",
   "accessFeatureBackground": "后台持续运行",
@@ -88,7 +86,6 @@
     }
   },
   "accessOverlayTitle": "允许显示在其他应用上层",
-  "accessOverlayWhy": "宠物才能出现在别的 App 上",
   "accessOverlayGreyed": "开关是灰的？",
   "accessRestrictedTitle": "先允许受限制的设置",
   "accessRestrictedTap": "在无障碍里点一下「DSH 手机操控」，出现「受限制的设置」时点确定",

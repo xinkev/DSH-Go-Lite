@@ -1597,7 +1597,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
                           final live = connected && !readOnly;
                           final mention = live && _mentions.isOpen;
                           final content = live && !mention ? _slashContent(commands) : null;
-                          // The pet steps aside while a panel is up.
                           return PopScope<Object?>(
                             canPop: content == null,
                             onPopInvokedWithResult: (didPop, _) {
@@ -1648,9 +1647,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              // Banners are capsules too: the pet stands on
-                              // the topmost one (an empty slot is 0 high).
-                               SmoothSize(
+                              SmoothSize(
                                 duration: AppMotion.of(context, AppMotion.standard),
                                 curve: AppMotion.std,
                                 alignment: Alignment.bottomCenter,

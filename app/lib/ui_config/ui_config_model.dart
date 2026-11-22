@@ -185,17 +185,6 @@ enum UiHideItem { turnFooter, tokenCount, reasoningDetails, activityStrip, whale
 
 enum UiThemeMode { system, light, dark }
 
-enum UiPetPosition {
-  topLeft('top-left'),
-  topRight('top-right'),
-  bottomLeft('bottom-left'),
-  bottomRight('bottom-right');
-
-  const UiPetPosition(this.wire);
-
-  final String wire;
-}
-
 /// `plugins.seats` values; [web] is the seat's 「在网页版打开」 row.
 enum UiSeatMode { native, island, web, hidden }
 
@@ -216,26 +205,6 @@ class UiAccent {
 
   @override
   int get hashCode => Object.hash(presetId, rgb);
-}
-
-/// The pet's preferences; each field is optional. Parsed and validated;
-/// nothing reads them yet.
-@immutable
-class UiPetSpec {
-  const UiPetSpec({this.id, this.position, this.quiet});
-
-  final String? id;
-  final UiPetPosition? position;
-  final bool? quiet;
-
-  Map<String, Object?> toJson() => {'id': ?id, 'position': ?position?.wire, 'quiet': ?quiet};
-
-  @override
-  bool operator ==(Object other) =>
-      other is UiPetSpec && other.id == id && other.position == position && other.quiet == quiet;
-
-  @override
-  int get hashCode => Object.hash(id, position, quiet);
 }
 
 // ── Settings and their provenance ───────────────────────────────────────────
@@ -259,7 +228,6 @@ class UiSettingKey {
 
   /// `theme.accentPreset` or `theme.accent`, whichever the file uses.
   static const accent = UiSettingKey._('theme.accent');
-  static const pet = UiSettingKey._('pet');
   static const shortcuts = UiSettingKey._('shortcuts');
 
   /// One hidden item (`hide` lists several).
@@ -340,7 +308,6 @@ class UiConfig {
     this.hide = const [],
     this.themeMode,
     this.accent,
-    this.pet,
     this.shortcuts,
     this.seats = const {},
     this.entries = const {},
@@ -363,7 +330,6 @@ class UiConfig {
   final List<UiHideItem> hide;
   final UiThemeMode? themeMode;
   final UiAccent? accent;
-  final UiPetSpec? pet;
   final List<UiShortcut>? shortcuts;
 
   /// slot → package → mode.
@@ -399,7 +365,6 @@ class UiConfig {
       ],
       themeMode: keep(UiSettingKey.themeMode) ? themeMode : null,
       accent: keep(UiSettingKey.accent) ? accent : null,
-      pet: keep(UiSettingKey.pet) ? pet : null,
       shortcuts: keep(UiSettingKey.shortcuts) ? shortcuts : null,
       seats: {
         for (final MapEntry(key: slot, value: packages) in seats.entries)

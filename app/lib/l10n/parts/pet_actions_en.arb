@@ -1,6 +1,2 @@
 {
-  "petActionSending": "Sending…",
-  "petActionTargetChanged": "Host changed. Reopen Quick ask; your text is kept.",
-  "petActionSendFailed": "Couldn’t send. Your text is kept; try again.",
-  "petActionBusy": "This chat is busy. Choose New chat."
 }

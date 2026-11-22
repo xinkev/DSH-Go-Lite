@@ -6,8 +6,6 @@
   "accessSkip": "Skip",
   "accessFeatureFiles": "Read and write phone files",
   "accessFeatureFilesNeeds": "Needs file access",
-  "accessFeaturePet": "Pet over other apps",
-  "accessFeaturePetNeeds": "Needs display over other apps",
   "accessFeaturePhone": "Phone control",
   "accessFeaturePhoneNeeds": "Needs accessibility and notifications",
   "accessFeatureBackground": "Keep running in background",
@@ -88,7 +86,6 @@
     }
   },
   "accessOverlayTitle": "Allow display over other apps",
-  "accessOverlayWhy": "Lets your pet appear over other apps",
   "accessOverlayGreyed": "Switch greyed out?",
   "accessRestrictedTitle": "Allow restricted settings first",
   "accessRestrictedTap": "In Accessibility, tap “DSH Phone Control”; when “Restricted setting” appears, tap OK",
