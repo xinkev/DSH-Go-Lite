@@ -158,15 +158,7 @@ class PetPerchState extends State<PetPerch> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final registry = _registry;
-    if (registry == null) return widget.child;
-    return ValueListenableBuilder<bool>(
-      valueListenable: registry.leading,
-      builder: (context, leading, child) => _PetLeader(link: link, active: leading, child: child),
-      child: widget.child,
-    );
-  }
+  Widget build(BuildContext context) => widget.child;
 }
 
 /// [CompositedTransformTarget] that leads only while [active]: off, it is a
