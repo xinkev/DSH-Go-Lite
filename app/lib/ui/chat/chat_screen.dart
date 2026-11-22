@@ -1747,17 +1747,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
                             ),
                           )
                         : _ChatTextScale(
-                            child: MediaCardActions(
-                              regenerate: readOnly ? null : (meta) => unawaited(_regenerateMedia(sessionId, meta)),
-                              revise: readOnly || !mediaReady ? null : _reviseMedia,
-                              edit: readOnly || !mediaEdit
-                                  ? null
-                                  : (meta, item) => unawaited(_reuseMedia(sessionId, meta, item, video: false)),
-                              makeVideo: readOnly || !mediaVideo
-                                  ? null
-                                  : (meta, item) => unawaited(_reuseMedia(sessionId, meta, item, video: true)),
-                              // Keyed by conversation: opening another one fades it in.
-                              child: FluidFadeIn(
+                            child: FluidFadeIn(
                                 key: ValueKey(sessionId),
                                 child: ChatList(
                                   key: ValueKey(sessionId),
@@ -1774,8 +1764,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
                                   onToast: _composerToast,
                                   onSwitchModel: readOnly ? null : _switchModel,
                                 ),
-                              ),
-                            ),
+                              )
                           ),
                   ),
                   // The page's own backdrop again under the composer area: content
