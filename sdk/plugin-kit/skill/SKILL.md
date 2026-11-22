@@ -1,7 +1,6 @@
 ---
 # dsh-go:managed — the dsh-go app keeps this skill up to date; delete this line to keep your own edits.
 name: dsh-go-plugin
-description: 给 dsh-go 手机 App 写一个本地小插件，在**手机原生界面**里出现：输入框上方的胶囊、回复长按菜单里的操作、状态条、原生面板、工具结果卡片，还能朗读、开口即停、显示字幕；写完用自带的检查器检查，装进当前主机。用户要给 dsh-go App 加需要逻辑或数据的东西时先加载它，比如「输入框上面加个按钮，把剪贴板译成英文」「长按消息加个『存到笔记』」「输入框上方显示今天用了多少」「做个面板看我的待办」「这个工具的结果画成卡片」「加个按钮把回复读出来」。只用于 dsh-go 手机原生界面；用户要做 Cordis 插件、改 Harness 网页版 / 桌面端，或明确说的是网页插件时，用官方 cordis-plugin-development 技能，不要用本技能的目录和安装方式。Write a small local DSH plugin that shows up natively in the dsh-go phone app; for Cordis / Harness Web UI plugins use the official skill instead.
 whenToUse: The user wants to add something of their own to the dsh-go phone app (手机 App / 原生界面) that needs logic or data. For fixed buttons, layout, theme or hiding things use the dsh-go-ui skill (ui.json) instead. For Cordis plugins or the Harness Web UI / desktop, use the official cordis-plugin-development skill — different directory and install entry.
 ---
 
@@ -15,7 +14,6 @@ whenToUse: The user wants to add something of their own to the dsh-go phone app 
 
 | 用户要的 | 用哪个 | 目录 / 安装 |
 |---|---|---|
-| 手机 App 里加胶囊、菜单项、状态条、原生面板、工具结果卡片、朗读 / 字幕 | 本技能 | `$DSH_HOME/dsh-go/plugins/<name>/`，`dsh plugin --profile web add <目录>` |
 | 改 dsh-go App 自己的样子（顶栏按钮、主题、隐藏元素） | `dsh-go-ui`（ui.json） | `$DSH_HOME/dsh-go/ui.json` |
 | Cordis / Harness Web UI 插件、装饰、槽位、MCP、页面 | 官方 `cordis-plugin-development` | 工作区建包 + `plugin_manager` → `install_bundle` |
 | Agent 预设、Cordis 组合 | 官方组合类技能 | 官方流程 |
@@ -36,7 +34,6 @@ whenToUse: The user wants to add something of their own to the dsh-go phone app 
 | 对整段对话做事：导出、归档 | 本技能：`session.actions`（右侧栏「信息」，要较新的 App） |
 | 每轮一眼看到的数字 | 本技能：`turn.note` + `turnNote(id)`（回合脚注，要较新的 App） |
 | 某个工具的结果画成卡片 | 本技能：工具 `output.presentationMeta` 返回 `{ "dsh-go/view": 视图 }`，不需要清单 |
-| 把回复读出来、开口就停、跟读字幕 | 本技能：`capabilities` + `media` / `micro` / `overlays`（见下文「声音与字幕」） |
 
 胶囊、菜单、状态条、面板只在装了 dsh-go 桥接的主机上出现：手机本机引擎有（`/etc/dsh-app/runtime.json` 存在就是）；其他主机只有工具卡。
 
@@ -226,22 +223,16 @@ presentationMeta: (args, value) => {
 - 旧 App、旧桥、DSH Remote 中转不协商此能力，面板照常打开。`dshGo.v` 仍是 `1`，不要填 `1.3`。
 - 发起选择的调用必须来自用户手势（`userGesture`），不能在后台自行触发。
 
-## 声音与字幕（v1.2，可选）
 
-清单加 `"capabilities": ["audio", "voice", "micro", "overlay"]`（用哪几样写哪几样），`contributes` 加 `media: [{ id }]`、`micro: [{ id }]`、`overlays: [{ id, channel }]`（各 ≤ 2，id 和其他贡献不重复）；要用声音的按钮加 `"requires": ["audio"]`。
 
 ```js
 ctx.dshGo.on('read', (scope) => [   // 同一 instance：App 当作一个会话
   { type: 'audio', op: 'play', instance: 'reading', src: 'media:speech', key: 'k1' },
-  { type: 'voice', op: 'start', instance: 'reading' },
   { type: 'overlay', op: 'show', instance: 'reading', id: 'subtitle' },
 ])
 ctx.dshGo.media('speech', async (scope, { key, signal }) => ({ body: wavBuffer, contentType: 'audio/wav' }))   // 整段，≤ 16 MiB，30 秒内
-ctx.dshGo.micro('caption', { data: (scope, emit) => { emit({ text: '读到这里', progress: 0.3 }); return () => {} } })   // 只能 { text ≤ 240 字, progress 0–1 }
-ctx.dshGo.onCapability((scope, { event }) => {})   // audio.ended / voice.speechStart / …；返回值不执行
 ```
 
-慢的事（TTS）放在 `media` 里，不放在 `on` 里。App 负责：开口时先停播再通知、问用户能不能听、只在前台、声音结束后自动停听关字幕。没有 TTS 时可以像 `examples/plugins/dsh-go-example-readaloud` 那样合成占位音。
 
 ## 规矩
 
