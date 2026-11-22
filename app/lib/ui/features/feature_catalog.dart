@@ -406,32 +406,7 @@ String get pluginFeatureSection => appL10n.catalogPlugins;
 /// at the end of 插件. Exactly [featureSections] without one (on Android).
 final featureSectionsProvider = Provider.autoDispose<List<FeatureSection>>((ref) {
   final sections = ref.watch(androidSystemFeaturesProvider) ? featureSections : _sectionsWithoutAndroid;
-  final plan = ref.watch(seatPlanProvider(const SeatRequest(slot: Slots.main, placement: SeatPlacement.page)));
-  final items = plan.visible;
-  if (items.isEmpty) return sections;
-  final bundles = ref.watch(installedPluginsProvider.select((s) => s.value));
-  final inventory = ref.watch(seatInventoryProvider);
-  final panels = [
-    for (final item in items)
-      pluginPanelFeature(
-        item,
-        bundles: bundles,
-        inventory: inventory,
-        // A native panel's plugin may have declared a title of its own.
-        owner: item.mode == SeatMode.native ? ref.watch(nativePluginTitleProvider(item.occupant.package)) : null,
-      ),
-  ];
-  return [
-    for (final section in sections)
-      section.items.any((item) => item.id == 'plugins')
-          ? FeatureSection.localized(
-              (l10n) => l10n.catalogPlugins,
-              [...section.items, ...panels],
-              note: section.note,
-              id: section.id,
-            )
-          : section,
-  ];
+  return sections;
 });
 
 /// One plugin panel as an entry: its native or island page, or DSH Web (the
