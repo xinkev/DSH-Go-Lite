@@ -40,8 +40,6 @@ import '../pets/pet_settings_page.dart';
 import '../phone/phone_control_screen.dart';
 import '../phone/system_actions_page.dart';
 import '../plugins/plugins_screen.dart';
-import '../plugins/seats/plugin_settings_tiles.dart';
-import '../plugins/seats/seat_probe.dart';
 import '../providers/providers_page.dart';
 import '../remote/host_status.dart';
 import '../remote/remote_screen.dart';
@@ -326,7 +324,6 @@ class SettingsScreen extends ConsumerWidget {
       fit: StackFit.expand,
       children: [
         page,
-        const Positioned(left: 0, top: 0, child: SeatProbe()),
       ],
     );
   }

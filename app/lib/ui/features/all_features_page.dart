@@ -121,7 +121,6 @@ class AllFeaturesPage extends ConsumerWidget {
       fit: StackFit.expand,
       children: [
         page,
-        const Positioned(left: 0, top: 0, child: SeatProbe()),
       ],
     );
   }
