@@ -283,9 +283,7 @@ class _AccessWalkState extends ConsumerState<AccessWalk> {
       if (item.vendor && tries > 0)
         (l10n.accessOpenAgain, () => unawaited(_go(item)))
       else if (restricted != null)
-        (l10n.accessRestrictedHelp, () => _push(const RestrictedSettingsGuidePage()))
-      else if (item == AccessItem.overlay && tries > 0 && (readings.sdk ?? 33) >= 33 && !readings.overlayBlocked)
-        (l10n.accessOverlayGreyed, () => _push(const RestrictedSettingsGuidePage(target: RestrictedTarget.overlay))),
+        (l10n.accessRestrictedHelp, () => _push(const RestrictedSettingsGuidePage())),
       skip,
     ];
 

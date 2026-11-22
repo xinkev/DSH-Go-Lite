@@ -35,7 +35,7 @@ import 'system_actions_state.dart';
 
 /// What a person picks on first run: things DSH Go does, not permission names.
 /// What [os] offers is [accessFeaturesFor]'s, never all of these.
-enum AccessFeature { files, pet, phone, background, alerts, systemActions }
+enum AccessFeature { files, phone, background, alerts, systemActions }
 
 /// What first run and 系统权限 offer on [os], in their order. HarmonyOS and iOS
 /// have only what works there: their files and windows over other apps aren't
@@ -46,7 +46,6 @@ List<AccessFeature> accessFeaturesFor(String os) => switch (os) {
   'ohos' => const [AccessFeature.alerts, AccessFeature.systemActions],
   _ when androidSystemFeaturesOn(os) => const [
     AccessFeature.files,
-    AccessFeature.pet,
     AccessFeature.phone,
     AccessFeature.background,
   ],
@@ -64,8 +63,7 @@ enum AccessItem {
   vendorBackground,
   autostart,
   accessibility,
-  popup,
-  overlay;
+  popup;
 
   /// A maker's own switch: no API reports it, so the person says it is set.
   bool get vendor => vendorWire != null;
@@ -120,7 +118,6 @@ List<AccessItem> accessItemsFor(AccessFeature feature, String? vendor) {
   final own = vendorSwitches[vendor] ?? const <AccessItem>[];
   final items = switch (feature) {
     AccessFeature.files => [AccessItem.storage],
-    AccessFeature.pet => [AccessItem.overlay],
     AccessFeature.phone => [AccessItem.accessibility, AccessItem.notifications, AccessItem.popup],
     AccessFeature.background => [
       AccessItem.notifications,
@@ -197,7 +194,6 @@ class AccessReadings {
     AccessItem.notifications => notifications,
     AccessItem.battery => battery,
     AccessItem.accessibility => accessibility,
-    AccessItem.overlay => overlay,
     AccessItem.vendorBackground || AccessItem.autostart || AccessItem.popup => null,
   };
 
@@ -360,11 +356,6 @@ class SystemAccessDriver implements AccessDriver {
           return await bridge.openVendorSettings(item.vendorWire!) != null;
         case AccessItem.accessibility:
           return ref.read(phoneProvider.notifier).openAccessibilitySettings();
-        case AccessItem.overlay:
-          // On with it: the pet is what the permission is for. A vivo switch the
-          // system doesn't report opens the app's page instead.
-          await ref.read(petOverlayProvider.notifier).turnOn();
-          return true;
       }
     });
     return opened ?? false;
@@ -578,14 +569,6 @@ class AccessSetupController extends Notifier<AccessSetup> {
     final phase = ref.read(localRuntimeProvider).status.phase;
     if (restart && !restarting && (phase == RuntimePhase.running || phase == RuntimePhase.starting)) {
       unawaited(EngineControl.restart(ref.container));
-    }
-    if (features.contains(AccessFeature.pet)) {
-      // The pet itself, or the floating window has nothing to show (a light
-      // phone starts without one). Also in the app when the window stays off.
-      await attempt(ref.read(petPrefsProvider.notifier).adoptDefault);
-      if (readings.overlay == true && !ref.read(petOverlayProvider).working) {
-        await attempt(ref.read(petOverlayProvider.notifier).turnOn);
-      }
     }
   }
 }

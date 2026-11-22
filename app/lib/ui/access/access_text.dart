@@ -13,7 +13,6 @@ import '../theme/app_icons.dart';
 extension AccessFeatureText on AccessFeature {
   IconData get icon => switch (this) {
     AccessFeature.files => AppIcons.fileAccess,
-    AccessFeature.pet => AppIcons.pet,
     AccessFeature.phone => AppIcons.phoneControl,
     AccessFeature.background => AppIcons.keepAlive,
     AccessFeature.alerts => AppIcons.notifications,
@@ -22,7 +21,6 @@ extension AccessFeatureText on AccessFeature {
 
   String title(L10n l10n) => switch (this) {
     AccessFeature.files => l10n.accessFeatureFiles,
-    AccessFeature.pet => l10n.accessFeaturePet,
     AccessFeature.phone => l10n.accessFeaturePhone,
     AccessFeature.background => l10n.accessFeatureBackground,
     AccessFeature.alerts => l10n.accessFeatureAlerts,
@@ -32,7 +30,6 @@ extension AccessFeatureText on AccessFeature {
   /// What it needs, in one line.
   String needs(L10n l10n) => switch (this) {
     AccessFeature.files => l10n.accessFeatureFilesNeeds,
-    AccessFeature.pet => l10n.accessFeaturePetNeeds,
     AccessFeature.phone => l10n.accessFeaturePhoneNeeds,
     AccessFeature.background => l10n.accessFeatureBackgroundNeeds,
     AccessFeature.alerts => l10n.accessFeatureAlertsNeeds,
@@ -49,7 +46,6 @@ extension AccessItemText on AccessItem {
     AccessItem.autostart => AppIcons.autostart,
     AccessItem.accessibility => AppIcons.accessibility,
     AccessItem.popup => AppIcons.backgroundPopUp,
-    AccessItem.overlay => AppIcons.overlayPermission,
   };
 
   /// The switch as the system (or [vendor]'s ROM) names it.
@@ -66,7 +62,6 @@ extension AccessItemText on AccessItem {
     AccessItem.autostart => l10n.accessAutostartTitle,
     AccessItem.accessibility => l10n.accessA11yTitle,
     AccessItem.popup => l10n.accessPopupTitle,
-    AccessItem.overlay => l10n.accessOverlayTitle,
   };
 
   /// Why, in one line. On HarmonyOS and iOS an alert can only go out while the
@@ -79,7 +74,6 @@ extension AccessItemText on AccessItem {
     AccessItem.autostart => l10n.accessAutostartWhy,
     AccessItem.accessibility => l10n.accessA11yWhy,
     AccessItem.popup => l10n.accessPopupWhy,
-    AccessItem.overlay => l10n.accessOverlayWhy,
   };
 
   /// Where a maker's switch lives, for when its own page doesn't open and

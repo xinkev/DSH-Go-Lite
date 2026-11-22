@@ -57,7 +57,7 @@ void main() {
 
   test('everything the phone allows: files, phone control, the pet', () async {
     final c = await container();
-    await c.read(accessSetupProvider.notifier).choose({AccessFeature.files, AccessFeature.phone, AccessFeature.pet});
+    await c.read(accessSetupProvider.notifier).choose({AccessFeature.files, AccessFeature.phone, AccessFeature.alerts});
     await c.read(accessSetupProvider.notifier).apply(readingsWith(offPhone, storage: true, overlay: true));
     expect(c.read(settingsProvider).phoneStorage, isTrue);
     expect(phone.calls.where((m) => m.method == 'setEnabled').single.arguments, {'enabled': true});
@@ -68,7 +68,7 @@ void main() {
 
   test('a permission still off leaves its feature off; phone control\'s switch is its own', () async {
     final c = await container();
-    await c.read(accessSetupProvider.notifier).choose({AccessFeature.files, AccessFeature.phone, AccessFeature.pet});
+    await c.read(accessSetupProvider.notifier).choose({AccessFeature.files, AccessFeature.phone, AccessFeature.alerts});
     await c.read(accessSetupProvider.notifier).apply(offPhone);
     expect(c.read(settingsProvider).phoneStorage, isFalse);
     expect(phone.methods, contains('setEnabled'));
