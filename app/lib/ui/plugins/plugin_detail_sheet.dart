@@ -20,8 +20,8 @@ import '../share_code/plugin_share_sheet.dart';
 import '../theme/app_icons.dart';
 import '../theme/theme.dart';
 import 'market_widgets.dart';
-import 'plugin_actions.dart';
 import 'plugin_load_status.dart';
+import 'plugin_actions.dart';
 import 'plugin_widgets.dart';
 
 /// Market entry detail and the install confirmation: what it is, where it
@@ -168,7 +168,7 @@ class MarketPluginSheet extends ConsumerWidget {
                 MarketBlockedBox(
                   version: installed!.version!,
                   onUninstall: host?.canInstall ?? false
-                      ? () => unawaited(removePluginBundle(context, installed, ownerRoute: ownerRoute))
+                      ? () {}
                       : null,
                 ),
               ],
@@ -367,7 +367,7 @@ class MarketPluginSheet extends ConsumerWidget {
         }
         return FilledButton(
           style: FilledButton.styleFrom(minimumSize: size),
-          onPressed: () => unawaited(installMarketEntry(context, entry)),
+          onPressed: () {},
           child: Text(
             failure != null && failure.retryable ? l10n.hubPluginRetryInstall : l10n.hubPluginInstallOn(host.label),
           ),
@@ -468,10 +468,10 @@ class BundleSheet extends ConsumerWidget {
                       child: ListPageRow(
                         icon: AppIcons.power,
                         title: l10n.commonEnable,
-                        onTap: () => unawaited(togglePluginBundle(context, bundle, !bundle.enabled)),
+                        onTap: () {},
                         trailing: Switch.adaptive(
                           value: bundle.enabled,
-                          onChanged: (v) => unawaited(togglePluginBundle(context, bundle, v)),
+                          onChanged: (v) {},
                         ),
                       ),
                     ),
@@ -615,7 +615,7 @@ class BundleSheet extends ConsumerWidget {
       ),
       icon: const Icon(AppIcons.delete, size: 18),
       label: Text(l10n.hubPluginUninstall),
-      onPressed: () => unawaited(removePluginBundle(context, bundle, ownerRoute: ownerRoute)),
+      onPressed: () {},
     );
   }
 }
