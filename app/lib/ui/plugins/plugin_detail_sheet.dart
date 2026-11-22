@@ -398,9 +398,6 @@ class BundleSheet extends ConsumerWidget {
     final canSwitch = bundle.readOnlyReason == null && (bundle.installed || bundle.optional) && !gone;
     // Every plugin with fields gets its native page; a third-party one
     // without any keeps its config seat (an island page, or DSH Web).
-    final configSeat = PluginSeat(slot: Slots.bundleConfig, placement: SeatPlacement.row, package: bundle.name);
-    final configSeated =
-        !bundle.official && !gone && !ref.watch(seatPlanProvider(configSeat.request)).isEmpty;
 
     // Local installs can't be shared; a market entry adds the picture card.
     final shareable = !gone && sharedPluginFromBundle(bundle) != null;
