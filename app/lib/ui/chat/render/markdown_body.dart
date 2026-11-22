@@ -10,6 +10,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gpt_markdown/gpt_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../common/app_dialog.dart';
+
 import '../../../l10n/l10n.dart';
 import '../../../links/page_links.dart' show openReplyPageLink;
 import '../../../state/artifacts.dart';
@@ -18,7 +20,6 @@ import '../../../state/workspace_state.dart';
 import '../../common/edge_fade.dart';
 import '../../common/streaming_cursor.dart';
 import '../../theme/app_icons.dart';
-import '../../plugins/native/native_taps.dart' show openConfirmedLink;
 import '../../theme/theme.dart';
 import '../artifact_preview.dart';
 import '../dsh_ui/dsh_ui.dart';
@@ -268,7 +269,7 @@ class MarkdownBody extends StatefulWidget {
     final site = bareDomainLink(url);
     // Detached share/replay text must not borrow an unrelated active session.
     if (scope == null) {
-      if (site != null) unawaited(openConfirmedLink(context, site));
+      if (site != null) unawaited(_openConfirmedLink(context, site));
       return;
     }
     final path = workspaceLinkPath(url, baseDir: scope.baseDir);
@@ -319,7 +320,7 @@ class MarkdownBody extends StatefulWidget {
     if (file) {
       _preview(context, sessionId, path);
     } else {
-      await openConfirmedLink(context, site);
+      await _openConfirmedLink(context, site);
     }
   }
 
@@ -877,4 +878,23 @@ class _RevealStreaming extends InheritedWidget {
 
   @override
   bool updateShouldNotify(_RevealStreaming oldWidget) => streaming != oldWidget.streaming;
+}
+
+/// Opens an https link after the person confirms it, in the platform browser.
+Future<void> _openConfirmedLink(BuildContext context, Uri url, {bool Function()? stillCurrent}) async {
+  if (url.scheme != 'https') return;
+  final l10n = context.l10n;
+  final ok = await showAppDialog<bool>(
+    context: context,
+    builder: (dialog) => AlertDialog(
+      title: Text(l10n.pluginsOpenBrowserHost(url.host)),
+      actions: [
+        TextButton(onPressed: () => Navigator.pop(dialog, false), child: Text(l10n.commonCancel)),
+        FilledButton(onPressed: () => Navigator.pop(dialog, true), child: Text(l10n.commonOpen)),
+      ],
+    ),
+  );
+  if (ok == true && stillCurrent?.call() != false) {
+    await launchUrl(url, mode: LaunchMode.externalApplication).catchError((_) => false);
+  }
 }
