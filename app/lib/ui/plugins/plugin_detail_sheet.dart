@@ -23,7 +23,6 @@ import '../theme/app_icons.dart';
 import '../theme/theme.dart';
 import 'config/plugin_config_entries.dart';
 import 'market_widgets.dart';
-import 'native/native_plugin_section.dart';
 import 'plugin_actions.dart';
 import 'plugin_load_status.dart';
 import 'plugin_widgets.dart';
@@ -577,11 +576,6 @@ class BundleSheet extends ConsumerWidget {
               ],
               // Loader evidence, then native UI switches and diagnostics.
               if (!gone) PluginLoadStatus(bundle: bundle),
-              if (!gone)
-                for (final package in nativePackagesOf(bundle)) ...[
-                  NativePluginSection(package: package, named: package != bundle.name),
-                  NativePluginPanels(package: package),
-                ],
               if (!gone) PluginSeamControls(package: bundle.name),
               if (!gone) PluginWebPlacesSection(package: bundle.name, pluginNames: [...?bundle.meta?.title?.all]),
               if (job != null && job.isActive) ...[
