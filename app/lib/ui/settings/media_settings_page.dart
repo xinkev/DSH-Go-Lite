@@ -19,7 +19,6 @@ import '../../state/hosts_state.dart';
 import '../../state/plugins_state.dart';
 import '../common/app_sheet.dart';
 import '../common/empty_view.dart';
-import '../plugins/plugin_actions.dart' show installMarketEntry;
 import '../plugins/plugin_detail_sheet.dart' show showMarketPluginSheet;
 import '../plugins/plugin_widgets.dart' show PluginInstallProgress;
 import '../plugins/plugins_screen.dart';
@@ -92,15 +91,7 @@ class MediaInstallPrompt extends ConsumerWidget {
       if (client != null && !identical(client, host.client)) retired = true;
     });
     try {
-      final job = await installMarketEntry(context, entry);
-      if (job?.phase == PluginInstallPhase.succeeded &&
-          context.mounted &&
-          !retired &&
-          container.read(activeHostProvider) == originHost &&
-          identical(container.read(activeConnectionProvider).value?.client, host.client) &&
-          route?.isCurrent == true) {
-        onInstalled?.call();
-      }
+      // Plugin installs are retired; the media feature needs a host plugin.
     } finally {
       hostChanges.close();
       connectionChanges.close();
