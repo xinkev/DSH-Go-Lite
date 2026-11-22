@@ -60,7 +60,6 @@ import '../features/session_export_page.dart';
 import '../onboarding/local_install.dart';
 import '../pets/pet_perch.dart';
 import '../pets/pet_stage.dart';
-import '../plugins/native/composer_strip.dart' show ComposerStripSlot;
 import '../plugins/native/native_composer_bar.dart';
 import '../plugins/native/native_taps.dart' show NativeComposerHost, NativeComposerScope, runNativeAction;
 import '../safe_mode/engine_failure_card.dart';
