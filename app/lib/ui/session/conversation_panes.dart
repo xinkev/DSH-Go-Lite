@@ -11,7 +11,6 @@ import '../../plugins/native/native_icons.dart';
 import '../../plugins/native/native_model.dart';
 import '../../plugins/native/native_state.dart';
 import '../../plugins/seams/seat_planner.dart';
-import '../plugins/native/native_panel.dart';
 import '../plugins/seats/session_plugins_tab.dart';
 import '../theme/app_icons.dart';
 import 'conversation_overview.dart';
@@ -55,21 +54,6 @@ class ConversationPane {
 
   /// A plugin's own panel, wherever it asked to be: in the side panel it is its own, with
   /// its own icon and name.
-  static ConversationPane ofNative(NativePanel panel) => ConversationPane(
-    id: 'native|${panel.package}|${panel.id}',
-    icon: nativeIcon(panel.icon) ?? AppIcons.plugin,
-    label: () => panel.title,
-    build: (id) => ListView(
-      padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
-      // One for 全部功能 only has no conversation to be about.
-      children: [
-        NativePanelView(
-          panel: panel,
-          sessionId: panel.placement.difference(const {DshGoPanel.features}).isEmpty ? null : id,
-        ),
-      ],
-    ),
-  );
 
   /// The web plugins, all in one: their chat-page parts share one island, and the pages of
   /// any plugin without such parts are a row away.
