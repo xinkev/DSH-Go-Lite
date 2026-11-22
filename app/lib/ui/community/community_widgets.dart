@@ -13,8 +13,6 @@ import '../../state/community_state.dart';
 import '../../state/plugins_state.dart';
 import '../common/app_sheet.dart';
 import '../common/list_page_row.dart';
-import '../plugins/plugin_detail_sheet.dart' show showMarketPluginSheet;
-import '../plugins/plugin_widgets.dart';
 import '../settings/settings_widgets.dart' show SettingsTile;
 import '../share/qr_code.dart';
 import '../theme/app_icons.dart';
@@ -75,46 +73,6 @@ IconData communityGroupIcon(String kind) => switch (kind) {
   'github' => AppIcons.code,
   _ => AppIcons.link,
 };
-
-/// A recommended plugin, market-row style: icon, name, the curator's line,
-/// and the 获取 capsule. Every state opens the market's detail sheet, where
-/// installing happens (with its trust note), like the market itself.
-class CommunityPluginRow extends ConsumerWidget {
-  const CommunityPluginRow({super.key, required this.pick, required this.entry});
-
-  final CommunityPlugin pick;
-
-  /// The plugin in the market index; null while the index loads.
-  final MarketEntry? entry;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final entry = this.entry;
-    final plugin = entry?.plugin;
-    final bundles = ref.watch(installedPluginsProvider.select((s) => s.value));
-    final job = plugin == null ? null : ref.watch(pluginInstallsProvider.select((jobs) => jobs[plugin.name]));
-    final title = plugin?.displayTitle() ?? pick.name;
-    final subtitle = pick.note ?? plugin?.displayDescription() ?? plugin?.author;
-    void open() => unawaited(showMarketPluginSheet(context, entry!));
-    return ListPageRow(
-      leading: PluginAvatar(name: pick.name, title: title, icon: plugin?.icon),
-      leadingWidth: 40,
-      title: title,
-      titleStyle: pluginRowTitle(context),
-      subtitle: subtitle,
-      trailing: PluginInstallButton(
-        status: plugin == null ? MarketInstallStatus.notInstalled : marketInstallStatus(plugin, bundles),
-        job: job,
-        onPressed: entry == null ? null : open,
-      ),
-      onTap: entry == null ? null : open,
-    );
-  }
-}
-
-/// A group or forum link as a hub row: tinted icon, name, one line. Groups
-/// with a QR code or a number open [showCommunityGroupSheet] (a QR glyph at
-/// the end says so); plain links open in the browser (a chevron).
 class CommunityGroupRow extends StatelessWidget {
   const CommunityGroupRow({super.key, required this.group});
 
