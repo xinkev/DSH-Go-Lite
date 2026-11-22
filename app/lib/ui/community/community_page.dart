@@ -50,7 +50,6 @@ class CommunityPage extends ConsumerWidget {
         ),
       );
     } else {
-      if (feed.plugins.isNotEmpty) children.add(_Plugins(picks: feed.plugins));
       if (feed.prompts.isNotEmpty) children.add(_Prompts(prompts: feed.prompts));
       if (feed.groups.isNotEmpty) {
         children.add(
@@ -109,37 +108,6 @@ class _Overview extends StatelessWidget {
 }
 
 /// 精选插件: the picks found in the market index, each opening the market's
-/// detail sheet.
-class _Plugins extends ConsumerWidget {
-  const _Plugins({required this.picks});
-
-  final List<CommunityPlugin> picks;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = context.l10n;
-    final catalog = ref.watch(marketCatalogProvider);
-    final rows = catalog.when<List<Widget>>(
-      skipLoadingOnRefresh: false,
-      loading: () => [for (final pick in picks) CommunityPluginRow(pick: pick, entry: null)],
-      error: (_, _) => [
-        ListPageRow(
-          icon: AppIcons.refresh,
-          title: l10n.botsPluginCatalogFailed,
-          subtitle: l10n.botsTapRetry,
-          onTap: () => ref.invalidate(marketCatalogProvider),
-        ),
-      ],
-      data: (catalog) => [
-        for (final pick in picks)
-          if (catalog.byName[pick.name] case final entry?) CommunityPluginRow(pick: pick, entry: entry),
-      ],
-    );
-    if (rows.isEmpty) return const SizedBox.shrink();
-    return SettingsSection(title: l10n.botsFeaturedPlugins, footer: Text(l10n.botsPluginSource), children: rows);
-  }
-}
-
 /// 玩法: two columns of prompt tiles; a tap opens a new conversation with the
 /// prompt in the composer (not sent).
 class _Prompts extends ConsumerWidget {
