@@ -19,7 +19,6 @@ import '../../chat/dsh_ui/dsh_ui_plugin_controls.dart' show DshUiControlButton;
 import '../../shell/page_frame.dart';
 import '../../theme/app_icons.dart';
 import '../view/plugin_view.dart';
-import 'native_micro_caption.dart';
 import 'native_taps.dart';
 
 /// One panel, signed: the plugin's name over its view in a glass card
@@ -110,22 +109,7 @@ class NativePanelView extends ConsumerWidget {
         onAction: () => ref.read(nativeSurfaceProvider(key).notifier).refresh(),
       );
     }
-    final micro = panel.micro;
-    return PluginFrame(
-      pluginName: title,
-      icon: icon,
-      // v1.2: the plugin's caption line, on its own small channel.
-      child: micro == null
-          ? body
-          : Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                body,
-                NativeMicroCaption(package: panel.package, channel: micro, scope: key.scope),
-              ],
-            ),
-    );
+    return PluginFrame(pluginName: title, icon: icon, child: body);
   }
 }
 
