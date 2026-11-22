@@ -164,45 +164,11 @@ class _PlusRoot extends ConsumerWidget {
     );
   }
 }
-
-/// Plugins' tools on the attachment tiles' grid, four to a row; nothing without any.
 class _PluginTools extends ConsumerWidget {
   const _PluginTools();
 
-  static const _perRow = 4;
-
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final tools = ref.watch(nativeComposerToolsProvider);
-    if (tools.isEmpty) return const SizedBox.shrink();
-    return Padding(
-      key: const ValueKey('plus-plugin-tools'),
-      padding: const EdgeInsets.fromLTRB(PlusPanelMetrics.side, 16, PlusPanelMetrics.side, 0),
-      child: Column(
-        spacing: PlusPanelMetrics.gap,
-        children: [
-          for (var start = 0; start < tools.length; start += _perRow)
-            Row(
-              spacing: PlusPanelMetrics.gap,
-              children: [
-                for (var i = start; i < start + _perRow; i++)
-                  Expanded(
-                    child: i < tools.length
-                        ? PlusTile(
-                            key: ValueKey('plus-tool|${tools[i].package}|${tools[i].id}'),
-                            icon: tools[i].icon ?? AppIcons.plugin,
-                            label: tools[i].label,
-                            tint: 1,
-                            onTap: () => Navigator.pop(context, NativeToolChoice(tools[i])),
-                          )
-                        : const SizedBox.shrink(),
-                  ),
-              ],
-            ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context, WidgetRef ref) => const SizedBox.shrink();
 }
 
 /// One attachment tile: a 60 coloured square and its name, the whole tile
