@@ -16,7 +16,6 @@ import '../../../state/ask_ai.dart' show askAiAvailableProvider;
 import '../../../state/hosts_state.dart';
 import '../../../state/phone_state.dart';
 import '../../../state/sessions_state.dart';
-import '../../../state/workshop_dependencies.dart' show workshopOriginProvider;
 import '../../common/app_sheet.dart' show groupTitleStyle;
 import '../../common/ask_ai.dart';
 import '../../common/capsule_chip.dart';
@@ -67,7 +66,6 @@ String? unavailableReason(WidgetRef ref, SpotCondition? condition, L10n l10n) {
     SpotCondition.phoneControlOn => ref.watch(phoneProvider.select((s) => !s.loaded || s.status.enabled)),
     SpotCondition.nativeUi => ref.watch(askAiAvailableProvider),
     SpotCondition.openChat => ref.watch(currentSessionProvider) != null,
-    SpotCondition.workshopBuilt => ref.watch(workshopOriginProvider) != null,
     SpotCondition.animationsOn =>
       !ref.watch(performanceDefaultsProvider.select((d) => d.reduceMotion)) &&
           !WidgetsBinding.instance.platformDispatcher.accessibilityFeatures.disableAnimations,

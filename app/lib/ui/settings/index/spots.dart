@@ -43,10 +43,7 @@ enum SpotCondition {
   openChat,
 
   /// Only with animations on.
-  animationsOn,
-
-  /// Only in builds that come with a Workshop.
-  workshopBuilt;
+  animationsOn;
 
   String label(L10n l10n) => switch (this) {
     localHost => l10n.searchNeedsLocal,
@@ -55,7 +52,6 @@ enum SpotCondition {
     engineField => l10n.searchNeedsEngineField,
     openChat => l10n.searchNeedsChat,
     animationsOn => l10n.searchNeedsAnimations,
-    workshopBuilt => l10n.searchNeedsWorkshop,
   };
 }
 
