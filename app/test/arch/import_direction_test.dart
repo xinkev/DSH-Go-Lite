@@ -18,7 +18,6 @@ const _allowed = {
   'links/page_links.dart -> ui/companion/companion_page.dart',
   'links/page_links.dart -> ui/features/feature_catalog.dart',
   'links/page_links.dart -> ui/settings/index/settings_pages.dart',
-  'links/plugin_links.dart -> ui/plugins/plugin_detail_sheet.dart',
   'notify/chat_alerts.dart -> ui/chat/media/media_format.dart',
   'notify/chat_alerts.dart -> ui/chat/secret_mask.dart',
   'notify/chat_alerts.dart -> ui/chat/widgets/turn_failure_text.dart',

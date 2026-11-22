@@ -9,7 +9,6 @@ import '../../l10n/l10n.dart';
 import '../../plugins/native/native_state.dart';
 import '../../plugins/seams/seams.dart' show PluginSeat, SeatPlacement, Slots, seatPlanProvider;
 import '../../share_code/plugin_share.dart' show sharedPluginFromBundle;
-import '../../links/plugin_links.dart' show marketPluginLink;
 import '../../state/plugins_state.dart';
 import '../../state/runtime_capabilities_state.dart';
 import '../../update/version.dart';
@@ -133,7 +132,7 @@ class MarketPluginSheet extends ConsumerWidget {
                   card: entry,
                   // The official market's page for it (§6); the share-code
                   // link for plugins only dshfind lists.
-                  webLink: listing == null ? null : marketPluginLink(plugin.name),
+                  webLink: null,
                 ),
               ),
             ),
