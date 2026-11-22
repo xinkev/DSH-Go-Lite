@@ -4,9 +4,9 @@
 import { ID } from "./limits.js";
 import { chars, isPlainObject, toJson } from "./util.js";
 
-export const FEATURES = ["audio", "voice", "micro", "overlay", "files"];
+export const FEATURES = ["audio", "micro", "overlay", "files"];
 /** Capability effect types (`micro` is a data channel, not an effect). */
-export const EFFECT_FEATURES = ["audio", "voice", "overlay"];
+export const EFFECT_FEATURES = ["audio", "overlay"];
 export const PICKER_TYPES = ["pickFile", "pickImage"];
 // Policy budgets, not measured platform limits. Keep one selection small enough for a
 // phone and a remote host; account allocated upload buffers against the global budget.
@@ -24,11 +24,10 @@ export const CAP_LIMITS = Object.freeze({
 export const AUDIO_TYPES = new Set(["audio/mpeg", "audio/wav", "audio/ogg", "audio/mp4", "audio/aac"]);
 export const CAP_EVENTS = Object.freeze({
   "audio.ended": "audio", "audio.stopped": "audio", "audio.error": "audio",
-  "voice.speechStart": "voice", "voice.speechEnd": "voice", "voice.stopped": "voice", "voice.error": "voice",
   "overlay.closed": "overlay",
 });
 /** Events that end their role (each role ends at most once per lease). */
-export const TERMINAL_EVENTS = new Set(["audio.ended", "audio.stopped", "audio.error", "voice.stopped", "voice.error", "overlay.closed"]);
+export const TERMINAL_EVENTS = new Set(["audio.ended", "audio.stopped", "audio.error", "overlay.closed"]);
 export const featuresOf = (value) => (Array.isArray(value) ? FEATURES.filter((x) => value.includes(x)) : []);
 export const KEY = /^[A-Za-z0-9_-]{1,128}$/;
 const FEATURE_OF = { media: "audio", micro: "micro", overlays: "overlay" };
@@ -146,8 +145,6 @@ export function capabilityEffect(e, opts) {
       out.src = e.src;
       if (e.key !== undefined) out.key = e.key;
     } else if (e.src !== undefined || e.key !== undefined) return bad(`audio ${e.op} takes no src or key`);
-  } else if (e.type === "voice") {
-    if (!["start", "stop"].includes(e.op)) return bad("voice op must be start or stop");
   } else {
     if (!["show", "hide"].includes(e.op)) return bad("overlay op must be show or hide");
     if (!(p.overlays ?? []).includes(e.id)) return bad("overlay id must be one of this plugin's overlays");
