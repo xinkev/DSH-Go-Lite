@@ -16,7 +16,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../l10n/l10n.dart';
 import 'connection_state.dart';
-import 'plugins_state.dart';
 import 'sessions_state.dart';
 
 /// Every session of the active host by id, subagent children included.
@@ -281,12 +280,6 @@ final headerAgentsProvider = Provider.autoDispose.family<HeaderAgents, String>((
 /// The Agent Teams bundle (Team service, tools and the official panel).
 const agentTeamBundle = '@deepseek-ai/dsh-experimental-agent-team-profile';
 
-/// The bundle row on the active host; null while unknown or not offered.
-final agentTeamBundleProvider = Provider<AsyncValue<PluginBundle?>>((ref) {
-  return ref
-      .watch(installedPluginsProvider)
-      .whenData((bundles) => bundles?.where((b) => b.name == agentTeamBundle).firstOrNull);
-});
 
 /// Live `agentTeam` of one Lead: the list hint at once, then
 /// `session/projections`, then `session/control` frames. Null data means the
@@ -310,7 +303,7 @@ class TeamController extends Notifier<AsyncValue<TeamSnapshot?>> {
     final conn = ref.watch(activeConnectionProvider).value;
     // Re-read after the bundle switches (late enabling registers the
     // projection on the open Lead).
-    ref.watch(agentTeamBundleProvider.select((b) => b.value?.enabled ?? false));
+    // Plugin bundles are gone: nothing to re-read here.
     if (conn == null) return const AsyncData(null);
     final hint = ref.read(hostSessionsProvider)[leadId]?.projections.agentTeam;
     final sub = conn.client.watchSessionControl().listen(

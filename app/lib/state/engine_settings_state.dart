@@ -19,7 +19,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../l10n/l10n.dart';
 import 'connection_state.dart';
 import 'engine_error_text.dart';
-import 'plugins_state.dart';
 
 export 'package:dsh_client/dsh_client.dart'
     show
@@ -1218,7 +1217,6 @@ final pluginInventoryProvider = FutureProvider.autoDispose<InventorySnapshot?>((
       Error.throwWithStackTrace(error, stack);
     }
   }
-  final bundles = await ref.watch(installedPluginsProvider.future).catchError((Object _) => null) ?? const [];
-  final items = inventoryItems(inventory, bundles);
+  final items = inventoryItems(inventory, const []);
   return InventorySnapshot(inventory: inventory, global: items.global, presets: items.presets);
 }, retry: (_, _) => null);

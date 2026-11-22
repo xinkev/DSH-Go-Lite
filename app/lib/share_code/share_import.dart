@@ -10,7 +10,6 @@ import 'package:dsh_client/dsh_client.dart';
 
 import '../l10n/l10n.dart';
 import '../state/connection_state.dart';
-import '../state/plugins_state.dart';
 import 'guest_fs.dart';
 import 'namespace_labels.dart';
 import 'restore_point.dart';
