@@ -11,7 +11,7 @@
 //   await host.invoke('translate', { context: { clipboard: '你好' } })
 //   await host.view('usage', { sessionId: 's1' })   // { view, stats, issues }
 //   const feed = host.subscribe('usage', { sessionId: 's1' })  // feed.data, feed.history
-import { AUDIO_TYPES, CAP_LIMITS, microModel } from './bridge/capabilities.js'
+import { AUDIO_TYPES, CAP_LIMITS } from './bridge/capabilities.js'
 import { readFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { normalize as normalizeEffects, splitPending } from './bridge/effects.js'
@@ -80,13 +80,13 @@ export function createTestHost(options = {}) {
   const logs = []
   const pending = []
   const runtimeIssues = new Map()
-  const regs = { panels: new Map(), strips: new Map(), notes: new Map(), handlers: new Map(), media: new Map(), micro: new Map(), capability: new Map() }
+  const regs = { panels: new Map(), strips: new Map(), notes: new Map(), handlers: new Map(), media: new Map(), capability: new Map() }
   const feeds = new Set()
   const violations = []
 
   const undeclared = (kind, id) => {
     const declared = parsed.ids.get(id)
-    const ok = kind === 'media' || kind === 'micro' ? declared === kind : kind === 'handlers' ? declared !== undefined : kind === 'panels' ? declared === 'panels' : kind === 'notes' ? declared === 'turn.note' : declared === 'composer.strip'
+    const ok = kind === 'media' ? declared === kind : kind === 'handlers' ? declared !== undefined : kind === 'panels' ? declared === 'panels' : kind === 'notes' ? declared === 'turn.note' : declared === 'composer.strip'
     if (!ok) {
       const name = { panels: 'panel', strips: 'strip', notes: 'turnNote', handlers: 'on' }[kind]
       runtimeIssues.set(`undeclared:${kind}:${id}`, { path: `/runtime/${id}`, code: 'undeclared', severity: 'warn', message: `${name}("${id}") is not declared in dshGo.contributes; ignored` })
@@ -146,12 +146,6 @@ export function createTestHost(options = {}) {
       regs.media.set(id, handler)
       undeclared('media', id)
       return () => regs.media.delete(id)
-    },
-    micro(id, def) {
-      if (typeof id !== 'string' || !ID.test(id) || typeof def?.data !== 'function') throw new TypeError('invalid micro registration')
-      regs.micro.set(id, def)
-      undeclared('micro', id)
-      return () => regs.micro.delete(id)
     },
     onCapability(handler) {
       if (typeof handler !== 'function') throw new TypeError('invalid capability handler')
@@ -363,21 +357,6 @@ export function createTestHost(options = {}) {
       const result = await withTimeout(fn({ ...scope }, { locale: caps.locale, signal: new AbortController().signal, ...options }), CAP_LIMITS.mediaMs, 'media')
       if (!(result?.body instanceof Uint8Array) || !AUDIO_TYPES.has(result.contentType) || result.body.byteLength < 1 || result.body.byteLength > CAP_LIMITS.mediaBytes) throw new HostError(502, 'invalid-media', 'invalid audio result')
       return result
-    },
-    subscribeMicro(id, scope = {}) {
-      const def = regs.micro.get(id)
-      if (!caps.features?.includes('micro') || !parsed.capabilities?.includes('micro') || !(parsed.items.micro ?? []).some(x => x.id === id) || !def) throw new HostError(404, 'not-found', 'no micro')
-      let closed = false, cancel
-      const feed = { id, scope, data: undefined, history: [], errors: [], stale: 0, settled: Promise.resolve(), stop() { if (closed) return; closed = true; if (cancel) runCleanup(cancel, failed) } }
-      const failed = recordFailure(feed)
-      const emit = value => { if (closed) return; const model = microModel(value); if (!model) { feed.errors.push('invalid micro model'); return } feed.data = model; feed.history.push(model) }
-      feed.settled = new Promise(resolve => resolve(def.data({ ...scope }, emit, { protocol: 1, locale: caps.locale }))).then(fn => {
-        if (typeof fn !== 'function') return
-        if (closed) runCleanup(fn, failed)
-        else cancel = fn
-      }).catch(failed)
-      feeds.add(feed)
-      return feed
     },
     async capabilityEvent(scope, event) {
       // Explicit test injection only; callback returns never become effects.
