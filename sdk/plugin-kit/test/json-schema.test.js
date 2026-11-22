@@ -34,24 +34,14 @@ test('string length counts code points', () => {
 })
 
 test('v1.2 schemas validate new envelopes but keep static and deferred closed', () => {
-  ok({ v: 1, capabilities: ['audio', 'micro'], contributes: { media: [{ id: 'clip' }], micro: [{ id: 'caption' }] } }, 'manifest.schema.json')
+  ok({ v: 1, capabilities: ['audio'], contributes: { media: [{ id: 'clip' }] } }, 'manifest.schema.json')
   const play = { type: 'audio', op: 'play', instance: 'one', src: 'media:clip' }
   ok(play, 'invoke.schema.json', '/$defs/effect')
   bad({ type: 'audio', op: 'play', instance: 'one' }, 'invoke.schema.json', '/$defs/effect')
   bad({ ...play, op: 'pause' }, 'invoke.schema.json', '/$defs/effect')
   bad(play, 'invoke.schema.json', '/$defs/staticEffect')
   bad(play, 'invoke.schema.json', '/$defs/deferredEffect')
-  ok({ t: 'cap.event', lease: 'opaque', seq: 1, event: 'voice.speechStart' }, 'stream.schema.json', '/$defs/up')
-  ok({ t: 'micro.data', sub: 'one', rev: '0123456789abcdef.1', data: { text: '你好', progress: null } }, 'stream.schema.json', '/$defs/down')
-  bad({ text: 'a', effects: [] }, 'stream.schema.json', '/$defs/microData')
-  bad({ progress: -1 }, 'stream.schema.json', '/$defs/microData')
-})
-
-test('NJS1 micro rev has its own epoch and positive safe-integer sequence grammar', () => {
-  const frame = rev => ({ t: 'micro.data', sub: 's', rev, data: { text: 'x' } })
-  for (const seq of ['1', '9', '123456789012345', '9007199254740990', '9007199254740991']) ok(frame(`0123456789abcdef.${seq}`), 'stream.schema.json', '/$defs/down')
-  for (const rev of ['legacy', 'epoch.1', '0123456789ABCDEF.1', '0123456789abcde.1', '0123456789abcdef.0', '0123456789abcdef.01', '0123456789abcdef.-1', '0123456789abcdef.1.2', '0123456789abcdef.9007199254740992', '0123456789abcdef.9999999999999999', '0123456789abcdef.10000000000000000']) bad(frame(rev), 'stream.schema.json', '/$defs/down')
-  ok({ t: 'data', sub: 's', rev: 'legacy-arbitrary-rev', data: {} }, 'stream.schema.json', '/$defs/down')
+  ok({ t: 'cap.event', lease: 'opaque', seq: 1, event: 'audio.ended' }, 'stream.schema.json', '/$defs/up')
 })
 
 test('a tool writes panel or effect, not both', () => {

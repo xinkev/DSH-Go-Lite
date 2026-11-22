@@ -53,8 +53,6 @@
               "items": {
                 "enum": [
                   "audio",
-                  "voice",
-                  "micro",
                   "overlay",
                   "files"
                 ]
@@ -252,8 +250,6 @@
               "items": {
                 "enum": [
                   "audio",
-                  "voice",
-                  "micro",
                   "overlay",
                   "files"
                 ]

@@ -525,7 +525,7 @@ export interface ManifestAction {
   icon?: ManifestIconName
   /** Static effect(s) executed by the app without invoke. */
   effect?: InvokeStaticEffect | InvokeStaticEffect[]
-  requires?: Array<"audio" | "voice" | "micro" | "overlay" | "files">
+  requires?: Array<"audio" | "overlay" | "files">
 }
 
 export interface ManifestStrip {
@@ -557,7 +557,7 @@ export interface ManifestTool {
   icon?: ManifestIconName
   /** Static effect(s) executed by the app without invoke. */
   effect?: InvokeStaticEffect | InvokeStaticEffect[]
-  requires?: Array<"audio" | "voice" | "micro" | "overlay" | "files">
+  requires?: Array<"audio" | "overlay" | "files">
   /** Opens this plugin's panel. Write panel or effect, not both. */
   panel?: ManifestId
 }
@@ -593,7 +593,7 @@ export interface Manifest {
       id: ManifestId
     }[]
   }
-  capabilities?: Array<"audio" | "voice" | "micro" | "overlay" | "files">
+  capabilities?: Array<"audio" | "overlay" | "files">
 }
 
 // ── invoke.schema.json ────────────────────────────────────────────────────
@@ -840,7 +840,7 @@ export interface ContributionsPlugin {
     }[]
   }
   issues: ContributionsIssue[]
-  capabilities?: Array<"audio" | "voice" | "micro" | "overlay" | "files">
+  capabilities?: Array<"audio" | "overlay" | "files">
 }
 
 export interface ContributionsAction {
@@ -850,7 +850,7 @@ export interface ContributionsAction {
   /** Present: the app executes it locally and never invokes */
   effect?: InvokeStaticEffect[]
   ready: boolean
-  requires?: Array<"audio" | "voice" | "micro" | "overlay" | "files">
+  requires?: Array<"audio" | "overlay" | "files">
 }
 
 export interface ContributionsStrip {
@@ -1007,7 +1007,7 @@ export type StreamUp = {
   v: number[]
   /** BCP 47; passed to data functions and part of the data source key */
   locale?: string
-  features?: Array<"audio" | "voice" | "micro" | "overlay" | "files">
+  features?: Array<"audio" | "overlay" | "files">
 } | {
   t: "sub"
   sub: StreamSub
@@ -1048,7 +1048,7 @@ export type StreamDown = {
   hb: number
   /** v1.1: id of this connection; send it as invoke.stream */
   conn?: string
-  features?: Array<"audio" | "voice" | "micro" | "overlay" | "files">
+  features?: Array<"audio" | "overlay" | "files">
 } | {
   t: "data"
   sub: StreamSub
