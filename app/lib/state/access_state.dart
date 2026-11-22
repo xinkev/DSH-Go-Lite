@@ -38,7 +38,7 @@ import 'system_actions_state.dart';
 /// The offline voice model's download in MB as the voice settings show it,
 /// What a person picks on first run: things DSH Go does, not permission names.
 /// What [os] offers is [accessFeaturesFor]'s, never all of these.
-enum AccessFeature { files, pet, phone, background, voice, alerts, systemActions }
+enum AccessFeature { files, pet, phone, background, alerts, systemActions }
 
 /// What first run and 系统权限 offer on [os], in their order. HarmonyOS and iOS
 /// have only what works there: their files and windows over other apps aren't
@@ -46,27 +46,21 @@ enum AccessFeature { files, pet, phone, background, voice, alerts, systemActions
 /// so), which leaves notifications their own feature. HarmonyOS reaches the
 /// phone only through 系统操作, which needs no permission of its own.
 List<AccessFeature> accessFeaturesFor(String os) => switch (os) {
-  'ohos' => const [AccessFeature.alerts, AccessFeature.systemActions, AccessFeature.voice],
+  'ohos' => const [AccessFeature.alerts, AccessFeature.systemActions],
   _ when androidSystemFeaturesOn(os) => const [
     AccessFeature.files,
     AccessFeature.pet,
     AccessFeature.phone,
     AccessFeature.background,
-    AccessFeature.voice,
   ],
-  _ => const [AccessFeature.alerts, AccessFeature.voice],
+  _ => const [AccessFeature.alerts],
 };
-
-/// Whether 语音输入 on [os] means the offline model's download: HarmonyOS and
-/// iOS use the system's recogniser and have no model.
-bool accessVoiceDownloads(String os) => androidSystemFeaturesOn(os);
 
 /// One system permission or maker's switch, in the order first run walks
 /// them: the system's own dialogs first, then settings pages, the makers'
 /// pages after the system's, and the floating window last (with
 /// accessibility on, the pet needs no other permission).
 enum AccessItem {
-  mic,
   storage,
   notifications,
   battery,
@@ -91,7 +85,7 @@ enum AccessItem {
   /// returns. HarmonyOS and iOS ask for notifications that way; Android's come
   /// with their channels, and this opens their settings page.
   bool dialogOn(String os) =>
-      this == mic || this == storage || this == battery || (this == notifications && !androidSystemFeaturesOn(os));
+      this == storage || this == battery || (this == notifications && !androidSystemFeaturesOn(os));
 }
 
 /// Where an item stands.
@@ -137,7 +131,6 @@ List<AccessItem> accessItemsFor(AccessFeature feature, String? vendor) {
       AccessItem.vendorBackground,
       AccessItem.autostart,
     ],
-    AccessFeature.voice => [AccessItem.mic],
     AccessFeature.alerts => [AccessItem.notifications],
     AccessFeature.systemActions => <AccessItem>[],
   };
@@ -203,7 +196,6 @@ class AccessReadings {
   final bool? metered;
 
   bool? granted(AccessItem item) => switch (item) {
-    AccessItem.mic => mic,
     AccessItem.storage => storage,
     AccessItem.notifications => notifications,
     AccessItem.battery => battery,
@@ -350,8 +342,6 @@ class SystemAccessDriver implements AccessDriver {
     final bridge = ref.read(runtimeBridgeProvider);
     final opened = await _safe<bool>(() async {
       switch (item) {
-        case AccessItem.mic:
-          return true;
         case AccessItem.storage:
           final access = await bridge.requestStorage();
           if (access.granted) return true;

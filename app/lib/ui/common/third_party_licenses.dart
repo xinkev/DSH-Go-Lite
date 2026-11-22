@@ -42,10 +42,8 @@ void registerThirdPartyLicenses({String? os}) {
       'YAML (eemeli/yaml)',
     ], await rootBundle.loadString('assets/licenses/yaml-2.9.1-LICENSE.txt'));
     // The streaming recognizer's model, downloaded on demand (語音 › 实时识别). HarmonyOS
-    // has no streaming recognizer (sherpa-onnx ships Android's libraries only).
     if (!harmony) {
       yield LicenseEntryWithLineBreaks(<String>[
-        'Streaming Zipformer zh-en (sherpa-onnx)',
       ], await rootBundle.loadString('assets/licenses/streaming-asr-model-APACHE-2.0.txt'));
     }
   });

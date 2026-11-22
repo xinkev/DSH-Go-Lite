@@ -14,7 +14,6 @@ import '../../state/connection_state.dart';
 import '../../state/engine_settings_state.dart';
 import '../../state/plugin_config/plugin_config_state.dart';
 import '../../state/plugins_state.dart' show installedPluginsProvider;
-import '../../state/voice_scribe_settings.dart';
 import '../common/app_sheet.dart';
 import '../common/capsule_chip.dart';
 import '../common/expand_reveal.dart';
@@ -32,7 +31,6 @@ import '../theme/theme.dart';
 import 'config/plugin_config_entries.dart';
 import 'plugin_detail_sheet.dart' show PluginHero;
 import 'plugin_widgets.dart';
-import 'voice_scribe_settings_page.dart';
 
 /// Dot colour of a row's state.
 StatusTone inventoryTone(InventoryStatus status) => switch (status) {
@@ -393,8 +391,6 @@ class InventorySheet extends ConsumerWidget {
           )
         : item.title;
     final connection = ref.watch(activeConnectionProvider);
-    final voiceSource = connection.isLoading || connection.hasError ? null : connection.value;
-    final voice = item.moduleName == voiceScribeModule;
     final facts = <(String, String)>[
       if (item.source case final source?) (l10n.pluginsSource, source),
       if (item.version case final version?) (l10n.commonVersion, version),
@@ -441,7 +437,7 @@ class InventorySheet extends ConsumerWidget {
                 ],
                 // The schema form and the voice plugin's own settings share
                 // one card when a plugin has both.
-                if (configurable || voice) ...[
+                if (configurable) ...[
                   const SizedBox(height: 16),
                   ListPageCard(
                     margin: EdgeInsets.zero,
@@ -453,22 +449,6 @@ class InventorySheet extends ConsumerWidget {
                           subtitle: pluginForm ? pluginConfigReadOnlyNote(config, item.rowId, l10n: l10n) : null,
                           chevron: true,
                           onTap: () => unawaited(openSettingsPage(context, item.rowId, title: formTitle)),
-                        ),
-                      if (voice)
-                        ListPageRow(
-                          icon: AppIcons.voice,
-                          title: voiceScribePageTitle,
-                          chevron: true,
-                          onTap: voiceSource == null
-                              ? null
-                              : () => unawaited(
-                                  Navigator.of(context).push<void>(
-                                    MaterialPageRoute(
-                                      builder: (_) =>
-                                          VoiceScribeSettingsPage(source: voiceSource, entryId: item.entryId),
-                                    ),
-                                  ),
-                                ),
                         ),
                     ],
                   ),

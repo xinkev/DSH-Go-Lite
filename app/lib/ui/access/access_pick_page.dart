@@ -130,12 +130,7 @@ class _AccessPickPageState extends ConsumerState<AccessPickPage> {
                 feature: feature,
                 selected: _picked.contains(feature),
                 onTap: () => unawaited(_toggle(feature)),
-                lines: feature == AccessFeature.voice && accessVoiceDownloads(os)
-                    ? [
-                        (text: l10n.accessFeatureVoiceNeeds, color: null),
-                        if (metered) (text: l10n.accessVoiceMetered, color: colors.warning),
-                      ]
-                    : const [],
+                lines: const [],
               ),
           ],
         ),

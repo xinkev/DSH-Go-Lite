@@ -16,7 +16,6 @@ extension AccessFeatureText on AccessFeature {
     AccessFeature.pet => AppIcons.pet,
     AccessFeature.phone => AppIcons.phoneControl,
     AccessFeature.background => AppIcons.keepAlive,
-    AccessFeature.voice => AppIcons.voice,
     AccessFeature.alerts => AppIcons.notifications,
     AccessFeature.systemActions => AppIcons.phoneControl,
   };
@@ -26,7 +25,6 @@ extension AccessFeatureText on AccessFeature {
     AccessFeature.pet => l10n.accessFeaturePet,
     AccessFeature.phone => l10n.accessFeaturePhone,
     AccessFeature.background => l10n.accessFeatureBackground,
-    AccessFeature.voice => l10n.accessFeatureVoice,
     AccessFeature.alerts => l10n.accessFeatureAlerts,
     AccessFeature.systemActions => l10n.systemActionsTitle,
   };
@@ -37,7 +35,6 @@ extension AccessFeatureText on AccessFeature {
     AccessFeature.pet => l10n.accessFeaturePetNeeds,
     AccessFeature.phone => l10n.accessFeaturePhoneNeeds,
     AccessFeature.background => l10n.accessFeatureBackgroundNeeds,
-    AccessFeature.voice => l10n.accessFeatureVoiceNeeds,
     AccessFeature.alerts => l10n.accessFeatureAlertsNeeds,
     AccessFeature.systemActions => l10n.catalogSystemActionsSummary,
   };
@@ -45,7 +42,6 @@ extension AccessFeatureText on AccessFeature {
 
 extension AccessItemText on AccessItem {
   IconData get icon => switch (this) {
-    AccessItem.mic => AppIcons.voice,
     AccessItem.storage => AppIcons.fileAccess,
     AccessItem.notifications => AppIcons.notifications,
     AccessItem.battery => AppIcons.keepAlive,
@@ -58,7 +54,6 @@ extension AccessItemText on AccessItem {
 
   /// The switch as the system (or [vendor]'s ROM) names it.
   String title(L10n l10n, {String? vendor}) => switch (this) {
-    AccessItem.mic => l10n.accessMicTitle,
     AccessItem.storage => l10n.accessStorageTitle,
     AccessItem.notifications => l10n.accessNotifyTitle,
     AccessItem.battery => l10n.accessBatteryTitle,
@@ -77,7 +72,6 @@ extension AccessItemText on AccessItem {
   /// Why, in one line. On HarmonyOS and iOS an alert can only go out while the
   /// app runs.
   String why(L10n l10n, {required String os}) => switch (this) {
-    AccessItem.mic => l10n.accessMicWhy,
     AccessItem.storage => l10n.accessStorageWhy,
     AccessItem.notifications => androidSystemFeaturesOn(os) ? l10n.accessNotifyWhy : l10n.harmonyNotifyWhy,
     AccessItem.battery => l10n.accessBatteryWhy,

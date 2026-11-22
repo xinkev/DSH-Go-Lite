@@ -1,5 +1,5 @@
 // First run, after the walk: where each item ended up, a way back to any
-// that is still off, and what happens next for voice.
+// that is still off.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,13 +24,11 @@ import 'system_access_route.dart';
 ///   (               继续               )
 /// ```
 class AccessSummaryPage extends ConsumerWidget {
-  const AccessSummaryPage({super.key, required this.items, required this.voice, required this.onDone});
+  const AccessSummaryPage({super.key, required this.items, required this.onDone});
 
   /// What the picked features need, in walk order.
   final List<AccessItem> items;
 
-  /// 语音输入 was picked and has a model: it downloads once the engine is up.
-  final bool voice;
   final VoidCallback onDone;
 
   @override

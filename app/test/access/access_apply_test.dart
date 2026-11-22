@@ -136,7 +136,7 @@ void main() {
 
   test('what wasn\'t picked is left alone', () async {
     final c = await container();
-    await c.read(accessSetupProvider.notifier).choose({AccessFeature.voice});
+    await c.read(accessSetupProvider.notifier).choose({AccessFeature.alerts});
     await c.read(accessSetupProvider.notifier).apply(readingsWith(offPhone, storage: true, overlay: true));
     expect(c.read(settingsProvider).phoneStorage, isFalse);
     expect(phone.methods, isNot(contains('setEnabled')));
