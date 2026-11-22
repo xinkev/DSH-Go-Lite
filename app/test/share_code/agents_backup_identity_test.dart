@@ -42,7 +42,7 @@ void main() {
     return applyImport(
       changes,
       {'agents-md'},
-      runner: DirectPluginRunner(client, isLocal: true),
+      
       fs: fs,
       now: () => at,
       cancelled: () => cancel,
@@ -131,7 +131,7 @@ void main() {
     final result = await applyImport(
       changes,
       changes.defaultSelection,
-      runner: DirectPluginRunner(client, isLocal: true),
+      
       fs: fs,
       now: () => DateTime.utc(2026, 11, 3, 12),
     );

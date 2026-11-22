@@ -39,7 +39,7 @@ void main() {
     );
     expect(plan.defaultSelection, isNot(contains('agents-md')));
     expect(plan.changes.single.id, 'agents-md');
-    return applyImport(plan, {'agents-md'}, runner: DirectPluginRunner(client, isLocal: true), fs: fs, now: () => now);
+    return applyImport(plan, {'agents-md'},  fs: fs, now: () => now);
   }
 
   for (final sample in <String, List<int>?>{

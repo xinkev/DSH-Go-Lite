@@ -550,89 +550,6 @@ class StepStatus {
   /// Why it failed, or a short note (`重启后生效`).
   final String? message;
 }
-
-/// One plugin step's outcome.
-class PluginStepOutcome {
-  const PluginStepOutcome.ok({this.needsRestart = false}) : ok = true, error = null;
-  const PluginStepOutcome.failed(String this.error) : ok = false, needsRestart = false;
-
-  final bool ok;
-  final bool needsRestart;
-  final String? error;
-}
-
-/// How plugin changes reach the target (the active host's install queue, or
-/// the target's client directly). A seam for tests.
-abstract class ImportPluginRunner {
-  Future<PluginStepOutcome> install(PluginInstallRequest request);
-  Future<PluginStepOutcome> enable(String name);
-}
-
-/// Straight to a host's plugin manager (a target that isn't the active host).
-class DirectPluginRunner implements ImportPluginRunner {
-  DirectPluginRunner(this.client, {required this.isLocal});
-
-  final DshClient client;
-  final bool isLocal;
-  static var _seq = 0;
-
-  @override
-  Future<PluginStepOutcome> install(PluginInstallRequest request) async {
-    try {
-      if (request.replaceInstalled) {
-        final removed = await client.removeBundle(request.name);
-        if (!removed.succeeded) {
-          return PluginStepOutcome.failed(describeOperationFailure(removed, isLocal: isLocal).title);
-        }
-      }
-      final result = await client.installBundle(
-        request.spec,
-        requestId: 'dsh-app-share-${DateTime.now().microsecondsSinceEpoch}-${_seq++}',
-        enabled: true,
-        saveExact: true,
-        registry: request.registry,
-      );
-      if (result.succeeded) return PluginStepOutcome.ok(needsRestart: request.needsRestartAfter(result));
-      return PluginStepOutcome.failed(describeOperationFailure(result, isLocal: isLocal).title);
-    } on Object catch (error) {
-      return PluginStepOutcome.failed(describePluginError(error).title);
-    }
-  }
-
-  @override
-  Future<PluginStepOutcome> enable(String name) async {
-    try {
-      final result = await client.setBundleEnabled(name, true);
-      if (result.succeeded) return PluginStepOutcome.ok(needsRestart: result.needsRestart);
-      return PluginStepOutcome.failed(describeOperationFailure(result, isLocal: isLocal).title);
-    } on Object catch (error) {
-      return PluginStepOutcome.failed(describePluginError(error).title);
-    }
-  }
-}
-
-/// The active host's install queue (progress also shows on the plugin pages).
-class QueuedPluginRunner implements ImportPluginRunner {
-  QueuedPluginRunner(this.installs, this.client, {required this.isLocal});
-
-  final PluginInstallsController installs;
-  final DshClient client;
-  final bool isLocal;
-
-  @override
-  Future<PluginStepOutcome> install(PluginInstallRequest request) async {
-    final job = await installs.install(request);
-    return switch (job.phase) {
-      PluginInstallPhase.succeeded => PluginStepOutcome.ok(needsRestart: job.needsRestart),
-      PluginInstallPhase.cancelled => PluginStepOutcome.failed(appL10n.commonCancelled),
-      _ => PluginStepOutcome.failed(job.failure?.title ?? appL10n.pluginsInstallFailed),
-    };
-  }
-
-  @override
-  Future<PluginStepOutcome> enable(String name) => DirectPluginRunner(client, isLocal: isLocal).enable(name);
-}
-
 class ImportResult {
   const ImportResult({required this.statuses, required this.needsRestart, required this.restorePoint});
 
@@ -650,7 +567,6 @@ class ImportResult {
 Future<ImportResult> applyImport(
   ImportPlan plan,
   Set<String> selected, {
-  required ImportPluginRunner runner,
   GuestFs? fs,
   void Function(String id, StepStatus status)? onStep,
   bool Function()? cancelled,
@@ -671,37 +587,9 @@ Future<ImportResult> applyImport(
   }
   final backup = files == null ? null : RestorePoint(files).backupDir(now());
   var needsRestart = false;
-  final pluginOk = <String, bool>{};
 
-  for (final step in steps.where((s) => s.section == ImportSection.plugins)) {
-    if (cancelled?.call() ?? false) break;
-    set(step.id, StepStatus.running);
-    final plugin = step.plugin!;
-    final PluginStepOutcome outcome;
-    if (step.kind == ChangeKind.enable) {
-      outcome = await runner.enable(plugin.name);
-    } else {
-      outcome = await runner.install(
-        PluginInstallRequest(
-          name: plugin.name,
-          spec: step.installSpec ?? plugin.spec!,
-          title: plugin.displayTitle,
-          replaceInstalled: step.kind == ChangeKind.upgrade,
-        ),
-      );
-    }
-    pluginOk[step.id] = outcome.ok;
-    needsRestart = needsRestart || outcome.needsRestart;
-    set(
-      step.id,
-      outcome.ok
-          ? StepStatus(ImportStepState.done, outcome.needsRestart ? appL10n.pluginsAfterRestart : null)
-          : StepStatus(ImportStepState.failed, outcome.error),
-    );
-  }
   for (final step in steps.where((s) => s.section == ImportSection.presets)) {
-    final ok = pluginOk[step.follows];
-    set(step.id, ok == true ? StepStatus.done : const StepStatus(ImportStepState.skipped));
+    set(step.id, StepStatus.done);
   }
 
   final settingsSteps = steps.where((s) => s.section == ImportSection.settings).toList();

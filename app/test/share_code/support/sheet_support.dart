@@ -144,8 +144,6 @@ List<Override> shareOverrides({
   shareNetProvider.overrideWithValue(net),
   if (out != null) shareOutProvider.overrideWithValue(out),
   importTargetsProvider.overrideWithValue(targets),
-  // The fake targets aren't the app's active host: straight to their client.
-  pluginRunnerFactoryProvider.overrideWithValue((_, t) => DirectPluginRunner(t.client, isLocal: t.isLocal)),
   guestFsProvider.overrideWith((ref) async => fs),
   if (export != null) profileExportProvider.overrideWith((ref) async => export),
 ];

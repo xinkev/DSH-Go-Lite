@@ -41,7 +41,7 @@ void main() {
   Future<ImportResult> apply(ImportPlan planned) => applyImport(
     planned,
     {'skill:outline'},
-    runner: DirectPluginRunner(client, isLocal: true),
+    
     fs: fs,
     now: () => DateTime(2026, 10, 24, 15, 30, 12),
   );

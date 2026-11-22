@@ -89,7 +89,7 @@ void main() {
         final result = await applyImport(
           planned,
           {change.id}, // The same explicit opt-in as the import sheet's toggle.
-          runner: DirectPluginRunner(client, isLocal: true),
+          
           fs: fs,
           now: () => DateTime(2026, 10, 24, 15, 30, 12),
         );

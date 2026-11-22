@@ -66,15 +66,6 @@ final profileExportProvider = FutureProvider.autoDispose<ProfileExportSource?>((
   return loadProfileExport(connection.client, hostLabel: connection.label, isLocal: connection.isLocal, fs: fs);
 });
 
-/// How plugin steps reach [target]: the active host's install queue, or
-/// its client directly. Tests override it.
-final pluginRunnerFactoryProvider = Provider<ImportPluginRunner Function(ProviderContainer, ImportTarget)>(
-  (ref) =>
-      (container, target) => target.isActive
-      ? QueuedPluginRunner(container.read(pluginInstallsProvider.notifier), target.client, isLocal: target.isLocal)
-      : DirectPluginRunner(target.client, isLocal: target.isLocal),
-);
-
 /// GitHub token for Gist links, kept for this app session only.
 class GistTokenController extends Notifier<String?> {
   @override

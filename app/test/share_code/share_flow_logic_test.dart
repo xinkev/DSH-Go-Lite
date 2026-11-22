@@ -303,7 +303,7 @@ void main() {
       final result = await applyImport(
         plan,
         {...plan.defaultSelection, 'skill:outline', 'skill:quick', 'agents-md'},
-        runner: DirectPluginRunner(client, isLocal: true),
+        
         fs: fs,
         onStep: (id, s) {
           if (s.state == ImportStepState.done) steps.add(id);
@@ -357,7 +357,7 @@ void main() {
       final result = await applyImport(
         plan,
         plan.defaultSelection,
-        runner: DirectPluginRunner(client, isLocal: true),
+        
         fs: fs,
       );
       expect(result.statuses['plugin:dsh-notes']!.state, ImportStepState.failed);
@@ -377,7 +377,7 @@ void main() {
       final result = await applyImport(
         plan,
         plan.defaultSelection,
-        runner: DirectPluginRunner(client, isLocal: true),
+        
         fs: fs,
       );
       expect(result.restorePoint, isFalse);

@@ -108,7 +108,6 @@ class _ShareImportSheetState extends ConsumerState<ShareImportSheet> {
     final target = _target;
     if (plan == null || target == null || _phase != _Phase.ready) return;
     final container = ProviderScope.containerOf(context, listen: false);
-    final runner = container.read(pluginRunnerFactoryProvider)(container, target);
     final fs = target.isLocal ? await container.read(guestFsProvider.future) : null;
     setState(() {
       _phase = _Phase.running;
@@ -117,7 +116,6 @@ class _ShareImportSheetState extends ConsumerState<ShareImportSheet> {
     final result = await applyImport(
       plan,
       _selected,
-      runner: runner,
       fs: fs,
       onStep: (id, status) {
         if (mounted) setState(() => _steps[id] = status);
