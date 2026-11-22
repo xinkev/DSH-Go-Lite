@@ -26,7 +26,6 @@ import 'market_widgets.dart';
 import 'plugin_actions.dart';
 import 'plugin_load_status.dart';
 import 'plugin_widgets.dart';
-import 'seats/plugin_web_places.dart';
 
 /// Market entry detail and the install confirmation: what it is, where it
 /// comes from, the trust warning, live progress and the one primary action.
@@ -575,7 +574,6 @@ class BundleSheet extends ConsumerWidget {
               ],
               // Loader evidence, then native UI switches and diagnostics.
               if (!gone) PluginLoadStatus(bundle: bundle),
-              if (!gone) PluginWebPlacesSection(package: bundle.name, pluginNames: [...?bundle.meta?.title?.all]),
               if (job != null && job.isActive) ...[
                 const SizedBox(height: 16),
                 PluginInstallProgress(
