@@ -27,7 +27,6 @@ import '../common/sheet_title_bar.dart';
 import '../common/status_chip.dart';
 import '../features/feature_kit.dart' show QuietSpinner;
 import '../features/feature_widgets.dart' show FeatureOffline;
-import '../plugins/plugin_actions.dart' show togglePluginBundle;
 import '../shell/page_frame.dart';
 import '../theme/app_icons.dart';
 import '../theme/theme.dart';
@@ -54,10 +53,7 @@ class _TeamPageState extends ConsumerState<TeamPage> {
   bool _enabling = false;
 
   Future<void> _enable(PluginBundle bundle) async {
-    setState(() => _enabling = true);
-    await togglePluginBundle(context, bundle, true);
-    if (!mounted) return;
-    setState(() => _enabling = false);
+    // Plugin bundles are retired: nothing to enable.
   }
 
   void _open(String leadId, TeamMember member) {
