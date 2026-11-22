@@ -16,7 +16,6 @@ import '../../../state/ask_ai.dart' show askAiAvailableProvider;
 import '../../../state/engine_settings_state.dart';
 import '../../../state/hosts_state.dart';
 import '../../../state/phone_state.dart';
-import '../../../state/plugin_config/plugin_config_state.dart';
 import '../../../state/plugins_state.dart';
 import '../../../state/sessions_state.dart';
 import '../../../state/workshop_dependencies.dart' show workshopOriginProvider;
@@ -29,7 +28,6 @@ import '../../features/all_features_page.dart' show dshWebOpenerProvider;
 import '../../features/feature_catalog.dart';
 import '../../engine_settings/engine_settings_page.dart' show isPluginForm, namespaceTitle;
 import '../../features/feature_widgets.dart' show FeatureMessage;
-import '../../plugins/config/plugin_config_entries.dart';
 import '../../shell/page_frame.dart';
 import '../../theme/app_icons.dart';
 import '../index/settings_pages.dart';
@@ -158,11 +156,10 @@ class _SettingsSearchPageState extends ConsumerState<SettingsSearchPage> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final query = _field.text;
-    final extra = ref.watch(_pluginSpotsProvider);
     final androidFeatures = ref.watch(androidSystemFeaturesProvider);
     List<SearchHit> search({required bool androidFeatures}) => searchSettings(
       query,
-      spots: [...SettingsIndex.spots, ...extra],
+      spots: SettingsIndex.spots,
       features: ref.watch(featureSectionsProvider),
       zh: _zh,
       en: _en,
@@ -257,29 +254,6 @@ class _SettingsSearchPageState extends ConsumerState<SettingsSearchPage> {
 
 /// A plugin's own settings form, found once the host has said it has one,
 /// under the name 设置 › 引擎参数 › 插件 lists it by (in both languages).
-/// Only when the host's settings were read already: opening search doesn't
-/// ask the host for them.
-final _pluginSpotsProvider = Provider.autoDispose<List<SettingSpot>>((ref) {
-  if (ref.exists(pluginConfigProvider)) {
-    if (ref.watch(pluginConfigProvider).value case final config?) {
-      final bundles = ref.watch(installedPluginsProvider.select((s) => s.value));
-      return [
-        for (final ns in pluginConfigEntries(config))
-          pluginFormSpot(ns, (l) => pluginConfigTitle(ns, bundles, state: config, l10n: l)),
-      ];
-    }
-  }
-  if (!ref.exists(engineSettingsProvider)) return const [];
-  final settings = ref.watch(engineSettingsProvider).value;
-  if (settings == null) return const [];
-  // Plugins only (PluginConfigScope), so only once the plugin list was read.
-  if (!ref.exists(installedPluginsProvider)) return const [];
-  final scope = ref.watch(pluginConfigScopeProvider);
-  return [
-    for (final view in settings.namespaces.values)
-      if (isPluginForm(view) && scope.allows(view.ns)) pluginFormSpot(view.ns, (_) => namespaceTitle(view.ns)),
-  ];
-});
 
 class _SpotResult extends ConsumerWidget {
   const _SpotResult({required this.hit, required this.spot, required this.onOpen});

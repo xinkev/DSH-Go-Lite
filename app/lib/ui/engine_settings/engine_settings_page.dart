@@ -8,7 +8,6 @@ import '../../l10n/l10n.dart';
 import '../../state/engine_settings_state.dart' show SettingsNamespaceView;
 
 import '../features/feature_widgets.dart' show FeatureMessage;
-import '../plugins/config/plugin_config_page.dart';
 import '../theme/app_icons.dart';
 import '../settings/media_settings_page.dart';
 import 'general_settings_page.dart';
@@ -110,7 +109,7 @@ Widget settingsPageFor(String ns, {String? title}) => switch (ns) {
   'web' || 'web-search-deepseek' || 'web-deepseek-api' => const WebSearchSettingsPage(),
   'ui-settings' || 'ui-chat' || 'ui-conversation' || 'session-log-deepseek' => const GeneralSettingsPage(),
   'dsh-media' || 'media' => const MediaSettingsPage(),
-  _ => PluginConfigPage(ns: ns, title: title),
+  _ => const SizedBox.shrink(),
 };
 
 /// Pushes [settingsPageFor] on the root navigator's stack.
