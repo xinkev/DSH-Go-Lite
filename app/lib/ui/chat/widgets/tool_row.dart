@@ -13,7 +13,6 @@ import '../../common/fluid_bits.dart';
 import '../../common/smooth_size.dart';
 import '../../common/tool_glyph.dart';
 import '../../fx/orbs/thinking_orb.dart';
-import '../../plugins/view/plugin_view.dart' show DshUiParsed, PluginToolCard;
 import '../../theme/app_icons.dart';
 import '../../theme/theme.dart';
 import '../render/code_block.dart';
@@ -103,7 +102,7 @@ class _ToolRowState extends State<ToolRow> {
   ToolView get view => _view = ToolView.of(widget.item, _view);
 
   bool _expandedFor(ToolView v) =>
-      _toggled ?? (widget.card == ToolCardPlacement.inline && (v.pluginView is DshUiParsed || v.media != null));
+      _toggled ?? (widget.card == ToolCardPlacement.inline && (v.media != null));
 
   @override
   Widget build(BuildContext context) {
@@ -117,13 +116,7 @@ class _ToolRowState extends State<ToolRow> {
           child: MediaCard(meta: media),
         );
       }
-      return switch (v.pluginView) {
-        final DshUiParsed parse => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child: PluginToolCard(parse: parse, fallback: const SizedBox.shrink(), details: false),
-        ),
-        _ => const SizedBox.shrink(),
-      };
+      return const SizedBox.shrink();
     }
     final expanded = _expandedFor(v);
     final request = widget.item.pendingApproval;
@@ -141,7 +134,7 @@ class _ToolRowState extends State<ToolRow> {
           expanded: expanded,
           opens: child != null,
           // 卡片正摊开在下面(标题就在卡片上):行里照旧写参数摘要。
-          titled: !(expanded && widget.card == ToolCardPlacement.inline && v.pluginView is DshUiParsed),
+          titled: !(expanded && widget.card == ToolCardPlacement.inline && false),
           onTap: () {
             if (child != null && opener!(child)) return;
             setState(() => _toggled = !expanded);
@@ -154,12 +147,6 @@ class _ToolRowState extends State<ToolRow> {
             child: switch (v.pluginView) {
               // 生成的图片 / 视频:媒体卡(折进过程里的那一行不画,卡片在外面)。
               _ when v.media != null && widget.card == ToolCardPlacement.inline => MediaCard(meta: v.media!),
-              // 插件工具带了原生卡片(meta["dsh-go/view"]);折进过程里的
-              // 那一行不再画卡片(卡片在外面)。
-              final parse? when widget.card == ToolCardPlacement.inline => PluginToolCard(
-                parse: parse,
-                fallback: ToolDetail(view: v),
-              ),
               _ => ToolDetail(view: v),
             },
           ),

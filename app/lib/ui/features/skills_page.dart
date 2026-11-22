@@ -11,7 +11,6 @@ import '../../l10n/l10n.dart';
 import '../../state/connection_state.dart';
 import '../../state/features_state.dart';
 import '../common/app_sheet.dart';
-import '../plugins/plugin_widgets.dart';
 import '../common/list_page_row.dart';
 import '../shell/page_frame.dart';
 import '../theme/app_icons.dart';
@@ -122,7 +121,7 @@ class _SkillRow extends StatelessWidget {
       icon: AppIcons.skill,
       title: '/${skill.name}',
       titleStyle: AppType.monoLabel(color: theme.colorScheme.onSurface).copyWith(fontSize: 14, height: 1.45),
-      badge: skill.modelInvocable ? null : PluginBadge(l10n.featuresSkillManual),
+      badge: skill.modelInvocable ? null : Text(l10n.featuresSkillManual),
       subtitle: skill.description.isEmpty ? null : skill.description,
       onTap: onTap,
     );

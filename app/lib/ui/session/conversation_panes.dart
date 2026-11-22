@@ -5,7 +5,6 @@
 import 'package:flutter/material.dart';
 
 import '../../l10n/l10n.dart';
-import '../plugins/seats/session_plugins_tab.dart';
 import '../theme/app_icons.dart';
 import 'conversation_overview.dart';
 import 'session_detail_page.dart';
@@ -40,7 +39,6 @@ class ConversationPane {
     SessionTab.progress: _ofTab(SessionTab.progress, AppIcons.todo, (id) => ProgressTab(sessionId: id)),
     SessionTab.context: _ofTab(SessionTab.context, AppIcons.file, (id) => ContextTab(sessionId: id)),
     SessionTab.subagents: _ofTab(SessionTab.subagents, AppIcons.subagents, (id) => SubagentsTab(sessionId: id)),
-    SessionTab.plugins: _ofTab(SessionTab.plugins, AppIcons.plugin, (id) => SessionPluginsTab(sessionId: id)),
   };
 
   /// The pane behind [tab].

@@ -12,7 +12,6 @@ import '../../state/connection_state.dart';
 import '../../state/models_state.dart';
 import '../../state/session_search.dart' show folderLabel;
 import '../../state/sessions_state.dart';
-import '../../plugins/native/native_state.dart';
 import '../chat/model_sheet.dart';
 import '../theme/app_icons.dart';
 import '../theme/theme.dart';

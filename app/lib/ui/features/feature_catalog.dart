@@ -11,7 +11,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
 import '../../platform/native_icons.dart';
-import '../../plugins/seams/seams.dart';
 import '../../state/android_features.dart';
 import '../common/feature_tile.dart';
 import '../agents/team_page.dart';
@@ -22,8 +21,6 @@ import '../files/files_page.dart';
 import '../forum/forum_home_page.dart';
 import '../phone/phone_control_screen.dart';
 import '../phone/system_actions_page.dart';
-import '../plugins/seats/plugin_seat_page.dart';
-import '../plugins/seats/seat_links.dart';
 import '../providers/providers_page.dart';
 import '../remote/remote_screen.dart';
 import '../session/session_artifacts.dart';
@@ -406,25 +403,3 @@ final featureSectionsProvider = Provider.autoDispose<List<FeatureSection>>((ref)
   return sections;
 });
 
-/// One plugin panel as an entry: its native or island page, or DSH Web (the
-/// card then says 「网页版」) when neither can come up. [owner] is the
-/// plugin's name for people (its declared title); a package name is never
-/// shown: then the card just says 「插件面板」.
-FeatureItem pluginPanelFeature(SeatItem item, {List<PluginBundle>? bundles, SeatInventory? inventory, String? owner}) {
-  final o = item.occupant;
-  final bundle = seatBundleOf(bundles, o.package);
-  // The panel's name is on its sidebar entry; `main` itself has none.
-  final title = seatEntryTitle(o, inventory: inventory, bundle: bundle);
-  final by = owner ?? bundle?.title() ?? o.package;
-  final named = by.trim().isNotEmpty && by != o.package && by != title;
-  final native = inventory?.nativePanel(o.package, o.cell);
-  final page = SeatRequest(slot: Slots.main, placement: SeatPlacement.page, package: o.package, cell: o.cell);
-  return FeatureItem.localized(
-    id: 'plugin-panel:${o.package}#${o.cell}',
-    title: (_) => title,
-    summary: (l10n) => named ? by : l10n.catalogPluginPanel,
-    icon: nativeIcon(native?.icon) ?? AppIcons.plugin,
-    native: item.mode == SeatMode.webLink ? null : (_) => PluginSeatPage(title: title, request: page),
-    web: item.mode == SeatMode.webLink ? seatWebTarget(o, bundle: bundle) : null,
-  );
-}

@@ -40,7 +40,6 @@ import '../common/sheet_title_bar.dart';
 import '../common/side_insets.dart';
 import '../common/status_chip.dart';
 import '../common/tool_glyph.dart';
-import '../plugins/seats/session_plugins_tab.dart';
 import '../shell/adaptive/detail_panel_keys.dart';
 import '../shell/adaptive/detail_sheet.dart';
 import '../shell/adaptive/open_detail.dart';
@@ -161,8 +160,7 @@ class _SessionDetailPageState extends ConsumerState<SessionDetailPage> with Tick
         if (tab != SessionTab.plugins && (tab != SessionTab.subagents || delegated || initial == SessionTab.subagents))
           tab,
     ];
-    final plugins = !ref.read(sessionPluginPlanProvider(widget.sessionId)).isEmpty;
-    _tabs = [..._baseTabs, if (plugins) SessionTab.plugins];
+    _tabs = [..._baseTabs];
     _controller = TabController(
       length: _tabs.length,
       vsync: this,
@@ -300,7 +298,6 @@ class _SessionDetailPageState extends ConsumerState<SessionDetailPage> with Tick
         if (i >= 0 && i != _controller.index) _controller.animateTo(i);
       });
     }
-    _syncPluginsTab(!ref.watch(sessionPluginPlanProvider(widget.sessionId)).isEmpty);
     final theme = Theme.of(context);
     final surfaces = DshSurfaces.of(context);
     final padding = MediaQuery.paddingOf(context);

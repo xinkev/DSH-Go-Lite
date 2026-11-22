@@ -22,10 +22,8 @@ import '../common/list_page_row.dart';
 import '../common/scroll_edge_fade.dart';
 import '../common/segmented_pill.dart';
 import '../common/status_chip.dart';
-import '../plugins/plugin_widgets.dart' show PluginAvatar;
 import '../theme/app_icons.dart';
 import '../theme/theme.dart';
-import 'plugin_share_sheet.dart' show pluginSourceText;
 import 'profile_share_sheet.dart' show profileSummary;
 import 'share_code_widgets.dart';
 import 'share_content_sheet.dart';
@@ -222,11 +220,7 @@ class _ShareImportSheetState extends ConsumerState<ShareImportSheet> {
   }
 
   Widget _hero() => switch (widget.payload) {
-    PluginShare(:final plugin) => ShareHero(
-      leading: PluginAvatar(name: plugin.name, title: plugin.displayTitle, size: 56),
-      title: plugin.displayTitle,
-      subtitle: plugin.summary ?? plugin.author,
-    ),
+    PluginShare() => const SizedBox.shrink(),
     final ProfileShare p => ShareHero(
       leading: const ProfileTile(),
       title: p.name ?? appL10n.pluginsProfileTitle,
@@ -245,24 +239,8 @@ class _ShareImportSheetState extends ConsumerState<ShareImportSheet> {
       value: target?.label ?? appL10n.commonNotConnected,
     );
     switch (payload) {
-      case PluginShare(:final plugin):
-        final change = _pluginChange;
-        final size = change?.facts?.unpackedSize;
-        return [
-          ListPageRow(
-            title: appL10n.pluginsSource,
-            value: pluginSourceText(plugin, publisher: change?.facts?.publisher),
-          ),
-          ListPageRow(title: appL10n.commonVersion, value: plugin.version ?? plugin.gitRef ?? '—'),
-          if (plugin.source != PluginSourceKind.official)
-            ListPageRow(
-              key: const ValueKey('share-import-integrity'),
-              title: appL10n.pluginsVerification,
-              trailing: _integrityChip(change?.integrity),
-            ),
-          if (size != null) ListPageRow(title: appL10n.pluginsSize, value: formatShareBytes(size)),
-          if (_target != null && _targets.length < 2) targetRow,
-        ];
+        case PluginShare():
+        return const [];
       case ProfileShare():
         return [
           ListPageRow(title: appL10n.pluginsSource, value: widget.origin.label),
@@ -442,7 +420,7 @@ class _ShareImportSheetState extends ConsumerState<ShareImportSheet> {
             ],
           );
         }
-        if (!_isProfile) {
+        if (!_isProfile && _pluginChange != null) {
           final c = _pluginChange!;
           final label = switch (c.kind) {
             ChangeKind.upgrade => appL10n.pluginsUpdateTo(

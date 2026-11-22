@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../plugins/seams/seat_state.dart' show seatRouteGuardReportProvider;
 import 'package:dsh_app/remote/ssh/ssh_link.dart';
 import 'package:dsh_app/runtime/runtime_state.dart';
 import 'package:dsh_app/state/connection_state.dart';
@@ -79,7 +78,7 @@ Future<RouteGuard> probeRouteGuard(
 /// What the bridge reports per host (`routeGuard`), from the seats'
 /// inventory; null when unknown.
 final islandRouteGuardReportProvider = Provider.family<bool?, HostRef>(
-  (ref, host) => ref.watch(seatRouteGuardReportProvider(host)),
+  (ref, host) => null,
 );
 
 /// The cookieless probe against the on-device engine, rerun per engine
