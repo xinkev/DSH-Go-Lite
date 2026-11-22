@@ -2716,55 +2716,7 @@ class L10nZh extends L10n {
   String get botsGlyphAsk => '提问';
 
   @override
-  String get botsCommunityEmpty => '暂时没有内容';
-
-  @override
-  String get botsCommunityGroups => '交流群';
-
-  @override
-  String get botsCommunity => '社区';
-
-  @override
-  String get botsForum => '论坛';
-
-  @override
-  String get botsForumSubtitle => '提问、分享、找同好';
-
-  @override
-  String get botsProjectHome => 'DSH Go 项目主页';
-
-  @override
-  String get botsOpenSource => '开源项目';
-
-  @override
   String get botsTapRetry => '点一下重试';
-
-  @override
-  String get botsPromptIdeas => '玩法';
-
-  @override
-  String get botsUpdates => '更新动态';
-
-  @override
-  String get botsLink => '链接';
-
-  @override
-  String botsLinkOpenFailed(String host) {
-    return '没能打开 $host';
-  }
-
-  @override
-  String botsYearMonth(int year, String month) {
-    return '$year年$month月';
-  }
-
-  @override
-  String get botsCopyGroupNumber => '复制群号';
-
-  @override
-  String botsQrCodeLabel(String title) {
-    return '$title二维码';
-  }
 
   @override
   String get botsFiles => '文件';
@@ -3272,12 +3224,6 @@ class L10nZh extends L10n {
 
   @override
   String get catalogForumSummary => '提问、分享、找同好';
-
-  @override
-  String get catalogCommunity => '社区';
-
-  @override
-  String get catalogCommunitySummary => '精选与交流群';
 
   @override
   String get catalogBotSummary => 'Bot 团队与群聊';
@@ -8472,9 +8418,6 @@ class L10nZh extends L10n {
 
   @override
   String get hubSettingsAbout => '关于';
-
-  @override
-  String get hubSettingsCommunity => '社区';
 
   @override
   String get hubSettingsLicenses => '开源许可';
@@ -15699,9 +15642,6 @@ class L10nZh extends L10n {
 
   @override
   String get searchKwHelp => '帮助,教程,问 AI,怎么用,说明';
-
-  @override
-  String get searchKwCommunity => '交流群,QQ 群,论坛,反馈';
 
   @override
   String get searchKwStar => 'GitHub,星标,点赞';

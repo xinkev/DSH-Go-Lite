@@ -617,45 +617,7 @@
   "botsGlyphViewGoal": "查看目标",
   "botsGlyphUpdateGoal": "更新目标",
   "botsGlyphAsk": "提问",
-  "botsCommunityEmpty": "暂时没有内容",
-  "botsCommunityGroups": "交流群",
-  "botsCommunity": "社区",
-  "botsForum": "论坛",
-  "botsForumSubtitle": "提问、分享、找同好",
-  "botsProjectHome": "DSH Go 项目主页",
-  "botsOpenSource": "开源项目",
   "botsTapRetry": "点一下重试",
-  "botsPromptIdeas": "玩法",
-  "botsUpdates": "更新动态",
-  "botsLink": "链接",
-  "botsLinkOpenFailed": "没能打开 {host}",
-  "@botsLinkOpenFailed": {
-    "placeholders": {
-      "host": {
-        "type": "String"
-      }
-    }
-  },
-  "botsYearMonth": "{year}年{month}月",
-  "@botsYearMonth": {
-    "placeholders": {
-      "year": {
-        "type": "int"
-      },
-      "month": {
-        "type": "String"
-      }
-    }
-  },
-  "botsCopyGroupNumber": "复制群号",
-  "botsQrCodeLabel": "{title}二维码",
-  "@botsQrCodeLabel": {
-    "placeholders": {
-      "title": {
-        "type": "String"
-      }
-    }
-  },
   "botsFiles": "文件",
   "botsEmptyCell": "（空）",
   "botsYesterdayTime": "昨天 {time}",

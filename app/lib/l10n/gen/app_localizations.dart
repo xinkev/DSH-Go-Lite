@@ -5042,95 +5042,11 @@ abstract class L10n {
   /// **'提问'**
   String get botsGlyphAsk;
 
-  /// No description provided for @botsCommunityEmpty.
-  ///
-  /// In zh, this message translates to:
-  /// **'暂时没有内容'**
-  String get botsCommunityEmpty;
-
-  /// No description provided for @botsCommunityGroups.
-  ///
-  /// In zh, this message translates to:
-  /// **'交流群'**
-  String get botsCommunityGroups;
-
-  /// No description provided for @botsCommunity.
-  ///
-  /// In zh, this message translates to:
-  /// **'社区'**
-  String get botsCommunity;
-
-  /// No description provided for @botsForum.
-  ///
-  /// In zh, this message translates to:
-  /// **'论坛'**
-  String get botsForum;
-
-  /// No description provided for @botsForumSubtitle.
-  ///
-  /// In zh, this message translates to:
-  /// **'提问、分享、找同好'**
-  String get botsForumSubtitle;
-
-  /// No description provided for @botsProjectHome.
-  ///
-  /// In zh, this message translates to:
-  /// **'DSH Go 项目主页'**
-  String get botsProjectHome;
-
-  /// No description provided for @botsOpenSource.
-  ///
-  /// In zh, this message translates to:
-  /// **'开源项目'**
-  String get botsOpenSource;
-
   /// No description provided for @botsTapRetry.
   ///
   /// In zh, this message translates to:
   /// **'点一下重试'**
   String get botsTapRetry;
-
-  /// No description provided for @botsPromptIdeas.
-  ///
-  /// In zh, this message translates to:
-  /// **'玩法'**
-  String get botsPromptIdeas;
-
-  /// No description provided for @botsUpdates.
-  ///
-  /// In zh, this message translates to:
-  /// **'更新动态'**
-  String get botsUpdates;
-
-  /// No description provided for @botsLink.
-  ///
-  /// In zh, this message translates to:
-  /// **'链接'**
-  String get botsLink;
-
-  /// No description provided for @botsLinkOpenFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'没能打开 {host}'**
-  String botsLinkOpenFailed(String host);
-
-  /// No description provided for @botsYearMonth.
-  ///
-  /// In zh, this message translates to:
-  /// **'{year}年{month}月'**
-  String botsYearMonth(int year, String month);
-
-  /// No description provided for @botsCopyGroupNumber.
-  ///
-  /// In zh, this message translates to:
-  /// **'复制群号'**
-  String get botsCopyGroupNumber;
-
-  /// No description provided for @botsQrCodeLabel.
-  ///
-  /// In zh, this message translates to:
-  /// **'{title}二维码'**
-  String botsQrCodeLabel(String title);
 
   /// No description provided for @botsFiles.
   ///
@@ -6061,18 +5977,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'提问、分享、找同好'**
   String get catalogForumSummary;
-
-  /// No description provided for @catalogCommunity.
-  ///
-  /// In zh, this message translates to:
-  /// **'社区'**
-  String get catalogCommunity;
-
-  /// No description provided for @catalogCommunitySummary.
-  ///
-  /// In zh, this message translates to:
-  /// **'精选与交流群'**
-  String get catalogCommunitySummary;
 
   /// No description provided for @catalogBotSummary.
   ///
@@ -15691,12 +15595,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'关于'**
   String get hubSettingsAbout;
-
-  /// No description provided for @hubSettingsCommunity.
-  ///
-  /// In zh, this message translates to:
-  /// **'社区'**
-  String get hubSettingsCommunity;
 
   /// No description provided for @hubSettingsLicenses.
   ///
@@ -28903,12 +28801,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'帮助,教程,问 AI,怎么用,说明'**
   String get searchKwHelp;
-
-  /// No description provided for @searchKwCommunity.
-  ///
-  /// In zh, this message translates to:
-  /// **'交流群,QQ 群,论坛,反馈'**
-  String get searchKwCommunity;
 
   /// No description provided for @searchKwStar.
   ///

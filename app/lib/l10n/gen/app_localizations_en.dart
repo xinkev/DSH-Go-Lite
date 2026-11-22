@@ -2876,70 +2876,7 @@ class L10nEn extends L10n {
   String get botsGlyphAsk => 'Ask question';
 
   @override
-  String get botsCommunityEmpty => 'Nothing here yet';
-
-  @override
-  String get botsCommunityGroups => 'Chat groups';
-
-  @override
-  String get botsCommunity => 'Community';
-
-  @override
-  String get botsForum => 'Forum';
-
-  @override
-  String get botsForumSubtitle => 'Ask, share, connect';
-
-  @override
-  String get botsProjectHome => 'DSH Go project home';
-
-  @override
-  String get botsOpenSource => 'Open-source project';
-
-  @override
   String get botsTapRetry => 'Tap to retry';
-
-  @override
-  String get botsPromptIdeas => 'Try this';
-
-  @override
-  String get botsUpdates => 'What’s new';
-
-  @override
-  String get botsLink => 'link';
-
-  @override
-  String botsLinkOpenFailed(String host) {
-    return 'Couldn’t open $host';
-  }
-
-  @override
-  String botsYearMonth(int year, String month) {
-    String _temp0 = intl.Intl.selectLogic(month, {
-      '1': 'Jan',
-      '2': 'Feb',
-      '3': 'Mar',
-      '4': 'Apr',
-      '5': 'May',
-      '6': 'Jun',
-      '7': 'Jul',
-      '8': 'Aug',
-      '9': 'Sep',
-      '10': 'Oct',
-      '11': 'Nov',
-      '12': 'Dec',
-      'other': '$month',
-    });
-    return '$_temp0 $year';
-  }
-
-  @override
-  String get botsCopyGroupNumber => 'Copy group number';
-
-  @override
-  String botsQrCodeLabel(String title) {
-    return '$title QR code';
-  }
 
   @override
   String get botsFiles => 'Files';
@@ -3455,12 +3392,6 @@ class L10nEn extends L10n {
 
   @override
   String get catalogForumSummary => 'Ask, share and meet others';
-
-  @override
-  String get catalogCommunity => 'Community';
-
-  @override
-  String get catalogCommunitySummary => 'Highlights and group chats';
 
   @override
   String get catalogBotSummary => 'Bot teams and group chats';
@@ -8960,9 +8891,6 @@ class L10nEn extends L10n {
 
   @override
   String get hubSettingsAbout => 'About';
-
-  @override
-  String get hubSettingsCommunity => 'Community';
 
   @override
   String get hubSettingsLicenses => 'Open-source licenses';
@@ -16569,9 +16497,6 @@ class L10nEn extends L10n {
 
   @override
   String get searchKwHelp => 'help,guide,ask ai,how to';
-
-  @override
-  String get searchKwCommunity => 'group,forum,feedback,chat group';
 
   @override
   String get searchKwStar => 'github,star';

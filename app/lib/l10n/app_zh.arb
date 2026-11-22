@@ -1693,45 +1693,7 @@
   "botsGlyphViewGoal": "查看目标",
   "botsGlyphUpdateGoal": "更新目标",
   "botsGlyphAsk": "提问",
-  "botsCommunityEmpty": "暂时没有内容",
-  "botsCommunityGroups": "交流群",
-  "botsCommunity": "社区",
-  "botsForum": "论坛",
-  "botsForumSubtitle": "提问、分享、找同好",
-  "botsProjectHome": "DSH Go 项目主页",
-  "botsOpenSource": "开源项目",
   "botsTapRetry": "点一下重试",
-  "botsPromptIdeas": "玩法",
-  "botsUpdates": "更新动态",
-  "botsLink": "链接",
-  "botsLinkOpenFailed": "没能打开 {host}",
-  "@botsLinkOpenFailed": {
-    "placeholders": {
-      "host": {
-        "type": "String"
-      }
-    }
-  },
-  "botsYearMonth": "{year}年{month}月",
-  "@botsYearMonth": {
-    "placeholders": {
-      "year": {
-        "type": "int"
-      },
-      "month": {
-        "type": "String"
-      }
-    }
-  },
-  "botsCopyGroupNumber": "复制群号",
-  "botsQrCodeLabel": "{title}二维码",
-  "@botsQrCodeLabel": {
-    "placeholders": {
-      "title": {
-        "type": "String"
-      }
-    }
-  },
   "botsFiles": "文件",
   "botsEmptyCell": "（空）",
   "botsYesterdayTime": "昨天 {time}",
@@ -2043,8 +2005,6 @@
   "catalogCommunitySharingSection": "社区与分享",
   "catalogForum": "论坛",
   "catalogForumSummary": "提问、分享、找同好",
-  "catalogCommunity": "社区",
-  "catalogCommunitySummary": "精选与交流群",
   "catalogBotSummary": "Bot 团队与群聊",
   "catalogShareProfile": "分享配置",
   "catalogShareProfileSummary": "插件、设置与技能",
@@ -5137,7 +5097,6 @@
   "hubSettingsShareConfig": "分享配置",
   "hubSettingsAllFeatures": "全部功能",
   "hubSettingsAbout": "关于",
-  "hubSettingsCommunity": "社区",
   "hubSettingsLicenses": "开源许可",
   "hubSettingsAccount": "DeepSeek 账号",
   "hubSettingsSigningIn": "正在登录…",
@@ -9259,7 +9218,6 @@
   "searchKwUpdate": "更新,升级,新版本",
   "searchKwUpdateAuto": "自动更新,检查更新",
   "searchKwHelp": "帮助,教程,问 AI,怎么用,说明",
-  "searchKwCommunity": "交流群,QQ 群,论坛,反馈",
   "searchKwStar": "GitHub,星标,点赞",
   "searchKwLicenses": "许可证,开源,License",
   "searchKwDarkMode": "深色,浅色,暗色,夜间,深色模式,跟随系统,外观",

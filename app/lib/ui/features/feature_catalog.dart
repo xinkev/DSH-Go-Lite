@@ -13,7 +13,6 @@ import '../../state/android_features.dart';
 import '../common/feature_tile.dart';
 import '../agents/team_page.dart';
 import '../bots/bots_page.dart';
-import '../community/community_page.dart';
 import '../files/files_page.dart';
 import '../forum/forum_home_page.dart';
 import '../phone/phone_control_screen.dart';
@@ -139,10 +138,6 @@ class FeatureSection {
 
 String _session(String? id) => id ?? '';
 
-/// 社区, with the forum card at its top opening the forum's home.
-Widget communityPage() =>
-    Builder(builder: (context) => CommunityPage(onOpenForum: () => Navigator.of(context).push(ForumHomePage.route())));
-
 /// Back to the chat, where the composer does the rest (`@`, the mic).
 void _backToChat(BuildContext context, WidgetRef ref, String? _) =>
     Navigator.of(context).popUntil((route) => route.isFirst);
@@ -267,14 +262,6 @@ final featureSections = <FeatureSection>[
       summary: (l10n) => l10n.catalogForumSummary,
       icon: AppIcons.forum,
       native: (_) => const ForumHomePage(),
-    ),
-    FeatureItem.localized(
-      id: 'community',
-      title: (l10n) => l10n.catalogCommunity,
-      summary: (l10n) => l10n.catalogCommunitySummary,
-      icon: AppIcons.community,
-      tile: FeatureKind.community,
-      native: (_) => communityPage(),
     ),
     FeatureItem.localized(
       id: 'ds-bot',

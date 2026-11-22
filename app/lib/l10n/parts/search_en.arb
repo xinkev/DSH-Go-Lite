@@ -47,7 +47,6 @@
   "searchKwUpdate": "update,upgrade,new version",
   "searchKwUpdateAuto": "auto update,updates",
   "searchKwHelp": "help,guide,ask ai,how to",
-  "searchKwCommunity": "group,forum,feedback,chat group",
   "searchKwStar": "github,star",
   "searchKwLicenses": "license,open source",
   "searchKwDarkMode": "dark,light,dark mode,night,theme,system,appearance",
