@@ -22,7 +22,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../l10n/l10n.dart';
-import '../../../plugins/native/native_model.dart';
 import '../../../state/android_features.dart';
 import '../../../state/chat_state.dart';
 import '../../../state/connection_state.dart';
@@ -60,12 +59,6 @@ final class AttachChoice extends PlusChoice {
 /// 「生成」: into generation mode.
 final class GenerateChoice extends PlusChoice {
   const GenerateChoice();
-}
-
-/// A plugin's tool: the caller runs it, in front of the composer.
-final class NativeToolChoice extends PlusChoice {
-  const NativeToolChoice(this.action);
-  final NativeAction action;
 }
 
 /// The panel's measured geometry; `test/chat/plus_panel_test.dart` checks it.

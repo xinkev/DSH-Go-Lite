@@ -989,13 +989,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
         if (ownsDraft()) _enterGenerate();
         return;
       }
-      if (choice is NativeToolChoice) {
-        if (ownsDraft() && mounted) {
-          final scope = DshGoScope(sessionId: ref.read(currentSessionProvider));
-          unawaited(runNativeAction(context, ref, choice.action, scope: scope, composer: _nativeHost));
-        }
-        return;
-      }
       if (choice is! AttachChoice || !ownsDraft()) return;
       if (room <= 0) {
         _toast(appL10n.chatAttachmentLimit(maxAttachments));
