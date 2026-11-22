@@ -39,7 +39,6 @@ import '../onboarding/api_key_page.dart' show maskApiKey;
 import '../pets/pet_settings_page.dart';
 import '../phone/phone_control_screen.dart';
 import '../phone/system_actions_page.dart';
-import '../plugins/plugins_screen.dart';
 import '../providers/providers_page.dart';
 import '../remote/host_status.dart';
 import '../remote/remote_screen.dart';

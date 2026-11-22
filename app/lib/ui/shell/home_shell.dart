@@ -233,7 +233,7 @@ class _HomeShellState extends ConsumerState<HomeShell> with TickerProviderStateM
     final page = switch (destination) {
       DrawerDestination.web => const LocalWebScreen(),
       DrawerDestination.remote => const RemoteScreen(),
-      DrawerDestination.plugins => const PluginsScreen(),
+      DrawerDestination.plugins => const SizedBox.shrink(),
       DrawerDestination.engine => const EngineScreen(),
       DrawerDestination.settings => const SettingsScreen(),
       DrawerDestination.settingsSearch => const SettingsSearchPage(),
