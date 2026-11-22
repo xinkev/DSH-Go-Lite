@@ -1885,8 +1885,8 @@ internal object PetOverlay {
         machine.onTouch(now())
         val voice = askTarget?.voice
         when {
-            voice == AskTarget.VOICE_MISSING -> view.setStatus(AppStrings.get(app, R.string.pet_ask_voice_missing))
-            voice != AskTarget.VOICE_READY -> view.setStatus(AppStrings.get(app, R.string.pet_ask_voice_off))
+            voice == AskTarget.VOICE_MISSING -> view.setStatus(AppStrings.get(app, R.string.pet_ask_failed))
+            voice != AskTarget.VOICE_READY -> view.setStatus(AppStrings.get(app, R.string.pet_ask_failed))
             app.checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED -> foregroundVoice(view)
             else -> startRecording(view)
         }
