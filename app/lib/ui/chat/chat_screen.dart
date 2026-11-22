@@ -2043,7 +2043,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
                                           ),
                                         ],
                                         // It gives the activity strip its place while a reply generates.
-                                        if (!readOnly) ComposerStripSlot(sessionId: sessionId, visible: !running),
                                       ],
                                       accessory: pillsBesideStrip
                                           ? _stripRisk(sessionId, autoApprove: chat?.autoApprove ?? false)
