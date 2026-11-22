@@ -15989,13 +15989,13 @@ abstract class L10n {
   /// No description provided for @hubAbout.
   ///
   /// In zh, this message translates to:
-  /// **'关于 DSH Go'**
+  /// **'关于 DSH Go Lite'**
   String get hubAbout;
 
   /// No description provided for @hubAboutAuthor.
   ///
   /// In zh, this message translates to:
-  /// **'DSH Go 原作者'**
+  /// **'DSH Go Lite 原作者'**
   String get hubAboutAuthor;
 
   /// No description provided for @hubAboutBilibili.

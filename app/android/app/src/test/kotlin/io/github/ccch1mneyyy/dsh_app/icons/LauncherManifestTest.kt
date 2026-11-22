@@ -63,7 +63,7 @@ class LauncherManifestTest {
         val gradle = File("build.gradle.kts").readText()
         assertTrue(gradle.contains("manifestPlaceholders[\"appLabel\"] = if (sideBuild) \"DSH Go 测试\" else \"DSH Go\""))
         // Notification titles say the same name.
-        assertEquals("DSH Go", AppStrings.APP_NAME)
+        assertEquals("DSH Go Lite", AppStrings.APP_NAME)
         // Launcher entries, Recents and the share sheet all take the application's label.
         for (element in app.children("activity") + app.children("activity-alias")) {
             assertEquals(element.getAttribute("android:name"), "", element.getAttribute("android:label"))

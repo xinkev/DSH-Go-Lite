@@ -9155,10 +9155,10 @@ class L10nEn extends L10n {
   String get hubTableTintNoneHint => 'Grid lines only, the lightest';
 
   @override
-  String get hubAbout => 'About DSH Go';
+  String get hubAbout => 'About DSH Go Lite';
 
   @override
-  String get hubAboutAuthor => 'Original author of DSH Go';
+  String get hubAboutAuthor => 'Original author of DSH Go Lite';
 
   @override
   String get hubAboutBilibili => 'Bilibili profile';
