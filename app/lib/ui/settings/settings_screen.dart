@@ -31,7 +31,6 @@ import '../engine/engine_screen.dart';
 import '../engine/engine_status.dart';
 import '../engine_settings/engine_settings_hub.dart';
 import '../engine_settings/web_search_page.dart';
-import 'media_settings_page.dart';
 import '../features/feature_format.dart' show permissionName;
 import '../features/permission_page.dart';
 import '../onboarding/api_key_page.dart' show maskApiKey;
@@ -189,9 +188,6 @@ class SettingsScreen extends ConsumerWidget {
             ),
             SettingsTile(
               icon: AppIcons.generateMedia,
-              tint: SettingsHues.abilities,
-              spot: SettingsIndex.entry(SettingsPageId.media),
-              onTap: () => _push(context, const MediaSettingsPage()),
             ),
             if (ref.watch(operatingSystemProvider) == 'ohos') const LinuxEnvironmentTile(tint: SettingsHues.abilities),
           ],

@@ -9,7 +9,6 @@ import '../../state/engine_settings_state.dart' show SettingsNamespaceView;
 
 import '../features/feature_widgets.dart' show FeatureMessage;
 import '../theme/app_icons.dart';
-import '../settings/media_settings_page.dart';
 import 'general_settings_page.dart';
 import 'namespace_copy.dart';
 import 'runtime_settings_pages.dart';
@@ -108,7 +107,6 @@ Widget settingsPageFor(String ns, {String? title}) => switch (ns) {
   'bash-sandbox' || 'pwsh-sandbox' => const ShellSettingsPage(),
   'web' || 'web-search-deepseek' || 'web-deepseek-api' => const WebSearchSettingsPage(),
   'ui-settings' || 'ui-chat' || 'ui-conversation' || 'session-log-deepseek' => const GeneralSettingsPage(),
-  'dsh-media' || 'media' => const MediaSettingsPage(),
   _ => const SizedBox.shrink(),
 };
 

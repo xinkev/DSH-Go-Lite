@@ -31,7 +31,6 @@ import '../widgets/image_actions.dart';
 import '../widgets/image_gallery.dart';
 import '../widgets/message_actions.dart' show copyMessage;
 import 'media_card.dart';
-import 'media_format.dart';
 import 'media_image_feedback.dart';
 
 /// The viewer's measured geometry; `test/media/media_card_test.dart` (viewer).
@@ -591,7 +590,7 @@ class _MediaDetailsState extends State<MediaDetails> {
       if (provenance?.implicitLabel == true) l10n.mediaProvenanceImplicit,
       if (provenance?.visibleMark == true) l10n.mediaProvenanceVisible,
     ];
-    final cost = mediaCostText(meta.cost);
+    final cost = '${meta.cost ?? ''}';
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -640,7 +639,7 @@ class _MediaDetailsState extends State<MediaDetails> {
             if (meta.request.modelName case final model?) ListPageRow(title: l10n.mediaDetailModel, value: model),
             if (item?.width case final w?)
               if (item?.height case final h?) ListPageRow(title: l10n.mediaDetailSize, value: '$w × $h'),
-            if (item?.duration case final d?) ListPageRow(title: l10n.mediaParamDuration, value: formatClip(d)),
+            if (item?.duration case final d?) ListPageRow(title: l10n.mediaParamDuration, value: '${d.toStringAsFixed(1)}s'),
             ?(cost == null ? null : ListPageRow(title: l10n.mediaDetailCost, value: cost)),
             if (marks.isNotEmpty) ListPageRow(title: l10n.mediaDetailProvenance, value: marks.join(' · ')),
             if (item != null)

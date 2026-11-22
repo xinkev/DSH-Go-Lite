@@ -28,7 +28,6 @@ import '../appearance/appearance_page.dart';
 import '../background_guide_page.dart';
 import '../diagnostics_page.dart';
 import '../interface_page.dart';
-import '../media_settings_page.dart';
 import '../notification_settings.dart';
 import '../performance_page.dart';
 import '../personalization_page.dart';
@@ -69,7 +68,6 @@ Widget settingsPage(SettingsPageId id, {String? sessionId}) => switch (id) {
   SettingsPageId.agentLoop => const AgentLoopSettingsPage(),
   SettingsPageId.shell => const ShellSettingsPage(),
   SettingsPageId.webSearch => const WebSearchSettingsPage(),
-  SettingsPageId.media => const MediaSettingsPage(),
   SettingsPageId.allFeatures => const AllFeaturesPage(),
   SettingsPageId.account => const AccountPage(),
   SettingsPageId.remote => const RemoteScreen(),

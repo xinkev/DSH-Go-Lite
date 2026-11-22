@@ -8,8 +8,6 @@ import '../../../state/composer_quote.dart' show splitQuote;
 import '../../common/expand_reveal.dart';
 import '../../theme/app_icons.dart';
 import '../../theme/theme.dart';
-import '../media/generate_header.dart';
-import '../media/media_format.dart' show mediaParamsLine;
 import '../mention/mention_chip.dart';
 import '../secret_mask.dart';
 import 'message_actions.dart';
@@ -63,7 +61,7 @@ class UserBubble extends StatelessWidget {
   final ValueChanged<String>? onQuote;
 
   /// What the bubble shows: a generation request without its header.
-  String get _shown => GenerateHeader.parse(text)?.description ?? text;
+  String get _shown => text;
 
   Future<void> _menu(BuildContext context) async {
     final onEdit = this.onEdit;
@@ -100,11 +98,7 @@ class UserBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     final surfaces = DshSurfaces.of(context);
     final style = AppType.chatBody(context, color: surfaces.onUserBubble);
-    // A generation request (generation mode's parameter header on the first
-    // line): the description is the bubble, the parameters a small line under
-    // the bubble; the header itself is for the host's plugin.
-    final generate = GenerateHeader.parse(text);
-    final shown = generate?.description ?? text;
+    final shown = text;
     final (:quote, :body) = splitQuote(shown);
     final interactive = pendingLabel == null;
     // Long-press selects in place. `@` references draw as chips; text with a
@@ -160,17 +154,6 @@ class UserBubble extends StatelessWidget {
                     opacity: pendingLabel == null ? 1 : 0.72,
                     duration: AppMotion.of(context, AppMotion.quick),
                     child: bubble,
-                  ),
-                ),
-              if (generate case (:final header, description: _))
-                ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: maxWidth),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: shown.trim().isEmpty && attachments == null ? 0 : GenerateParamsLine.gap,
-                      right: GenerateParamsLine.inset,
-                    ),
-                    child: GenerateParamsLine(header: header),
                   ),
                 ),
               _PendingSlot(label: pendingLabel, icon: pendingIcon, actions: pendingActions),
@@ -277,42 +260,3 @@ class _PendingMeta extends StatelessWidget {
 /// 「图像 · 3:4 · 2 张」 under a generation request: the pending line's look
 /// (12 icon, small tertiary text), its right end 8 in from the bubble's
 /// straight edge.
-class GenerateParamsLine extends StatelessWidget {
-  const GenerateParamsLine({super.key, required this.header});
-
-  final GenerateHeader header;
-
-  /// Bubble → line.
-  static const gap = 4.0;
-
-  /// The bubble's right edge → the line's end.
-  static const inset = 8.0;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final muted = DshColors.of(context).textTertiary;
-    final video = header.kind == GenerateKind.video;
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(video ? AppIcons.generateVideo : AppIcons.generateImage, size: 12, color: muted),
-        const SizedBox(width: 4),
-        Flexible(
-          child: Text(
-            mediaParamsLine(
-              video: video,
-              aspect: header.aspect,
-              count: header.count,
-              seconds: header.seconds,
-              resolution: header.resolution,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: AppType.tabular(theme.textTheme.labelSmall!.copyWith(color: muted)),
-          ),
-        ),
-      ],
-    );
-  }
-}

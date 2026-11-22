@@ -35,7 +35,6 @@ import '../../common/app_sheet.dart';
 import '../../common/bleed.dart';
 import '../../common/brief_notice.dart';
 import '../../fx/image_gen/image_generation.dart';
-import '../../settings/media_settings_page.dart' show MediaSettingsPage;
 import '../../theme/app_icons.dart';
 import '../../theme/theme.dart';
 import '../artifact_preview.dart' show ArtifactPreviewPage;
@@ -43,7 +42,6 @@ import '../render/markdown_image.dart';
 import '../widgets/image_actions.dart';
 import '../widgets/message_actions.dart' show copyMessage;
 import '../widgets/message_menu.dart';
-import 'media_format.dart';
 import 'media_grid.dart';
 import 'media_image_feedback.dart';
 import 'media_viewer.dart';
@@ -128,7 +126,7 @@ class MediaCard extends ConsumerWidget {
             final shown = meta.status == MediaStatus.done ? requested.clamp(meta.items.length, 4) : count;
             final layout = layoutMediaGrid(
               count: shown,
-              aspect: mediaAspectOf(meta),
+              aspect: double.tryParse(meta.request.aspect ?? '') ?? 1,
               width: width,
               maxHeight: maxHeight,
             );
@@ -472,7 +470,7 @@ Future<String?> showAppSheetMenu(
 /// 「视频 · 0:05」.
 String videoBadgeText(MediaItem item) {
   final duration = item.duration;
-  return duration == null ? appL10n.mediaKindVideo : '${appL10n.mediaKindVideo} · ${formatClip(duration)}';
+  return duration == null ? appL10n.mediaKindVideo : appL10n.mediaKindVideo;
 }
 
 /// A small label over a picture: 60% black, white text, radius 8, 20 high —
@@ -546,7 +544,7 @@ class _StateBox extends StatelessWidget {
         final p? when p.isNotEmpty => p,
         _ => context.l10n.mediaGenerating,
       },
-      _ => cancelled ? context.l10n.mediaCancelled : mediaErrorText(meta.error),
+      _ => cancelled ? context.l10n.mediaCancelled : '${meta.error ?? ''}',
     };
     final label = Text(
       text,
@@ -608,12 +606,6 @@ class _StateBox extends StatelessWidget {
         final revise = MediaCardActions.maybeOf(context)?.revise;
         if (revise == null || (meta.prompt?.trim() ?? '').isEmpty) return null;
         action = (l10n.mediaRevise, () => revise(meta));
-      case 'auth' || 'unauthorized' || 'quota' || 'daily-limit':
-        action = (
-          l10n.chatGoToSettings,
-          () =>
-              unawaited(Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const MediaSettingsPage()))),
-        );
       default:
         return null;
     }
@@ -647,7 +639,7 @@ class MediaMetaLine extends StatelessWidget {
       Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 13, color: DshColors.of(context).textTertiary),
     );
     final model = meta.request.modelName;
-    final tail = mediaMetaTail(meta);
+    final tail = const <String>[];
     return Semantics(
       container: true,
       child: LayoutBuilder(

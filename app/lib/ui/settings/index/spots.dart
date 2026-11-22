@@ -72,7 +72,6 @@ enum SettingsPageId {
   systemActions,
   linuxEnvironment,
   webSearch,
-  media,
   appearance,
   interface,
   notifications,
@@ -477,14 +476,6 @@ final _pages = <SettingsPageMeta>[
     keywords: (l) => l.searchKwWebSearch,
     freq: Freq.medium,
     links: const ['web-search'],
-  ),
-  SettingsPageMeta(
-    SettingsPageId.media,
-    title: (l) => l.mediaSettingsTitle,
-    group: _abilities,
-    keywords: (l) => l.searchKwMediaGeneration,
-    freq: Freq.medium,
-    links: const ['media'],
   ),
   // 外观
   SettingsPageMeta(

@@ -4,7 +4,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../l10n/l10n.dart';
-import '../../settings/media_settings_page.dart' show MediaInstallPrompt;
 import '../../common/app_sheet.dart';
 import '../../common/empty_view.dart';
 import '../../theme/app_icons.dart';
@@ -39,7 +38,14 @@ Future<void> showMediaInstallSheet(BuildContext context) => showAppSheet<void>(
     top: false,
     child: Padding(
       padding: const EdgeInsets.only(bottom: 16),
-      child: MediaInstallPrompt(compact: true, onInstalled: () => Navigator.of(sheet).pop()),
+      child: EmptyView(
+        icon: AppIcons.generateMedia,
+        compact: true,
+        title: context.l10n.mediaInstallTitle,
+        message: context.l10n.mediaInstallBody,
+        actionLabel: context.l10n.mediaInstallAction,
+        onAction: () => Navigator.of(sheet).pop(),
+      ),
     ),
   ),
 );

@@ -35,7 +35,6 @@ import '../../state/engine_control.dart';
 import '../../state/engine_settings_state.dart' show engineSettingsProvider;
 import '../../state/features_state.dart' show agentPresetsProvider, permissionStateProvider;
 import '../../state/hosts_state.dart' show HostKind, HostRef, activeHostProvider;
-import '../../state/media_generation.dart';
 import '../../state/mention_state.dart';
 import '../../state/models_state.dart';
 import '../../state/new_chat_modes.dart';
@@ -61,7 +60,6 @@ import '../pets/pet_stage.dart';
 import '../safe_mode/engine_failure_card.dart';
 import '../safe_mode/safe_mode_banner.dart';
 import '../session/session_detail_page.dart';
-import '../settings/media_settings_page.dart' show MediaSettingsPage, showMediaInstallSheet, showMediaUnavailableSheet;
 import '../settings/settings_widgets.dart' show SettingsTile;
 import '../shell/adaptive/adaptive_layout.dart' show WindowClass;
 import '../shell/drawer/folder_sheets.dart';
@@ -79,8 +77,6 @@ import 'dock/chat_dock.dart';
 import 'dock/dock_stack.dart';
 import 'empty_state.dart';
 import 'new_chat_options.dart';
-import 'media/generate_mode.dart';
-import 'media/generate_sheet.dart';
 import 'media/media_card.dart' show MediaCardActions, mediaItemBytes;
 import 'chat_title.dart' show chatTitleShown;
 import 'mention/mention_controller.dart';
@@ -324,7 +320,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
     _saveDraft();
     _draftKey = key;
     _spoken = null;
-    _editing = false;
     setState(() => _showDraft(ref.read(draftStoreProvider).drafts[key]));
   }
 
@@ -541,7 +536,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
       if (!ownsCreation() || _draftKey != sessionId || ref.read(currentSessionProvider) != sessionId) return null;
       onCreated?.call(sessionId);
       ref.read(composerQuoteProvider.notifier).move('new', sessionId);
-      ref.read(generateModeProvider.notifier).move('new', sessionId);
       if (!ownsCreation() || _draftKey != sessionId) return null;
       _draftStore.clear('new');
       if (!setup.isEmpty) {
@@ -616,10 +610,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
     final typed = _input.text.trim();
     final drafts = _drafts;
     if ((typed.isEmpty && drafts.isEmpty) || _creating != null || _syncWait != null) return;
-    // Generation mode: an ordinary message whose first line is the
-    // parameter header (media-generation §8, revision of 2026-10-28).
-    final generate = ref.read(generateModeProvider).byKey[_draftKey];
-    if (generate != null && !_generateReady(generate, typed, drafts)) return;
     final client = ref.read(activeConnectionProvider).value?.client;
     if (client == null) return;
     final generation = client.mux.generation;
@@ -628,21 +618,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
     // 引用追问: the passage above the composer goes in front, as a quote.
     final quote = ref.read(composerQuoteProvider)[_draftKey];
     final asked = quote == null ? typed : withQuote(quote, typed);
-    // The header grammar refuses what it can't carry (§4.6.4): nothing goes.
-    final written = generate?.tryMessage(asked);
-    if (written != null && written.text == null) {
-      _toast(switch (written.code) {
-        GenerateHeaderCode.missingPrompt => appL10n.mediaNoDescription,
-        GenerateHeaderCode.tooLong => appL10n.mediaDescriptionTooLong,
-        _ => appL10n.mediaErrorGeneric,
-      });
-      return;
-    }
-    final text = written?.text ?? asked;
+    final text = asked;
 
     // With attachments or a quote the line is a message, even if it starts
     // with "/".
-    if (drafts.isEmpty && quote == null && generate == null) {
+    if (drafts.isEmpty && quote == null) {
       final input = parseSlashInput(text);
       // A bare "/": the palette is open, the person picks a row.
       if (input != null && !input.hasArgs && input.token.isEmpty) return;
@@ -702,7 +682,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
     if (current.singleQuestion case final request?
         when drafts.isEmpty &&
             quote == null &&
-            generate == null &&
             mode == SendMode.now &&
             current.openApproval == null) {
       ok = await chat.answer(request, [QuestionAnswer(request.questions.single.id, custom: text)]);
@@ -773,15 +752,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
   /// from a card); [focus] false leaves the keyboard down (dictation).
   void _compose(String message, {bool quoteChip = true, bool restoreMode = true, bool focus = true}) {
     var text = message;
-    // A valid generation request, where this host can generate: its header
-    // becomes the mode again, the description (as it was) the text. Anywhere
-    // else the whole message stays as it was, header and all (§4.6.6).
-    if (quoteChip && restoreMode && _generationOn) {
-      if (GenerateHeader.parse(text) case (:final header, :final description)) {
-        _restoreGenerate(header);
-        text = description;
-      }
-    }
     final (:quote, :body) = quoteChip ? splitQuote(text) : (quote: null, body: text);
     if (quote != null) {
       ref.read(composerQuoteProvider.notifier).set(_draftKey, quote);
@@ -981,12 +951,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
         context,
         files: canStageFiles(ref.read(activeConnectionProvider).value, ref.read(activeHostProvider)),
         sessionId: ref.read(currentSessionProvider),
-        generate: ref.read(mediaPluginProvider) != MediaPluginState.absent,
       );
-      if (choice is GenerateChoice) {
-        if (ownsDraft()) _enterGenerate();
-        return;
-      }
       if (choice is! AttachChoice || !ownsDraft()) return;
       if (room <= 0) {
         _toast(appL10n.chatAttachmentLimit(maxAttachments));
@@ -1073,179 +1038,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
     ScaffoldMessenger.maybeOf(context)?.showSnackBar(SnackBar(content: Text(message)));
   }
 
-  // ---------------------------------------------------------------------------
-  // 生成模式 (docs/design/media-generation.md §4.2)
-
-  /// The last mode came from 编辑: the hint asks how to change it.
-  bool _editing = false;
-
-  /// This host can generate now: the plugin runs, its catalogue reads, and a
-  /// configured service with its key offers a model (media-generation §4.3).
-  bool get _generationOn =>
-      ref.read(mediaPluginProvider) == MediaPluginState.ready && ref.read(mediaCatalogProvider).configured;
-
-  /// Into generation mode for this conversation: its own mode if it has one,
-  /// else the kind used last ([kind] picks one). A host that only offers the
-  /// plugin gets 「在此主机上安装」; a catalogue that is missing, damaged or
-  /// of an unknown version, 「生成模式不可用」 (chat goes on as usual).
-  void _enterGenerate({GenerateKind? kind, bool edit = false}) {
-    if (ref.read(mediaPluginProvider) != MediaPluginState.ready) {
-      unawaited(showMediaInstallSheet(context));
-      return;
-    }
-    final catalog = ref.read(mediaCatalogProvider);
-    if (catalog.status == MediaCatalogStatus.loading) {
-      _whenSettingsRead(() => _enterGenerate(kind: kind, edit: edit));
-      return;
-    }
-    if (!catalog.usable) {
-      unawaited(showMediaUnavailableSheet(context));
-      return;
-    }
-    if (!catalog.configured) {
-      unawaited(_configureMedia(kind: kind, edit: edit));
-      return;
-    }
-    final modes = ref.read(generateModeProvider);
-    // This conversation's own mode keeps its model even when the host no
-    // longer has it (the sheet then asks); a fresh one starts on this host's.
-    final own = modes.byKey[_draftKey];
-    var params = own ?? (kind == null ? modes.start : modes.startOf(kind)).startOn(catalog);
-    if (kind != null && params.kind != kind) params = modes.startOf(kind).startOn(catalog);
-    // A kind the host has no model for: the one it has.
-    final kinds = catalog.kinds;
-    if (!kinds.contains(params.kind)) params = modes.startOf(kinds.first).startOn(catalog);
-    ref.read(generateModeProvider.notifier).set(_draftKey, params.fitTo(catalog));
-    setState(() => _editing = edit);
-    _focus.requestFocus();
-  }
-
-  /// [then] once the engine settings (and with them the catalogue) are read,
-  /// if this draft is still the one on screen.
-  void _whenSettingsRead(VoidCallback then) {
-    final key = _draftKey;
-    unawaited(
-      ref.read(engineSettingsProvider.future).then<void>((_) {}, onError: (Object _) {}).whenComplete(() {
-        if (!mounted || _draftKey != key) return;
-        if (ref.read(mediaCatalogProvider).status == MediaCatalogStatus.loading) return;
-        then();
-      }),
-    );
-  }
-
-  /// The plugin is there with no service yet: 图像与视频 first, then the
-  /// mode once a service is set up.
-  Future<void> _configureMedia({GenerateKind? kind, bool edit = false}) async {
-    final key = _draftKey;
-    await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const MediaSettingsPage()));
-    if (!mounted || _draftKey != key || !ref.read(mediaCatalogProvider).configured) return;
-    _enterGenerate(kind: kind, edit: edit);
-  }
-
-  /// A generation request back in the composer (编辑后重发): exactly its
-  /// values become this conversation's mode, its model by marker or by a
-  /// name only one choice has; otherwise the sheet asks (§4.6.5).
-  void _restoreGenerate(GenerateHeader header) {
-    ref
-        .read(generateModeProvider.notifier)
-        .set(_draftKey, GenerateParams.fromHeader(header, ref.read(mediaCatalogProvider)));
-    setState(() => _editing = false);
-  }
-
-  /// × on the capsule: out of the mode; the text stays.
-  void _exitGenerate() {
-    ref.read(generateModeProvider.notifier).set(_draftKey, null);
-    setState(() => _editing = false);
-  }
-
-  void _openGenerateSheet(GenerateParams params) {
-    final key = _draftKey;
-    unawaited(
-      showGenerateSheet(
-        context,
-        params: params,
-        onChanged: (next) {
-          if (ref.read(generateModeProvider).byKey[key] != null) {
-            ref.read(generateModeProvider.notifier).set(key, next);
-          }
-        },
-      ),
-    );
-  }
-
-  /// Whether [params] can go with [typed] and [drafts]; says why not.
-  bool _generateReady(GenerateParams params, String typed, List<DraftAttachment> drafts) {
-    if (typed.isEmpty) {
-      _toast(appL10n.mediaNoDescription);
-      return false;
-    }
-    // A model this host can't pin to one service is never guessed (§4.6.5).
-    final model = ref.read(mediaCatalogProvider).resolve(params.model, params.kind)?.model;
-    if (model == null) {
-      _toast(appL10n.mediaPickModelFirst);
-      return false;
-    }
-    final pictures = drafts.where((d) => d.isImage).length;
-    if (pictures > 0 && model.maxRefs == 0) {
-      _toast(appL10n.mediaNoRefs);
-      return false;
-    }
-    if (params.isVideo && pictures >= 2 && !model.lastFrame) {
-      _toast(appL10n.mediaNoLastFrame);
-      return false;
-    }
-    if (pictures > model.maxRefs) {
-      _toast(appL10n.mediaRefLimit(model.maxRefs));
-      return false;
-    }
-    return true;
-  }
-
-  /// ↻ on a card: the same request again, as a new generation message — when
-  /// the card's model pins one of this host's choices. Otherwise it is 修改:
-  /// the person sees the values and picks.
-  Future<void> _regenerateMedia(String sessionId, MediaMeta meta) async {
-    final prompt = meta.prompt ?? '';
-    if (prompt.trim().isEmpty) return;
-    if (_generationOn) {
-      final catalog = ref.read(mediaCatalogProvider);
-      final params = GenerateParams.fromMeta(meta, catalog);
-      final text = catalog.resolve(params.model, params.kind) == null ? null : params.tryMessage(prompt).text;
-      if (text != null) {
-        HapticFeedback.selectionClick();
-        await ref.read(chatProvider(sessionId).notifier).send(text);
-        return;
-      }
-    }
-    _reviseMedia(meta);
-  }
-
-  /// 修改: the card's description back in the composer as it was, in
-  /// generation mode with the card's values where this host can generate.
-  void _reviseMedia(MediaMeta meta) {
-    final prompt = meta.prompt ?? '';
-    if (prompt.trim().isEmpty) return;
-    if (_generationOn) {
-      ref
-          .read(generateModeProvider.notifier)
-          .set(_draftKey, GenerateParams.fromMeta(meta, ref.read(mediaCatalogProvider)));
-      setState(() => _editing = false);
-    }
-    _compose(prompt, restoreMode: false);
-  }
-
-  /// ⋯ › 编辑 / 做成视频: the picture into the tray, generation mode on.
-  Future<void> _reuseMedia(String sessionId, MediaMeta meta, MediaItem item, {required bool video}) async {
-    final scope = _draftScope;
-    try {
-      final bytes = await mediaItemBytes(ref, sessionId, item);
-      if (!mounted || !identical(scope, _draftScope)) return;
-      _addDrafts([DraftAttachment.sniff(item.name, bytes)]);
-      _enterGenerate(kind: video ? GenerateKind.video : GenerateKind.image, edit: !video);
-    } catch (e) {
-      if (mounted) _toast(chatErrorText(e, action: appL10n.chatReadImageFailed));
-    }
-  }
+  void _enterGenerate({Object? kind, bool edit = false}) {}
 
   Future<void> _pickNewChatFolder() async {
     final scope = _draftScope;
@@ -1622,32 +1415,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
     // A subagent conversation: 「‹ 上级对话」 takes the menu key's place, so
     // the 新对话 key would have nothing to mirror.
     final isChild = sessionId != null && ref.watch(subagentParentProvider(sessionId).select((p) => p != null));
-    // 生成模式: this conversation's, and what the host can do.
-    final generate = ref.watch(generateModeProvider.select((m) => m.byKey[_draftKey]));
-    final mediaReady = ref.watch(mediaPluginProvider) == MediaPluginState.ready;
-    // What the catalogue really offers here (§4.3): a picture can go in as a
-    // reference, or as a video's first frame, only where a model takes one.
-    final mediaEdit =
-        mediaReady &&
-        ref.watch(
-          mediaCatalogProvider.select((c) => c.of(GenerateKind.image).any((e) => e.model.edit || e.model.maxRefs > 0)),
-        );
-    final mediaVideo =
-        mediaReady &&
-        ref.watch(
-          mediaCatalogProvider.select(
-            (c) => c.of(GenerateKind.video).any((e) => e.model.firstFrame || e.model.maxRefs > 0),
-          ),
-        );
-    final generateModel = generate == null
-        ? null
-        : ref.watch(mediaCatalogProvider.select((c) => c.resolve(generate.model, generate.kind)?.model));
     // 引用追问: the passage waiting above this conversation's composer.
     final quote = ref.watch(composerQuoteProvider.select((quotes) => quotes[_draftKey]));
     // Mirror _send for ordinary text; attachments, quotes and generation
     // stay messages even while a question is waiting.
     final answerInComposer =
-        (chat?.singleQuestion ?? false) && approval == null && _drafts.isEmpty && quote == null && generate == null;
+        (chat?.singleQuestion ?? false) && approval == null && _drafts.isEmpty && quote == null;
     final modelDefaultWarning = sessionId != null && chat?.error == null && (chat?.defaultModelSaveFailed ?? false);
     final error = sessionId == null
         ? _localError
@@ -1669,7 +1442,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
     final composerPills = _composerPills(
       sessionId,
       autoApprove: chat?.autoApprove ?? false,
-      generate: readOnly ? null : generate,
       risk: !pillsBesideStrip,
     );
     final headerHeight = typing ? MediaQuery.paddingOf(context).top + AppSpace.sm : ChatHeader.heightOf(context);
@@ -2078,13 +1850,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
                                         : question != null
                                         ? l10n.commonWaitingAnswer
                                         : null,
-                                    placeholder: generate == null
-                                        ? null
-                                        : _editing && !generate.isVideo
-                                        ? l10n.mediaHintEdit
-                                        : generate.isVideo
-                                        ? l10n.mediaHintVideo
-                                        : l10n.mediaHintImage,
+                                    placeholder: null,
                                     onSend: _send,
                                     onSendOptions: chat?.controlReady ?? true ? _sendOptions : null,
                                     onKeyEvent: _composerKey,
@@ -2112,7 +1878,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
                                           : ComposerTray(
                                               items: _drafts,
                                               onRemove: _removeDraft,
-                                              labels: frameLabels(generate, generateModel, _drafts.length),
+                                              labels: const [],
                                             ),
                                     ),
                                     accessory: sessionId == null || contextFraction == null
@@ -2142,10 +1908,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
   /// client allows everything, else 「⚠ 完全权限 ›」 for a conversation looser
   /// than 工作区内修改 (unless [risk] is false: they are beside the activity
   /// strip), then the generation mode's capsule; nothing otherwise.
-  Widget? _composerPills(String? sessionId, {required bool autoApprove, GenerateParams? generate, bool risk = true}) {
-    final capsule = generate == null
-        ? null
-        : GenerateCapsule(params: generate, onTap: () => _openGenerateSheet(generate), onExit: _exitGenerate);
+  Widget? _composerPills(String? sessionId, {required bool autoApprove, bool risk = true}) {
     Widget? pill;
     if (!risk) {
       // Beside the activity strip ([_stripRisk]).
@@ -2157,21 +1920,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
         // Beside the mode capsule it shrinks to its ⚠ (§4.2).
         pill = PermissionPill(
           preset: risky,
-          compact: capsule != null,
+          compact: false,
           onTap: () => unawaited(showPermissionSheet(context, sessionId)),
         );
       }
     }
-    if (capsule == null) return pill;
-    if (pill == null) return capsule;
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        pill,
-        const SizedBox(width: GenerateCapsuleMetrics.gap),
-        Flexible(child: capsule),
-      ],
-    );
+    return pill;
   }
 
   /// 「自动允许中」/「完全权限」 beside the activity strip while a reply generates.

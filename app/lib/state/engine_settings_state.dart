@@ -19,7 +19,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../l10n/l10n.dart';
 import 'connection_state.dart';
 import 'engine_error_text.dart';
-import 'media_catalog.dart' show mediaKeyRefsOf;
 import 'plugins_state.dart';
 
 export 'package:dsh_client/dsh_client.dart'
@@ -352,7 +351,6 @@ Set<String> credentialRefsOf(Map<String, SettingsNamespaceView> namespaces) {
   return {
     for (final view in namespaces.values)
       for (final slot in view.secrets) ?probe.credentialRefOf(FieldRef(view.ns, slot.path)),
-    ...mediaKeyRefsOf(namespaces),
   };
 }
 
