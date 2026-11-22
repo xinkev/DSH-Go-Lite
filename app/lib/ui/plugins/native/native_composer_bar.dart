@@ -49,19 +49,5 @@ class _NativeComposerBarState extends ConsumerState<NativeComposerBar> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    ref.listen(nativePluginsSyncProvider, (_, _) {});
-    // v1.2 capabilities live as long as the chat's plugin bar (a lookup and
-    // nothing more without a plugin that declares one).
-    return NativeCapabilityScope(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (widget.strip) ComposerStripSlot(sessionId: widget.sessionId, visible: widget.visible),
-          ComposerCapsuleBar(sessionId: widget.sessionId, visible: widget.visible, leading: widget.leading),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => const SizedBox.shrink();
 }
