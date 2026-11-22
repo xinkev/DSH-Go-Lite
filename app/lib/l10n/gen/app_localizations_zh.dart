@@ -14505,6 +14505,12 @@ class L10nZh extends L10n {
   String get remoteUrlLaunchTokenHint => 'dsh web 打印的地址里 ?token= 后面那段。加密保存；只有已保存的会话过期时才需要再填。';
 
   @override
+  String get remoteUrlPocketPin => '访问密码（Pocket PIN）';
+
+  @override
+  String get remoteUrlPocketPinHint => 'dsh-pocket 的访问密码，8–64 位。加密保存，只用于登录这个地址。';
+
+  @override
   String get remoteUrlAccessToken => '访问令牌（可选）';
 
   @override
@@ -14533,6 +14539,9 @@ class L10nZh extends L10n {
   String get remoteUrlErrHeaders => '每行必须是 Name: value（Host 和 Cookie 由 App 设置）';
 
   @override
+  String get remoteUrlErrPin => '访问密码需为 8–64 位';
+
+  @override
   String get remoteUrlErrUnreachable => '连不上这个地址';
 
   @override
@@ -14540,6 +14549,12 @@ class L10nZh extends L10n {
 
   @override
   String get remoteUrlErrTokenRejectedDetail => '在主机设置里重新粘贴 dsh web 当前打印的地址（带 ?token=…）。';
+
+  @override
+  String get remoteUrlErrPocketPin => '访问密码不对，或引擎重启了';
+
+  @override
+  String get remoteUrlErrPocketPinDetail => '在主机设置里重新填写 dsh-pocket 的访问密码。';
 
   @override
   String remoteUrlErrNotTrusted(String authority) {

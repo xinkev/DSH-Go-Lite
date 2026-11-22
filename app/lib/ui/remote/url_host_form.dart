@@ -41,9 +41,11 @@ class _UrlHostFormPageState extends ConsumerState<UrlHostFormPage> {
   late final _name = TextEditingController(text: widget.existing?.name ?? '');
   late final _address = TextEditingController(text: widget.existing?.address ?? '');
   final _token = TextEditingController();
+  final _pin = TextEditingController();
   final _access = TextEditingController();
   final _headers = TextEditingController();
   bool _obscure = true;
+  bool _pinObscure = true;
   bool _saving = false;
   String? _formError;
   Map<_F, String> _errors = const {};
@@ -57,12 +59,13 @@ class _UrlHostFormPageState extends ConsumerState<UrlHostFormPage> {
 
   /// The form as opened (with the saved secrets once they are read).
   late String _clean;
-  late final Listenable _edits = Listenable.merge([_name, _address, _token, _access, _headers]);
+  late final Listenable _edits = Listenable.merge([_name, _address, _token, _pin, _access, _headers]);
 
   String _signature() => jsonEncode({
     'name': _name.text,
     'address': _address.text,
     'token': _token.text,
+    'pin': _pin.text,
     'access': _access.text,
     'headers': _headers.text,
   });
@@ -76,7 +79,7 @@ class _UrlHostFormPageState extends ConsumerState<UrlHostFormPage> {
 
   Future<void> _loadSecrets() async {
     final clean = jsonDecode(_clean) as Map<String, dynamic>;
-    final controllers = [_token, _access, _headers];
+    final controllers = [_token, _pin, _access, _headers];
     final initial = {for (final controller in controllers) controller: controller.text};
     final edited = <TextEditingController>{};
     void trackEdits() {
@@ -101,11 +104,13 @@ class _UrlHostFormPageState extends ConsumerState<UrlHostFormPage> {
       // Text edits (including paste and an explicit clear) win over a late
       // storage read.
       if (!edited.contains(_token)) _token.text = secrets.launchToken ?? '';
+      if (!edited.contains(_pin)) _pin.text = secrets.pocketPin ?? '';
       if (!edited.contains(_access)) _access.text = secrets.accessToken ?? '';
       if (!edited.contains(_headers)) _headers.text = secrets.headers ?? '';
       _clean = jsonEncode({
         ...clean,
         'token': secrets.launchToken ?? '',
+        'pin': secrets.pocketPin ?? '',
         'access': secrets.accessToken ?? '',
         'headers': secrets.headers ?? '',
       });
@@ -116,7 +121,7 @@ class _UrlHostFormPageState extends ConsumerState<UrlHostFormPage> {
   void dispose() {
     unawaited(_testSub?.cancel());
     unawaited(_test?.close());
-    for (final c in [_name, _address, _token, _access, _headers]) {
+    for (final c in [_name, _address, _token, _pin, _access, _headers]) {
       c.dispose();
     }
     super.dispose();
@@ -128,6 +133,7 @@ class _UrlHostFormPageState extends ConsumerState<UrlHostFormPage> {
     UrlHostProblem.insecure => context.l10n.remoteUrlErrInsecure,
     UrlHostProblem.query => context.l10n.remoteUrlErrQuery,
     UrlHostProblem.headers => context.l10n.remoteUrlErrHeaders,
+    UrlHostProblem.pin => context.l10n.remoteUrlErrPin,
   };
 
   /// The config and secrets as typed; null (with [_errors] set) when wrong.
@@ -145,6 +151,10 @@ class _UrlHostFormPageState extends ConsumerState<UrlHostFormPage> {
       } on UrlHostFormatException catch (e) {
         errors[_F.headers] = _errorText(e.problem);
       }
+    }
+    final pin = _pin.text.trim();
+    if (pin.isNotEmpty && (pin.length < 8 || pin.length > 64)) {
+      errors[_F.pin] = _errorText(UrlHostProblem.pin);
     }
     setState(() {
       _errors = errors;
@@ -175,7 +185,10 @@ class _UrlHostFormPageState extends ConsumerState<UrlHostFormPage> {
       name: _name.text.trim().isEmpty ? parsed.baseUri.host : _name.text.trim(),
       baseUri: parsed.baseUri,
     );
-    return (config, UrlHostSecrets(launchToken: token, accessToken: _access.text, headers: _headers.text));
+    return (
+      config,
+      UrlHostSecrets(launchToken: token, accessToken: _access.text, headers: _headers.text, pocketPin: pin),
+    );
   }
 
   void _edited(_F field) {
@@ -340,6 +353,30 @@ class _UrlHostFormPageState extends ConsumerState<UrlHostFormPage> {
                       ),
                     ),
                     FormFieldBlock(
+                      key: _fieldKeys[_F.pin],
+                      error: _errors[_F.pin],
+                      label: l10n.remoteUrlPocketPin,
+                      helper: l10n.remoteUrlPocketPinHint,
+                      child: TextField(
+                        controller: _pin,
+                        obscureText: _pinObscure,
+                        obscuringCharacter: '•',
+                        autocorrect: false,
+                        enableSuggestions: false,
+                        enableIMEPersonalizedLearning: false,
+                        keyboardType: TextInputType.visiblePassword,
+                        onChanged: (_) => _edited(_F.pin),
+                        decoration: InputDecoration(
+                          error: _errors[_F.pin] == null ? null : const SizedBox.shrink(),
+                          suffixIcon: IconButton(
+                            tooltip: _pinObscure ? l10n.remoteShow : l10n.commonHide,
+                            icon: Icon(_pinObscure ? AppIcons.showSecret : AppIcons.hideSecret, size: 20),
+                            onPressed: () => setState(() => _pinObscure = !_pinObscure),
+                          ),
+                        ),
+                      ),
+                    ),
+                    FormFieldBlock(
                       label: l10n.remoteUrlAccessToken,
                       helper: l10n.remoteUrlAccessTokenHint,
                       child: TextField(
@@ -439,4 +476,4 @@ class _UrlHostFormPageState extends ConsumerState<UrlHostFormPage> {
 }
 
 /// The fields of the form that carry a message under them.
-enum _F { address, token, headers }
+enum _F { address, token, pin, headers }

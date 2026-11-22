@@ -5,6 +5,7 @@ import 'package:dsh_client/dsh_client.dart';
 
 import '../../l10n/l10n.dart';
 import '../link_status.dart';
+import 'pocket_auth.dart';
 import 'url_host_config.dart';
 
 /// Loads the saved secrets for one direct URL host.
@@ -13,6 +14,13 @@ typedef UrlHostSecretsLoader = Future<UrlHostSecrets> Function();
 /// Persists the session cookie [DshConnection.login] minted (null clears it).
 typedef UrlHostCookieSaver = Future<void> Function(String? cookieJson);
 
+/// Persists the dsh-pocket gate cookie (null clears it).
+typedef UrlHostPocketCookieSaver = Future<void> Function(String? cookie);
+
+/// Signs in to the dsh-pocket gate once; overridable so tests need no server.
+/// [headers] are the host's saved proxy headers (Cloudflare Access, bearer).
+typedef UrlPocketLogin = Future<String> Function(Uri baseUri, String pin, Map<String, String> headers);
+
 /// Opens a [DshClient] against one direct URL. Overridable so tests can drive
 /// the link without a server.
 typedef UrlClientConnector = Future<DshClient> Function({
@@ -20,24 +28,46 @@ typedef UrlClientConnector = Future<DshClient> Function({
   required Map<String, String> headers,
   String? token,
   DshCookie? cookie,
+  String? pocketCookie,
   required Duration readyTimeout,
 });
 
 /// The local engine's carrier, pointed at a public origin: same
 /// [DshHttpCarrier] (REST + /api/remote.mux) and the same health check, plus
 /// optional headers for a reverse proxy in front of it.
+///
+/// [pocketCookie] is dsh-pocket's gate cookie; it rides the same `Cookie`
+/// header as the engine session cookie.
 Future<DshClient> connectUrlHost({
   required Uri baseUri,
   required Map<String, String> headers,
   String? token,
   DshCookie? cookie,
+  String? pocketCookie,
   required Duration readyTimeout,
 }) async {
-  final connection = DshConnection(baseUri, headers: headers, cookie: cookie);
+  final connection = DshConnection(baseUri, headers: headers, cookie: cookie, pocketCookie: pocketCookie);
   final client = DshClient(connection);
   try {
     final launch = token?.trim() ?? '';
-    if (launch.isNotEmpty) await connection.login(launch);
+    if (launch.isNotEmpty) {
+      try {
+        await connection.login(launch);
+      } on DshHttpException catch (error) {
+        // Behind a stale pocket cookie the engine's own ?token= request is
+        // answered by the gate, not by the engine.
+        if (pocketCookie != null && _pocketRefusal(error)) {
+          throw PocketGateRefused(error.statusCode);
+        }
+        rethrow;
+      }
+    }
+    // A stale gate answers a plain GET with its login page (200 HTML). A
+    // 401/403 here is ambiguous (gate or engine), so the mux refusal below
+    // owns that recovery instead.
+    if (pocketCookie != null && await _servesPocketLoginPage(connection)) {
+      throw const PocketGateRefused(200);
+    }
     // Same readiness the local engine uses: the WebSocket route exists only
     // after application readiness, and its first frame is ready.
     await client.mux.ready(timeout: readyTimeout);
@@ -46,6 +76,17 @@ Future<DshClient> connectUrlHost({
     await client.close().catchError((_) {});
     rethrow;
   }
+}
+
+bool _pocketRefusal(DshHttpException error) =>
+    error.statusCode == 401 || error.statusCode == 403 || _isPocketLoginPage(error.statusCode, error.body);
+
+bool _isPocketLoginPage(int status, String body) => status == 200 && body.toLowerCase().contains('pocket-login');
+
+Future<bool> _servesPocketLoginPage(DshConnection connection) async {
+  final response = await connection.get('/', followRedirects: false);
+  if (_isPocketLoginPage(response.statusCode, response.text)) return true;
+  return false;
 }
 
 /// [HostLink] over HTTP + WebSocket at a saved direct URL.
@@ -57,12 +98,16 @@ class UrlHostLink implements HostLink {
     required this._config,
     required this._loadSecrets,
     this._saveCookie,
+    UrlHostPocketCookieSaver? savePocketCookie,
+    UrlPocketLogin? pocketLogin,
     UrlClientConnector? connect,
     Stream<void>? kicks,
     Backoff? backoff,
     this._retryFirstOpen = true,
     this.readyTimeout = const Duration(seconds: 20),
-  }) : _connect = connect ?? connectUrlHost,
+  }) : _savePocketCookie = savePocketCookie,
+       _pocketLogin = pocketLogin ?? ((baseUri, pin, headers) => PocketAuth.login(baseUri, pin, headers: headers)),
+       _connect = connect ?? connectUrlHost,
        _backoff = backoff ?? Backoff() {
     _kickSub = kicks?.listen((_) => kick());
   }
@@ -70,6 +115,8 @@ class UrlHostLink implements HostLink {
   UrlHostConfig _config;
   final UrlHostSecretsLoader _loadSecrets;
   final UrlHostCookieSaver? _saveCookie;
+  final UrlHostPocketCookieSaver? _savePocketCookie;
+  final UrlPocketLogin _pocketLogin;
   final UrlClientConnector _connect;
   final Backoff _backoff;
   final bool _retryFirstOpen;
@@ -154,22 +201,59 @@ class UrlHostLink implements HostLink {
     _emit(_status.withStep(HostLinkStep.connect));
     final secrets = await _loadSecrets();
     if (_closed) throw StateError('link closed');
-    final DshCookie? cookie = _decodeCookie(secrets.cookie);
+    final pin = secrets.pocketPin?.trim() ?? '';
+    final cookie = _decodeCookie(secrets.cookie);
     final launch = secrets.launchToken?.trim() ?? '';
     _launchToken = launch.isEmpty ? null : launch;
-    _emit(_status.withStep(HostLinkStep.login));
-    final DshClient client;
+    var pocket = _cleanPocketCookie(secrets.pocketCookie);
+    if (pin.isNotEmpty && pocket == null) {
+      pocket = await _signInPocket(pin, secrets.requestHeaders());
+      await _persistPocketCookie(pocket);
+    }
     try {
-      client = await _connect(
-        baseUri: _config.baseUri,
-        headers: secrets.requestHeaders(),
-        token: secrets.launchToken,
-        cookie: cookie,
-        readyTimeout: readyTimeout,
-      );
+      return await _openOnce(secrets, pocket, cookie);
+    } on PocketGateRefused {
+      return _recoverPocket(pin, secrets, cookie);
+    } on DshHttpException catch (error) {
+      // A 401/403 while a gate cookie is in play may be the gate rather than
+      // the engine; recover once, then report whichever refusal remains.
+      if (!_isAuthRefusal(error.statusCode) || pocket == null) rethrow;
+      return _recoverPocket(pin, secrets, cookie);
     } on Object catch (error) {
       throw _mapError(error);
     }
+  }
+
+  /// The gate cookie died (`dsh web` restarted, PIN changed): forget it, sign
+  /// in once more with the saved PIN, and reopen once. Never loops.
+  Future<DshClient> _recoverPocket(String pin, UrlHostSecrets secrets, DshCookie? cookie) async {
+    await _persistPocketCookie(null);
+    if (pin.isEmpty) throw _pocketError();
+    final pocket = await _signInPocket(pin, secrets.requestHeaders());
+    await _persistPocketCookie(pocket);
+    try {
+      return await _openOnce(secrets, pocket, cookie);
+    } on PocketGateRefused {
+      throw _pocketError();
+    } on DshHttpException catch (error) {
+      // The fresh PIN opened the gate, so a remaining refusal is the engine's.
+      if (_isAuthRefusal(error.statusCode)) throw _mapError(error);
+      rethrow;
+    } on Object catch (error) {
+      throw _mapError(error);
+    }
+  }
+
+  Future<DshClient> _openOnce(UrlHostSecrets secrets, String? pocket, DshCookie? cookie) async {
+    _emit(_status.withStep(HostLinkStep.login));
+    final client = await _connect(
+      baseUri: _config.baseUri,
+      headers: secrets.requestHeaders(),
+      token: secrets.launchToken,
+      cookie: cookie,
+      pocketCookie: pocket,
+      readyTimeout: readyTimeout,
+    );
     if (_closed) {
       await client.close().catchError((_) {});
       throw StateError('link closed');
@@ -189,6 +273,36 @@ class UrlHostLink implements HostLink {
     if (existing != null) unawaited(existing.close().catchError((_) {}));
     return client;
   }
+
+  Future<String> _signInPocket(String pin, Map<String, String> headers) async {
+    _emit(_status.withStep(HostLinkStep.login));
+    try {
+      final cookie = (await _pocketLogin(_config.baseUri, pin, headers)).trim();
+      if (cookie.isEmpty) throw const PocketLoginException(PocketLoginReason.malformed);
+      return cookie;
+    } on PocketLoginException catch (error) {
+      throw _mapPocketError(error);
+    } on Object catch (error) {
+      throw _mapError(error);
+    }
+  }
+
+  Future<void> _persistPocketCookie(String? cookie) async {
+    final saver = _savePocketCookie;
+    if (saver == null) return;
+    try {
+      await saver(cookie);
+    } catch (_) {
+      // A gate cookie that cannot be stored only costs one PIN sign-in later.
+    }
+  }
+
+  static String? _cleanPocketCookie(String? raw) {
+    final text = raw?.trim() ?? '';
+    return text.isEmpty ? null : text;
+  }
+
+  static bool _isAuthRefusal(int status) => status == 401 || status == 403;
 
   static DshCookie? _decodeCookie(String? raw) {
     final text = raw?.trim() ?? '';
@@ -241,25 +355,57 @@ class UrlHostLink implements HostLink {
     });
   }
 
-  /// The engine forgot this session (cookie expired, or it restarted with a
-  /// new signing secret): exchange the saved launch token for a fresh cookie.
+  /// The engine (or the pocket gate) forgot this session: sign in to the gate
+  /// again if one is configured, then exchange the saved launch token for a
+  /// fresh engine cookie.
   Future<void> _reauth(DshClient client) async {
     if (_closed || _reauthing || !identical(client, _client)) return;
     _reauthing = true;
     try {
-      final token = (await _loadSecrets()).launchToken?.trim() ?? '';
+      final secrets = await _loadSecrets();
+      final token = secrets.launchToken?.trim() ?? '';
+      final pin = secrets.pocketPin?.trim() ?? '';
       final carrier = client.carrier;
-      if (token.isEmpty || carrier is! DshHttpCarrier) {
-        _fail(
-          HostLinkError(
-            HostLinkErrorKind.loginFailed,
-            appL10n.remoteUrlErrTokenRejected,
-            detail: appL10n.remoteUrlErrTokenRejectedDetail,
-          ),
-        );
+      if (carrier is! DshHttpCarrier) {
+        _fail(_tokenRejectedError());
         return;
       }
       final connection = carrier.connection;
+      if (connection.pocketCookie != null) {
+        if (pin.isEmpty) {
+          // The gate cookie is dead and no PIN can renew it.
+          connection.pocketCookie = null;
+          await _persistPocketCookie(null);
+          _fail(_pocketError());
+          return;
+        }
+        connection.pocketCookie = null;
+        await _persistPocketCookie(null);
+        try {
+          final pocket = await _signInPocket(pin, secrets.requestHeaders());
+          connection.pocketCookie = pocket;
+          await _persistPocketCookie(pocket);
+        } on HostLinkError catch (error) {
+          _fail(error);
+          return;
+        }
+      }
+      if (token.isEmpty) {
+        // No engine token saved: only a health check can say whether the fresh
+        // gate cookie was enough. Never reconnect blind: an expired engine
+        // cookie without a token would loop through this method.
+        final health = await connection.checkHealth();
+        if (health == DshHealth.ok) {
+          client.mux.reconnect();
+          return;
+        }
+        _fail(
+          health == DshHealth.unauthorized
+              ? _tokenRejectedError()
+              : HostLinkError(HostLinkErrorKind.unreachable, appL10n.remoteUrlErrUnreachable, retryable: true),
+        );
+        return;
+      }
       connection.cookie = null;
       await connection.login(token);
       await _persistCookie(client);
@@ -269,6 +415,30 @@ class UrlHostLink implements HostLink {
     } finally {
       _reauthing = false;
     }
+  }
+
+  HostLinkError _tokenRejectedError() => HostLinkError(
+    HostLinkErrorKind.loginFailed,
+    appL10n.remoteUrlErrTokenRejected,
+    detail: appL10n.remoteUrlErrTokenRejectedDetail,
+  );
+
+  HostLinkError _pocketError() => HostLinkError(
+    HostLinkErrorKind.loginFailed,
+    appL10n.remoteUrlErrPocketPin,
+    detail: appL10n.remoteUrlErrPocketPinDetail,
+  );
+
+  HostLinkError _mapPocketError(PocketLoginException error) {
+    if (error.retryable) {
+      return HostLinkError(
+        HostLinkErrorKind.unreachable,
+        appL10n.remoteUrlErrUnreachable,
+        detail: error.toString(),
+        retryable: true,
+      );
+    }
+    return _pocketError();
   }
 
   HostLinkError _mapError(Object error) {

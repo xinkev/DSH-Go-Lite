@@ -144,6 +144,8 @@ void main() {
       expect(UrlHostSecrets.accessTokenKey('url-1'), 'url.url-1.accessToken');
       expect(UrlHostSecrets.headersKey('url-1'), 'url.url-1.headers');
       expect(UrlHostSecrets.cookieKey('url-1'), 'url.url-1.cookie');
+      expect(UrlHostSecrets.pocketPinKey('url-1'), 'url.url-1.pocketPin');
+      expect(UrlHostSecrets.pocketCookieKey('url-1'), 'url.url-1.pocketCookie');
       expect(const UrlHostSecrets().isEmpty, isTrue);
     });
   });
@@ -225,12 +227,44 @@ void main() {
       expect((await hosts.loadUrlSecrets(config.id)).cookie, isNull);
     });
 
+    test('the pocket PIN and gate cookie are stored apart from the launch token', () async {
+      final c = container();
+      await loaded(c);
+      final hosts = c.read(hostsProvider.notifier);
+      await hosts.saveUrl(config, secrets: const UrlHostSecrets(pocketPin: '12345678'));
+      expect(secrets.values[UrlHostSecrets.pocketPinKey(config.id)], '12345678');
+      await hosts.saveUrlPocketCookie(config.id, 'dsh_pocket_token=abc');
+      expect((await hosts.loadUrlSecrets(config.id)).pocketCookie, 'dsh_pocket_token=abc');
+
+      // A rename, and a save that keeps the PIN, leave the live gate cookie.
+      await hosts.saveUrl(
+        config.copyWith(name: '改名'),
+        secrets: const UrlHostSecrets(pocketPin: '12345678'),
+      );
+      expect((await hosts.loadUrlSecrets(config.id)).pocketCookie, 'dsh_pocket_token=abc');
+
+      // A new PIN invalidates the old gate cookie; the link signs in again.
+      await hosts.saveUrl(
+        config.copyWith(name: '再改'),
+        secrets: const UrlHostSecrets(pocketPin: '87654321'),
+      );
+      expect((await hosts.loadUrlSecrets(config.id)).pocketPin, '87654321');
+      expect((await hosts.loadUrlSecrets(config.id)).pocketCookie, isNull);
+
+      // Clearing the PIN clears both.
+      await hosts.saveUrl(config, secrets: const UrlHostSecrets(launchToken: 'only'));
+      expect(secrets.values.containsKey(UrlHostSecrets.pocketPinKey(config.id)), isFalse);
+      expect((await hosts.loadUrlSecrets(config.id)).pocketPin, isNull);
+      expect((await hosts.loadUrlSecrets(config.id)).pocketCookie, isNull);
+    });
+
     test('removing the host deletes every secret and leaves it if active', () async {
       final c = container();
       await loaded(c);
       final hosts = c.read(hostsProvider.notifier);
-      await hosts.saveUrl(config, secrets: secretsFor);
+      await hosts.saveUrl(config, secrets: const UrlHostSecrets(pocketPin: '12345678'));
       await hosts.saveUrlCookie(config.id, '{"name":"n","value":"v","authority":"dsh.example.com"}');
+      await hosts.saveUrlPocketCookie(config.id, 'dsh_pocket_token=abc');
       c.read(activeHostProvider.notifier).select(HostRef.url(config.id));
       expect(c.read(activeHostProvider), HostRef.url(config.id));
 

@@ -201,6 +201,7 @@ final urlLinkFactoryProvider = Provider<UrlLinkFactory>(
       config: config,
       loadSecrets: () => hosts.loadUrlSecrets(config.id),
       saveCookie: (cookie) => hosts.saveUrlCookie(config.id, cookie),
+      savePocketCookie: (cookie) => hosts.saveUrlPocketCookie(config.id, cookie),
       kicks: ref.read(networkKicksProvider),
     );
   },

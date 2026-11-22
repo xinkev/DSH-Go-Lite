@@ -15270,6 +15270,13 @@ class L10nEn extends L10n {
       'The part after ?token= in the URL dsh web prints. Stored encrypted; only needed again if the saved session expires.';
 
   @override
+  String get remoteUrlPocketPin => 'Access PIN (Pocket PIN)';
+
+  @override
+  String get remoteUrlPocketPinHint =>
+      'The dsh-pocket access PIN, 8–64 characters. Stored encrypted; only used to sign in to this address.';
+
+  @override
   String get remoteUrlAccessToken => 'Access token (optional)';
 
   @override
@@ -15298,6 +15305,9 @@ class L10nEn extends L10n {
   String get remoteUrlErrHeaders => 'Each line must be Name: value (Host and Cookie are set by the app)';
 
   @override
+  String get remoteUrlErrPin => 'The access PIN must be 8–64 characters';
+
+  @override
   String get remoteUrlErrUnreachable => 'Couldn’t reach this address';
 
   @override
@@ -15306,6 +15316,12 @@ class L10nEn extends L10n {
   @override
   String get remoteUrlErrTokenRejectedDetail =>
       'Paste the current URL dsh web prints (with ?token=…) in the host settings.';
+
+  @override
+  String get remoteUrlErrPocketPin => 'The access PIN was rejected, or the engine restarted';
+
+  @override
+  String get remoteUrlErrPocketPinDetail => 'Enter the dsh-pocket access PIN again in the host settings.';
 
   @override
   String remoteUrlErrNotTrusted(String authority) {

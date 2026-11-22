@@ -26696,6 +26696,18 @@ abstract class L10n {
   /// **'dsh web 打印的地址里 ?token= 后面那段。加密保存；只有已保存的会话过期时才需要再填。'**
   String get remoteUrlLaunchTokenHint;
 
+  /// No description provided for @remoteUrlPocketPin.
+  ///
+  /// In zh, this message translates to:
+  /// **'访问密码（Pocket PIN）'**
+  String get remoteUrlPocketPin;
+
+  /// No description provided for @remoteUrlPocketPinHint.
+  ///
+  /// In zh, this message translates to:
+  /// **'dsh-pocket 的访问密码，8–64 位。加密保存，只用于登录这个地址。'**
+  String get remoteUrlPocketPinHint;
+
   /// No description provided for @remoteUrlAccessToken.
   ///
   /// In zh, this message translates to:
@@ -26750,6 +26762,12 @@ abstract class L10n {
   /// **'每行必须是 Name: value（Host 和 Cookie 由 App 设置）'**
   String get remoteUrlErrHeaders;
 
+  /// No description provided for @remoteUrlErrPin.
+  ///
+  /// In zh, this message translates to:
+  /// **'访问密码需为 8–64 位'**
+  String get remoteUrlErrPin;
+
   /// No description provided for @remoteUrlErrUnreachable.
   ///
   /// In zh, this message translates to:
@@ -26767,6 +26785,18 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'在主机设置里重新粘贴 dsh web 当前打印的地址（带 ?token=…）。'**
   String get remoteUrlErrTokenRejectedDetail;
+
+  /// No description provided for @remoteUrlErrPocketPin.
+  ///
+  /// In zh, this message translates to:
+  /// **'访问密码不对，或引擎重启了'**
+  String get remoteUrlErrPocketPin;
+
+  /// No description provided for @remoteUrlErrPocketPinDetail.
+  ///
+  /// In zh, this message translates to:
+  /// **'在主机设置里重新填写 dsh-pocket 的访问密码。'**
+  String get remoteUrlErrPocketPinDetail;
 
   /// No description provided for @remoteUrlErrNotTrusted.
   ///

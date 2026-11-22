@@ -605,6 +605,8 @@
   "remoteUrlAddressHint": "https://dsh.example.com",
   "remoteUrlLaunchToken": "引擎登录令牌",
   "remoteUrlLaunchTokenHint": "dsh web 打印的地址里 ?token= 后面那段。加密保存；只有已保存的会话过期时才需要再填。",
+  "remoteUrlPocketPin": "访问密码（Pocket PIN）",
+  "remoteUrlPocketPinHint": "dsh-pocket 的访问密码，8–64 位。加密保存，只用于登录这个地址。",
   "remoteUrlAccessToken": "访问令牌（可选）",
   "remoteUrlAccessTokenHint": "作为 Authorization: Bearer 发送，给 Cloudflare Access 或其他代理用。",
   "remoteUrlHeaders": "额外请求头（可选）",
@@ -614,9 +616,12 @@
   "remoteUrlErrInsecure": "用 https://；只有 localhost 允许明文 http://",
   "remoteUrlErrQuery": "地址后面只允许 ?token=",
   "remoteUrlErrHeaders": "每行必须是 Name: value（Host 和 Cookie 由 App 设置）",
+  "remoteUrlErrPin": "访问密码需为 8–64 位",
   "remoteUrlErrUnreachable": "连不上这个地址",
   "remoteUrlErrTokenRejected": "主机拒绝了这次登录",
   "remoteUrlErrTokenRejectedDetail": "在主机设置里重新粘贴 dsh web 当前打印的地址（带 ?token=…）。",
+  "remoteUrlErrPocketPin": "访问密码不对，或引擎重启了",
+  "remoteUrlErrPocketPinDetail": "在主机设置里重新填写 dsh-pocket 的访问密码。",
   "remoteUrlErrNotTrusted": "引擎不信任「{authority}」",
   "@remoteUrlErrNotTrusted": {
     "placeholders": {

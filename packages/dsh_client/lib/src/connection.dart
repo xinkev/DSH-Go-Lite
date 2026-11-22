@@ -198,6 +198,7 @@ class DshConnection {
     Uri baseUri, {
     this.hostHeader,
     this.cookie,
+    this.pocketCookie,
     Map<String, String>? headers,
     HttpClient? httpClient,
     this.connectTimeout = const Duration(seconds: 10),
@@ -250,7 +251,8 @@ class DshConnection {
       !_closed &&
       tracer == null &&
       HttpOverrides.current == null &&
-      headers.isEmpty;
+      headers.isEmpty &&
+      (pocketCookie?.trim().isEmpty ?? true);
 
   /// Explicit opt-in used by the HTTP client. A worker owns this read's entire
   /// HTTP chain and decode; closing this connection retires its pending reads.
@@ -269,7 +271,7 @@ class DshConnection {
         connectTimeout: connectTimeout,
         requestTimeout: requestTimeout,
         hostHeader: hostHeader,
-        cookieHeader: cookie?.header,
+        cookieHeader: cookieHeader,
         credentialRefs: List.unmodifiable(credentialRefs),
       ),
     );
@@ -277,6 +279,20 @@ class DshConnection {
 
   /// Current session cookie; set by [login] or restored from storage.
   DshCookie? cookie;
+
+  /// A cookie pair for a gate in front of the engine (`name=value`, e.g.
+  /// dsh-pocket's `dsh_pocket_token=…`). Unlike [cookie] it is not minted by
+  /// [login]; the caller signs in and stores the pair. It shares the single
+  /// `Cookie` request header with [cookie].
+  String? pocketCookie;
+
+  /// The `Cookie` header carrying [pocketCookie] and [cookie], when either exists.
+  String? get cookieHeader {
+    final gate = pocketCookie?.trim() ?? '';
+    final session = cookie;
+    final parts = [if (gate.isNotEmpty) gate, if (session != null) session.header];
+    return parts.isEmpty ? null : parts.join('; ');
+  }
 
   final HttpClient _http;
   final bool _ownsClient;
@@ -499,7 +515,7 @@ class DshConnection {
       req.persistentConnection = false;
       _applyHeaders(req.headers);
       _applyHost(req.headers);
-      if (cookie != null) req.headers.set(HttpHeaders.cookieHeader, cookie!.header);
+      if (cookieHeader case final header?) req.headers.set(HttpHeaders.cookieHeader, header);
       final response = await req.close();
       if (response.statusCode >= 300 && response.statusCode < 400) {
         throw DshHttpException(response.statusCode, 'GET ${uri.path}: redirects are not followed');
@@ -541,11 +557,7 @@ class DshConnection {
   /// A missing/expired cookie fails the upgrade with HTTP 401 and a fence
   /// failure with 403; both surface as [DshHttpException].
   Future<WebSocket> connectWebSocket(String path, {Duration? timeout}) async {
-    final requestHeaders = <String, Object>{
-      ...headers,
-      'Cookie': ?cookie?.header,
-      'Host': ?hostHeader,
-    };
+    final requestHeaders = <String, Object>{...headers, 'Cookie': ?cookieHeader, 'Host': ?hostHeader};
     final uri = webSocketUri(path);
     var abandoned = false;
     try {
@@ -643,7 +655,7 @@ class DshConnection {
       req.followRedirects = followRedirects;
       _applyHeaders(req.headers);
       _applyHost(req.headers);
-      if (cookie != null) req.headers.set(HttpHeaders.cookieHeader, cookie!.header);
+      if (cookieHeader case final header?) req.headers.set(HttpHeaders.cookieHeader, header);
       if (contentType != null) req.headers.set(HttpHeaders.contentTypeHeader, contentType);
       headers?.forEach(req.headers.set);
       if (body != null) {
@@ -821,8 +833,9 @@ final class _DshHttpStream {
     request.followRedirects = false;
     connection._applyHeaders(request.headers);
     connection._applyHost(request.headers);
-    final cookie = connection.cookie;
-    if (cookie != null) request.headers.set(HttpHeaders.cookieHeader, cookie.header);
+    if (connection.cookieHeader case final header?) {
+      request.headers.set(HttpHeaders.cookieHeader, header);
+    }
     request.headers.contentType = ContentType.json;
     request.contentLength = payload.length;
     request.add(payload);

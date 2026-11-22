@@ -284,8 +284,10 @@ class HostsController extends Notifier<HostsState> {
   // ── Saved direct URL hosts ──
 
   /// Adds or replaces [config]. With [secrets], stores the launch token,
-  /// access token and extra headers; the session cookie is owned by the link
-  /// ([saveUrlCookie]) and never cleared here.
+  /// access token, extra headers and dsh-pocket PIN; the session cookie
+  /// ([saveUrlCookie]) and gate cookie ([saveUrlPocketCookie]) are owned by
+  /// the link and never cleared here — except the gate cookie, which a changed
+  /// PIN invalidates.
   /// Returns the preferences write result. A false result does not undo the
   /// in-memory config or any completed secret operations.
   Future<bool> saveUrl(UrlHostConfig config, {UrlHostSecrets? secrets}) async {
@@ -315,6 +317,32 @@ class HostsController extends Notifier<HostsState> {
     await put(UrlHostSecrets.launchTokenKey(id), secrets.launchToken);
     await put(UrlHostSecrets.accessTokenKey(id), secrets.accessToken);
     await put(UrlHostSecrets.headersKey(id), secrets.headers);
+    final pin = secrets.pocketPin?.trim() ?? '';
+    if (pin.isEmpty) {
+      await _deleteSecret(UrlHostSecrets.pocketPinKey(id));
+      // Without a PIN the gate cookie can never be renewed; a stale one would
+      // only make the next open fail.
+      await _deleteSecret(UrlHostSecrets.pocketCookieKey(id));
+    } else {
+      final previous = await _readSecret(UrlHostSecrets.pocketPinKey(id));
+      await put(UrlHostSecrets.pocketPinKey(id), pin);
+      // A new PIN signs in again; a kept one keeps its live cookie.
+      if (previous?.trim() != pin) await _deleteSecret(UrlHostSecrets.pocketCookieKey(id));
+    }
+  }
+
+  Future<String?> _readSecret(String key) async {
+    try {
+      return await _secrets.read(key);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<void> _deleteSecret(String key) async {
+    try {
+      await _secrets.delete(key);
+    } catch (_) {}
   }
 
   Future<UrlHostSecrets> loadUrlSecrets(String id) async {
@@ -331,15 +359,23 @@ class HostsController extends Notifier<HostsState> {
       accessToken: await get(UrlHostSecrets.accessTokenKey(id)),
       headers: await get(UrlHostSecrets.headersKey(id)),
       cookie: await get(UrlHostSecrets.cookieKey(id)),
+      pocketPin: await get(UrlHostSecrets.pocketPinKey(id)),
+      pocketCookie: await get(UrlHostSecrets.pocketCookieKey(id)),
     );
   }
 
   /// Keeps the engine's session cookie (or forgets it after a refusal), so a
   /// restart needs the launch token only when the cookie itself expired.
-  Future<void> saveUrlCookie(String id, String? cookieJson) async {
-    final key = UrlHostSecrets.cookieKey(id);
+  Future<void> saveUrlCookie(String id, String? cookieJson) => _saveUrlSecret(UrlHostSecrets.cookieKey(id), cookieJson);
+
+  /// Keeps the dsh-pocket gate cookie (or forgets it after a refusal). Only
+  /// the link mints or clears it; editing the host leaves it alone.
+  Future<void> saveUrlPocketCookie(String id, String? cookie) =>
+      _saveUrlSecret(UrlHostSecrets.pocketCookieKey(id), cookie);
+
+  Future<void> _saveUrlSecret(String key, String? value) async {
     try {
-      final text = cookieJson?.trim() ?? '';
+      final text = value?.trim() ?? '';
       if (text.isEmpty) {
         await _secrets.delete(key);
       } else {
@@ -357,6 +393,8 @@ class HostsController extends Notifier<HostsState> {
       UrlHostSecrets.accessTokenKey(id),
       UrlHostSecrets.headersKey(id),
       UrlHostSecrets.cookieKey(id),
+      UrlHostSecrets.pocketPinKey(id),
+      UrlHostSecrets.pocketCookieKey(id),
     ]) {
       try {
         await _secrets.delete(key);

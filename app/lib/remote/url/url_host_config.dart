@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:math' as math;
 
 /// Why a typed direct URL or header block cannot be used.
-enum UrlHostProblem { missing, invalid, insecure, query, headers }
+enum UrlHostProblem { missing, invalid, insecure, query, headers, pin }
 
 /// A direct-URL value the person has to fix, with the field it came from.
 class UrlHostFormatException implements Exception {
@@ -117,8 +117,8 @@ Map<String, String> parseUrlHeaders(String? raw) {
 }
 
 /// One saved direct URL host. Persisted as JSON in SharedPreferences; the
-/// launch token, access token, extra headers and session cookie live in the
-/// [SecretStore] under [UrlHostSecrets] keys.
+/// launch token, access token, extra headers, session cookie and dsh-pocket
+/// PIN/gate cookie live in the [SecretStore] under [UrlHostSecrets] keys.
 class UrlHostConfig {
   const UrlHostConfig({required this.id, required this.name, required this.baseUri});
 
@@ -177,7 +177,14 @@ class UrlHostConfig {
 
 /// The secret material for one direct URL host.
 class UrlHostSecrets {
-  const UrlHostSecrets({this.launchToken, this.accessToken, this.headers, this.cookie});
+  const UrlHostSecrets({
+    this.launchToken,
+    this.accessToken,
+    this.headers,
+    this.cookie,
+    this.pocketPin,
+    this.pocketCookie,
+  });
 
   /// The engine's process launch token (`?token=…`), exchanged for the session
   /// cookie. It changes every engine start; the cookie outlives it.
@@ -193,16 +200,30 @@ class UrlHostSecrets {
   /// launch token. Engine restarts that keep the same DSH_HOME keep it valid.
   final String? cookie;
 
+  /// The dsh-pocket access PIN (8–64 characters). Sent in the
+  /// `POST /pocket-login` form, or in the documented `GET /?token=` fallback
+  /// when the proxy has no POST route; never anywhere else.
+  final String? pocketPin;
+
+  /// The gate's `dsh_pocket_token=…` pair, minted from [pocketPin]. dsh-pocket
+  /// changes its session key when `dsh web` restarts, so this can go stale;
+  /// the link clears it and signs in again.
+  final String? pocketCookie;
+
   Map<String, String> requestHeaders() => urlRequestHeaders(accessToken, headers);
 
   static String launchTokenKey(String hostId) => 'url.$hostId.launchToken';
   static String accessTokenKey(String hostId) => 'url.$hostId.accessToken';
   static String headersKey(String hostId) => 'url.$hostId.headers';
   static String cookieKey(String hostId) => 'url.$hostId.cookie';
+  static String pocketPinKey(String hostId) => 'url.$hostId.pocketPin';
+  static String pocketCookieKey(String hostId) => 'url.$hostId.pocketCookie';
 
   bool get isEmpty =>
       (launchToken?.trim().isEmpty ?? true) &&
       (accessToken?.trim().isEmpty ?? true) &&
       (headers?.trim().isEmpty ?? true) &&
-      (cookie?.trim().isEmpty ?? true);
+      (cookie?.trim().isEmpty ?? true) &&
+      (pocketPin?.trim().isEmpty ?? true) &&
+      (pocketCookie?.trim().isEmpty ?? true);
 }
