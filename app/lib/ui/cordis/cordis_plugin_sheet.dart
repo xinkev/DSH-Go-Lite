@@ -19,7 +19,6 @@ import '../common/app_sheet.dart';
 import '../common/expand_reveal.dart';
 import '../common/list_page_row.dart';
 import '../features/feature_format.dart' show featureErrorText;
-import '../plugins/seats/cordis_island_seat.dart';
 import '../safe_mode/recovery_actions.dart';
 import '../theme/app_icons.dart';
 import '../theme/theme.dart';
@@ -204,7 +203,6 @@ class _CordisPluginSheetState extends ConsumerState<CordisPluginSheet> {
                   ),
                   const SizedBox(height: 20),
                   // The plugin's interactive region, when it can show here.
-                  CordisIslandSeat(plugin: plugin),
                   RecoveryActions(
                     primaryLabel: l10n.commonOpenInWeb,
                     onPrimary: idle ? _open : null,
