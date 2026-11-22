@@ -16,7 +16,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
 import '../../pets/pet_signals.dart' show petHeadroomProvider;
-import '../../plugins/native/native_surface.dart' show nativeTurnNoteProvider;
 import '../../state/agents_state.dart' show hostSessionsProvider, selectConversation;
 import '../../state/app_notes.dart';
 import '../../state/artifacts.dart';
@@ -1279,7 +1278,6 @@ class _ChatListState extends ConsumerState<ChatList> with SingleTickerProviderSt
   Widget _footnote(TurnTrace trace) => Consumer(
     builder: (context, ref, _) => TurnFootnote(
       trace: trace,
-      notes: ref.watch(nativeTurnNoteProvider((widget.sessionId, trace.turn))),
       onTap: () => showTrajectorySheet(context, sessionId: widget.sessionId, turn: trace.turn),
     ),
   );
