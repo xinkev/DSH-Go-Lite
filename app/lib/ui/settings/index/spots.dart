@@ -78,7 +78,6 @@ enum SettingsPageId {
   webSearch,
   media,
   appearance,
-  pets,
   interface,
   notifications,
   performance,
@@ -500,15 +499,6 @@ final _pages = <SettingsPageMeta>[
     freq: Freq.medium,
     links: const ['appearance'],
   ),
-  SettingsPageMeta(
-    SettingsPageId.pets,
-    title: (l) => l.botsPets,
-    group: _look,
-    keywords: (l) => l.searchKwPets,
-    ohosKeywords: (l) => l.harmonyKwPets,
-    freq: Freq.medium,
-    links: const ['pets'],
-  ),
   // 通用
   SettingsPageMeta(
     SettingsPageId.interface,
@@ -795,61 +785,6 @@ abstract final class Spots {
   );
 
   // 宠物.
-  static final petSize = SettingSpot(
-    'pet-size',
-    page: SettingsPageId.pets,
-    title: (l) => l.botsPetSize,
-    keywords: (l) => l.searchKwPetSize,
-  );
-  static final petQuiet = SettingSpot(
-    'pet-quiet',
-    page: SettingsPageId.pets,
-    title: (l) => l.botsPetQuiet,
-    keywords: (l) => l.searchKwPetQuiet,
-  );
-  static final petOutsideApp = SettingSpot(
-    'pet-outside-app',
-    page: SettingsPageId.pets,
-    title: (l) => l.botsPetOutsideApp,
-    keywords: (l) => l.searchKwPetOutside,
-    androidOnly: true,
-    iosToo: true,
-  );
-  static final petDisplayWhen = SettingSpot(
-    'pet-display-when',
-    page: SettingsPageId.pets,
-    title: (l) => l.botsPetDisplayWhen,
-    keywords: (l) => l.searchKwPetDisplayWhen,
-    androidOnly: true,
-    iosToo: true,
-  );
-  static final petOverlayShows = SettingSpot(
-    'pet-overlay-shows',
-    page: SettingsPageId.pets,
-    title: (l) => l.botsPetOverlayShows,
-    keywords: (l) => l.searchKwPetOverlayShows,
-    androidOnly: true,
-  );
-  static final petOverlayFraming = SettingSpot(
-    'pet-overlay-framing',
-    page: SettingsPageId.pets,
-    title: (l) => l.botsPetOverlayFraming,
-    keywords: (l) => l.searchKwPetOverlayFraming,
-    androidOnly: true,
-  );
-  static final petMake = SettingSpot(
-    'pet-make',
-    page: SettingsPageId.pets,
-    title: (l) => l.botsPetMake,
-    keywords: (l) => l.searchKwPets,
-  );
-  static final workshop = SettingSpot(
-    'workshop',
-    page: SettingsPageId.pets,
-    title: (l) => l.workshopTitle,
-    keywords: (l) => l.searchKwWorkshop,
-    condition: SpotCondition.workshopBuilt,
-  );
 
   // 界面.
   static final uiMode = SettingSpot(
@@ -1160,14 +1095,6 @@ final _rows = <SettingSpot>[
   Spots.phoneBackgroundGuide,
   Spots.webSearchKey,
   Spots.darkMode,
-  Spots.petSize,
-  Spots.petQuiet,
-  Spots.petOutsideApp,
-  Spots.petDisplayWhen,
-  Spots.petOverlayShows,
-  Spots.petOverlayFraming,
-  Spots.petMake,
-  Spots.workshop,
   Spots.uiMode,
   Spots.hardwareEnterSends,
   Spots.chatSuggestions,

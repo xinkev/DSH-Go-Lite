@@ -36,7 +36,6 @@ import 'media_settings_page.dart';
 import '../features/feature_format.dart' show permissionName;
 import '../features/permission_page.dart';
 import '../onboarding/api_key_page.dart' show maskApiKey;
-import '../pets/pet_settings_page.dart';
 import '../phone/phone_control_screen.dart';
 import '../phone/system_actions_page.dart';
 import '../providers/providers_page.dart';
@@ -218,7 +217,6 @@ class SettingsScreen extends ConsumerWidget {
               value: settings.foldCompletedTurns,
               onChanged: (v) => unawaited(notifier.setFoldCompletedTurns(v)),
             ),
-            const PetEntryTile(tint: SettingsHues.appearance),
           ],
         ),
         SettingsSection(

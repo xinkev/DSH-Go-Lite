@@ -76,8 +76,6 @@ void main() {
         ))
           hit.spot?.id,
       ];
-      expect(ids('桌面宠物'), contains(Spots.petOutsideApp.id));
-      expect(ids('悬浮窗里显示'), isNot(contains(Spots.petOverlayShows.id)));
     });
 
     test('Android system commands find the phone page, not the engine shell', () {
@@ -149,8 +147,6 @@ void main() {
     });
 
     test('「宠物」: the pets page first', () {
-      expect(_ids('宠物').first, SettingsIndex.entry(SettingsPageId.pets).id);
-      expect(_ids('pets').first, SettingsIndex.entry(SettingsPageId.pets).id);
     });
 
     test('a title beats a synonym, a synonym the path; frequent wins a tie', () {
