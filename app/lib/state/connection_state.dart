@@ -10,6 +10,7 @@ import '../remote/network_watch.dart';
 import '../remote/relay/relay_backend.dart';
 import '../remote/ssh/ssh_link.dart';
 import '../remote/ssh/ssh_transport.dart';
+import '../remote/url/url_link.dart';
 import '../runtime/runtime_bridge.dart';
 import '../runtime/container_paths.dart';
 import 'workspaces_state.dart';
@@ -189,6 +190,22 @@ final sshLinkFactoryProvider = Provider<SshLinkFactory>(
   },
 );
 
+/// Builds the link for one direct URL host. Overridable so tests can inject a
+/// fake connector.
+typedef UrlLinkFactory = UrlHostLink Function(Ref ref, UrlHostConfig config);
+
+final urlLinkFactoryProvider = Provider<UrlLinkFactory>(
+  (ref) => (ref, config) {
+    final hosts = ref.read(hostsProvider.notifier);
+    return UrlHostLink(
+      config: config,
+      loadSecrets: () => hosts.loadUrlSecrets(config.id),
+      saveCookie: (cookie) => hosts.saveUrlCookie(config.id, cookie),
+      kicks: ref.read(networkKicksProvider),
+    );
+  },
+);
+
 /// The live link to a remote host; null for 本机 or an unknown host. Kept while
 /// something watches it (the active connection, a status row); closed after.
 final hostLinkProvider = Provider.autoDispose.family<HostLink?, HostRef>((ref, host) {
@@ -234,6 +251,17 @@ final hostLinkProvider = Provider.autoDispose.family<HostLink?, HostRef>((ref, h
         unawaited(link.close());
       });
       return link;
+    case HostKind.url:
+      // Reconnect only when the address changes; a rename applies in place.
+      final key = ref.watch(hostsProvider.select((s) => s.urlById(host.id)?.connectionKey));
+      if (key == null) return null;
+      final config = ref.read(hostsProvider).urlById(host.id)!;
+      final link = ref.read(urlLinkFactoryProvider)(ref, config);
+      ref.listen(hostsProvider.select((s) => s.urlById(host.id)), (_, next) {
+        if (next != null && next.connectionKey == link.config.connectionKey) link.updateConfig(next);
+      });
+      ref.onDispose(() => unawaited(link.close()));
+      return link;
   }
 });
 
@@ -253,6 +281,7 @@ final hostNameProvider = Provider.autoDispose.family<String?, HostRef>((ref, hos
   return switch (host.kind) {
     HostKind.local => appL10n.commonThisPhone,
     HostKind.ssh => ref.watch(hostsProvider.select((s) => s.sshById(host.id)?.name)),
+    HostKind.url => ref.watch(hostsProvider.select((s) => s.urlById(host.id)?.name)),
     HostKind.relay => ref.watch(relayAccountProvider.select((a) => a.value?.hostById(host.id)?.name)) ?? host.name,
   };
 });
@@ -553,6 +582,12 @@ AsyncValue<HostConnection?> _connectionForHost(Ref ref, HostRef host) {
       if (!loaded) return const AsyncLoading();
       return ref.watch(remoteConnectionProvider(host));
     case HostKind.relay:
+      return ref.watch(remoteConnectionProvider(host));
+    case HostKind.url:
+      final known = ref.watch(hostsProvider.select((s) => !s.loaded || s.urlById(host.id) != null));
+      if (!known) return ref.watch(localConnectionProvider);
+      final loaded = ref.watch(hostsProvider.select((s) => s.loaded));
+      if (!loaded) return const AsyncLoading();
       return ref.watch(remoteConnectionProvider(host));
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
 import '../../remote/ssh/ssh_link.dart';
+import '../../remote/url/url_link.dart';
 import '../../state/connection_state.dart';
 import '../../state/hosts_state.dart';
 import '../../state/settings_state.dart';
@@ -32,6 +33,14 @@ final class SshDshWeb extends DshWebAccess {
   final String hostName;
 }
 
+/// A direct URL host: the same public origin, signed in with the engine's
+/// launch token (the one the app also uses for its own cookie).
+final class UrlDshWeb extends DshWebAccess {
+  const UrlDshWeb(this.url, this.hostName);
+  final Uri url;
+  final String hostName;
+}
+
 /// No web page for this host right now; [reason] says why.
 final class NoDshWeb extends DshWebAccess {
   const NoDshWeb(this.reason);
@@ -57,6 +66,21 @@ final dshWebAccessProvider = Provider.autoDispose<DshWebAccess>((ref) {
         return NoDshWeb(appL10n.webConnectHostFirst(name));
       }
       return SshDshWeb(localWebUri('http://127.0.0.1:$port', token), name);
+    case HostKind.url:
+      ref.watch(hostLinkStatusProvider(host));
+      final link = ref.watch(hostLinkProvider(host));
+      final name = ref.watch(hostNameProvider(host)) ?? host.id;
+      final token = link is UrlHostLink ? link.launchToken : null;
+      if (token == null) return NoDshWeb(appL10n.webUrlNeedsToken);
+      final config = ref.watch(hostsProvider).urlById(host.id);
+      if (config == null) return NoDshWeb(appL10n.webUrlNeedsToken);
+      return UrlDshWeb(
+        config.baseUri.replace(
+          path: config.baseUri.path.isEmpty ? '/' : '${config.baseUri.path}/',
+          queryParameters: {'token': token},
+        ),
+        name,
+      );
   }
 });
 
@@ -99,6 +123,17 @@ void openDshWeb(BuildContext context, WidgetRef ref, {DshWebTarget target = cons
         subtitle: hostName,
         externalDisabledReason: context.l10n.webSshAppOnly,
         // Android suspends the page in the background and its socket drops.
+        reloadAfterBackground: const Duration(seconds: 60),
+        dshWeb: true,
+        phoneLayout: ref.read(settingsProvider).webPhoneLayout,
+        openTarget: target,
+      );
+    case UrlDshWeb(:final url, :final hostName):
+      page = WebViewPage(
+        url: url,
+        title: context.l10n.webTitle,
+        subtitle: hostName,
+        externalDisabledReason: context.l10n.webSshAppOnly,
         reloadAfterBackground: const Duration(seconds: 60),
         dshWeb: true,
         phoneLayout: ref.read(settingsProvider).webPhoneLayout,

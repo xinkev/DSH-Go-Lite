@@ -199,6 +199,7 @@
   "stateGoalTurnsExhausted": "No turns left",
   "stateGoalStateChanged": "Goal status changed",
   "stateSshHost": "SSH host",
+  "stateUrlHost": "URL",
   "stateHostBrowserFailed": "Couldn’t open the browser. Copy the sign-in link and open it in a browser.",
   "stateSignInFailed": "Couldn’t sign in",
   "stateRegistryDefault": "Default registry",

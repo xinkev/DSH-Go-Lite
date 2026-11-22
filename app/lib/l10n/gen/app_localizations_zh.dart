@@ -14430,7 +14430,7 @@ class L10nZh extends L10n {
   String get remoteManageHosts => '管理远程主机';
 
   @override
-  String get remoteConnectionMethods => '通过 SSH 或 DSH Remote';
+  String get remoteConnectionMethods => '通过 SSH、DSH Remote 或直连地址';
 
   @override
   String get remoteRelayLoginRequired => '填写服务器地址、邮箱和密码';
@@ -14476,6 +14476,81 @@ class L10nZh extends L10n {
 
   @override
   String get remoteSshDirect => '不经过第三方服务器';
+
+  @override
+  String get remoteUrlHosts => '直连地址';
+
+  @override
+  String get remoteUrlRequirements => '填 dsh web 打印出的地址；Cloudflare Tunnel 或反向代理也可以';
+
+  @override
+  String get remoteAddUrlHost => '用地址添加';
+
+  @override
+  String get remoteUrlDirect => '不用账号，不用配对';
+
+  @override
+  String get remoteUrlHostIntro => '粘贴提供 DSH 的 HTTPS 地址。这台手机直接连它，不用登录账号，也不经过中继。';
+
+  @override
+  String get remoteUrlAddress => '地址';
+
+  @override
+  String get remoteUrlAddressHint => 'https://dsh.example.com';
+
+  @override
+  String get remoteUrlLaunchToken => '引擎登录令牌';
+
+  @override
+  String get remoteUrlLaunchTokenHint => 'dsh web 打印的地址里 ?token= 后面那段。加密保存；只有已保存的会话过期时才需要再填。';
+
+  @override
+  String get remoteUrlAccessToken => '访问令牌（可选）';
+
+  @override
+  String get remoteUrlAccessTokenHint => '作为 Authorization: Bearer 发送，给 Cloudflare Access 或其他代理用。';
+
+  @override
+  String get remoteUrlHeaders => '额外请求头（可选）';
+
+  @override
+  String get remoteUrlHeadersHint =>
+      '每行一个 Name: value；Cloudflare Access 的 service token 在这里填 CF-Access-Client-Id 和 CF-Access-Client-Secret。';
+
+  @override
+  String get remoteUrlErrRequired => '填写主机地址';
+
+  @override
+  String get remoteUrlErrInvalid => '填写完整地址，例如 https://dsh.example.com';
+
+  @override
+  String get remoteUrlErrInsecure => '用 https://；只有 localhost 允许明文 http://';
+
+  @override
+  String get remoteUrlErrQuery => '地址后面只允许 ?token=';
+
+  @override
+  String get remoteUrlErrHeaders => '每行必须是 Name: value（Host 和 Cookie 由 App 设置）';
+
+  @override
+  String get remoteUrlErrUnreachable => '连不上这个地址';
+
+  @override
+  String get remoteUrlErrTokenRejected => '主机拒绝了这次登录';
+
+  @override
+  String get remoteUrlErrTokenRejectedDetail => '在主机设置里重新粘贴 dsh web 当前打印的地址（带 ?token=…）。';
+
+  @override
+  String remoteUrlErrNotTrusted(String authority) {
+    return '引擎不信任「$authority」';
+  }
+
+  @override
+  String get remoteUrlErrNotFound => '这个地址上没有 DSH 网页版';
+
+  @override
+  String get remoteUrlDeleteBody => '这个地址和保存在手机上的令牌会被删除。那台机器上的 DSH 和对话不受影响。';
 
   @override
   String get remoteOtherMethods => '其他方式';
@@ -14531,6 +14606,11 @@ class L10nZh extends L10n {
   @override
   String remoteConnectedSsh(String address) {
     return '已连接 · SSH $address';
+  }
+
+  @override
+  String remoteConnectedUrl(String address) {
+    return '已连接 · $address';
   }
 
   @override
@@ -17653,6 +17733,9 @@ class L10nZh extends L10n {
 
   @override
   String get stateSshHost => 'SSH 主机';
+
+  @override
+  String get stateUrlHost => 'URL';
 
   @override
   String get stateHostBrowserFailed => '没能打开浏览器，可以复制登录链接到浏览器里完成。';
@@ -23996,6 +24079,9 @@ class L10nZh extends L10n {
   String webConnectHostFirst(String name) {
     return '还没连上「$name」，连上后再打开网页版';
   }
+
+  @override
+  String get webUrlNeedsToken => '填上引擎登录令牌（dsh web 地址里 ?token= 那段）才能打开网页版';
 
   @override
   String get workshopTitle => '创意工坊';

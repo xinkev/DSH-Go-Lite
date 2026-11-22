@@ -237,7 +237,7 @@
   "remoteRelaySwitchWarning": "DSH Remote connects to one host at a time. Switching disconnects the previous host.",
   "remoteConnectComputer": "Connect a computer or server",
   "remoteManageHosts": "Manage remote hosts",
-  "remoteConnectionMethods": "Via SSH or DSH Remote",
+  "remoteConnectionMethods": "Via SSH, DSH Remote or a URL",
   "remoteRelayLoginRequired": "Enter the server address, email and password",
   "remoteErrSignIn": "Couldn’t sign in",
   "remoteSelfHostedServer": "Self-hosted server",
@@ -253,6 +253,37 @@
   "remoteSshRequirements": "Host needs SSH enabled and DSH installed",
   "remoteAddSshHost": "Add SSH host",
   "remoteSshDirect": "No third-party server",
+  "remoteUrlHosts": "Direct URL",
+  "remoteUrlRequirements": "Point at the URL dsh web prints; Cloudflare Tunnel or a reverse proxy works",
+  "remoteAddUrlHost": "Add by URL",
+  "remoteUrlDirect": "No account, no pairing",
+  "remoteUrlHostIntro": "Paste the HTTPS address that serves DSH. This phone connects to it directly — no account, no relay sign-in.",
+  "remoteUrlAddress": "Address",
+  "remoteUrlAddressHint": "https://dsh.example.com",
+  "remoteUrlLaunchToken": "Engine sign-in token",
+  "remoteUrlLaunchTokenHint": "The part after ?token= in the URL dsh web prints. Stored encrypted; only needed again if the saved session expires.",
+  "remoteUrlAccessToken": "Access token (optional)",
+  "remoteUrlAccessTokenHint": "Sent as Authorization: Bearer, for Cloudflare Access or another proxy.",
+  "remoteUrlHeaders": "Extra headers (optional)",
+  "remoteUrlHeadersHint": "One per line, Name: value — Cloudflare Access service tokens go here as CF-Access-Client-Id and CF-Access-Client-Secret.",
+  "remoteUrlErrRequired": "Enter the host address",
+  "remoteUrlErrInvalid": "Enter a full address, like https://dsh.example.com",
+  "remoteUrlErrInsecure": "Use https:// — plain http:// is only allowed for localhost",
+  "remoteUrlErrQuery": "Only the ?token= part is allowed after the address",
+  "remoteUrlErrHeaders": "Each line must be Name: value (Host and Cookie are set by the app)",
+  "remoteUrlErrUnreachable": "Couldn’t reach this address",
+  "remoteUrlErrTokenRejected": "The host refused the sign-in",
+  "remoteUrlErrTokenRejectedDetail": "Paste the current URL dsh web prints (with ?token=…) in the host settings.",
+  "remoteUrlErrNotTrusted": "The engine doesn’t trust “{authority}”",
+  "@remoteUrlErrNotTrusted": {
+    "placeholders": {
+      "authority": {
+        "type": "String"
+      }
+    }
+  },
+  "remoteUrlErrNotFound": "No DSH web at this address",
+  "remoteUrlDeleteBody": "The address and the token saved on this phone will be deleted. DSH and chats on that address stay.",
   "remoteOtherMethods": "Other methods",
   "remoteWebConsole": "Web remote console",
   "remoteWebConsoleProvider": "dsh.r2049.cn · Third-party page",
@@ -276,6 +307,14 @@
   "remotePathTurn": "TURN",
   "remotePathRelay": "Relay",
   "remoteConnectedSsh": "Connected · SSH {address}",
+  "remoteConnectedUrl": "Connected · {address}",
+  "@remoteConnectedUrl": {
+    "placeholders": {
+      "address": {
+        "type": "String"
+      }
+    }
+  },
   "remoteErrRefreshHosts": "Couldn’t refresh host list",
   "remoteSwitchWarning": "Connects to one host at a time. Switching disconnects the previous host.",
   "remoteRefreshHosts": "Refresh hosts",

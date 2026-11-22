@@ -15192,7 +15192,7 @@ class L10nEn extends L10n {
   String get remoteManageHosts => 'Manage remote hosts';
 
   @override
-  String get remoteConnectionMethods => 'Via SSH or DSH Remote';
+  String get remoteConnectionMethods => 'Via SSH, DSH Remote or a URL';
 
   @override
   String get remoteRelayLoginRequired => 'Enter the server address, email and password';
@@ -15239,6 +15239,85 @@ class L10nEn extends L10n {
 
   @override
   String get remoteSshDirect => 'No third-party server';
+
+  @override
+  String get remoteUrlHosts => 'Direct URL';
+
+  @override
+  String get remoteUrlRequirements => 'Point at the URL dsh web prints; Cloudflare Tunnel or a reverse proxy works';
+
+  @override
+  String get remoteAddUrlHost => 'Add by URL';
+
+  @override
+  String get remoteUrlDirect => 'No account, no pairing';
+
+  @override
+  String get remoteUrlHostIntro =>
+      'Paste the HTTPS address that serves DSH. This phone connects to it directly — no account, no relay sign-in.';
+
+  @override
+  String get remoteUrlAddress => 'Address';
+
+  @override
+  String get remoteUrlAddressHint => 'https://dsh.example.com';
+
+  @override
+  String get remoteUrlLaunchToken => 'Engine sign-in token';
+
+  @override
+  String get remoteUrlLaunchTokenHint =>
+      'The part after ?token= in the URL dsh web prints. Stored encrypted; only needed again if the saved session expires.';
+
+  @override
+  String get remoteUrlAccessToken => 'Access token (optional)';
+
+  @override
+  String get remoteUrlAccessTokenHint => 'Sent as Authorization: Bearer, for Cloudflare Access or another proxy.';
+
+  @override
+  String get remoteUrlHeaders => 'Extra headers (optional)';
+
+  @override
+  String get remoteUrlHeadersHint =>
+      'One per line, Name: value — Cloudflare Access service tokens go here as CF-Access-Client-Id and CF-Access-Client-Secret.';
+
+  @override
+  String get remoteUrlErrRequired => 'Enter the host address';
+
+  @override
+  String get remoteUrlErrInvalid => 'Enter a full address, like https://dsh.example.com';
+
+  @override
+  String get remoteUrlErrInsecure => 'Use https:// — plain http:// is only allowed for localhost';
+
+  @override
+  String get remoteUrlErrQuery => 'Only the ?token= part is allowed after the address';
+
+  @override
+  String get remoteUrlErrHeaders => 'Each line must be Name: value (Host and Cookie are set by the app)';
+
+  @override
+  String get remoteUrlErrUnreachable => 'Couldn’t reach this address';
+
+  @override
+  String get remoteUrlErrTokenRejected => 'The host refused the sign-in';
+
+  @override
+  String get remoteUrlErrTokenRejectedDetail =>
+      'Paste the current URL dsh web prints (with ?token=…) in the host settings.';
+
+  @override
+  String remoteUrlErrNotTrusted(String authority) {
+    return 'The engine doesn’t trust “$authority”';
+  }
+
+  @override
+  String get remoteUrlErrNotFound => 'No DSH web at this address';
+
+  @override
+  String get remoteUrlDeleteBody =>
+      'The address and the token saved on this phone will be deleted. DSH and chats on that address stay.';
 
   @override
   String get remoteOtherMethods => 'Other methods';
@@ -15294,6 +15373,11 @@ class L10nEn extends L10n {
   @override
   String remoteConnectedSsh(String address) {
     return 'Connected · SSH $address';
+  }
+
+  @override
+  String remoteConnectedUrl(String address) {
+    return 'Connected · $address';
   }
 
   @override
@@ -18647,6 +18731,9 @@ class L10nEn extends L10n {
 
   @override
   String get stateSshHost => 'SSH host';
+
+  @override
+  String get stateUrlHost => 'URL';
 
   @override
   String get stateHostBrowserFailed => 'Couldn’t open the browser. Copy the sign-in link and open it in a browser.';
@@ -25324,6 +25411,9 @@ class L10nEn extends L10n {
   String webConnectHostFirst(String name) {
     return 'Connect to “$name” to open DSH Web';
   }
+
+  @override
+  String get webUrlNeedsToken => 'Add the engine sign-in token (the ?token= part of the dsh web URL) to open DSH Web';
 
   @override
   String get workshopTitle => 'Workshop';

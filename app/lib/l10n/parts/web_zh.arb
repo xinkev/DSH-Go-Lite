@@ -46,5 +46,6 @@
         "type": "String"
       }
     }
-  }
+  },
+  "webUrlNeedsToken": "填上引擎登录令牌（dsh web 地址里 ?token= 那段）才能打开网页版"
 }

@@ -245,5 +245,12 @@ final readListIdentityProvider = Provider<ReadListIdentity?>((ref) {
         host.harnessVersion,
         epoch,
       ]);
+    case HostKind.url:
+      final hosts = ref.watch(hostsProvider);
+      final host = hosts.urlById(selected.id);
+      if (!hosts.loaded || host == null || host.id.length > 256 || host.connectionKey.length > 8192) return null;
+      // No secret joins the digest; the watched mux generation above revokes it
+      // on loss like every other host.
+      return ReadListIdentity.of(['url', host.id, host.connectionKey, epoch]);
   }
 });

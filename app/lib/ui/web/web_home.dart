@@ -169,6 +169,20 @@ class _WebHomeState extends ConsumerState<WebHome> {
         link: _link,
         onSession: _onSession,
       ),
+      UrlDshWeb(:final url, :final hostName) => WebViewPage(
+        key: ValueKey((url, phoneLayout)),
+        url: url,
+        title: context.l10n.webTitle,
+        subtitle: hostName,
+        externalDisabledReason: context.l10n.webSshAppOnly,
+        reloadAfterBackground: const Duration(seconds: 60),
+        dshWeb: true,
+        phoneLayout: phoneLayout,
+        leading: _handle,
+        root: true,
+        link: _link,
+        onSession: _onSession,
+      ),
       NoDshWeb(:final reason) => _NoWeb(reason: reason, handle: _handle),
     };
     return ChatAlertHost(
@@ -288,7 +302,9 @@ class _WebEntryHostState extends ConsumerState<WebEntryHost> {
       case OpenChatEntry(:final host, :final sessionId):
         if (!mounted || !await DiscardGuard.confirmLeave(context) || !mounted) return;
         final hosts = ref.read(hostsProvider);
-        if (host.kind == HostKind.ssh && hosts.loaded && hosts.sshById(host.id) == null) {
+        if (hosts.loaded &&
+            ((host.kind == HostKind.ssh && hosts.sshById(host.id) == null) ||
+                (host.kind == HostKind.url && hosts.urlById(host.id) == null))) {
           ScaffoldMessenger.maybeOf(context)?.showSnackBar(SnackBar(content: Text(context.l10n.webChatGone)));
           return;
         }

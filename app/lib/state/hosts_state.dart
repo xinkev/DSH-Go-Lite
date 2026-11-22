@@ -16,6 +16,7 @@ import '../remote/relay/webrtc_peer.dart';
 import '../remote/secret_store.dart';
 import '../remote/ssh/ssh_host_config.dart';
 import '../remote/ssh/ssh_transport.dart';
+import '../remote/url/url_host_config.dart';
 import 'sessions_state.dart';
 import 'read_list_epoch.dart';
 
@@ -23,13 +24,17 @@ export '../remote/link_status.dart' show HostLinkStatus, HostLinkPhase, HostLink
 export '../remote/ssh/ssh_transport.dart' show PresentedHostKey;
 export '../remote/relay/relay_backend.dart' show RelayHost, RelayTrust, RelayUser;
 export '../remote/ssh/ssh_host_config.dart';
+export '../remote/url/url_host_config.dart';
 
-/// The three kinds of DSH host the app can talk to.
-enum HostKind { local, ssh, relay }
+/// The four kinds of DSH host the app can talk to: the on-device engine, a
+/// saved SSH host, a DSH Remote (relay) device, or any HTTPS address that
+/// serves `dsh web` (a reverse proxy or Cloudflare Tunnel).
+enum HostKind { local, ssh, relay, url }
 
-/// Identifies a host: the on-device engine, a saved SSH host, or a relay
-/// (ds-harness-remote) device. Equality is by kind + id; [name] is only a
-/// cached display name for relay hosts (their list lives on the server).
+/// Identifies a host: the on-device engine, a saved SSH host, a relay
+/// (ds-harness-remote) device, or a saved direct URL. Equality is by kind +
+/// id; [name] is only a cached display name for relay hosts (their list lives
+/// on the server).
 class HostRef {
   const HostRef._(this.kind, this.id, [this.name]);
 
@@ -38,6 +43,8 @@ class HostRef {
   const HostRef.ssh(String id) : this._(HostKind.ssh, id);
 
   const HostRef.relay(String id, {String? name}) : this._(HostKind.relay, id, name);
+
+  const HostRef.url(String id) : this._(HostKind.url, id);
 
   final HostKind kind;
   final String id;
@@ -58,6 +65,7 @@ class HostRef {
       return switch (map['kind']) {
         'ssh' => HostRef.ssh(id),
         'relay' => HostRef.relay(id, name: name is String ? name : null),
+        'url' => HostRef.url(id),
         _ => local,
       };
     } catch (_) {
@@ -80,6 +88,7 @@ String hostLabel(HostKind kind, String? name) => switch (kind) {
   HostKind.local => appL10n.commonThisPhone,
   HostKind.ssh => '${_short(name ?? appL10n.stateSshHost)} · SSH',
   HostKind.relay => appL10n.stateHostRemoteLabel(_short(name ?? appL10n.commonRemoteHost)),
+  HostKind.url => '${_short(name ?? appL10n.stateUrlHost)} · URL',
 };
 
 String _short(String name) {
@@ -95,9 +104,12 @@ final secretStoreProvider = Provider<SecretStore>((ref) => SecureSecretStore());
 // ── Saved SSH hosts ──────────────────────────────────────────────────────────
 
 class HostsState {
-  const HostsState({this.ssh = const [], this.loaded = false});
+  const HostsState({this.ssh = const [], this.url = const [], this.loaded = false});
 
   final List<SshHostConfig> ssh;
+
+  /// Direct URL hosts (configs only; secrets live in [SecretStore]).
+  final List<UrlHostConfig> url;
   final bool loaded;
 
   SshHostConfig? sshById(String id) {
@@ -106,11 +118,20 @@ class HostsState {
     }
     return null;
   }
+
+  UrlHostConfig? urlById(String id) {
+    for (final h in url) {
+      if (h.id == id) return h;
+    }
+    return null;
+  }
 }
 
-/// Saved SSH hosts: configs in SharedPreferences, secrets in [SecretStore].
+/// Saved SSH and direct-URL hosts: configs in SharedPreferences, secrets in
+/// [SecretStore].
 class HostsController extends Notifier<HostsState> {
   static const prefsKey = 'remote_ssh_hosts';
+  static const urlPrefsKey = 'remote_url_hosts';
 
   SecretStore get _secrets => ref.read(secretStoreProvider);
   late Future<void> _loaded;
@@ -127,6 +148,7 @@ class HostsController extends Notifier<HostsState> {
 
   Future<void> _load() async {
     var hosts = const <SshHostConfig>[];
+    var urls = const <UrlHostConfig>[];
     try {
       final prefs = await SharedPreferences.getInstance();
       final raw = prefs.getString(prefsKey);
@@ -134,17 +156,32 @@ class HostsController extends Notifier<HostsState> {
         final list = jsonDecode(raw);
         if (list is List) hosts = list.map(SshHostConfig.fromJson).whereType<SshHostConfig>().toList();
       }
+      final rawUrls = prefs.getString(urlPrefsKey);
+      if (rawUrls != null) {
+        final list = jsonDecode(rawUrls);
+        if (list is List) urls = list.map(UrlHostConfig.fromJson).whereType<UrlHostConfig>().toList();
+      }
     } catch (_) {
       // No preferences backend (tests) or a corrupt entry: start empty.
     }
-    state = HostsState(ssh: hosts, loaded: true);
+    state = HostsState(ssh: hosts, url: urls, loaded: true);
   }
 
   Future<bool> _persist(List<SshHostConfig> hosts) async {
-    state = HostsState(ssh: List.unmodifiable(hosts), loaded: true);
+    state = HostsState(ssh: List.unmodifiable(hosts), url: state.url, loaded: true);
     try {
       final prefs = await SharedPreferences.getInstance();
       return await prefs.setString(prefsKey, jsonEncode([for (final h in hosts) h.toJson()]));
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<bool> _persistUrl(List<UrlHostConfig> hosts) async {
+    state = HostsState(ssh: state.ssh, url: List.unmodifiable(hosts), loaded: true);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return await prefs.setString(urlPrefsKey, jsonEncode([for (final h in hosts) h.toJson()]));
     } catch (_) {
       return false;
     }
@@ -242,6 +279,90 @@ class HostsController extends Notifier<HostsState> {
     final host = state.sshById(id);
     if (host == null) return;
     await saveSsh(host.copyWith(hostKeyType: () => null, hostKeyFingerprint: () => null));
+  }
+
+  // ── Saved direct URL hosts ──
+
+  /// Adds or replaces [config]. With [secrets], stores the launch token,
+  /// access token and extra headers; the session cookie is owned by the link
+  /// ([saveUrlCookie]) and never cleared here.
+  /// Returns the preferences write result. A false result does not undo the
+  /// in-memory config or any completed secret operations.
+  Future<bool> saveUrl(UrlHostConfig config, {UrlHostSecrets? secrets}) async {
+    await _loaded;
+    ref.read(readListCredentialEpochProvider.notifier).advance();
+    if (secrets != null) await _writeUrlSecrets(config.id, secrets);
+    final hosts = [...state.url];
+    final index = hosts.indexWhere((h) => h.id == config.id);
+    if (index >= 0) {
+      hosts[index] = config;
+    } else {
+      hosts.add(config);
+    }
+    return _persistUrl(hosts);
+  }
+
+  Future<void> _writeUrlSecrets(String id, UrlHostSecrets secrets) async {
+    Future<void> put(String key, String? value) async {
+      final text = value?.trim() ?? '';
+      if (text.isEmpty) {
+        await _secrets.delete(key);
+      } else {
+        await _secrets.write(key, text);
+      }
+    }
+
+    await put(UrlHostSecrets.launchTokenKey(id), secrets.launchToken);
+    await put(UrlHostSecrets.accessTokenKey(id), secrets.accessToken);
+    await put(UrlHostSecrets.headersKey(id), secrets.headers);
+  }
+
+  Future<UrlHostSecrets> loadUrlSecrets(String id) async {
+    Future<String?> get(String key) async {
+      try {
+        return await _secrets.read(key);
+      } catch (_) {
+        return null;
+      }
+    }
+
+    return UrlHostSecrets(
+      launchToken: await get(UrlHostSecrets.launchTokenKey(id)),
+      accessToken: await get(UrlHostSecrets.accessTokenKey(id)),
+      headers: await get(UrlHostSecrets.headersKey(id)),
+      cookie: await get(UrlHostSecrets.cookieKey(id)),
+    );
+  }
+
+  /// Keeps the engine's session cookie (or forgets it after a refusal), so a
+  /// restart needs the launch token only when the cookie itself expired.
+  Future<void> saveUrlCookie(String id, String? cookieJson) async {
+    final key = UrlHostSecrets.cookieKey(id);
+    try {
+      final text = cookieJson?.trim() ?? '';
+      if (text.isEmpty) {
+        await _secrets.delete(key);
+      } else {
+        await _secrets.write(key, text);
+      }
+    } catch (_) {}
+  }
+
+  /// Removes the host and its secrets; switches back to 本机 if it was active.
+  Future<void> removeUrl(String id) async {
+    await _loaded;
+    await _persistUrl([...state.url.where((h) => h.id != id)]);
+    for (final key in [
+      UrlHostSecrets.launchTokenKey(id),
+      UrlHostSecrets.accessTokenKey(id),
+      UrlHostSecrets.headersKey(id),
+      UrlHostSecrets.cookieKey(id),
+    ]) {
+      try {
+        await _secrets.delete(key);
+      } catch (_) {}
+    }
+    unawaited(ref.read(activeHostProvider.notifier).forget((h) => h == HostRef.url(id)));
   }
 }
 

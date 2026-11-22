@@ -28,6 +28,7 @@ import 'pairing_page.dart';
 import 'relay_credit.dart';
 import 'relay_login_sheet.dart';
 import 'ssh_host_form.dart';
+import 'url_host_form.dart';
 import 'session_backup_page.dart';
 import 'remote_web/remote_web_entry.dart';
 
@@ -86,10 +87,19 @@ class RemoteScreen extends ConsumerWidget {
     if (nothingHere && ref.read(activeHostProvider).isLocal) await _use(context, ref, HostRef.ssh(saved.id));
   }
 
+  Future<void> _addUrl(BuildContext context, WidgetRef ref) async {
+    final saved = await Navigator.of(context)
+        .push<UrlHostConfig>(MaterialPageRoute(builder: (_) => const UrlHostFormPage()));
+    if (saved == null || !context.mounted) return;
+    final nothingHere = ref.read(localRuntimeProvider).status.runtimeMissing;
+    if (nothingHere && ref.read(activeHostProvider).isLocal) await _use(context, ref, HostRef.url(saved.id));
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
     final ssh = ref.watch(hostsProvider.select((s) => s.ssh));
+    final urls = ref.watch(hostsProvider.select((s) => s.url));
     final active = ref.watch(activeHostProvider);
     final signedIn = ref.watch(relayAccountProvider.select((a) => a.value?.signedIn ?? false));
     void push(Widget page) => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => page));
@@ -133,6 +143,26 @@ class RemoteScreen extends ConsumerWidget {
           ],
         ),
         SettingsSection(
+          title: l10n.remoteUrlHosts,
+          footer: Text(l10n.remoteUrlRequirements),
+          children: [
+            for (final h in urls)
+              _UrlRow(
+                config: h,
+                active: active == HostRef.url(h.id),
+                onTap: () => _use(context, ref, HostRef.url(h.id)),
+                onEdit: () => push(UrlHostFormPage(existing: h)),
+              ),
+            SettingsTile(
+              icon: AppIcons.add,
+              tinted: false,
+              title: l10n.remoteAddUrlHost,
+              subtitle: urls.isEmpty ? l10n.remoteUrlDirect : null,
+              onTap: () => unawaited(_addUrl(context, ref)),
+            ),
+          ],
+        ),
+        SettingsSection(
           title: l10n.remoteOtherMethods,
           children: [
             SettingsTile(
@@ -145,7 +175,7 @@ class RemoteScreen extends ConsumerWidget {
           ],
         ),
         // Only meaningful once there is a host to come back to.
-        if (ssh.isNotEmpty || signedIn)
+        if (ssh.isNotEmpty || urls.isNotEmpty || signedIn)
           SettingsSection(
             title: l10n.remoteStartupSection,
             children: [
@@ -188,11 +218,12 @@ class _ActiveCard extends ConsumerWidget {
     final view = HostStatusView.ofLink(status);
     final name = ref.watch(hostNameProvider(active)) ?? l10n.commonRemoteHost;
     final ssh = active.kind == HostKind.ssh ? ref.watch(hostsProvider).sshById(active.id) : null;
+    final url = active.kind == HostKind.url ? ref.watch(hostsProvider).urlById(active.id) : null;
     final error = status.error;
-    // Errors a retry can't fix go to the host's settings (SSH) or the trust
-    // check (relay) instead.
+    // Errors a retry can't fix go to the host's settings (SSH / URL) or the
+    // trust check (relay) instead.
     final needsLogin = active.kind == HostKind.relay && error?.kind == HostLinkErrorKind.notLoggedIn;
-    final needsSettings = ssh != null && error != null && !error.retryable;
+    final needsSettings = (ssh != null || url != null) && error != null && !error.retryable;
     final needsTrust =
         active.kind == HostKind.relay &&
         (error?.kind == HostLinkErrorKind.hostKeyMismatch || error?.kind == HostLinkErrorKind.hostKeyUnverified);
@@ -212,7 +243,19 @@ class _ActiveCard extends ConsumerWidget {
             AnimatedStatusDot(tone: view.tone, size: 7),
             const SizedBox(width: 6),
             Flexible(
-              child: Text(_statusLine(status, view, ssh?.address), maxLines: 1, overflow: TextOverflow.ellipsis),
+              child: Text(
+                _statusLine(
+                  status,
+                  view,
+                  ssh != null
+                      ? l10n.remoteConnectedSsh(ssh.address)
+                      : url != null
+                      ? l10n.remoteConnectedUrl(url.address)
+                      : null,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
             if (active.kind == HostKind.relay && status.isConnected) ...[
               const SizedBox(width: 6),
@@ -257,9 +300,12 @@ class _ActiveCard extends ConsumerWidget {
                     : needsSettings
                     ? (
                         l10n.remoteHostSettings,
-                        () =>
-                            Navigator.of(context)
-                                .push(MaterialPageRoute<void>(builder: (_) => SshHostFormPage(existing: ssh))),
+                        () => Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) =>
+                                ssh != null ? SshHostFormPage(existing: ssh) : UrlHostFormPage(existing: url),
+                          ),
+                        ),
                       )
                     : needsTrust
                     ? (
@@ -277,13 +323,13 @@ class _ActiveCard extends ConsumerWidget {
     );
   }
 
-  static String _statusLine(HostLinkStatus status, HostStatusView view, String? address) {
+  static String _statusLine(HostLinkStatus status, HostStatusView view, String? connected) {
     if (status.phase == HostLinkPhase.reconnecting) {
       final why = status.error?.message;
       return why == null ? appL10n.remoteReconnectingEllipsis : appL10n.remoteReconnectReason(why);
     }
     if (status.phase == HostLinkPhase.connected) {
-      if (address != null) return appL10n.remoteConnectedSsh(address);
+      if (connected != null) return connected;
       final path = status.network?.path ?? status.path;
       return path == null ? appL10n.remoteConnectedEncrypted : appL10n.remoteConnectedVia(path.label);
     }
@@ -384,6 +430,38 @@ class _SshRow extends ConsumerWidget {
       inMutuallyExclusiveGroup: true,
       child: SettingsTile(
         icon: hostKindIcon(HostKind.ssh),
+        tinted: false,
+        title: config.name,
+        subtitle: config.address,
+        onTap: onTap,
+        value: view == null ? null : _HostState(view),
+        trailing: _EdgeIconButton(
+          icon: const Icon(AppIcons.configure, size: 20),
+          tooltip: l10n.commonEdit,
+          onPressed: onEdit,
+        ),
+      ),
+    );
+  }
+}
+
+class _UrlRow extends ConsumerWidget {
+  const _UrlRow({required this.config, required this.active, required this.onTap, required this.onEdit});
+
+  final UrlHostConfig config;
+  final bool active;
+  final VoidCallback onTap;
+  final VoidCallback onEdit;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+    final view = active ? watchHostStatus(ref, HostRef.url(config.id)) : null;
+    return Semantics(
+      selected: active,
+      inMutuallyExclusiveGroup: true,
+      child: SettingsTile(
+        icon: hostKindIcon(HostKind.url),
         tinted: false,
         title: config.name,
         subtitle: config.address,

@@ -198,11 +198,13 @@ class DshConnection {
     Uri baseUri, {
     this.hostHeader,
     this.cookie,
+    Map<String, String>? headers,
     HttpClient? httpClient,
     this.connectTimeout = const Duration(seconds: 10),
     this.requestTimeout = const Duration(seconds: 120),
     DshTracer? tracer,
   }) : baseUri = _normalizeBase(baseUri),
+       headers = Map.unmodifiable(headers ?? const {}),
        _http = httpClient ?? HttpClient(),
        _ownsClient = httpClient == null,
        _usesDefaultHttp = httpClient == null && HttpOverrides.current == null,
@@ -220,6 +222,11 @@ class DshConnection {
 
   /// Overrides the `Host` header (`host:port`); defaults to [baseUri]'s authority.
   final String? hostHeader;
+
+  /// Extra request headers sent with every exchange and the WebSocket upgrade
+  /// (for example a reverse proxy's `Authorization` or Cloudflare Access
+  /// service-token headers). [hostHeader] and [cookie] win over the same names.
+  final Map<String, String> headers;
   final Duration connectTimeout;
   final Duration requestTimeout;
   DshTracer? _tracer;
@@ -238,7 +245,12 @@ class DshConnection {
   /// True only for the unmodified stock transport without a tracer or custom
   /// HttpClient/HttpOverrides. Custom behavior continues through postJson.
   bool get canReadSessionsInBackground =>
-      runtimeType == DshConnection && _usesDefaultHttp && !_closed && tracer == null && HttpOverrides.current == null;
+      runtimeType == DshConnection &&
+      _usesDefaultHttp &&
+      !_closed &&
+      tracer == null &&
+      HttpOverrides.current == null &&
+      headers.isEmpty;
 
   /// Explicit opt-in used by the HTTP client. A worker owns this read's entire
   /// HTTP chain and decode; closing this connection retires its pending reads.
@@ -485,6 +497,7 @@ class DshConnection {
       final req = await http.getUrl(uri);
       req.followRedirects = false;
       req.persistentConnection = false;
+      _applyHeaders(req.headers);
       _applyHost(req.headers);
       if (cookie != null) req.headers.set(HttpHeaders.cookieHeader, cookie!.header);
       final response = await req.close();
@@ -528,11 +541,15 @@ class DshConnection {
   /// A missing/expired cookie fails the upgrade with HTTP 401 and a fence
   /// failure with 403; both surface as [DshHttpException].
   Future<WebSocket> connectWebSocket(String path, {Duration? timeout}) async {
-    final headers = <String, Object>{if (cookie != null) 'Cookie': cookie!.header, 'Host': ?hostHeader};
+    final requestHeaders = <String, Object>{
+      ...headers,
+      'Cookie': ?cookie?.header,
+      'Host': ?hostHeader,
+    };
     final uri = webSocketUri(path);
     var abandoned = false;
     try {
-      return await WebSocket.connect(uri.toString(), headers: headers, customClient: _http)
+      return await WebSocket.connect(uri.toString(), headers: requestHeaders, customClient: _http)
           .then((socket) {
             // A timeout does not cancel the upgrade. Own a late socket until it
             // can be handed to the caller; closing HttpClient cannot reclaim it.
@@ -624,6 +641,7 @@ class DshConnection {
         throw const DshClosedException('HTTP request cancelled');
       }
       req.followRedirects = followRedirects;
+      _applyHeaders(req.headers);
       _applyHost(req.headers);
       if (cookie != null) req.headers.set(HttpHeaders.cookieHeader, cookie!.header);
       if (contentType != null) req.headers.set(HttpHeaders.contentTypeHeader, contentType);
@@ -676,6 +694,13 @@ class DshConnection {
     } finally {
       settled = true;
       unsubscribe?.call();
+    }
+  }
+
+  /// Adds [headers] without letting a request's own headers be replaced.
+  void _applyHeaders(HttpHeaders target) {
+    for (final entry in headers.entries) {
+      target.set(entry.key, entry.value);
     }
   }
 
@@ -794,6 +819,7 @@ final class _DshHttpStream {
       throw _reason ?? const DshClosedException('HTTP request cancelled');
     }
     request.followRedirects = false;
+    connection._applyHeaders(request.headers);
     connection._applyHost(request.headers);
     final cookie = connection.cookie;
     if (cookie != null) request.headers.set(HttpHeaders.cookieHeader, cookie.header);

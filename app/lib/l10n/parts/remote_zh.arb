@@ -580,7 +580,7 @@
   "remoteRelaySwitchWarning": "DSH Remote 一次只连一台主机，切换会断开上一台",
   "remoteConnectComputer": "连接电脑或服务器",
   "remoteManageHosts": "管理远程主机",
-  "remoteConnectionMethods": "通过 SSH 或 DSH Remote",
+  "remoteConnectionMethods": "通过 SSH、DSH Remote 或直连地址",
   "remoteRelayLoginRequired": "填写服务器地址、邮箱和密码",
   "remoteErrSignIn": "没能登录",
   "remoteSelfHostedServer": "自建服务器",
@@ -596,6 +596,37 @@
   "remoteSshRequirements": "需要那台主机开着 SSH，并装好 DSH",
   "remoteAddSshHost": "添加 SSH 主机",
   "remoteSshDirect": "不经过第三方服务器",
+  "remoteUrlHosts": "直连地址",
+  "remoteUrlRequirements": "填 dsh web 打印出的地址；Cloudflare Tunnel 或反向代理也可以",
+  "remoteAddUrlHost": "用地址添加",
+  "remoteUrlDirect": "不用账号，不用配对",
+  "remoteUrlHostIntro": "粘贴提供 DSH 的 HTTPS 地址。这台手机直接连它，不用登录账号，也不经过中继。",
+  "remoteUrlAddress": "地址",
+  "remoteUrlAddressHint": "https://dsh.example.com",
+  "remoteUrlLaunchToken": "引擎登录令牌",
+  "remoteUrlLaunchTokenHint": "dsh web 打印的地址里 ?token= 后面那段。加密保存；只有已保存的会话过期时才需要再填。",
+  "remoteUrlAccessToken": "访问令牌（可选）",
+  "remoteUrlAccessTokenHint": "作为 Authorization: Bearer 发送，给 Cloudflare Access 或其他代理用。",
+  "remoteUrlHeaders": "额外请求头（可选）",
+  "remoteUrlHeadersHint": "每行一个 Name: value；Cloudflare Access 的 service token 在这里填 CF-Access-Client-Id 和 CF-Access-Client-Secret。",
+  "remoteUrlErrRequired": "填写主机地址",
+  "remoteUrlErrInvalid": "填写完整地址，例如 https://dsh.example.com",
+  "remoteUrlErrInsecure": "用 https://；只有 localhost 允许明文 http://",
+  "remoteUrlErrQuery": "地址后面只允许 ?token=",
+  "remoteUrlErrHeaders": "每行必须是 Name: value（Host 和 Cookie 由 App 设置）",
+  "remoteUrlErrUnreachable": "连不上这个地址",
+  "remoteUrlErrTokenRejected": "主机拒绝了这次登录",
+  "remoteUrlErrTokenRejectedDetail": "在主机设置里重新粘贴 dsh web 当前打印的地址（带 ?token=…）。",
+  "remoteUrlErrNotTrusted": "引擎不信任「{authority}」",
+  "@remoteUrlErrNotTrusted": {
+    "placeholders": {
+      "authority": {
+        "type": "String"
+      }
+    }
+  },
+  "remoteUrlErrNotFound": "这个地址上没有 DSH 网页版",
+  "remoteUrlDeleteBody": "这个地址和保存在手机上的令牌会被删除。那台机器上的 DSH 和对话不受影响。",
   "remoteOtherMethods": "其他方式",
   "remoteWebConsole": "网页版远程控制台",
   "remoteWebConsoleProvider": "dsh.r2049.cn · 第三方页面",
@@ -633,6 +664,14 @@
   "remotePathTurn": "TURN",
   "remotePathRelay": "Relay 中继",
   "remoteConnectedSsh": "已连接 · SSH {address}",
+  "remoteConnectedUrl": "已连接 · {address}",
+  "@remoteConnectedUrl": {
+    "placeholders": {
+      "address": {
+        "type": "String"
+      }
+    }
+  },
   "@remoteConnectedSsh": {
     "placeholders": {
       "address": {

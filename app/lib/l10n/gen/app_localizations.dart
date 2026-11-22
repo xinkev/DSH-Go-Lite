@@ -26549,7 +26549,7 @@ abstract class L10n {
   /// No description provided for @remoteConnectionMethods.
   ///
   /// In zh, this message translates to:
-  /// **'通过 SSH 或 DSH Remote'**
+  /// **'通过 SSH、DSH Remote 或直连地址'**
   String get remoteConnectionMethods;
 
   /// No description provided for @remoteRelayLoginRequired.
@@ -26641,6 +26641,150 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'不经过第三方服务器'**
   String get remoteSshDirect;
+
+  /// No description provided for @remoteUrlHosts.
+  ///
+  /// In zh, this message translates to:
+  /// **'直连地址'**
+  String get remoteUrlHosts;
+
+  /// No description provided for @remoteUrlRequirements.
+  ///
+  /// In zh, this message translates to:
+  /// **'填 dsh web 打印出的地址；Cloudflare Tunnel 或反向代理也可以'**
+  String get remoteUrlRequirements;
+
+  /// No description provided for @remoteAddUrlHost.
+  ///
+  /// In zh, this message translates to:
+  /// **'用地址添加'**
+  String get remoteAddUrlHost;
+
+  /// No description provided for @remoteUrlDirect.
+  ///
+  /// In zh, this message translates to:
+  /// **'不用账号，不用配对'**
+  String get remoteUrlDirect;
+
+  /// No description provided for @remoteUrlHostIntro.
+  ///
+  /// In zh, this message translates to:
+  /// **'粘贴提供 DSH 的 HTTPS 地址。这台手机直接连它，不用登录账号，也不经过中继。'**
+  String get remoteUrlHostIntro;
+
+  /// No description provided for @remoteUrlAddress.
+  ///
+  /// In zh, this message translates to:
+  /// **'地址'**
+  String get remoteUrlAddress;
+
+  /// No description provided for @remoteUrlAddressHint.
+  ///
+  /// In zh, this message translates to:
+  /// **'https://dsh.example.com'**
+  String get remoteUrlAddressHint;
+
+  /// No description provided for @remoteUrlLaunchToken.
+  ///
+  /// In zh, this message translates to:
+  /// **'引擎登录令牌'**
+  String get remoteUrlLaunchToken;
+
+  /// No description provided for @remoteUrlLaunchTokenHint.
+  ///
+  /// In zh, this message translates to:
+  /// **'dsh web 打印的地址里 ?token= 后面那段。加密保存；只有已保存的会话过期时才需要再填。'**
+  String get remoteUrlLaunchTokenHint;
+
+  /// No description provided for @remoteUrlAccessToken.
+  ///
+  /// In zh, this message translates to:
+  /// **'访问令牌（可选）'**
+  String get remoteUrlAccessToken;
+
+  /// No description provided for @remoteUrlAccessTokenHint.
+  ///
+  /// In zh, this message translates to:
+  /// **'作为 Authorization: Bearer 发送，给 Cloudflare Access 或其他代理用。'**
+  String get remoteUrlAccessTokenHint;
+
+  /// No description provided for @remoteUrlHeaders.
+  ///
+  /// In zh, this message translates to:
+  /// **'额外请求头（可选）'**
+  String get remoteUrlHeaders;
+
+  /// No description provided for @remoteUrlHeadersHint.
+  ///
+  /// In zh, this message translates to:
+  /// **'每行一个 Name: value；Cloudflare Access 的 service token 在这里填 CF-Access-Client-Id 和 CF-Access-Client-Secret。'**
+  String get remoteUrlHeadersHint;
+
+  /// No description provided for @remoteUrlErrRequired.
+  ///
+  /// In zh, this message translates to:
+  /// **'填写主机地址'**
+  String get remoteUrlErrRequired;
+
+  /// No description provided for @remoteUrlErrInvalid.
+  ///
+  /// In zh, this message translates to:
+  /// **'填写完整地址，例如 https://dsh.example.com'**
+  String get remoteUrlErrInvalid;
+
+  /// No description provided for @remoteUrlErrInsecure.
+  ///
+  /// In zh, this message translates to:
+  /// **'用 https://；只有 localhost 允许明文 http://'**
+  String get remoteUrlErrInsecure;
+
+  /// No description provided for @remoteUrlErrQuery.
+  ///
+  /// In zh, this message translates to:
+  /// **'地址后面只允许 ?token='**
+  String get remoteUrlErrQuery;
+
+  /// No description provided for @remoteUrlErrHeaders.
+  ///
+  /// In zh, this message translates to:
+  /// **'每行必须是 Name: value（Host 和 Cookie 由 App 设置）'**
+  String get remoteUrlErrHeaders;
+
+  /// No description provided for @remoteUrlErrUnreachable.
+  ///
+  /// In zh, this message translates to:
+  /// **'连不上这个地址'**
+  String get remoteUrlErrUnreachable;
+
+  /// No description provided for @remoteUrlErrTokenRejected.
+  ///
+  /// In zh, this message translates to:
+  /// **'主机拒绝了这次登录'**
+  String get remoteUrlErrTokenRejected;
+
+  /// No description provided for @remoteUrlErrTokenRejectedDetail.
+  ///
+  /// In zh, this message translates to:
+  /// **'在主机设置里重新粘贴 dsh web 当前打印的地址（带 ?token=…）。'**
+  String get remoteUrlErrTokenRejectedDetail;
+
+  /// No description provided for @remoteUrlErrNotTrusted.
+  ///
+  /// In zh, this message translates to:
+  /// **'引擎不信任「{authority}」'**
+  String remoteUrlErrNotTrusted(String authority);
+
+  /// No description provided for @remoteUrlErrNotFound.
+  ///
+  /// In zh, this message translates to:
+  /// **'这个地址上没有 DSH 网页版'**
+  String get remoteUrlErrNotFound;
+
+  /// No description provided for @remoteUrlDeleteBody.
+  ///
+  /// In zh, this message translates to:
+  /// **'这个地址和保存在手机上的令牌会被删除。那台机器上的 DSH 和对话不受影响。'**
+  String get remoteUrlDeleteBody;
 
   /// No description provided for @remoteOtherMethods.
   ///
@@ -26737,6 +26881,12 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'已连接 · SSH {address}'**
   String remoteConnectedSsh(String address);
+
+  /// No description provided for @remoteConnectedUrl.
+  ///
+  /// In zh, this message translates to:
+  /// **'已连接 · {address}'**
+  String remoteConnectedUrl(String address);
 
   /// No description provided for @remoteErrRefreshHosts.
   ///
@@ -32557,6 +32707,12 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'SSH 主机'**
   String get stateSshHost;
+
+  /// No description provided for @stateUrlHost.
+  ///
+  /// In zh, this message translates to:
+  /// **'URL'**
+  String get stateUrlHost;
 
   /// No description provided for @stateHostBrowserFailed.
   ///
@@ -43783,6 +43939,12 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'还没连上「{name}」，连上后再打开网页版'**
   String webConnectHostFirst(String name);
+
+  /// No description provided for @webUrlNeedsToken.
+  ///
+  /// In zh, this message translates to:
+  /// **'填上引擎登录令牌（dsh web 地址里 ?token= 那段）才能打开网页版'**
+  String get webUrlNeedsToken;
 
   /// No description provided for @workshopTitle.
   ///

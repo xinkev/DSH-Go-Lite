@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:dsh_app/remote/ssh/ssh_link.dart';
+import 'package:dsh_app/remote/url/url_link.dart';
 import 'package:dsh_app/runtime/runtime_state.dart';
 import 'package:dsh_app/state/connection_state.dart';
 import 'package:dsh_app/state/hosts_state.dart';
@@ -29,7 +30,8 @@ const islandsWithoutGuard = bool.fromEnvironment('DSH_GO_LOCAL_ISLANDS');
 /// Whether a host may have islands at all (§9). Pure:
 ///
 /// - relay: never (no DSH Web over the relay);
-/// - SSH: yes, the same exposure as the 网页版 entry that's already there;
+/// - SSH and a direct URL: yes, the same exposure as the 网页版 entry that's
+///   already there;
 /// - on-device: only once the route guard ships with the runtime — the
 ///   bridge says so ([reported], `routeGuard` in `/dsh-go/v1/inventory`)
 ///   *and* a cookieless call to a plugin route is refused ([probed]). Any
@@ -42,7 +44,7 @@ bool islandHostAllowed(
   bool override = false,
 }) => switch (kind) {
   HostKind.relay => false,
-  HostKind.ssh => true,
+  HostKind.ssh || HostKind.url => true,
   HostKind.local => override || (reported == true && probed == RouteGuard.present),
 };
 
@@ -141,6 +143,16 @@ final islandHostUrlProvider = Provider.autoDispose.family<Uri?, HostRef>((ref, h
       final token = link is SshHostLink ? link.endpoint?.token : null;
       if (port == null || token == null) return null;
       return islandLaunchUri('http://127.0.0.1:$port', token);
+    case HostKind.url:
+      ref.watch(hostLinkStatusProvider(host));
+      final link = ref.watch(hostLinkProvider(host));
+      final token = link is UrlHostLink ? link.launchToken : null;
+      final config = ref.watch(hostsProvider).urlById(host.id);
+      if (token == null || config == null) return null;
+      return config.baseUri.replace(
+        path: config.baseUri.path.isEmpty ? '/' : '${config.baseUri.path}/',
+        queryParameters: {'token': token},
+      );
     case HostKind.relay:
       return null;
   }
