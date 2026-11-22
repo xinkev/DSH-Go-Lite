@@ -3436,9 +3436,6 @@ class L10nEn extends L10n {
   String get catalogPlugins => 'Plugins';
 
   @override
-  String get catalogCordisSummary => 'Dynamic panels from plugins';
-
-  @override
   String get catalogAgentTeam => 'Agent team';
 
   @override
@@ -7403,9 +7400,6 @@ class L10nEn extends L10n {
   String get featuresModulePresent => 'File delivery tool';
 
   @override
-  String get featuresModuleCordis => 'Plugin API lookup tool';
-
-  @override
   String get featuresModuleSubagent => 'Subagent delegation tool';
 
   @override
@@ -7413,12 +7407,6 @@ class L10nEn extends L10n {
 
   @override
   String get featuresModuleWorkflow => 'Workflow tool';
-
-  @override
-  String get featuresModulePluginManager => 'Plugin management tool';
-
-  @override
-  String get featuresModulePluginMarket => 'Plugin marketplace tool';
 
   @override
   String get featuresModuleToolCalls => 'Tool call style';

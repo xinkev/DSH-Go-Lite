@@ -6020,12 +6020,6 @@ abstract class L10n {
   /// **'插件'**
   String get catalogPlugins;
 
-  /// No description provided for @catalogCordisSummary.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件创建的动态面板'**
-  String get catalogCordisSummary;
-
   /// No description provided for @catalogAgentTeam.
   ///
   /// In zh, this message translates to:
@@ -12968,12 +12962,6 @@ abstract class L10n {
   /// **'文件交付工具'**
   String get featuresModulePresent;
 
-  /// No description provided for @featuresModuleCordis.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件 API 查询工具'**
-  String get featuresModuleCordis;
-
   /// No description provided for @featuresModuleSubagent.
   ///
   /// In zh, this message translates to:
@@ -12991,18 +12979,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'工作流工具'**
   String get featuresModuleWorkflow;
-
-  /// No description provided for @featuresModulePluginManager.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件管理工具'**
-  String get featuresModulePluginManager;
-
-  /// No description provided for @featuresModulePluginMarket.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件市场工具'**
-  String get featuresModulePluginMarket;
 
   /// No description provided for @featuresModuleToolCalls.
   ///

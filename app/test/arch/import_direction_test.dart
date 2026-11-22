@@ -28,8 +28,6 @@ const _allowed = {
   'plugins/native/native_icons.dart -> ui/theme/app_icons.dart',
   'plugins/native/native_state.dart -> ui/chat/dsh_ui/dsh_ui_model.dart',
   'plugins/seams/adapters/cordis_adapter.dart -> ui/common/list_page_row.dart',
-  'plugins/seams/adapters/cordis_adapter.dart -> ui/cordis/cordis_page.dart',
-  'plugins/seams/adapters/cordis_adapter.dart -> ui/cordis/cordis_plugin_sheet.dart',
   'plugins/seams/adapters/dsh_ui_panel_adapter.dart -> ui/plugins/native/native_panel.dart',
   'plugins/seams/adapters/schema_config_adapter.dart -> ui/common/list_page_row.dart',
   'plugins/seams/adapters/schema_config_adapter.dart -> ui/engine_settings/engine_settings_page.dart',

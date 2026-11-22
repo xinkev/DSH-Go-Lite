@@ -3253,9 +3253,6 @@ class L10nZh extends L10n {
   String get catalogPlugins => '插件';
 
   @override
-  String get catalogCordisSummary => '插件创建的动态面板';
-
-  @override
   String get catalogAgentTeam => '智能体团队';
 
   @override
@@ -7001,9 +6998,6 @@ class L10nZh extends L10n {
   String get featuresModulePresent => '文件交付工具';
 
   @override
-  String get featuresModuleCordis => '插件 API 查询工具';
-
-  @override
   String get featuresModuleSubagent => '子代理委派工具';
 
   @override
@@ -7011,12 +7005,6 @@ class L10nZh extends L10n {
 
   @override
   String get featuresModuleWorkflow => '工作流工具';
-
-  @override
-  String get featuresModulePluginManager => '插件管理工具';
-
-  @override
-  String get featuresModulePluginMarket => '插件市场工具';
 
   @override
   String get featuresModuleToolCalls => '工具调用方式';

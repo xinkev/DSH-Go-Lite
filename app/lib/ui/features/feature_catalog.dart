@@ -14,7 +14,6 @@ import '../common/feature_tile.dart';
 import '../agents/team_page.dart';
 import '../bots/bots_page.dart';
 import '../community/community_page.dart';
-import '../cordis/cordis_page.dart';
 import '../files/files_page.dart';
 import '../forum/forum_home_page.dart';
 import '../phone/phone_control_screen.dart';
@@ -253,13 +252,6 @@ final featureSections = <FeatureSection>[
     ),
   ]),
   FeatureSection.localized((l10n) => l10n.catalogPlugins, [
-    FeatureItem.localized(
-      id: 'cordis',
-      title: (_) => 'Cordis',
-      summary: (l10n) => l10n.catalogCordisSummary,
-      icon: AppIcons.cordis,
-      native: (id) => CordisPage(sessionId: id),
-    ),
     FeatureItem.localized(
       id: 'agent-team',
       title: (l10n) => l10n.catalogAgentTeam,

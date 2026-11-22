@@ -20,7 +20,6 @@ import 'package:dsh_app/ui/chat/chat_screen.dart';
 import 'package:dsh_app/ui/chat/model_sheet.dart' show ModelChip;
 import 'package:dsh_app/ui/chat/usage_sheet.dart' show ContextRing;
 import 'package:dsh_app/ui/chat/widgets/whale_tail.dart' show WhaleSprites;
-import 'package:dsh_app/ui/cordis/cordis_page.dart';
 import 'package:dsh_app/ui/engine/engine_screen.dart';
 import 'package:dsh_app/ui/features/all_features_page.dart';
 import 'package:dsh_app/ui/files/files_page.dart';
@@ -51,7 +50,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../chat/support/harness.dart' hide fakeConnection;
 import '../../chat/support/sample_chat.dart';
-import '../../cordis/support.dart';
 import '../../files/support/files_harness.dart';
 import '../../phone/harness.dart';
 import '../../phone/support.dart' show FakePhoneNative, PhoneTestRuntime, runningRuntime;
@@ -227,10 +225,6 @@ void main() {
       overrides: terminalOverrides(FakeTerminalBackend()..createdScreen = sampleScreen),
     ),
     before: (tester, _) => settleTerminal(tester),
-  );
-  capture(
-    'cordis',
-    (_) => goldenApp(home: const CordisPage(), brightness: Brightness.light, overrides: cordisOverrides()),
   );
 
   // ── Sheets, dialogs, replay ──────────────────────────────────────────────
