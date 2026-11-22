@@ -96,36 +96,6 @@ class EngineSettingsHubPage extends ConsumerWidget {
                 ),
             ],
           ),
-          sw.SettingsSection(
-            title: l10n.engineSettingsPlugins,
-            children: [
-
-              // No confirmed plugin list: no plugin's settings, and a way to ask again.
-              if (config?.scope.status == PluginScopeStatus.failed)
-                sw.SettingsTile(
-                  icon: AppIcons.error,
-                  tinted: false,
-                  title: l10n.pluginConfigListFailed,
-                  value: Text(l10n.commonRetry),
-                  onTap: () => retryPluginList(ref),
-                ),
-              for (final ns in plugins)
-                sw.SettingsTile(
-                  icon: AppIcons.plugin,
-                  tinted: false,
-                  spot: pluginFormSpot(ns, (l) => pluginConfigTitle(ns, bundles, state: config, l10n: l)),
-                  // Fixed by an overlay: said here, not only once opened.
-                  subtitle: pluginConfigReadOnlyNote(config, ns, l10n: l10n),
-                  onTap: () => _open(
-                    context,
-                    PluginConfigPage(
-                      ns: ns,
-                      title: pluginConfigTitle(ns, bundles, state: config, l10n: l10n),
-                    ),
-                  ),
-                ),
-            ],
-          ),
         ],
       ],
     );
