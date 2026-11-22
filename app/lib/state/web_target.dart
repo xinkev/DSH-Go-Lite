@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:dsh_client/dsh_client.dart' show PluginBundle;
-
 import '../l10n/l10n.dart';
 
 /// A page of the official DSH Web client the app can land on.
@@ -83,23 +81,6 @@ class DshWebTarget {
 
   /// A copy aimed at [sessionId] (keeps the destination).
   DshWebTarget inSession(String? sessionId) => _copy(sessionId: sessionId, pluginItem: pluginItem);
-
-  /// A copy whose [pluginItem] also names the bundle behind each name that is
-  /// and its package name, which is what the Plugins page shows and marks a
-  /// card with. An entry id alone matches no card there.
-  DshWebTarget withPluginNames(Iterable<PluginBundle>? bundles) {
-    if (bundles == null || pluginItem.isEmpty) return this;
-    final names = [..._pluginLabels];
-    for (final label in _pluginLabels) {
-      for (final bundle in bundles) {
-        if (bundle.name == label || !bundle.rows.any((row) => row.rowId == label)) continue;
-        for (final name in [...?bundle.meta?.title?.all, bundle.name]) {
-          if (!names.contains(name)) names.add(name);
-        }
-      }
-    }
-    return names.length == _pluginLabels.length ? this : _copy(sessionId: sessionId, pluginItem: names);
-  }
 
   DshWebTarget _copy({required String? sessionId, required List<String> pluginItem}) => DshWebTarget(
     sessionId: sessionId,

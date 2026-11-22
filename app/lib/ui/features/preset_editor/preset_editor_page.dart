@@ -37,16 +37,13 @@ import 'preset_composition.dart';
 enum PresetEditMode { create, duplicate, edit }
 
 class PresetEditorPage extends ConsumerStatefulWidget {
-  const PresetEditorPage({super.key, this.mode = PresetEditMode.create, this.source, this.bundle});
+  const PresetEditorPage({super.key, this.mode = PresetEditMode.create, this.source});
 
   final PresetEditMode mode;
 
   /// Duplicate: the preset copied; edit: the preset changed. Null for a new
   /// preset (it starts from the standard one).
   final AgentPresetInfo? source;
-
-  /// Edit: the bundle that declares [source] now.
-  final PluginBundle? bundle;
 
   @override
   ConsumerState<PresetEditorPage> createState() => _PresetEditorPageState();
@@ -181,7 +178,6 @@ class _PresetEditorPageState extends ConsumerState<PresetEditorPage> {
       name: name,
       description: _description.text.trim(),
       order: _isEdit ? widget.source?.order : (orders.isEmpty ? 10 : orders.reduce((a, b) => a > b ? a : b) + 1),
-      packageName: _isEdit ? widget.bundle?.name : null,
       plugins: composition.render(
         enabled: _enabled,
         prompt: composition.hasPersona && _prompt.text != composition.prompt ? _prompt.text.trim() : null,
@@ -230,7 +226,7 @@ class _PresetEditorPageState extends ConsumerState<PresetEditorPage> {
     try {
       final session = await startCreator(
         ref,
-        bundle.request(replacing: _isEdit ? widget.bundle?.name : null),
+        bundle.request(),
         isCurrent: ownsSave,
       );
       if (mounted && ownsSave()) openSessionInChat(context, ref, session);

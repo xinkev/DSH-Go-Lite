@@ -25,8 +25,94 @@ library;
 import 'background_session_read.dart';
 import 'features_api.dart';
 import 'json.dart';
-import 'plugins_api.dart';
 import 'session_api.dart';
+
+// -----------------------------------------------------------------------------
+// Localized text
+// -----------------------------------------------------------------------------
+
+/// A plain string or a map of language id to text (`{en, zh, ...}`).
+class LocalizedText {
+  const LocalizedText(this.values);
+
+  /// Text without language information (stored under the empty key).
+  LocalizedText.plain(String text) : values = {'': text};
+
+  /// Lenient reader: a non-blank string, or a map whose non-blank string
+  /// members are kept. `null` when nothing usable remains.
+  static LocalizedText? fromJson(Object? json) {
+    if (json is String) return json.trim().isEmpty ? null : LocalizedText.plain(json);
+    final map = asMap(json);
+    if (map == null) return null;
+    final values = <String, String>{};
+    for (final MapEntry(:key, :value) in map.entries) {
+      if (value is String && value.trim().isNotEmpty) values[_tag(key)] = value;
+    }
+    return values.isEmpty ? null : LocalizedText(values);
+  }
+
+  /// `zh_CN` → `zh-cn`: plugins spell language ids both ways (schemastery
+  /// takes whatever keys `.i18n()` is given).
+  static String _tag(String id) => id.toLowerCase().replaceAll('_', '-');
+
+  static final _han = RegExp(r'[\u3400-\u9fff]');
+
+  /// Language id (lowercase, `zh`, `zh-cn`, ...) or `''` for plain text.
+  final Map<String, String> values;
+
+  /// Best text for [locale]: exact id, then its language, then any variant
+  /// of that language, then plain text written in it, then English (`en`,
+  /// then any variant), then plain text, then the first value.
+  ///
+  /// Plain text is what `.description()` gave before `.i18n()` added
+  /// languages (schemastery keeps it under `''`): a Chinese plugin that only
+  /// translated into English must still read in Chinese for a Chinese UI.
+  String resolve([String locale = 'zh']) {
+    final tagged = {for (final MapEntry(:key, :value) in values.entries) _tag(key): value};
+    final wanted = _tag(locale);
+    final language = wanted.split('-').first;
+    String? of(String language) =>
+        tagged[language] ?? tagged.entries.where((e) => e.key.startsWith('$language-')).map((e) => e.value).firstOrNull;
+    final plain = tagged[''];
+    // Chinese is told apart by its characters; anything else counts as the
+    // other UI language.
+    final plainMatches = plain != null && _han.hasMatch(plain) == (language == 'zh');
+    return tagged[wanted] ?? of(language) ?? (plainMatches ? plain : null) ?? of('en') ?? plain ?? values.values.first;
+  }
+
+  /// Every variant, for search.
+  Iterable<String> get all => values.values;
+
+  Object toJson() => values.length == 1 && values.containsKey('') ? values['']! : values;
+
+  @override
+  String toString() => resolve();
+}
+
+/// Display metadata of a plugin inventory row (`meta`).
+class PluginDisplayMeta {
+  const PluginDisplayMeta({this.title, this.description, this.icon, this.error});
+
+  static PluginDisplayMeta? fromJson(Object? json) {
+    final map = asMap(json);
+    if (map == null) return null;
+    return PluginDisplayMeta(
+      title: LocalizedText.fromJson(map['title']),
+      description: LocalizedText.fromJson(map['description']),
+      icon: asString(map['icon']),
+      error: asString(map['error']),
+    );
+  }
+
+  final LocalizedText? title;
+  final LocalizedText? description;
+
+  /// Base64 image `data:` URL (render as an image, never as markup).
+  final String? icon;
+
+  /// Local metadata diagnostic; the plugin stays manageable.
+  final String? error;
+}
 
 // -----------------------------------------------------------------------------
 // Schemastery
@@ -611,22 +697,6 @@ class PluginInventory {
       ],
     );
   }
-
-  /// Built from `pluginManager/listPlugins` where the inventory Remote is not
-  /// reachable (the relay allow-list): no preset compositions.
-  factory PluginInventory.fromEntries(List<PluginEntry> entries) => PluginInventory(
-    entries: [
-      for (final e in entries)
-        if (e.entryId.isNotEmpty)
-          PluginInventoryEntry(
-            entryId: e.entryId,
-            moduleName: e.moduleName,
-            enabled: e.enabled,
-            meta: e.meta,
-            fiberPhase: e.fiberPhase,
-          ),
-    ],
-  );
 
   final bool managementAvailable;
 

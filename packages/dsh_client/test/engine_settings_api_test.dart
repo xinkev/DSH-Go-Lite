@@ -265,12 +265,6 @@ void main() {
       expect(inventory.presets.first.isDefault, isTrue);
       final bash = inventory.presets.first.rows.firstWhere((r) => r.entryId == 'tool-bash');
       expect(bash.condition, contains('win32'));
-
-      final fallback = PluginInventory.fromEntries(const [
-        PluginEntry(entryId: 'include:x', moduleName: 'x', enabled: true, fiberPhase: 'failed'),
-      ]);
-      expect(fallback.entries.single.rowId, 'x');
-      expect(fallback.presets, isEmpty);
     });
   });
 }

@@ -1,11 +1,11 @@
 /// What the native automation-task and Agent-preset editors need beyond
 /// [FeaturesApi]: timing edits (`schedule/update` with `change`), the
-/// `schedule_create` selector the creation request carries, the bundle that
-/// declares a preset, and `agentPresets/select`.
+/// `schedule_create` selector the creation request carries, and
+/// `agentPresets/select`.
 ///
 /// Verified against DSH 0.2.1-rc.2 (`@deepseek-ai/dsh-schedule` update and
-/// create validators, `dsh-agent-preset-registry` Remote typings,
-/// `dsh-plugin-manager` `listBundles`) and a throwaway `dsh web`.
+/// create validators, `dsh-agent-preset-registry` Remote typings) and a
+/// throwaway `dsh web`.
 ///
 /// The Host has no create Remote for either: a task is made by the model's
 /// `schedule_create` tool in the conversation that will receive it, and a
@@ -14,7 +14,6 @@ library;
 
 import 'features_api.dart';
 import 'json.dart';
-import 'plugins_api.dart';
 import 'session_api.dart';
 
 /// One run-time rule in the shape `schedule/update` (`change`) and
@@ -204,19 +203,4 @@ extension EditorsApi on DshClient {
     return asString(value) ?? preset;
   }
 
-  /// The removable profile bundle whose patch declares preset [id]: a
-  /// `preset-<id>` row of [agentPresetModule]. Null for built-in presets,
-  /// shipped bundles and declarations no single bundle owns.
-  Future<PluginBundle?> agentPresetBundle(String id) async {
-    if (builtInAgentPresets.contains(id)) return null;
-    final owners = [
-      for (final bundle in await listBundles())
-        if (bundle.removable &&
-            !bundle.official &&
-            !bundle.optional &&
-            bundle.rows.any((r) => r.moduleName == agentPresetModule && r.rowId == 'preset-$id'))
-          bundle,
-    ];
-    return owners.length == 1 ? owners.single : null;
-  }
 }

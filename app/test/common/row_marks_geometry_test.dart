@@ -3,7 +3,6 @@
 // chip in front of a chevron — ends on the same edge, 16dp in from the card.
 // Glyphs are measured by their ink (Material path extents), not their boxes.
 
-import 'package:dsh_app/state/engine_settings_state.dart';
 import 'package:dsh_app/ui/agents/agent_widgets.dart';
 import 'package:dsh_app/ui/common/list_page_row.dart';
 import 'package:dsh_app/ui/common/overview_card.dart';
@@ -46,9 +45,6 @@ Rect _card(WidgetTester tester, Finder inside) =>
 /// How far in from [card]'s right edge the ink of [icon] (the [at]th) ends.
 double _inkInset(WidgetTester tester, Rect card, IconData icon, double inkRight, {int at = 0}) =>
     card.right - (tester.getRect(find.byIcon(icon).at(at)).left + inkRight);
-
-InventoryItem _item(String title, {bool system = false}) =>
-    InventoryItem(entryId: title, moduleName: title, title: title, status: InventoryStatus.running, system: system);
 
 void main() {
   testWidgets('a picked row\'s ✓ ends where a chevron ends', (tester) async {

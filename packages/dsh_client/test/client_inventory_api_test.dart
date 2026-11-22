@@ -53,31 +53,6 @@ String _indexHtml(Object? graph, {String assignment = 'globalThis["__DSH_BOOT__"
       '<script>(globalThis.__DSH_BOOT_READY__ ??= Promise.withResolvers()).resolve()</script></body></html>';
 }
 
-Map<String, Object?> _bundle(
-  String name, {
-  bool official = false,
-  bool enabled = true,
-  bool installed = true,
-  List<String> rows = const [],
-}) => {
-  'name': name,
-  'official': official,
-  'availability': installed ? 'profile' : 'installation',
-  'version': '1.0.0',
-  'enabled': enabled,
-  'installed': installed,
-  'rows': [
-    for (final row in rows) {'rowId': row, 'moduleName': name, 'entryId': 'include:$row'},
-  ],
-};
-
-final _bundles = [
-  _bundle('dsh-pet', rows: ['pet', 'pet-voice']),
-  _bundle('dsh-cost-meter', rows: ['cost-meter']),
-  _bundle('novel-writer', rows: ['novel-writer']),
-  _bundle('@deepseek-ai/dsh-experimental-session-search', official: true, installed: false, enabled: false),
-];
-
 const _bridge = {
   'v': 1,
   'release': {'version': '0.2.1-rc.2'},
@@ -240,40 +215,25 @@ void main() {
   });
 
   group('ClientInventory.combine', () {
-    final bundles = _bundles.map(PluginBundle.fromJson).toList();
     final boot = WebBootGraph.fromJson(_graph)!;
     final bridge = BridgeInventory.fromJson(_bridge)!;
 
-    test('bundles only: nothing known about browser halves', () {
-      final inventory = ClientInventory.combine(bundles: bundles);
-      expect(inventory.tier, ClientInventoryTier.bundles);
-      expect(inventory.clientsKnown, isFalse);
-      expect(inventory.packages.keys, [
-        'dsh-pet',
-        'dsh-cost-meter',
-        'novel-writer',
-        '@deepseek-ai/dsh-experimental-session-search',
-      ]);
-      expect(inventory.packages.values.any((p) => p.hasClient), isFalse);
-      expect(inventory.slots, isNull);
-      expect(inventory.occupancyStale, isFalse);
-      expect(inventory.routeGuard, isFalse);
-      expect(inventory.packages['dsh-pet']!.rowIds, ['pet', 'pet-voice']);
-    });
-
     test('Tier A: the boot graph says who has a browser half', () {
-      final inventory = ClientInventory.combine(bundles: bundles, boot: boot);
+      final inventory = ClientInventory.combine(boot: boot);
       expect(inventory.tier, ClientInventoryTier.boot);
-      expect(inventory.clientsKnown, isTrue);
       expect(inventory.bootRev, 'g1');
       expect(inventory.release?.commit, '9f2c1d0');
       final pet = inventory.packages['dsh-pet']!;
-      expect((pet.hasClient, pet.rev, pet.official, pet.enabled, pet.installed), (true, 'p1', false, true, true));
-      expect(inventory.packages['novel-writer']!.hasClient, isFalse);
-      // Client packages that are no bundle are listed after the bundles.
+      expect((pet.hasClient, pet.rev, pet.official, pet.enabled), (true, 'p1', false, true));
+      expect(inventory.packages['dsh-cost-meter']!.hasClient, isTrue);
       final chat = inventory.packages['@deepseek-ai/dsh-client-ui-chat']!;
-      expect((chat.hasClient, chat.official, chat.enabled, chat.installed), (true, true, true, false));
-      expect(inventory.packages.keys.last, '@deepseek-ai/dsh-client-ui-chat');
+      expect((chat.hasClient, chat.official, chat.enabled), (true, true, true));
+      expect(inventory.packages.keys, [
+        '@deepseek-ai/dsh-client-modules',
+        '@deepseek-ai/dsh-client-ui-chat',
+        'dsh-pet',
+        'dsh-cost-meter',
+      ]);
       expect(inventory.isOfficial('@deepseek-ai/dsh-experimental-session-search'), isTrue);
       expect(inventory.isOfficial('dsh-cost-meter'), isFalse);
       expect(inventory.isOfficial('dsh-go-bridge'), isTrue);
@@ -282,7 +242,7 @@ void main() {
     });
 
     test('Tier B: occupancy with officials marked, fresh for the same boot rev', () {
-      final inventory = ClientInventory.combine(bundles: bundles, boot: boot, bridge: bridge);
+      final inventory = ClientInventory.combine(boot: boot, bridge: bridge);
       expect(inventory.tier, ClientInventoryTier.bridge);
       expect(inventory.occupancyStale, isFalse);
       expect(inventory.routeGuard, isTrue);
@@ -300,7 +260,7 @@ void main() {
 
     test('Tier B is stale on another boot rev, without a table or rev', () {
       final moved = WebBootGraph.fromJson({..._graph, 'rev': 'g2'})!;
-      expect(ClientInventory.combine(bundles: bundles, boot: moved, bridge: bridge).occupancyStale, isTrue);
+      expect(ClientInventory.combine(boot: moved, bridge: bridge).occupancyStale, isTrue);
       final noTable = BridgeInventory.fromJson({'bootRev': 'g1', 'routeGuard': true})!;
       expect(ClientInventory.combine(boot: boot, bridge: noTable).occupancyStale, isTrue);
       final noRev = BridgeInventory.fromJson({'slots': <String, Object?>{}})!;
@@ -308,12 +268,12 @@ void main() {
     });
 
     test('Tier B without the page: the bridge fills in browser halves and rev', () {
-      final inventory = ClientInventory.combine(bundles: bundles, bridge: bridge);
+      final inventory = ClientInventory.combine(bridge: bridge);
       expect(inventory.tier, ClientInventoryTier.bridge);
       expect(inventory.bootRev, 'g1');
       expect(inventory.occupancyStale, isFalse);
+      expect(inventory.packages.keys, ['dsh-pet']);
       expect(inventory.packages['dsh-pet']!.hasClient, isTrue);
-      expect(inventory.packages['dsh-cost-meter']!.hasClient, isFalse);
     });
 
     test('reported stale occupancy stays stale with an unavailable or earlier page', () {
@@ -323,7 +283,7 @@ void main() {
         'occupancy': {'stale': true},
       })!;
       for (final page in <WebBootGraph?>[null, boot]) {
-        final inventory = ClientInventory.combine(bundles: bundles, boot: page, bridge: stale);
+        final inventory = ClientInventory.combine(boot: page, bridge: stale);
         expect(inventory.tier, ClientInventoryTier.bridge);
         expect(inventory.occupancyStale, isTrue);
         expect(inventory.slots, isNotEmpty, reason: 'retain the report while asking for a refresh');
@@ -569,28 +529,23 @@ void main() {
       expect(inventory.tier, ClientInventoryTier.bridge);
       expect(inventory.routeGuard, isTrue);
 
-      // A broken page and a broken bridge only lower the tier.
+      // A broken page and a broken bridge leave neither tier.
       host.indexStatus = 500;
       host.bridgeStatus = 500;
       inventory = await client.readClientInventory();
-      expect(inventory.tier, ClientInventoryTier.bundles);
-      expect(inventory.packages.keys, contains('novel-writer'));
-    });
-
-    test('the bundle list is required', () async {
-      host.failBundles = true;
-      await expectLater(client.readClientInventory(), throwsA(isA<DshRemoteException>()));
+      expect(inventory.tier, ClientInventoryTier.none);
+      expect(inventory.packages, isEmpty);
     });
   });
 
   group('carrier without pages (relay)', () {
-    test('bundles only, page reads refused', () async {
+    test('no tier, page reads refused', () async {
       final client = DshClient.withCarrier(_RelayCarrier());
       addTearDown(client.close);
       expect(client.canReadWebBoot, isFalse);
       final inventory = await client.readClientInventory();
-      expect(inventory.tier, ClientInventoryTier.bundles);
-      expect(inventory.packages.keys, contains('dsh-pet'));
+      expect(inventory.tier, ClientInventoryTier.none);
+      expect(inventory.packages, isEmpty);
       await expectLater(
         client.readWebBoot(),
         throwsA(isA<DshRemoteException>().having((e) => e.code, 'code', 'client-inventory/unsupported')),
@@ -612,7 +567,7 @@ class _Request {
 }
 
 /// `dsh web` as far as these calls go: launch-token login, cookie check on
-/// the index page, `pluginManager/listBundles`, and an optional bridge route.
+/// the index page, and an optional bridge route.
 class _FakeHost {
   _FakeHost._(this._server);
 
@@ -638,7 +593,6 @@ class _FakeHost {
   Map<String, Object?>? capabilities;
   String? capabilitiesBody;
   int? capabilitiesStatus;
-  bool failBundles = false;
 
   Future<void> close() => _server.close(force: true);
 
@@ -683,21 +637,6 @@ class _FakeHost {
             response.write(jsonEncode(snapshot));
           }
         }
-      case '/api/pluginManager/listBundles':
-        final envelope = jsonDecode(await utf8.decodeStream(request)) as Map<String, Object?>;
-        response.headers.contentType = ContentType.json;
-        response.write(
-          jsonEncode({
-            'type': 'server-response',
-            'rpcId': envelope['rpcId'],
-            'result': failBundles
-                ? {
-                    'ok': false,
-                    'error': {'code': 'plugin-manager/unavailable', 'message': 'off', 'details': {}},
-                  }
-                : {'ok': true, 'value': _bundles},
-          }),
-        );
       default:
         response.statusCode = 404;
     }
@@ -715,9 +654,7 @@ class _RelayCarrier extends DshCarrier {
 
   @override
   Future<RpcResult> call(String endpoint, Map<String, Object?> args, {Duration? timeout}) async =>
-      endpoint == 'pluginManager/listBundles'
-      ? RpcOk(_bundles)
-      : RpcError(DshRemoteException('gateway/method-not-allowed', endpoint));
+      RpcError(DshRemoteException('gateway/method-not-allowed', endpoint));
 
   @override
   Future<DshMuxLink> openLink(MuxOptions options) =>

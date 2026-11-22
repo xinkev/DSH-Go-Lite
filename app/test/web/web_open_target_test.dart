@@ -9,24 +9,12 @@ import 'dart:convert';
 
 import 'package:dsh_app/ui/web/web_target.dart';
 import 'package:dsh_app/ui/web/web_view_page.dart';
-import 'package:dsh_client/dsh_client.dart' show PluginBundle;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/foundation.dart';
 import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 
 import '../chat/support/harness.dart';
 import 'support/fake_webview.dart';
-
-PluginBundle _bundle(String name, Map<String, String> title, List<String> rows) => PluginBundle.fromJson({
-  'name': name,
-  'meta': {'title': title},
-  'enabled': true,
-  'installed': true,
-  'source': 'npm',
-  'rows': [
-    for (final id in rows) {'rowId': id, 'moduleName': name},
-  ],
-});
 
 void main() {
   for (final platform in [TargetPlatform.iOS, TargetPlatform.android]) {
@@ -53,32 +41,6 @@ void main() {
       expect(const DshWebTarget(pluginItem: ['', ' ']).toJson(), isEmpty);
     });
 
-    test('an entry id names its bundle: titles and package, after what was asked', () {
-      final bundles = [
-        _bundle('@acme/dsh-weather', {'zh': '天气', 'en': 'Weather'}, ['weather', 'weather-alerts']),
-        _bundle('@acme/dsh-clock', {'zh': '时钟', 'en': 'Clock'}, ['clock']),
-      ];
-      final target = const DshWebTarget(pluginItem: ['weather-alerts']).withPluginNames(bundles);
-      expect(target.pluginItem, ['weather-alerts', '天气', 'Weather', '@acme/dsh-weather']);
-      // The open script carries them.
-      final script = target.openScript;
-      final json = jsonDecode(script.substring(script.indexOf('(', script.indexOf('__dshAppOpen(')) + 1, script.length - 2));
-      expect((json as Map)['pluginItem'], target.pluginItem);
-    });
-
-    test('names a card already has, or nothing installed knows, stay as they are', () {
-      final bundles = [
-        _bundle('@acme/dsh-weather', {'zh': '天气'}, ['weather']),
-      ];
-      const titled = DshWebTarget(pluginItem: ['天气', '@acme/dsh-weather']);
-      expect(identical(titled.withPluginNames(bundles), titled), isTrue);
-      const unknown = DshWebTarget(pluginItem: ['agent-loop']);
-      expect(identical(unknown.withPluginNames(bundles), unknown), isTrue);
-      expect(identical(unknown.withPluginNames(null), unknown), isTrue);
-      // The session and the rest of the destination are kept.
-      final inSession = const DshWebTarget(sessionId: 's1', pluginItem: ['weather']).withPluginNames(bundles);
-      expect(inSession.sessionId, 's1');
-    });
   });
 
   group('landing after a failed load', () {

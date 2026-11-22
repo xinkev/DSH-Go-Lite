@@ -1,14 +1,14 @@
 /// Which packages run a browser half, and where they sit in the official web
 /// client's slots (docs/design/plugin-seams.md §5).
 ///
-/// * Tier A, any Host: [PluginsApi.listBundles] plus the boot graph the Host
-///   injects into its index page as `__DSH_BOOT__` ([parseWebBootGraph]; the
-///   page is read as text, nothing in it runs).
+/// * Tier A, a Host with pages: the boot graph the Host injects into its index
+///   page as `__DSH_BOOT__` ([parseWebBootGraph]; the page is read as text,
+///   nothing in it runs).
 /// * Tier B, a Host with the app's `dsh-go-bridge` package: its occupancy table
 ///   at `GET /dsh-go/v1/inventory` ([BridgeInventory]).
 ///
-/// Both pages are HTTP routes, so over the relay tunnel only the bundle list
-/// is left ([ClientInventoryTier.bundles]).
+/// Both are HTTP routes, so over the relay tunnel neither is reachable
+/// ([ClientInventoryTier.none]).
 ///
 /// Boot graph shape verified against DSH 0.2.1-rc.2
 /// (`dsh-client-modules/lib/types/client/manifest.d.ts` `WebBootGraph`;
@@ -19,9 +19,9 @@ library;
 import 'carrier.dart';
 import 'connection.dart';
 import 'dsh_go_api.dart';
+import 'engine_settings_api.dart';
 import 'errors.dart';
 import 'json.dart';
-import 'plugins_api.dart';
 import 'session_api.dart';
 
 // -----------------------------------------------------------------------------
@@ -331,10 +331,10 @@ class BridgeInventory {
 
 /// How much the inventory knows.
 enum ClientInventoryTier {
-  /// The bundle list only (relay tunnel): no browser halves known.
-  bundles,
+  /// Neither page was readable (the relay tunnel, or both reads failed).
+  none,
 
-  /// Tier A: bundles plus the boot graph.
+  /// Tier A: the boot graph.
   boot,
 
   /// Tier B: the bridge's occupancy table as well.
@@ -349,9 +349,6 @@ class ClientPackage {
     this.rev,
     this.official = false,
     this.enabled = false,
-    this.installed = false,
-    this.version,
-    this.rowIds = const [],
     this.panels = const [],
     this.pet,
   });
@@ -361,11 +358,6 @@ class ClientPackage {
   final String? rev;
   final bool official;
   final bool enabled;
-  final bool installed;
-  final String? version;
-
-  /// The bundle's row ids (each one a settings namespace).
-  final List<String> rowIds;
   final List<String> panels;
   final String? pet;
 }
@@ -373,7 +365,7 @@ class ClientPackage {
 /// Packages, their browser halves and (Tier B) slot occupancy of one Host.
 class ClientInventory {
   const ClientInventory({
-    this.tier = ClientInventoryTier.bundles,
+    this.tier = ClientInventoryTier.none,
     this.release,
     this.bootRev,
     this.packages = const {},
@@ -383,39 +375,24 @@ class ClientInventory {
   });
 
   /// Merges what was read; any part may be missing.
-  factory ClientInventory.combine({
-    List<PluginBundle> bundles = const [],
-    WebBootGraph? boot,
-    BridgeInventory? bridge,
-  }) {
+  factory ClientInventory.combine({WebBootGraph? boot, BridgeInventory? bridge}) {
     final bridgePackages = {for (final p in bridge?.packages ?? const <BridgePackage>[]) p.name: p};
     final clients = boot?.packages;
     final packages = <String, ClientPackage>{};
-    ClientPackage package(String name, {PluginBundle? bundle}) {
+    ClientPackage package(String name) {
       final fromBridge = bridgePackages[name];
       final entry = boot?.entry(name);
       return ClientPackage(
         name: name,
         hasClient: clients?.contains(name) ?? fromBridge?.hasClient ?? false,
         rev: entry?.rev ?? fromBridge?.rev,
-        official: (bundle?.official ?? false) || isOfficialPackageName(name),
-        enabled: bundle?.enabled ?? (entry != null || (fromBridge?.hasClient ?? false)),
-        installed: bundle?.installed ?? false,
-        version: bundle?.version,
-        rowIds: [
-          for (final row in bundle?.rows ?? const <PluginBundleRow>[])
-            if (row.rowId.isNotEmpty) row.rowId,
-        ],
+        official: isOfficialPackageName(name),
+        enabled: entry != null || (fromBridge?.hasClient ?? false),
         panels: fromBridge?.panels ?? const [],
         pet: fromBridge?.pet,
       );
     }
 
-    for (final bundle in bundles) {
-      if (bundle.name.isNotEmpty) packages[bundle.name] = package(bundle.name, bundle: bundle);
-    }
-    // Client packages that are not bundles of their own (hand-written rows,
-    // installation infrastructure).
     for (final name in [...?clients, ...bridgePackages.keys]) {
       packages.putIfAbsent(name, () => package(name));
     }
@@ -430,7 +407,7 @@ class ClientInventory {
           ? ClientInventoryTier.bridge
           : boot != null
           ? ClientInventoryTier.boot
-          : ClientInventoryTier.bundles,
+          : ClientInventoryTier.none,
       release: boot?.release ?? bridge?.release,
       bootRev: boot?.rev ?? bridge?.bootRev,
       packages: packages,
@@ -452,7 +429,7 @@ class ClientInventory {
   /// could not be read).
   final String? bootRev;
 
-  /// By package name: every bundle, then client packages that are no bundle.
+  /// By package name: everything the boot graph or the bridge reports.
   final Map<String, ClientPackage> packages;
 
   /// Tier B occupancy; null below Tier B or before a page reported.
@@ -462,9 +439,6 @@ class ClientInventory {
   /// graph: open a probe island to refresh it.
   final bool occupancyStale;
   final bool routeGuard;
-
-  /// Browser halves are known (Tier A or B).
-  bool get clientsKnown => tier != ClientInventoryTier.bundles;
 
   bool isOfficial(String package) => packages[package]?.official ?? isOfficialPackageName(package);
 }
@@ -521,14 +495,12 @@ extension ClientInventoryApi on DshClient {
     return inventory;
   }
 
-  /// Bundles (required), then the boot graph and the bridge table where the
-  /// carrier reaches them; a failure of either optional part only lowers the
-  /// tier.
+  /// The boot graph and the bridge table where the carrier reaches them; a
+  /// failure of either part only lowers the tier.
   Future<ClientInventory> readClientInventory() async {
     final boot = canReadWebBoot ? _orNull(readWebBoot()) : Future<WebBootGraph?>.value();
     final bridge = canReadWebBoot ? _orNull(readBridgeInventory()) : Future<BridgeInventory?>.value();
-    final bundles = await listBundles();
-    return ClientInventory.combine(bundles: bundles, boot: await boot, bridge: await bridge);
+    return ClientInventory.combine(boot: await boot, bridge: await bridge);
   }
 
   Future<DshHttpResponse> _get(String path, Duration timeout) {

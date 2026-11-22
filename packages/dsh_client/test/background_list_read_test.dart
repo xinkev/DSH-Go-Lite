@@ -153,42 +153,6 @@ void main() {
         expect(settings.profiles.single.models.single.extra, {'extra': null});
       });
 
-      test('plugin bundle and entry metadata preserve localized and optional fields', () async {
-        // Same captured shape as plugins_api_test; the identifiers here are
-        // deliberately synthetic, and do not assert an installed live plugin.
-        final row = {
-          'name': 'test-bundle',
-          'entryId': 'include:test-plugin',
-          'moduleName': 'test-plugin',
-          'enabled': true,
-          'installed': true,
-          'availability': 'profile',
-          'version': '1.2.3',
-          'meta': {
-            'title': {'en': 'Speech', 'zh': '语音'},
-            'description': 'kept',
-          },
-          'rows': [
-            {'rowId': 'test-plugin', 'moduleName': 'test-plugin', 'entryId': 'include:test-plugin'},
-          ],
-          'overrides': <Object?>[],
-          'fiberPhase': 'active',
-        };
-        final server = await wire.host((request, body) async {
-          expect(body['payload'], {'args': <String, Object?>{}});
-          await wire.answer(request, wire.envelope(body, [row]));
-        });
-        final client = connect(server, background: background);
-        final bundle = (await client.listBundles()).single;
-        expect(bundle.name, 'test-bundle');
-        expect(bundle.meta!.title!.resolve('zh'), '语音');
-        expect(bundle.rows.single.entryId, 'include:test-plugin');
-        final plugin = (await client.listPlugins()).single;
-        expect(plugin.entryId, 'include:test-plugin');
-        expect(plugin.fiberPhase, 'active');
-        expect(plugin.meta!.description!.resolve('zh'), 'kept');
-      });
-
       test('credential metadata uses a snapshot of refs and never returns secret values', () async {
         final server = await wire.host((request, body) async {
           expect(body['method'], 'credentials/describe');
@@ -281,7 +245,6 @@ void main() {
             },
           ],
         },
-        'pluginManager/listBundles' => <Object?>[],
         'session/list' => {'items': <Object?>[]},
         _ => captured(endpoint),
       };
@@ -290,9 +253,9 @@ void main() {
     final client = connect(server, background: true);
     final model = client.listModels();
     final settings = client.providerSettings();
-    final plugins = client.listBundles();
+    final providers = client.listProviders();
     final sessions = client.listSessions();
-    final otherReads = Future.wait<Object?>([model, plugins, sessions]);
+    final otherReads = Future.wait<Object?>([model, providers, sessions]);
     try {
       expect((await settings)!.profiles.single.apiKeyEnv, 'DEEPSEEK_API_KEY');
       final metadata = await Future.wait<Object?>([
@@ -315,12 +278,10 @@ void main() {
     addTearDown(client.close);
     expect((await client.listModels()).groups, isEmpty);
     expect(await client.providerSettings(), isNull);
-    expect(await client.listBundles(), isEmpty);
     await expectLater(client.pluginInventory(), throwsA(isA<DshCarrierRefusedException>()));
     expect(carrier.called, [
       'session/modelCatalog',
       'settings/describe',
-      'pluginManager/listBundles',
       'pluginInventory/list',
     ]);
   });

@@ -15,7 +15,6 @@ import 'errors.dart';
 import 'features_api.dart';
 import 'json.dart';
 import 'models.dart';
-import 'plugins_api.dart';
 import 'providers_api.dart';
 import 'rpc.dart';
 import 'rpc_envelope.dart';
@@ -28,8 +27,6 @@ enum BackgroundListKind {
   providers('llm/listProviders'),
   configurableProviders('llm/listConfigurableProviders'),
   providerSettings('settings/describe'),
-  bundles('pluginManager/listBundles'),
-  plugins('pluginManager/listPlugins'),
   inventory('pluginInventory/list'),
   settings('settings/describe'),
   credentials('credentials/describe');
@@ -547,14 +544,6 @@ Object? _readListValue(BackgroundListKind kind, Object? value) {
         return ProviderSettings.fromSection(section);
       }
       return null;
-    case BackgroundListKind.bundles:
-      final items = asListOrEmpty(value);
-      rows(items.length);
-      return items.map(PluginBundle.fromJson).toList(growable: false);
-    case BackgroundListKind.plugins:
-      final items = asListOrEmpty(value);
-      rows(items.length);
-      return items.map(PluginEntry.fromJson).toList(growable: false);
     case BackgroundListKind.inventory:
       rows(asListOrEmpty(map['entries']).length + asListOrEmpty(map['agentPresets']).length);
       return PluginInventory.fromJson(value);
