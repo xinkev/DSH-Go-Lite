@@ -21,7 +21,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../pets/overlay_channel.dart';
 import '../runtime/background_net.dart' show backgroundSettingsProvider;
 import '../runtime/runtime_bridge.dart' show RuntimePhase;
 import '../runtime/runtime_state.dart';
@@ -292,7 +291,6 @@ class SystemAccessDriver implements AccessDriver {
     }
     final bridge = ref.read(runtimeBridgeProvider);
     final phone = ref.read(phoneProvider.notifier);
-    final pet = ref.read(petOverlayProvider.notifier);
     final info = _safe(() => ref.read(backgroundSettingsProvider.future));
     final mic = _readMic();
     final storage = _safe(() async => (await bridge.storageStatus()).granted);
@@ -303,10 +301,8 @@ class SystemAccessDriver implements AccessDriver {
       await phone.refreshStatus();
       return true;
     });
-    final overlay = _safe(pet.refresh);
     await phoneRead;
     final status = ref.read(phoneProvider).status;
-    final petStatus = await overlay;
     final settings = await info;
     // Keep the pages that show the same facts in step.
     ref.invalidate(batteryExemptProvider);
@@ -319,10 +315,8 @@ class SystemAccessDriver implements AccessDriver {
       notifications: await notify,
       battery: await battery,
       accessibility: status.ready ? status.a11y.enabled : null,
-      overlay: petStatus == null || !petStatus.native ? null : petStatus.permission.usable,
-      overlayBlocked: petStatus?.permission == PetOverlayPermission.blocked,
       restricted: status.device.restricted,
-      sdk: status.device.sdkInt ?? (petStatus?.sdk == 0 ? null : petStatus?.sdk),
+      sdk: status.device.sdkInt,
       manufacturer: status.device.manufacturer,
       sideloaded: status.device.sideloaded,
       metered: await metered,
