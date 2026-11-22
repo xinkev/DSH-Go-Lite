@@ -1,47 +1,36 @@
-# Plugin removal plan (goal: remove plugins)
+# Plugin removal — state and the pets dependency
 
-## Delivered (all green, `flutter analyze` 0 errors, top commit c8d6684)
+Top commit at this writing: `ca069df`, `flutter analyze` 0 errors, 50 plugin surfaces removed.
 
-36 plugin surfaces retired: market, plugin docs, plugin screens/settings entries,
-feature-catalog plugin + CoT entries, engine-settings plugin section and its dead
-wiring, config fallback + plugin search entries, every chat plugin rendering path
-(notes, plus-tools, menus, strip, capsules, tool cards, tool views, overlay layer,
-composer scope), the composer chain, the native plugin section, seam controls,
-web places, reload action, capability scope, micro caption, tone, message menu,
-overlay layer, settings tiles, seat probe, pet adapter, cordis island seat.
+## Newly established dependency (rounds 85-86)
 
-## The keystone
+`lib/pets/pet_library.dart` imports `lib/workshop/workshop_models.dart`,
+`workshop_receipt.dart` and `workshop_export.dart` (`WorkshopReceipt`, pet-pack
+publishing). Deleting the workshop feature therefore produced **1,943 errors** and
+was reverted.
 
-All three remaining clusters hang off **`lib/ui/plugins/plugin_detail_sheet.dart`**:
+So the workshop (plugin/pet publishing) cannot be removed while pets exist, and
+pets cannot be removed yet: their engine (`pets/pet_state.dart`, `pet_signals.dart`,
+`overlay_channel.dart`) still feeds live activity and the accessibility "overlay"
+checklist item.
 
-- its config block uses `state/plugin_config/*` + `config/plugin_config_entries`
-  (deleting the config cluster gives 523 errors, nearly all in this sheet and in
-  plugin tests importing `state/plugin_config`)
-- it is imported by `media_settings_page`, three `ui/workshop` sheets,
-  `market_tab`, `installed_tab`, `plugin_inventory_page`, `community_widgets`,
-  `share_card`, `links/plugin_links`, plus 8 tests
+## Current dependency order
 
-The “core dependency” claim was wrong: `state/engine_settings_state.dart` only
-mentions plugin_config in a comment. Nothing in core settings needs it.
+1. **pets teardown** (own objective, not started to completion): live-activity and
+   access-overlay coupling first, then `lib/pets`, `lib/ui/pets`, assets.
+2. **workshop** — `lib/ui/workshop`, `lib/workshop`, `lib/state/workshop_*`,
+   `test/ui/workshop`; only `settings_search_page` + `Spots.workshop` reference it.
+3. **plugin_detail_sheet** — now config-free, seat-free, action-free; its remaining
+   importers are media settings, 3 workshop sheets, market/installed tabs,
+   community widgets, share card, 4 tests.
+4. market/installed tabs + `plugin_actions` + `market_widgets`.
+5. media generation, then seats/islands/seams, `state/plugins_state`, capability
+   runtime, `sdk/plugin-kit`, plugin tests, pubspec.
 
-## Order that will work (one pass, fresh context)
+## What is safely done
 
-1. **Rewrite/delete `plugin_detail_sheet.dart`** together with its 8 importers:
-   remove the sheet call sites from media settings, the three workshop sheets,
-   market/installed tabs, inventory page, community widgets, share card and
-   plugin links; then delete the sheet.
-2. Delete `market_tab`, `installed_tab`, `plugin_inventory_page`,
-   `lib/ui/plugins/config/`, `lib/state/plugin_config/` and their tests.
-3. Media: chat generate mode + `ui/chat/media/generate_sheet.dart` + media cards,
-   then `ui/settings/media_settings_page.dart`, `SettingsPageId.media`, spots.
-4. `ui/workshop/` + its state providers.
-5. `plugins/seams/`, `plugins/native/` leftovers (`native_taps`, `native_panel`,
-   `native_model`, `native_state`), `state/plugins_state`, capability runtime.
-6. `sdk/plugin-kit`, plugin tests, pubspec.
-
-## Rules that held
-
-- Run `cd app && flutter analyze --no-pub` after every step; 0 errors before commit.
-- Relative imports hide usage: count importers by basename before deleting.
-- `git rm` stages deletions: undo with `git reset HEAD <path> && git checkout -- <path>`.
-- Keep `test/plugins/support/` until its non-plugin consumers move.
+Import sweep (27 dead imports), sheet config/seat/action detach, load-status,
+reload action, overlay layer, settings tiles, seat probe, pet adapter, cordis seat,
+message menu, tone, capability scope, micro caption, native plugin section, seam
+controls, web places, plugin links, media install prompt, team enable, tabs'
+call sites, config cluster and inventory page, plugin market/docs.
