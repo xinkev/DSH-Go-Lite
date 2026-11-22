@@ -26,7 +26,6 @@
   "marketFlagOtherBody": "Another trait the automatic checks reported",
   "marketChecksTitle": "Automatic checks",
   "marketChecksClean": "No risky traits found",
-  "marketChecksNote": "Traits the automatic checks found; they don't mean the plugin is malicious",
   "marketCheckedOn": "Checked {date}",
   "@marketCheckedOn": {
     "placeholders": {
@@ -64,44 +63,11 @@
   },
   "marketUpdateAvailable": "Update available",
   "marketBlockedTitle": "This version was withdrawn",
-  "marketBlockedMessage": "The installed {version} was withdrawn from the plugin market. Uninstalling it is recommended.",
-  "@marketBlockedMessage": {
-    "placeholders": {
-      "version": {
-        "type": "String"
-      }
-    }
-  },
   "marketBlockedRow": "Withdrawn version: uninstall recommended",
   "marketBlockedBadge": "Withdrawn",
   "marketVerifying": "Checking the version…",
   "marketMismatchTitle": "Version check failed",
-  "marketMismatchMessage": "{version} on npm isn't the package the plugin market checked. Nothing was installed.",
-  "@marketMismatchMessage": {
-    "placeholders": {
-      "version": {
-        "type": "String"
-      }
-    }
-  },
-  "marketSubmit": "Submit a plugin",
   "marketSubmitHint": "On GitHub; listed once the automatic checks pass",
-  "marketLinkNotFound": "{name} isn't in the plugin market",
-  "@marketLinkNotFound": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "marketVerificationUnavailableTitle": "Could not verify the version",
-  "marketVerificationUnavailableBody": "npm did not return integrity information. Installation has not started. Check your connection and try again.",
-  "marketCombinedCount": "{count} plugins",
-  "@marketCombinedCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  }
+  "marketVerificationUnavailableBody": "npm did not return integrity information. Installation has not started. Check your connection and try again."
 }

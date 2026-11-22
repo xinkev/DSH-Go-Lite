@@ -3589,9 +3589,6 @@ class L10nEn extends L10n {
   String get catalogCordisRemoving => 'Removing…';
 
   @override
-  String get catalogSeatGone => 'Plugin no longer available';
-
-  @override
   String catalogCordisRemoveTitle(String name) {
     return 'Remove “$name”?';
   }
@@ -10010,9 +10007,6 @@ class L10nEn extends L10n {
   String get engineCapNodeScripts => 'Node scripts';
 
   @override
-  String get engineCapMarket => 'Market plugins';
-
-  @override
   String get engineCapBackground => 'In the background';
 
   @override
@@ -10026,9 +10020,6 @@ class L10nEn extends L10n {
 
   @override
   String get engineCapNone => 'Unavailable';
-
-  @override
-  String get marketInstallRefused => 'This engine can\'t install market plugins';
 
   @override
   String get localEnvChooseUseTitle => 'How will you use dsh-Go?';
@@ -10123,9 +10114,6 @@ class L10nEn extends L10n {
   String get marketChecksClean => 'No risky traits found';
 
   @override
-  String get marketChecksNote => 'Traits the automatic checks found; they don\'t mean the plugin is malicious';
-
-  @override
   String marketCheckedOn(String date) {
     return 'Checked $date';
   }
@@ -10161,11 +10149,6 @@ class L10nEn extends L10n {
   String get marketBlockedTitle => 'This version was withdrawn';
 
   @override
-  String marketBlockedMessage(String version) {
-    return 'The installed $version was withdrawn from the plugin market. Uninstalling it is recommended.';
-  }
-
-  @override
   String get marketBlockedRow => 'Withdrawn version: uninstall recommended';
 
   @override
@@ -10178,20 +10161,7 @@ class L10nEn extends L10n {
   String get marketMismatchTitle => 'Version check failed';
 
   @override
-  String marketMismatchMessage(String version) {
-    return '$version on npm isn\'t the package the plugin market checked. Nothing was installed.';
-  }
-
-  @override
-  String get marketSubmit => 'Submit a plugin';
-
-  @override
   String get marketSubmitHint => 'On GitHub; listed once the automatic checks pass';
-
-  @override
-  String marketLinkNotFound(String name) {
-    return '$name isn\'t in the plugin market';
-  }
 
   @override
   String get marketVerificationUnavailableTitle => 'Could not verify the version';
@@ -10199,11 +10169,6 @@ class L10nEn extends L10n {
   @override
   String get marketVerificationUnavailableBody =>
       'npm did not return integrity information. Installation has not started. Check your connection and try again.';
-
-  @override
-  String marketCombinedCount(int count) {
-    return '$count plugins';
-  }
 
   @override
   String get mediaGenerateTile => 'Create';
@@ -10496,10 +10461,6 @@ class L10nEn extends L10n {
   String get mediaSettingsDefaultModel => 'Default model';
 
   @override
-  String get mediaSettingsDefaultFooterLegacy =>
-      'An older plugin has one default model; update it to set images and video separately.';
-
-  @override
   String get mediaSettingsDefaultsFooter =>
       'Choose a default model for images and for video; leave it on Auto to use the first available one.';
 
@@ -10531,10 +10492,6 @@ class L10nEn extends L10n {
   String get mediaSettingsKeyMissing => 'No API key';
 
   @override
-  String get mediaSettingsCatalogMissing =>
-      'The plugin on this host offers no model catalogue. Existing services can still be edited, but nothing can be added and no default chosen yet.';
-
-  @override
   String get mediaSettingsCatalogBroken =>
       'The model catalogue can\'t be read (it may be an incompatible version). Existing services can still be edited, but nothing can be added and no default chosen yet.';
 
@@ -10547,9 +10504,6 @@ class L10nEn extends L10n {
 
   @override
   String get mediaSettingsLimits => 'Request limits';
-
-  @override
-  String get mediaSettingsLimitsHint => 'Caps images and bytes per request; defaults are the plugin hard limits';
 
   @override
   String get mediaSettingsMaxImages => 'Images per request';
@@ -13405,12 +13359,6 @@ class L10nEn extends L10n {
   String get seamsSidebarPage => 'Sidebar entry';
 
   @override
-  String get seamsSettingsPage => 'Plugin settings page';
-
-  @override
-  String get seamsDetailPage => 'Plugin detail extension';
-
-  @override
   String get pluginsFile => 'File';
 
   @override
@@ -14123,41 +14071,13 @@ class L10nEn extends L10n {
   String get plugslotsNoProblems => 'No problems';
 
   @override
-  String plugslotsWantsDraft(String plugin) {
-    return '$plugin wants to read your draft';
-  }
-
-  @override
-  String plugslotsWantsClipboard(String plugin) {
-    return '$plugin wants to read your clipboard';
-  }
-
-  @override
-  String plugslotsWantsBoth(String plugin) {
-    return '$plugin wants to read your draft and clipboard';
-  }
-
-  @override
   String get plugslotsWantsWhen => 'Only when you tap it';
 
   @override
   String get plugslotsAllow => 'Allow';
 
   @override
-  String plugslotsNoResponse(String plugin) {
-    return '$plugin didn\'t respond';
-  }
-
-  @override
-  String plugslotsFailed(String plugin) {
-    return '$plugin ran into a problem';
-  }
-
-  @override
   String get plugslotsNeedsChat => 'Open a chat first';
-
-  @override
-  String get plugslotsPanelOffline => 'Can\'t reach the plugin';
 
   @override
   String plugslotsIssueTooMany(int max) {
@@ -14217,11 +14137,6 @@ class L10nEn extends L10n {
 
   @override
   String get plugslotsIssueNoPlacement => 'Nowhere to show it';
-
-  @override
-  String plugslotsWantsMessage(String plugin) {
-    return '$plugin wants to read this reply';
-  }
 
   @override
   String get plugslotsCodeInvalidManifest => 'The declaration is invalid; native parts are off';
@@ -14313,9 +14228,6 @@ class L10nEn extends L10n {
   }
 
   @override
-  String get plugslotsPickerFailed => 'Could not share the files with this plugin. Try again';
-
-  @override
   String get plugslotsWebPlacesTitle => 'In DSH Web';
 
   @override
@@ -14353,11 +14265,6 @@ class L10nEn extends L10n {
 
   @override
   String get plugslotsChatEntry => 'Plugins';
-
-  @override
-  String plugslotsChatWebFrom(String names) {
-    return 'Web plugins · $names';
-  }
 
   @override
   String get plugViewInvalid => 'Plugin view has an error';
@@ -18835,21 +18742,6 @@ class L10nEn extends L10n {
   String get stateSignInFailed => 'Couldn’t sign in';
 
   @override
-  String get stateMarketTooLarge => 'Plugin catalog is too large. Download stopped.';
-
-  @override
-  String get stateMarketUnreachable => 'Can’t reach the plugin catalog';
-
-  @override
-  String get stateMarketInsecure => 'Couldn’t connect securely to the plugin catalog';
-
-  @override
-  String get stateMarketTimeout => 'Plugin catalog timed out';
-
-  @override
-  String get stateMarketInterrupted => 'Plugin catalog download interrupted';
-
-  @override
   String get stateRegistryDefault => 'Default registry';
 
   @override
@@ -19200,11 +19092,6 @@ class L10nEn extends L10n {
   @override
   String stateHostRemoteLabel(String name) {
     return '$name · Remote';
-  }
-
-  @override
-  String stateMarketHttpError(int status) {
-    return 'Can’t open the plugin catalog (HTTP $status)';
   }
 
   @override
@@ -25029,11 +24916,6 @@ class L10nEn extends L10n {
 
   @override
   String get viewShareStars => 'Stars';
-
-  @override
-  String viewShareInstallCommand(String value) {
-    return 'Install: dsh plugin add $value';
-  }
 
   @override
   String viewSharePhoneInstall(String value) {

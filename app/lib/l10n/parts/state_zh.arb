@@ -201,11 +201,6 @@
   "stateSshHost": "SSH 主机",
   "stateHostBrowserFailed": "没能打开浏览器，可以复制登录链接到浏览器里完成。",
   "stateSignInFailed": "没能登录",
-  "stateMarketTooLarge": "插件目录太大，已停止下载",
-  "stateMarketUnreachable": "没能连上插件目录",
-  "stateMarketInsecure": "没能和插件目录建立安全连接",
-  "stateMarketTimeout": "插件目录加载超时",
-  "stateMarketInterrupted": "插件目录下载中断",
   "stateRegistryDefault": "默认安装源",
   "stateRegistryNpm": "npm 官方源",
   "stateRegistryMirror": "npmmirror 镜像",
@@ -497,14 +492,6 @@
     "placeholders": {
       "name": {
         "type": "String"
-      }
-    }
-  },
-  "stateMarketHttpError": "插件目录暂时打不开（HTTP {status}）",
-  "@stateMarketHttpError": {
-    "placeholders": {
-      "status": {
-        "type": "int"
       }
     }
   },

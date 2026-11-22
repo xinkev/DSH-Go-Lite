@@ -36,50 +36,9 @@
   "plugslotsLastInvoke": "Last response",
   "plugslotsProblems": "Problems",
   "plugslotsNoProblems": "No problems",
-  "plugslotsWantsDraft": "{plugin} wants to read your draft",
-  "@plugslotsWantsDraft": {
-    "placeholders": {
-      "plugin": {
-        "type": "String"
-      }
-    }
-  },
-  "plugslotsWantsClipboard": "{plugin} wants to read your clipboard",
-  "@plugslotsWantsClipboard": {
-    "placeholders": {
-      "plugin": {
-        "type": "String"
-      }
-    }
-  },
-  "plugslotsWantsBoth": "{plugin} wants to read your draft and clipboard",
-  "@plugslotsWantsBoth": {
-    "placeholders": {
-      "plugin": {
-        "type": "String"
-      }
-    }
-  },
   "plugslotsWantsWhen": "Only when you tap it",
   "plugslotsAllow": "Allow",
-  "plugslotsNoResponse": "{plugin} didn't respond",
-  "@plugslotsNoResponse": {
-    "placeholders": {
-      "plugin": {
-        "type": "String"
-      }
-    }
-  },
-  "plugslotsFailed": "{plugin} ran into a problem",
-  "@plugslotsFailed": {
-    "placeholders": {
-      "plugin": {
-        "type": "String"
-      }
-    }
-  },
   "plugslotsNeedsChat": "Open a chat first",
-  "plugslotsPanelOffline": "Can't reach the plugin",
   "plugslotsIssueTooMany": "Up to {max}; the rest are hidden",
   "@plugslotsIssueTooMany": {
     "placeholders": {
@@ -144,14 +103,6 @@
   "plugslotsIssueMissing": "Missing a required field",
   "plugslotsIssueDuplicate": "Duplicate id; skipped",
   "plugslotsIssueNoPlacement": "Nowhere to show it",
-  "plugslotsWantsMessage": "{plugin} wants to read this reply",
-  "@plugslotsWantsMessage": {
-    "placeholders": {
-      "plugin": {
-        "type": "String"
-      }
-    }
-  },
   "plugslotsCodeInvalidManifest": "The declaration is invalid; native parts are off",
   "plugslotsCodeInvalidField": "Wrong format; skipped",
   "plugslotsCodeUnknownField": "Unknown field; ignored",
@@ -194,7 +145,6 @@
       }
     }
   },
-  "plugslotsPickerFailed": "Could not share the files with this plugin. Try again",
   "plugslotsWebPlacesTitle": "In DSH Web",
   "plugslotsPlaceBesideComposer": "Beside the composer",
   "plugslotsPlaceHeader": "Conversation header",
@@ -207,6 +157,5 @@
   "plugslotsPlaceNewChat": "New conversation",
   "plugslotsPlaceElsewhere": "Elsewhere",
   "plugslotsPlaceUnknown": "Its web interface",
-  "plugslotsChatEntry": "Plugins",
-  "plugslotsChatWebFrom": "Web plugins · {names}"
+  "plugslotsChatEntry": "Plugins"
 }

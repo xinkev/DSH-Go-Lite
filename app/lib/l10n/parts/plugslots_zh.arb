@@ -36,50 +36,9 @@
   "plugslotsLastInvoke": "最近响应",
   "plugslotsProblems": "问题",
   "plugslotsNoProblems": "没有问题",
-  "plugslotsWantsDraft": "「{plugin}」要读取输入框",
-  "@plugslotsWantsDraft": {
-    "placeholders": {
-      "plugin": {
-        "type": "String"
-      }
-    }
-  },
-  "plugslotsWantsClipboard": "「{plugin}」要读取剪贴板",
-  "@plugslotsWantsClipboard": {
-    "placeholders": {
-      "plugin": {
-        "type": "String"
-      }
-    }
-  },
-  "plugslotsWantsBoth": "「{plugin}」要读取输入框和剪贴板",
-  "@plugslotsWantsBoth": {
-    "placeholders": {
-      "plugin": {
-        "type": "String"
-      }
-    }
-  },
   "plugslotsWantsWhen": "只在点按它时读取",
   "plugslotsAllow": "允许",
-  "plugslotsNoResponse": "「{plugin}」没有响应",
-  "@plugslotsNoResponse": {
-    "placeholders": {
-      "plugin": {
-        "type": "String"
-      }
-    }
-  },
-  "plugslotsFailed": "「{plugin}」出错了",
-  "@plugslotsFailed": {
-    "placeholders": {
-      "plugin": {
-        "type": "String"
-      }
-    }
-  },
   "plugslotsNeedsChat": "先打开一个对话",
-  "plugslotsPanelOffline": "连不上插件",
   "plugslotsIssueTooMany": "最多 {max} 个，其余不显示",
   "@plugslotsIssueTooMany": {
     "placeholders": {
@@ -144,14 +103,6 @@
   "plugslotsIssueMissing": "缺少必填项",
   "plugslotsIssueDuplicate": "id 重复，已略过",
   "plugslotsIssueNoPlacement": "没有可放的位置",
-  "plugslotsWantsMessage": "「{plugin}」要读取这条回复",
-  "@plugslotsWantsMessage": {
-    "placeholders": {
-      "plugin": {
-        "type": "String"
-      }
-    }
-  },
   "plugslotsCodeInvalidManifest": "声明有误，原生部分已停用",
   "plugslotsCodeInvalidField": "格式不对，已略过",
   "plugslotsCodeUnknownField": "不认识的字段，已忽略",
@@ -194,7 +145,6 @@
       }
     }
   },
-  "plugslotsPickerFailed": "文件未能交给插件，请重试",
   "plugslotsWebPlacesTitle": "网页版界面",
   "plugslotsPlaceBesideComposer": "输入框旁",
   "plugslotsPlaceHeader": "对话顶栏",
@@ -207,13 +157,5 @@
   "plugslotsPlaceNewChat": "新对话页",
   "plugslotsPlaceElsewhere": "其他位置",
   "plugslotsPlaceUnknown": "它的网页界面",
-  "plugslotsChatEntry": "插件",
-  "plugslotsChatWebFrom": "网页插件 · {names}",
-  "@plugslotsChatWebFrom": {
-    "placeholders": {
-      "names": {
-        "type": "String"
-      }
-    }
-  }
+  "plugslotsChatEntry": "插件"
 }

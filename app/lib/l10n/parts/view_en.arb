@@ -318,7 +318,6 @@
   "viewShareWorkflow": "Workflow",
   "viewSharePlugin": "Call plugin",
   "viewShareStars": "Stars",
-  "viewShareInstallCommand": "Install: dsh plugin add {value}",
   "viewSharePhoneInstall": "Install on your phone: {value}",
   "viewShareImages": "Images",
   "viewSharePickMessages": "Select messages",

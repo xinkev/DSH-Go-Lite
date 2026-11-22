@@ -90,7 +90,6 @@
   "catalogCordisMakeup": "组成",
   "catalogCordisStopping": "正在停止…",
   "catalogCordisRemoving": "正在移除…",
-  "catalogSeatGone": "插件已不可用",
   "catalogCordisRemoveTitle": "移除「{name}」？",
   "@catalogCordisRemoveTitle": {
     "placeholders": {

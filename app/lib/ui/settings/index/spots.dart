@@ -344,19 +344,6 @@ abstract final class SettingsIndex {
   }
 }
 
-/// A plugin's own settings form on 引擎设置: known only once the host says
-/// which plugins it has, so not in the table (search adds them from the
-/// engine's settings). [title] in each language, as search matches both.
-SettingSpot pluginFormSpot(String ns, String Function(L10n l10n) title) => SettingSpot(
-  '$pluginFormPrefix$ns',
-  page: SettingsPageId.engineParams,
-  title: title,
-  condition: SpotCondition.engineField,
-);
-
-/// The id prefix of [pluginFormSpot]s.
-const pluginFormPrefix = 'plugin:';
-
 // ── Pages ────────────────────────────────────────────────────────────────────
 
 // The hub's groups, by intent (docs/design/settings-ia.md §4.2).

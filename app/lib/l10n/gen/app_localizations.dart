@@ -6326,12 +6326,6 @@ abstract class L10n {
   /// **'正在移除…'**
   String get catalogCordisRemoving;
 
-  /// No description provided for @catalogSeatGone.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件已不可用'**
-  String get catalogSeatGone;
-
   /// No description provided for @catalogCordisRemoveTitle.
   ///
   /// In zh, this message translates to:
@@ -17558,12 +17552,6 @@ abstract class L10n {
   /// **'Node 脚本'**
   String get engineCapNodeScripts;
 
-  /// No description provided for @engineCapMarket.
-  ///
-  /// In zh, this message translates to:
-  /// **'安装市场插件'**
-  String get engineCapMarket;
-
   /// No description provided for @engineCapBackground.
   ///
   /// In zh, this message translates to:
@@ -17593,12 +17581,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'不可用'**
   String get engineCapNone;
-
-  /// No description provided for @marketInstallRefused.
-  ///
-  /// In zh, this message translates to:
-  /// **'这个引擎不能安装市场插件'**
-  String get marketInstallRefused;
 
   /// No description provided for @localEnvChooseUseTitle.
   ///
@@ -17780,12 +17762,6 @@ abstract class L10n {
   /// **'没有发现风险特征'**
   String get marketChecksClean;
 
-  /// No description provided for @marketChecksNote.
-  ///
-  /// In zh, this message translates to:
-  /// **'自动检查发现的特征，不代表插件有恶意'**
-  String get marketChecksNote;
-
   /// No description provided for @marketCheckedOn.
   ///
   /// In zh, this message translates to:
@@ -17840,12 +17816,6 @@ abstract class L10n {
   /// **'这个版本已下架'**
   String get marketBlockedTitle;
 
-  /// No description provided for @marketBlockedMessage.
-  ///
-  /// In zh, this message translates to:
-  /// **'已安装的 {version} 已从插件市场下架，建议卸载'**
-  String marketBlockedMessage(String version);
-
   /// No description provided for @marketBlockedRow.
   ///
   /// In zh, this message translates to:
@@ -17870,29 +17840,11 @@ abstract class L10n {
   /// **'版本校验不一致'**
   String get marketMismatchTitle;
 
-  /// No description provided for @marketMismatchMessage.
-  ///
-  /// In zh, this message translates to:
-  /// **'npm 上的 {version} 和插件市场检查过的不是同一个包，已停止安装'**
-  String marketMismatchMessage(String version);
-
-  /// No description provided for @marketSubmit.
-  ///
-  /// In zh, this message translates to:
-  /// **'提交插件'**
-  String get marketSubmit;
-
   /// No description provided for @marketSubmitHint.
   ///
   /// In zh, this message translates to:
   /// **'在 GitHub 提交，通过自动检查即上架'**
   String get marketSubmitHint;
-
-  /// No description provided for @marketLinkNotFound.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件市场里没有 {name}'**
-  String marketLinkNotFound(String name);
 
   /// No description provided for @marketVerificationUnavailableTitle.
   ///
@@ -17905,12 +17857,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'没能取得 npm 的版本校验信息，尚未开始安装。请检查网络后重试。'**
   String get marketVerificationUnavailableBody;
-
-  /// No description provided for @marketCombinedCount.
-  ///
-  /// In zh, this message translates to:
-  /// **'{count} 个插件'**
-  String marketCombinedCount(int count);
 
   /// No description provided for @mediaGenerateTile.
   ///
@@ -18434,12 +18380,6 @@ abstract class L10n {
   /// **'默认模型'**
   String get mediaSettingsDefaultModel;
 
-  /// No description provided for @mediaSettingsDefaultFooterLegacy.
-  ///
-  /// In zh, this message translates to:
-  /// **'旧版插件只有一个默认模型；更新插件后可以分别设置图片和视频。'**
-  String get mediaSettingsDefaultFooterLegacy;
-
   /// No description provided for @mediaSettingsDefaultsFooter.
   ///
   /// In zh, this message translates to:
@@ -18494,12 +18434,6 @@ abstract class L10n {
   /// **'未配置 API Key'**
   String get mediaSettingsKeyMissing;
 
-  /// No description provided for @mediaSettingsCatalogMissing.
-  ///
-  /// In zh, this message translates to:
-  /// **'这个主机的插件没有提供模型目录；已有服务仍可编辑，但暂时不能新增服务或选择默认模型。'**
-  String get mediaSettingsCatalogMissing;
-
   /// No description provided for @mediaSettingsCatalogBroken.
   ///
   /// In zh, this message translates to:
@@ -18523,12 +18457,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'请求上限'**
   String get mediaSettingsLimits;
-
-  /// No description provided for @mediaSettingsLimitsHint.
-  ///
-  /// In zh, this message translates to:
-  /// **'限制单次请求的图片张数和字节数；默认是插件硬上限'**
-  String get mediaSettingsLimitsHint;
 
   /// No description provided for @mediaSettingsMaxImages.
   ///
@@ -23480,18 +23408,6 @@ abstract class L10n {
   /// **'侧栏入口'**
   String get seamsSidebarPage;
 
-  /// No description provided for @seamsSettingsPage.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件设置页'**
-  String get seamsSettingsPage;
-
-  /// No description provided for @seamsDetailPage.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件详情扩展'**
-  String get seamsDetailPage;
-
   /// No description provided for @pluginsFile.
   ///
   /// In zh, this message translates to:
@@ -24734,24 +24650,6 @@ abstract class L10n {
   /// **'没有问题'**
   String get plugslotsNoProblems;
 
-  /// No description provided for @plugslotsWantsDraft.
-  ///
-  /// In zh, this message translates to:
-  /// **'「{plugin}」要读取输入框'**
-  String plugslotsWantsDraft(String plugin);
-
-  /// No description provided for @plugslotsWantsClipboard.
-  ///
-  /// In zh, this message translates to:
-  /// **'「{plugin}」要读取剪贴板'**
-  String plugslotsWantsClipboard(String plugin);
-
-  /// No description provided for @plugslotsWantsBoth.
-  ///
-  /// In zh, this message translates to:
-  /// **'「{plugin}」要读取输入框和剪贴板'**
-  String plugslotsWantsBoth(String plugin);
-
   /// No description provided for @plugslotsWantsWhen.
   ///
   /// In zh, this message translates to:
@@ -24764,29 +24662,11 @@ abstract class L10n {
   /// **'允许'**
   String get plugslotsAllow;
 
-  /// No description provided for @plugslotsNoResponse.
-  ///
-  /// In zh, this message translates to:
-  /// **'「{plugin}」没有响应'**
-  String plugslotsNoResponse(String plugin);
-
-  /// No description provided for @plugslotsFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'「{plugin}」出错了'**
-  String plugslotsFailed(String plugin);
-
   /// No description provided for @plugslotsNeedsChat.
   ///
   /// In zh, this message translates to:
   /// **'先打开一个对话'**
   String get plugslotsNeedsChat;
-
-  /// No description provided for @plugslotsPanelOffline.
-  ///
-  /// In zh, this message translates to:
-  /// **'连不上插件'**
-  String get plugslotsPanelOffline;
 
   /// No description provided for @plugslotsIssueTooMany.
   ///
@@ -24877,12 +24757,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'没有可放的位置'**
   String get plugslotsIssueNoPlacement;
-
-  /// No description provided for @plugslotsWantsMessage.
-  ///
-  /// In zh, this message translates to:
-  /// **'「{plugin}」要读取这条回复'**
-  String plugslotsWantsMessage(String plugin);
 
   /// No description provided for @plugslotsCodeInvalidManifest.
   ///
@@ -25052,12 +24926,6 @@ abstract class L10n {
   /// **'最多选 {count} 个文件，单个 8 MiB，总计 16 MiB'**
   String plugslotsPickerLimit(int count);
 
-  /// No description provided for @plugslotsPickerFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'文件未能交给插件，请重试'**
-  String get plugslotsPickerFailed;
-
   /// No description provided for @plugslotsWebPlacesTitle.
   ///
   /// In zh, this message translates to:
@@ -25135,12 +25003,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'插件'**
   String get plugslotsChatEntry;
-
-  /// No description provided for @plugslotsChatWebFrom.
-  ///
-  /// In zh, this message translates to:
-  /// **'网页插件 · {names}'**
-  String plugslotsChatWebFrom(String names);
 
   /// No description provided for @plugViewInvalid.
   ///
@@ -32840,36 +32702,6 @@ abstract class L10n {
   /// **'没能登录'**
   String get stateSignInFailed;
 
-  /// No description provided for @stateMarketTooLarge.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件目录太大，已停止下载'**
-  String get stateMarketTooLarge;
-
-  /// No description provided for @stateMarketUnreachable.
-  ///
-  /// In zh, this message translates to:
-  /// **'没能连上插件目录'**
-  String get stateMarketUnreachable;
-
-  /// No description provided for @stateMarketInsecure.
-  ///
-  /// In zh, this message translates to:
-  /// **'没能和插件目录建立安全连接'**
-  String get stateMarketInsecure;
-
-  /// No description provided for @stateMarketTimeout.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件目录加载超时'**
-  String get stateMarketTimeout;
-
-  /// No description provided for @stateMarketInterrupted.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件目录下载中断'**
-  String get stateMarketInterrupted;
-
   /// No description provided for @stateRegistryDefault.
   ///
   /// In zh, this message translates to:
@@ -33385,12 +33217,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'{name} · 远程'**
   String stateHostRemoteLabel(String name);
-
-  /// No description provided for @stateMarketHttpError.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件目录暂时打不开（HTTP {status}）'**
-  String stateMarketHttpError(int status);
 
   /// No description provided for @stateProviderServiceUnavailable.
   ///
@@ -43297,12 +43123,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'星标'**
   String get viewShareStars;
-
-  /// No description provided for @viewShareInstallCommand.
-  ///
-  /// In zh, this message translates to:
-  /// **'安装：dsh plugin add {value}'**
-  String viewShareInstallCommand(String value);
 
   /// No description provided for @viewSharePhoneInstall.
   ///

@@ -3406,9 +3406,6 @@ class L10nZh extends L10n {
   String get catalogCordisRemoving => '正在移除…';
 
   @override
-  String get catalogSeatGone => '插件已不可用';
-
-  @override
   String catalogCordisRemoveTitle(String name) {
     return '移除「$name」？';
   }
@@ -9469,9 +9466,6 @@ class L10nZh extends L10n {
   String get engineCapNodeScripts => 'Node 脚本';
 
   @override
-  String get engineCapMarket => '安装市场插件';
-
-  @override
   String get engineCapBackground => '切到后台时';
 
   @override
@@ -9485,9 +9479,6 @@ class L10nZh extends L10n {
 
   @override
   String get engineCapNone => '不可用';
-
-  @override
-  String get marketInstallRefused => '这个引擎不能安装市场插件';
 
   @override
   String get localEnvChooseUseTitle => '想怎么用 dsh-Go？';
@@ -9580,9 +9571,6 @@ class L10nZh extends L10n {
   String get marketChecksClean => '没有发现风险特征';
 
   @override
-  String get marketChecksNote => '自动检查发现的特征，不代表插件有恶意';
-
-  @override
   String marketCheckedOn(String date) {
     return '检查于 $date';
   }
@@ -9618,11 +9606,6 @@ class L10nZh extends L10n {
   String get marketBlockedTitle => '这个版本已下架';
 
   @override
-  String marketBlockedMessage(String version) {
-    return '已安装的 $version 已从插件市场下架，建议卸载';
-  }
-
-  @override
   String get marketBlockedRow => '此版本已下架，建议卸载';
 
   @override
@@ -9635,31 +9618,13 @@ class L10nZh extends L10n {
   String get marketMismatchTitle => '版本校验不一致';
 
   @override
-  String marketMismatchMessage(String version) {
-    return 'npm 上的 $version 和插件市场检查过的不是同一个包，已停止安装';
-  }
-
-  @override
-  String get marketSubmit => '提交插件';
-
-  @override
   String get marketSubmitHint => '在 GitHub 提交，通过自动检查即上架';
-
-  @override
-  String marketLinkNotFound(String name) {
-    return '插件市场里没有 $name';
-  }
 
   @override
   String get marketVerificationUnavailableTitle => '暂时无法核对版本';
 
   @override
   String get marketVerificationUnavailableBody => '没能取得 npm 的版本校验信息，尚未开始安装。请检查网络后重试。';
-
-  @override
-  String marketCombinedCount(int count) {
-    return '$count 个插件';
-  }
 
   @override
   String get mediaGenerateTile => '生成';
@@ -9949,9 +9914,6 @@ class L10nZh extends L10n {
   String get mediaSettingsDefaultModel => '默认模型';
 
   @override
-  String get mediaSettingsDefaultFooterLegacy => '旧版插件只有一个默认模型；更新插件后可以分别设置图片和视频。';
-
-  @override
   String get mediaSettingsDefaultsFooter => '图片和视频分别选择默认模型；留空自动使用第一个可用的。';
 
   @override
@@ -9981,9 +9943,6 @@ class L10nZh extends L10n {
   String get mediaSettingsKeyMissing => '未配置 API Key';
 
   @override
-  String get mediaSettingsCatalogMissing => '这个主机的插件没有提供模型目录；已有服务仍可编辑，但暂时不能新增服务或选择默认模型。';
-
-  @override
   String get mediaSettingsCatalogBroken => '模型目录读不了（可能版本不兼容）；已有服务仍可编辑，但暂时不能新增服务或选择默认模型。';
 
   @override
@@ -9994,9 +9953,6 @@ class L10nZh extends L10n {
 
   @override
   String get mediaSettingsLimits => '请求上限';
-
-  @override
-  String get mediaSettingsLimitsHint => '限制单次请求的图片张数和字节数；默认是插件硬上限';
 
   @override
   String get mediaSettingsMaxImages => '单次图片张数';
@@ -12712,12 +12668,6 @@ class L10nZh extends L10n {
   String get seamsSidebarPage => '侧栏入口';
 
   @override
-  String get seamsSettingsPage => '插件设置页';
-
-  @override
-  String get seamsDetailPage => '插件详情扩展';
-
-  @override
   String get pluginsFile => '文件';
 
   @override
@@ -13391,41 +13341,13 @@ class L10nZh extends L10n {
   String get plugslotsNoProblems => '没有问题';
 
   @override
-  String plugslotsWantsDraft(String plugin) {
-    return '「$plugin」要读取输入框';
-  }
-
-  @override
-  String plugslotsWantsClipboard(String plugin) {
-    return '「$plugin」要读取剪贴板';
-  }
-
-  @override
-  String plugslotsWantsBoth(String plugin) {
-    return '「$plugin」要读取输入框和剪贴板';
-  }
-
-  @override
   String get plugslotsWantsWhen => '只在点按它时读取';
 
   @override
   String get plugslotsAllow => '允许';
 
   @override
-  String plugslotsNoResponse(String plugin) {
-    return '「$plugin」没有响应';
-  }
-
-  @override
-  String plugslotsFailed(String plugin) {
-    return '「$plugin」出错了';
-  }
-
-  @override
   String get plugslotsNeedsChat => '先打开一个对话';
-
-  @override
-  String get plugslotsPanelOffline => '连不上插件';
 
   @override
   String plugslotsIssueTooMany(int max) {
@@ -13485,11 +13407,6 @@ class L10nZh extends L10n {
 
   @override
   String get plugslotsIssueNoPlacement => '没有可放的位置';
-
-  @override
-  String plugslotsWantsMessage(String plugin) {
-    return '「$plugin」要读取这条回复';
-  }
 
   @override
   String get plugslotsCodeInvalidManifest => '声明有误，原生部分已停用';
@@ -13580,9 +13497,6 @@ class L10nZh extends L10n {
   }
 
   @override
-  String get plugslotsPickerFailed => '文件未能交给插件，请重试';
-
-  @override
   String get plugslotsWebPlacesTitle => '网页版界面';
 
   @override
@@ -13620,11 +13534,6 @@ class L10nZh extends L10n {
 
   @override
   String get plugslotsChatEntry => '插件';
-
-  @override
-  String plugslotsChatWebFrom(String names) {
-    return '网页插件 · $names';
-  }
 
   @override
   String get plugViewInvalid => '插件界面有误';
@@ -17824,21 +17733,6 @@ class L10nZh extends L10n {
   String get stateSignInFailed => '没能登录';
 
   @override
-  String get stateMarketTooLarge => '插件目录太大，已停止下载';
-
-  @override
-  String get stateMarketUnreachable => '没能连上插件目录';
-
-  @override
-  String get stateMarketInsecure => '没能和插件目录建立安全连接';
-
-  @override
-  String get stateMarketTimeout => '插件目录加载超时';
-
-  @override
-  String get stateMarketInterrupted => '插件目录下载中断';
-
-  @override
   String get stateRegistryDefault => '默认安装源';
 
   @override
@@ -18150,11 +18044,6 @@ class L10nZh extends L10n {
   @override
   String stateHostRemoteLabel(String name) {
     return '$name · 远程';
-  }
-
-  @override
-  String stateMarketHttpError(int status) {
-    return '插件目录暂时打不开（HTTP $status）';
   }
 
   @override
@@ -23712,11 +23601,6 @@ class L10nZh extends L10n {
 
   @override
   String get viewShareStars => '星标';
-
-  @override
-  String viewShareInstallCommand(String value) {
-    return '安装：dsh plugin add $value';
-  }
 
   @override
   String viewSharePhoneInstall(String value) {
