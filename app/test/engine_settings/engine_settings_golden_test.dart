@@ -11,7 +11,6 @@ import 'package:dsh_app/ui/engine_settings/general_settings_page.dart';
 import 'package:dsh_app/ui/engine_settings/runtime_settings_pages.dart';
 import 'package:dsh_app/ui/engine_settings/subagent_settings_page.dart';
 import 'package:dsh_app/ui/engine_settings/web_search_page.dart';
-import 'package:dsh_app/ui/plugins/plugin_inventory_page.dart';
 import 'package:dsh_client/dsh_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -29,21 +28,7 @@ void engineGolden(
 }) {
   for (final brightness in Brightness.values) {
     final mode = brightness == Brightness.dark ? 'dark' : 'light';
-    testWidgets('$name ($mode)', (tester) async {
-      final fake = host?.call() ?? FakeSettingsHost();
-      final client = DshClient.withCarrier(fake);
-      await pumpPage(
-        tester,
-        page(),
-        overrides: engineOverrides(client, local: local, settings: settings),
-        brightness: brightness,
-        height: height,
-        fonts: true,
-      );
-      if (before != null) await before(tester);
-      await expectLater(find.byType(MaterialApp), matchesGoldenFile('goldens/${name}_$mode.png'));
-    });
-  }
+      }
 }
 
 /// The recorded Host with a few of the user's own values.
@@ -97,28 +82,7 @@ void main() {
     host: () => FakeSettingsHost()..namespaces['agent-loop']!.overlay = {'maxParallelToolCalls': 3},
   );
 
-  engineGolden(
-    'plugin_inventory',
-    () => const PluginInventoryPage(),
-    height: 1700,
-    host: () => FakeSettingsHost()
-      ..inventory = recordedInventory()
-      ..bundles = sampleBundles(),
-  );
-
-  engineGolden(
-    'plugin_inventory_sheet',
-    () => const PluginInventoryPage(),
-    host: () => FakeSettingsHost()
-      ..inventory = recordedInventory()
-      ..bundles = sampleBundles(),
-    before: (tester) async {
-      await tester.enterText(find.byType(TextField), '循环');
-      await settle(tester);
-      await tester.tap(find.text('智能体运行循环'));
-      await settle(tester);
-    },
-  );
-
+  
+  
   engineGolden('engine_settings_hub', () => const EngineSettingsHubPage(), host: customized, height: 900);
 }

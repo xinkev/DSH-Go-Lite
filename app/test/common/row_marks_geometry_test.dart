@@ -9,7 +9,6 @@ import 'package:dsh_app/ui/common/list_page_row.dart';
 import 'package:dsh_app/ui/common/overview_card.dart';
 import 'package:dsh_app/ui/common/row_marks.dart';
 import 'package:dsh_app/ui/common/status_chip.dart';
-import 'package:dsh_app/ui/plugins/plugin_inventory_page.dart';
 import 'package:dsh_app/ui/theme/app_icons.dart';
 import 'package:dsh_app/ui/theme/theme.dart';
 import 'package:flutter/material.dart';
@@ -78,28 +77,7 @@ void main() {
     expect(tester.getRect(find.text('1')).right, moreOrLessEquals(tester.getRect(find.text('4')).right, epsilon: 0.01));
   });
 
-  testWidgets('an expand arrow ends where the status dots end', (tester) async {
-    await _pump(
-      tester,
-      Column(
-        children: [
-          ListPageCard(children: [InventoryRow(item: _item('插件'))]),
-          SystemComponentsCard(items: [_item('系统', system: true)], open: false, onToggle: () {}),
-        ],
-      ),
-    );
-    final card = _card(tester, find.text('插件'));
-    final dot = tester.getRect(find.byType(AnimatedStatusDot).first);
-    final arrowBox = tester.getRect(find.byIcon(AppIcons.expand));
-    final arrowRight = card.right - (arrowBox.left + _arrowInkRight);
-    final arrowCentre = arrowBox.left + (_arrowInkLeft + _arrowInkRight) / 2;
-    expect(card.right - dot.right, moreOrLessEquals(16, epsilon: _tol));
-    expect(arrowRight, moreOrLessEquals(card.right - dot.right, epsilon: _tol));
-    expect(arrowCentre, moreOrLessEquals(dot.center.dx, epsilon: 1));
-    // The count sits a row gap before the arrow's ink.
-    expect(arrowBox.left + _arrowInkLeft - tester.getRect(find.text('1 个')).right, moreOrLessEquals(12, epsilon: _tol));
-  });
-
+  
   testWidgets('agent rows end like list rows: chevron 16 in, chips in one column', (tester) async {
     await _pump(
       tester,

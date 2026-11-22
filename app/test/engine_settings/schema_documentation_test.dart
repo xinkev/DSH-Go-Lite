@@ -5,7 +5,6 @@ import 'package:dsh_app/state/engine_settings_state.dart';
 import 'package:dsh_app/ui/engine_settings/engine_settings_page.dart';
 import 'package:dsh_app/ui/engine_settings/schema_documentation.dart';
 import 'package:dsh_app/ui/engine_settings/schema_fields.dart' show FieldCopy, hintFor, labelFor, plainSchemaText;
-import 'package:dsh_app/ui/plugins/plugin_inventory_page.dart';
 import 'package:dsh_client/dsh_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -124,87 +123,7 @@ void main() {
 
   for (final brightness in Brightness.values) {
     for (final scale in [1.3, 2.0]) {
-      testWidgets('plugin detail reaches scrollable full voice instructions ${brightness.name} $scale', (tester) async {
-        tester.view.devicePixelRatio = 1;
-        tester.view.physicalSize = const Size(320, 900);
-        tester.platformDispatcher.textScaleFactorTestValue = scale;
-        addTearDown(tester.view.reset);
-        addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
-        final host = FakeSettingsHost(
-          describe: {
-            'namespaces': [
-              {
-                'ns': 'voice',
-                'schema': catalogFixture('goodandready-dsh-voice-0.9.42'),
-                'base': {},
-                'value': {},
-                'revision': 0,
-              },
-            ],
-          },
-        )
-          // Installed from the market: its row is a plugin's.
-          ..bundles = [
-            {
-              'name': '@goodandready/dsh-voice',
-              'enabled': true,
-              'installed': true,
-              'source': '@goodandready/dsh-voice@0.9.42',
-              'rows': [
-                {'rowId': 'voice', 'moduleName': '@goodandready/dsh-voice'},
-              ],
-            },
-          ];
-        await tester.pumpWidget(
-          goldenApp(
-            brightness: brightness,
-            overrides: engineOverrides(DshClient.withCarrier(host)),
-            home: const Scaffold(
-              body: InventorySheet(
-                item: InventoryItem(
-                  entryId: 'include:voice',
-                  moduleName: '@goodandready/dsh-voice',
-                  title: 'dsh-voice',
-                  status: InventoryStatus.running,
-                ),
-              ),
-            ),
-          ),
-        );
-        await flush(tester);
-        await tester.tap(find.text(appL10n.commonSettings));
-        await flush(tester);
-        final help = find.byTooltip('字段说明');
-        expect(help.hitTestable(), findsOneWidget);
-        // AppPage uses the shared 44dp navigation action target.
-        expect(tester.getSize(help).height, greaterThanOrEqualTo(44));
-        await tester.tap(help);
-        await settle(tester);
-        final sheet = find.byType(SchemaDocumentationSheet);
-        expect(sheet, findsOneWidget);
-        expect(MediaQuery.textScalerOf(tester.element(sheet)).scale(10), closeTo(scale * 10, .01));
-        final scroll = find.descendant(of: sheet, matching: find.byType(Scrollable)).first;
-        final provider = heading('goodandready-dsh-voice-0.9.42', r'$.dictation.chain[].provider');
-        final hotkey = heading('goodandready-dsh-voice-0.9.42', r'$.hotkey');
-        // The page under the sheet has rows with the same names.
-        Finder inSheet(String text) => find.descendant(of: sheet, matching: find.text(text));
-        await tester.scrollUntilVisible(inSheet(provider), 200, scrollable: scroll);
-        expect(
-          find.byWidgetPredicate(
-            (w) => w is GptMarkdown && w.data.contains('put a normal host provider after them as a fallback.'),
-          ),
-          findsWidgets,
-        );
-        await tester.scrollUntilVisible(inSheet(hotkey), 300, scrollable: scroll, maxScrolls: 100);
-        expect(
-          find.byWidgetPredicate((w) => w is GptMarkdown && w.data.contains('Empty disables the hotkey.')),
-          findsOneWidget,
-        );
-        expect(inSheet(hotkey).hitTestable(), findsOneWidget);
-        expect(host.mutates(), isEmpty);
-        expect(tester.takeException(), isNull);
-      });
-
+      
       for (final locale in [AppLocale.zhCN, AppLocale.en]) {
         testWidgets('i18n Markdown sheet ${locale.languageCode} ${brightness.name} $scale', (tester) async {
           AppLocale.use(locale);

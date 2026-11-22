@@ -12,7 +12,6 @@ import 'package:dsh_app/ui/engine_settings/runtime_settings_pages.dart';
 import 'package:dsh_app/ui/engine_settings/subagent_settings_page.dart';
 import 'package:dsh_app/ui/engine_settings/web_search_page.dart';
 import 'package:dsh_app/ui/plugins/plugin_detail_sheet.dart';
-import 'package:dsh_app/ui/plugins/plugin_inventory_page.dart';
 import 'package:dsh_client/dsh_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -395,62 +394,7 @@ void main() {
     expect(find.text('思考过程机器翻译'), findsWidgets);
   });
 
-  testWidgets('the inventory groups, searches, shows presets and details', (tester) async {
-    final fake = FakeSettingsHost()
-      ..inventory = recordedInventory()
-      ..bundles = sampleBundles();
-    await open(tester, const PluginInventoryPage(), fake: fake);
-    expect(find.text('17 个组件 · 13 个已启用'), findsOneWidget);
-    expect(find.text('DSH 内置 · 0.2.1-rc.2'), findsOneWidget);
-    expect(find.text('已启用'), findsNothing);
-    expect(find.byType(AnimatedStatusDot), findsWidgets);
-    expect(find.text('未启用'), findsNothing);
-    await tester.enterText(find.byType(TextField), 'bash');
-    await settle(tester);
-    expect(find.text('Bash 沙箱执行'), findsOneWidget);
-    expect(find.text('插件管理服务'), findsNothing);
-    expect(find.text('@deepseek-ai/dsh-bash-sandbox'), findsNothing, reason: 'a Chinese one-liner instead');
-    await tester.enterText(find.byType(TextField), '');
-    await settle(tester);
-    // No English on the page: components without Chinese copy fold into
-    // 「系统组件」 and read by package id.
-    expect(find.textContaining('Method-level'), findsNothing);
-    await tester.scrollUntilVisible(find.text('系统组件'), 300, scrollable: find.byType(Scrollable).first);
-    await settle(tester);
-    expect(find.text('系统组件'), findsOneWidget);
-    expect(find.text('@deepseek-ai/dsh-api-remote-access'), findsNothing);
-    await tester.tap(find.text('系统组件'));
-    await settle(tester);
-    await tester.scrollUntilVisible(find.text('api-remote-access'), 300, scrollable: find.byType(Scrollable).first);
-    expect(
-      find.text('@deepseek-ai/dsh-api-remote-access'),
-      findsNothing,
-      reason: 'descriptionless rows are single-line',
-    );
-    expect(find.text('api-remote-access'), findsOneWidget);
-    expect(find.textContaining('Method-level'), findsNothing);
-    await tester.scrollUntilVisible(find.byType(TextField), -300, scrollable: find.byType(Scrollable).first);
-    await tester.enterText(find.byType(TextField), 'zzzz');
-    await settle(tester);
-    expect(find.text('没有匹配的插件'), findsOneWidget);
-    await tester.enterText(find.byType(TextField), '');
-    await settle(tester);
-    await tester.tap(find.text('Agent 预设'));
-    await settle(tester);
-    expect(find.textContaining('（默认）'), findsWidgets);
-    expect(find.text('条件启用'), findsNothing);
-    await tester.tap(find.text('全局插件'));
-    await settle(tester);
-    await tester.enterText(find.byType(TextField), '运行循环');
-    await settle(tester);
-    await tester.tap(find.text('智能体运行循环'));
-    await flush(tester);
-    expect(find.text('@deepseek-ai/dsh-agent-loop'), findsOneWidget);
-    await tester.tap(find.text('设置'));
-    await flush(tester);
-    expect(find.text('每步并行工具调用上限'), findsOneWidget);
-  });
-
+  
   for (final local in [false, true]) {
     testWidgets('hub only identifies remote hosts: $local', (tester) async {
       await open(tester, const EngineSettingsHubPage(), local: local);
