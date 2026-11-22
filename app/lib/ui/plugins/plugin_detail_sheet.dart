@@ -20,7 +20,6 @@ import '../share_code/plugin_share_sheet.dart';
 import '../theme/app_icons.dart';
 import '../theme/theme.dart';
 import 'market_widgets.dart';
-import 'plugin_load_status.dart';
 import 'plugin_actions.dart';
 import 'plugin_widgets.dart';
 
@@ -508,7 +507,6 @@ class BundleSheet extends ConsumerWidget {
                   ),
                 ),
               // Loader evidence, then native UI switches and diagnostics.
-              if (!gone) PluginLoadStatus(bundle: bundle),
               if (job != null && job.isActive) ...[
                 const SizedBox(height: 16),
                 PluginInstallProgress(
