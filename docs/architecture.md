@@ -66,8 +66,6 @@ Flutter Dart ── MethodChannel ──> Swift（DshPlugin / EngineChannel）
 | `packages/dsh_tavern/` | SillyTavern 兼容酒馆引擎（纯 Dart，191 个测试文件） | `lib/dsh_tavern.dart` | 与 AGPL 上游同许可，来源见 NOTICES |
 | `packages/dartssh2/` | vendored dartssh2 4.1.0 + 补丁 | `VENDORED.md` | app 的 SSH 链路用它 |
 | `runtime/` | 引擎运行时：构建脚本、锁定补丁、桥、boot/direct 启动、iOS 特化与测试 | `build-runtime.sh`、`patches/series`、`bridge/`、`ios/` | Android 产物在 `runtime/out/<abi>/`；iOS 构建输出不入库 |
-| `sdk/plugin-kit/` | 原生插件作者 SDK（schema、checker、视图解析 JS 孪生、技能） | `bin/check.mjs`、`schema/` | private 包，不发 npm |
-| `examples/plugins/` | 10 个插件示例 + e2e（只覆盖 weather/usage/quick） | 各 `package.json` `scripts.check` | |
 | `services/share-worker/` | Cloudflare Worker：分享链接、下载、市场/工坊、统计 | `src/index.ts` | sparse-checkout 外 |
 | `market/` | 插件市场目录源码（schema/审核/构建） | `scripts/check.mjs` | sparse-checkout 外 |
 | `infra/forum/` | Discourse 部署配置 | `containers/app.yml` | sparse-checkout 外 |
@@ -76,11 +74,11 @@ Flutter Dart ── MethodChannel ──> Swift（DshPlugin / EngineChannel）
 | `app/ohos/` | 鸿蒙 ArkTS 宿主工程（Ability、通道插件、运行时、桌面卡片） | `entry/src/main/ets/entryability/EntryAbility.ets` | Android 不读；§3B |
 | `runtime/ohos/` | 鸿蒙本机引擎：Node 宿主、虚拟进程、生命周期、组成器、Linux 客体 | `package/compose-runtime.py`、`preload.mjs` | 只进 OH 组成物 |
 | `tooling/ohos/` | 鸿蒙构建、ArkTS 检查、门禁、真机脚本 | `check-arkts.sh`、`run-gates.sh`、`device.sh` | `research/` 是一次性实验记录 |
-| `docs/` | 设计（50）、维护合同（61）、测试（14）、用户指南、插件教程 | `architecture.md`（本文） | §8 有索引 |
+| `docs/` | 设计（50）、维护合同（61）、测试（14）、用户指南 | `architecture.md`（本文） | §8 有索引 |
 | `.github/workflows/` | CI（ci/goldens/pr-gate/runtime/ohos-compile） | `ci.yml` | §9 |
 | `.agents/skills/` | 内部流程技能：pr/review/audit/bug/vuln-check | `SKILL.md` | |
 
-> **sparse-checkout**：默认工作区只检出 `.agents .github app docs examples packages runtime sdk/plugin-kit tooling`；
+> **sparse-checkout**：默认工作区只检出 `.agents .github app docs packages runtime tooling`；
 > `market/`、`site/`、`services/`、`infra/` 需要 `git sparse-checkout add <dir>` 才在工作区；
 > root CI 会跑 market/site/services 的检查，`infra/` 没有 CI（线上运维不在普通贡献检查内）。不要为此 checkout/reset 整个仓库。
 
@@ -178,7 +176,7 @@ HomeShell = [ChatScreen] + [SessionsDrawer 左] + [QuickPanel 右] + [SystemEntr
   用 `cd app && dart run tool/import_graph.dart --edges` 看现状。**ui 内部互引不受守卫**（已有 theme↔common 循环）。
 - 语言/主题不是 InheritedWidget：`appL10n` 是静态跟随，语言切换靠 `app.dart` 手动重建全树；
   widget 里优先用 `context.l10n`，不要在 `initState`/const 里缓存 `appL10n.xxx`。
-- 不手改生成物：`l10n/gen/`、`app/assets/skills/*`、`sdk/plugin-kit/types/`、`lib/bridge/`、
+- 不手改生成物：`l10n/gen/`、`app/assets/skills/*`、`lib/bridge/`、
   `lib/messages.json`、`test/parity/*`。改输入后跑对应生成器（§9）。
 - l10n 链路：改 `parts/*_{zh,en}.arb`（中英同步、key 全局唯一 lowerCamel、占位符一致）
   → `python3 app/tool/l10n_merge.py` → 产物入库；CI 用 `git diff --exit-code -- lib/l10n` 防手改。
@@ -438,7 +436,6 @@ DSH npm 前缀（runtime/locks）→ rtbuild 按 series 应用目标平台的补
 | 新建页面/设置项 | `docs/design/settings-ia.md`、§2.2 | `ui/features/feature_catalog.dart`、`settings/index/spots.dart` | 同上 + 截图 |
 | 文案/本地化 | §2.5 | `l10n/parts/*.arb`（中英） | `python3 app/tool/l10n_merge.py --check` |
 | 用户指南 | §8 | `docs/guide/**` | `python3 app/tool/guide_sync.py --check` |
-| 原生插件协议/座位 | `docs/design/native-plugins.md`、`plugin-seams.md` | `plugins/native/`、`plugins/seams/`、`sdk/plugin-kit` | `cd sdk/plugin-kit && npm test` |
 | 桥路由 | `docs/design/bridge-contract.md` | `runtime/bridge/**`、`dsh_client dsh_go_api.dart` | `node --test runtime/tests/*.test.mjs` |
 | 引擎补丁/升级 | §5.4/§5.5、`docs/maintenance/*-contract.md` | `runtime/patches/**`、`runtime/build-runtime.sh` | `python3 -I runtime/tests/test_patch_dsh.py`（构建需 x86_64 主机） |
 | 本机引擎生命周期 | `docs/design/runtime-cold-start.md` | Kotlin `runtime/`、`state/engine_control.dart` | 真机 + `(cd app/android && gradle :app:testArm64DebugUnitTest)` |
@@ -448,7 +445,6 @@ DSH npm 前缀（runtime/locks）→ rtbuild 按 series 应用目标平台的补
 | iOS 小组件 / 语音 / PiP | §3.6、`tooling/ios/CHANNEL_COVERAGE.md` | `CompanionWidget/`、`VoiceChannel.swift`、`PetOverlay/` | 对应原生/Flutter 测试 + 真机行为 |
 | 远程连接 | `docs/testing/remote-*.md` | `packages/dsh_remote`、`app/lib/remote/` | `cd packages/dsh_remote && dart test` |
 | 自更新 | `docs/design/self-update-installation.md` | `state/update_state.dart`、Kotlin `update/` | `dart test` + 真机 |
-| 插件 SDK | `docs/plugins/README.md`、`sdk/plugin-kit/README.md` | `sdk/plugin-kit/**` | 按序生成链（§9） |
 | 插件市场 | `docs/design/plugin-market.md` | `market/**`、`state/plugins/plugin_market.dart` | `cd market && npm test` |
 | CI/构建 | `docs/release.md`、`CONTRIBUTING.md` | `.github/workflows/**`、`tooling/**` | 看 `CI OK` |
 | 鸿蒙功能/通道 | §3B、`docs/design/harmonyos/README.md` 与对应专题 | `app/ohos/entry/src/main/ets/plugins/`、Dart 侧同名通道、`state/android_features.dart` | `tooling/ohos/check-arkts.sh`、对应 `runtime/tests/ohos/` 或 `tooling/ohos/tests/` |
@@ -481,7 +477,6 @@ DSH npm 前缀（runtime/locks）→ rtbuild 按 series 应用目标平台的补
 | Flutter 应用 | `(cd app && flutter pub get && flutter analyze && flutter test)` |
 | Dart 包 | `(cd packages/dsh_client && dart pub get && dart analyze && dart test)`；dsh_remote / dsh_tavern 同理 |
 | 桥/补丁 | `node --test runtime/tests/*.test.mjs`；`python3 -I runtime/tests/test_patch_dsh.py`；`bash runtime/tests/run-guard-tests.sh "$DSH_PREFIX"`、`bash runtime/tests/run-native-tests.sh "$DSH_PREFIX"` |
-| 插件 SDK | `(cd sdk/plugin-kit && npm install && npm test)`（含生成物过期检查） |
 | 生成链（改 SDK/bridge/schema 后按序） | `gen-types → sync-bridge → sync-messages → gen-parity → sync-skill` |
 | 文案 / 指南 / 教学技能 | `l10n_merge.py --check`、`guide_sync.py --check`、`sync-skill.mjs --check` |
 | Android JVM | `(cd app/android && gradle :app:testArm64DebugUnitTest)`（需 JDK17） |

@@ -29,13 +29,11 @@ Shows your DeepSeek account or API key and balance; tap it to open your account.
 
 - **System actions**: see [System actions](04-phone-control.md).
 - **Web search**: the current host's web search: fill in an API key, or switch to the **New search API**.
-- **Plugins**: see [Plugins](08-plugins.md). Some plugins add their own rows below.
 - **Images and video**: the current host's generation services, API keys and default models, from the image and video plugin. Pick a provider to add a service, then enter its API key once; image and video services for the same provider and target origin can share that key, with consumers listed in service details. Enter the API root rather than a complete generation endpoint; editing previews the request URL, and changing origin or reusing a key across origins needs confirmation. Saved does not mean authenticated: **Check saved configuration** inspects saved settings only, without checking the key, balance or model permissions over the network. Without the plugin you can **Install on this host**. How to use it: see [Chat](01-chat.md).
 - **Linux environment**: HarmonyOS only. Runs command-line tools such as gh and Python on this phone. For the switch, the proxy and how commands use it, see [Engine and remote hosts](03-engine-hosts.md#linux-environment).
 
 ## Appearance
 
-**Theme**, **Chat text size** and **Collapse steps when done**: see [Appearance](09-appearance.md). **Pets**: see [Pets](06-pets.md).
 
 ## General
 
@@ -55,7 +53,7 @@ Shows your DeepSeek account or API key and balance; tap it to open your account.
 ## Hosts
 
 - **Local engine** and **Remote host**: see [Engine and remote hosts](03-engine-hosts.md).
-- **Engine parameters**: the current host's engine parameters. **Runtime** has **Subagent**, **Agent loop** and **Command execution**; **Plugins** has **Plugin inventory** and plugins' own settings. [Open](dshgo://open/engine-settings)
+- **Engine parameters**: the current host's engine parameters. **Runtime** has **Subagent**, **Agent loop** and **Command execution**. [Open](dshgo://open/engine-settings)
 
 ## Help and about
 

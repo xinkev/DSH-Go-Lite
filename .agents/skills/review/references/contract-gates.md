@@ -1,5 +1,5 @@
 # dsh-Go 契约门禁
-真源：`runtime/bridge/dsh-go-bridge/`（HTTP 路由）、`packages/dsh_client` 的公开 API、`app/lib/state` 的能力状态、`runtime/patches/pins.json`、`app/lib/l10n/parts/*.arb`、`sdk/plugin-kit`、CONTRIBUTING.md。本文件仅检查顺序，不存日期化常量；契约变更缺兼容策略/迁移/验证默认阻断。
+真源：`runtime/bridge/dsh-go-bridge/`（HTTP 路由）、`packages/dsh_client` 的公开 API、`app/lib/state` 的能力状态、`runtime/patches/pins.json`、`app/lib/l10n/parts/*.arb`、CONTRIBUTING.md。本文件仅检查顺序，不存日期化常量；契约变更缺兼容策略/迁移/验证默认阻断。
 
 ## 门 1｜桥接 HTTP 契约
 `/dsh-go/v1/*` 路由：路径、方法、鉴权（`connection.requestRejection` 之类的请求拒绝）、状态码、JSON 形状与版本字段、错误码（如 `unavailable`）。
@@ -18,7 +18,6 @@
 `app/lib/l10n/parts/*.arb` 与 `.en.arb` 同步，`l10n_merge.py --check` 通过；`docs/guide/` 与 App 内置技能同步（`guide_sync.py --check`）；README/CONTRIBUTING/SECURITY 中英两版同步。
 
 ## 门 6｜插件 SDK 消费面
-`sdk/plugin-kit` 的公开 API、skill 输入与生成物同步（`sync-skill.mjs --check`）；类型检查依赖缺失时不得把跳过写成通过。
 
 ## 门禁自修改的证明义务
 实现与保护 gate 同改须列旧 gate 对坏实现结果、新 gate 扩大/收窄精确集合，以独立 oracle 证未开后门、证 CI/聚合链实执行；脚本存在、CI 绿均不足。

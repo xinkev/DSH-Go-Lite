@@ -16,7 +16,6 @@
 | packages/dsh_remote 传输 | `(cd packages/dsh_remote && dart analyze && dart test)` |
 | runtime/bridge 路由与删除逻辑 | `node --test runtime/tests/*.test.mjs` |
 | runtime/patches | pins 同步检查、补丁仍可应用、对应 node 测试 |
-| sdk/plugin-kit | `(cd sdk/plugin-kit && npm test)` + `node sdk/plugin-kit/scripts/sync-skill.mjs --check` |
 | docs/guide 用户指南 | `python3 app/tool/guide_sync.py --check` |
 | tooling/ 构建脚本 | `tooling/build-apk.sh`（环境允许时）或静态复核 |
 | .github/workflows、pr-intake | permissions、fork 信任、fail-open、路径过滤、动作版本 |

@@ -133,7 +133,6 @@
 | 设置 › 关于 › **使用帮助** | 设置行，✦ 图标，副标题「不懂的地方，问 AI」 | dsh-go 能做什么？我该从哪里开始？ | What can dsh-go do, and where should I start? | 10-settings |
 | 手机操控页顶栏 | ✦ 玻璃圆键（44，和返回键镜像） | 手机操控是怎么工作的？有什么风险？ | How does phone control work, and what are the risks? | 04-phone-control |
 | 开启手机操控前的披露 | 「不确定？问 AI」 | 同上 | 同上 | 04-phone-control |
-| 插件页顶栏 | ✦，放在刷新键左边 | 插件能做什么？装第三方插件要注意什么？ | What can plugins do, and what should I watch for with third-party ones? | 08-plugins |
 | 远程主机页顶栏 | ✦ | 怎么连接自己的电脑或服务器？和用本机有什么不同？ | How do I connect my own computer or server, and how is that different from this phone? | 03-engine-hosts |
 | 风险提醒：始终免确认 | 「不确定？问 AI」 | 手机操控选「始终免确认」会怎样？和「每次都询问」比风险在哪？ | What changes with “Always skip confirmation” in phone control, and how is it riskier than asking each time? | 04-phone-control |
 | 风险提醒：应用名单放宽 | 同上 | 手机操控的应用名单有什么用？放开银行、支付类 App 有什么风险？ | What is the app list in phone control for, and what are the risks of allowing banking and payment apps? | 04-phone-control |

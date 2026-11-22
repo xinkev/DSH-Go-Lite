@@ -28,7 +28,6 @@ Follow [README.en.md](README.en.md) to prepare the toolchain and runtime. Ordina
 
 - Flutter/Dart: use the repository's Flutter version and the app's Dart SDK requirement.
 - Android: use JDK 17 and match the runtime ABI to the APK flavor.
-- Plugin SDK: use Node.js 22.19 or later. The SDK is used from `sdk/plugin-kit/` and is not published to npm.
 - HarmonyOS: the public OpenHarmony SDK (API 26) and JDK 17 compile the ArkTS on Linux; Actions builds the Dart code on macOS. See [app/ohos/README.md](app/ohos/README.md).
 
 ## Keep changes focused
@@ -64,14 +63,6 @@ On a PR the Flutter tests run as bundles, one per directory (`app/tool/bundle_te
 (cd packages/dsh_remote && dart pub get && dart analyze && dart test)
 ```
 
-**Plugin SDK:**
-
-```bash
-(cd sdk/plugin-kit && npm install && npm test)
-```
-
-The SDK type check requires its TypeScript development dependency. That test is skipped when TypeScript is not installed. Review the output and distinguish a skip from a pass. See [SDK maintenance](sdk/plugin-kit/README.en.md) for generator and synchronization steps.
-
 **Interface text:** edit the Chinese and English ARB files in `app/lib/l10n/parts/`, then generate and check:
 
 ```bash
@@ -84,13 +75,6 @@ python3 app/tool/l10n_merge.py --check
 ```bash
 python3 app/tool/guide_sync.py
 python3 app/tool/guide_sync.py --check
-```
-
-**Plugin authoring skill:** edit `sdk/plugin-kit/skill/` or the relevant SDK inputs, then synchronize:
-
-```bash
-node sdk/plugin-kit/scripts/sync-skill.mjs
-node sdk/plugin-kit/scripts/sync-skill.mjs --check
 ```
 
 **HarmonyOS:** after changing `app/ohos/`, run the strict ArkTS compile; after changing `runtime/ohos/`, an engine patch or a HarmonyOS channel, run the full gate (inputs and results are described in [GATES.zh.md](tooling/ohos/GATES.zh.md)). HarmonyOS changes must not change Android's behavior or runtime bytes.

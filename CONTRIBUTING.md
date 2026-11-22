@@ -28,7 +28,6 @@
 
 - Flutter/Dart：使用仓库对应的 Flutter 版本和 App 的 Dart SDK 要求。
 - Android：JDK 17，运行时 ABI 与 APK flavor 匹配。
-- 插件 SDK：Node.js 22.19 或更新版本。SDK 在 `sdk/plugin-kit/` 内使用，尚未发布到 npm。
 - 鸿蒙：OpenHarmony 公开 SDK（API 26）和 JDK 17 就能在 Linux 上编 ArkTS；Dart 产物由 Actions 在 macOS 上编。详见 [app/ohos/README.md](app/ohos/README.md)。
 
 ## 修改范围
@@ -64,14 +63,6 @@ PR 上的 Flutter 测试按目录打包运行（`app/tool/bundle_tests.py`）：
 (cd packages/dsh_remote && dart pub get && dart analyze && dart test)
 ```
 
-**插件 SDK：**
-
-```bash
-(cd sdk/plugin-kit && npm install && npm test)
-```
-
-SDK 的类型检查需要开发依赖 TypeScript；未安装时，相应测试会跳过。请检查测试输出，不能将跳过写成通过。生成器与同步顺序见 [SDK 维护说明](sdk/plugin-kit/README.md)。
-
 **界面文案：** 修改 `app/lib/l10n/parts/` 的中英文 ARB，再生成并检查：
 
 ```bash
@@ -84,13 +75,6 @@ python3 app/tool/l10n_merge.py --check
 ```bash
 python3 app/tool/guide_sync.py
 python3 app/tool/guide_sync.py --check
-```
-
-**插件教学技能：** 修改 `sdk/plugin-kit/skill/` 或 SDK 对应输入，再同步：
-
-```bash
-node sdk/plugin-kit/scripts/sync-skill.mjs
-node sdk/plugin-kit/scripts/sync-skill.mjs --check
 ```
 
 **鸿蒙：** 改了 `app/ohos/` 先跑严格 ArkTS 编译；改了 `runtime/ohos/`、引擎补丁或鸿蒙通道，跑全量门禁（输入和结果说明见 [GATES.zh.md](tooling/ohos/GATES.zh.md)）。鸿蒙改动不能改变 Android 的行为和运行时字节。

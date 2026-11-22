@@ -2,7 +2,7 @@
 真源为当前目标分支的 AGENTS.md、CONTRIBUTING.md 全文；本表非穷举。严重度属本技能政策，仓库文本仅定义义务。
 
 ## 1. 源码与生成物分离｜❌
-只改真源，不手改生成物：`app/build/`、`.dart_tool/`、l10n 生成结果、guide 同步结果。改 `app/lib/l10n/parts/*.arb` 后跑 `python3 app/tool/l10n_merge.py`；改 `docs/guide/` 后跑 `python3 app/tool/guide_sync.py`；改插件 skill 输入后跑 `node sdk/plugin-kit/scripts/sync-skill.mjs`。生成物与输入不一致即阻断。
+只改真源，不手改生成物：`app/build/`、`.dart_tool/`、l10n 生成结果、guide 同步结果。改 `app/lib/l10n/parts/*.arb` 后跑 `python3 app/tool/l10n_merge.py`；改 `docs/guide/` 后跑 `python3 app/tool/guide_sync.py`。生成物与输入不一致即阻断。
 
 ## 2. 引擎补丁与 pins 同步｜❌
 `runtime/patches/` 的补丁文件与 `pins.json` 必须同步；不手改正被补丁覆盖的 vendor 产物；升级引擎版本时补丁必须仍可应用。查 pins、patch 内容、runtime 启动路径。

@@ -5,7 +5,7 @@ description: Check resolved dependencies and relevant code paths for security vu
 
 Assess the requested security surface with evidence. A check returns findings; implement remediation when the user has requested it.
 
-1. Read `app/pubspec.yaml`, `packages/*/pubspec.yaml`, `sdk/plugin-kit/package.json` and the relevant lockfiles for the affected dependency paths. Use current advisory data for the ecosystem involved, and record the resolved version, advisory, affected range, and verified fixed version where available. Distinguish a dependency advisory match from a demonstrated exploit path in this project.
+1. Read `app/pubspec.yaml`, `packages/*/pubspec.yaml` and the relevant lockfiles for the affected dependency paths. Use current advisory data for the ecosystem involved, and record the resolved version, advisory, affected range, and verified fixed version where available. Distinguish a dependency advisory match from a demonstrated exploit path in this project.
 2. Trace untrusted inputs through guards to sensitive operations: shell execution, filesystem access, plugin capabilities, WebView/HTML injection, and bridge HTTP routes. For paths, check containment and symlink behavior where relevant; normalization alone does not prevent traversal. Inspect actual validation and authorization before treating a suspicious API as a vulnerability.
    Scan committed repository files for potential secrets; report only the path, line, and secret type, never the value or a source excerpt.
 3. Report findings by severity with location, trigger, impact, evidence, and the smallest effective remedy. Separate confirmed issues from leads needing verification. Preserve the upstream peer/dev dependency contract when proposing upgrades.
