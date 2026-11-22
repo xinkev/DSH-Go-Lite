@@ -97,6 +97,12 @@ class AgentPresetsPage extends ConsumerWidget {
                         ),
                         if (creator)
                           ListPageRow(
+                            icon: AppIcons.edit,
+                            title: context.l10n.featuresPresetEditTitle,
+                            onTap: () => Navigator.pop(sheet, 'edit'),
+                          ),
+                        if (creator)
+                          ListPageRow(
                             icon: AppIcons.copy,
                             title: context.l10n.featuresPresetDuplicate,
                             onTap: () => Navigator.pop(sheet, 'duplicate'),
@@ -118,6 +124,8 @@ class AgentPresetsPage extends ConsumerWidget {
         await _setDefault(context, ref, preset);
       case 'view':
         await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => _PresetDocumentPage(preset: preset)));
+      case 'edit':
+        await _edit(context, PresetEditMode.edit, source: preset);
       case 'duplicate':
         await _edit(context, PresetEditMode.duplicate, source: preset);
     }
