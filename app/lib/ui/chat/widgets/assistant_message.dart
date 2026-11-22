@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../l10n/l10n.dart';
-import '../../../speech/read_aloud.dart';
 import '../../speech/speech_ui.dart';
 import '../../common/expand_reveal.dart';
 import '../../common/typing_indicator.dart';
@@ -208,16 +207,14 @@ class _AssistantMessageState extends State<AssistantMessage> {
           duration: AppMotion.standard,
           curve: AppMotion.std,
           child: actions
-              ? Consumer(
-                  builder: (context, ref, _) => ReplyActionRow(
+              ? Builder(
+                  builder: (context) => ReplyActionRow(
                     // Copy / share carry a one-line summary of each visual
                     // reply, never its raw JSON.
                     text: () => dshUiPlainText(text),
                     onBranch: widget.onBranch,
                     branching: widget.branching,
                     onShare: () => shareReply(context, widget.item),
-                    onReadAloud: () => readAloudReply(context, widget.item.key, dshUiPlainText(text)),
-                    reading: ref.watch(readAloudProvider.select((s) => s.phaseOf(widget.item.key))),
                     onRegenerate: widget.onRegenerate,
                     regenerating: widget.regenerating,
                     onMore: () => _menu(text),

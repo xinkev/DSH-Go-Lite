@@ -22,7 +22,6 @@ import '../../speech/read_aloud.dart';
 import '../../speech/voice_cloud.dart';
 import '../../state/android_features.dart';
 import '../../state/account_state.dart';
-import '../speech/voice_call_page.dart';
 import '../../state/streaming_asr_state.dart';
 import '../../state/streaming_pcm_state.dart';
 import '../../voice/live_words.dart';
@@ -418,7 +417,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
     _input.addListener(_saveDraft);
     ref.listenManual(currentSessionProvider, (_, next) {
       // Another conversation: nothing of this one is read aloud any more.
-      ref.read(readAloudProvider.notifier).stop();
       _switchDraft(next);
     });
     ref.listenManual(activeConnectionProvider.select((c) => c.value?.client), (_, _) {
@@ -770,7 +768,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
     }
     setState(() => _drafts = const []);
     // A new message: the reply being read aloud is old news.
-    ref.read(readAloudProvider.notifier).stop();
     _input.clear();
     ref.read(composerQuoteProvider.notifier).clear(sessionId);
 
@@ -1069,7 +1066,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
         call: true,
       );
       if (choice is CallChoice) {
-        if (ownsDraft() && mounted) await _startCall(ownsDraft);
         return;
       }
       if (choice is GenerateChoice) {
@@ -1478,45 +1474,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
   void _callFromHeader() {
     HapticFeedback.selectionClick();
     final scope = _draftScope;
-    unawaited(_startCall(() => mounted && identical(_draftScope, scope)));
-  }
-
-  /// 「语音通话」 with this conversation (a new chat gets its conversation
-  /// with the first thing said); [ownsDraft]: still the conversation it was asked from.
-  Future<void> _startCall(bool Function() ownsDraft) async {
-    final host = ref.read(activeHostProvider);
-    // Dictation gives the microphone back first (what it heard so far goes, as on a draft switch).
-    await _voice.cancel();
-    if (!mounted || !ownsDraft() || ref.read(activeHostProvider) != host) return;
-    final sessionId = ref.read(currentSessionProvider);
-    final listed = sessionId == null ? null : ref.read(chatProvider(sessionId)).title;
-    final title = listed != null && listed.trim().isNotEmpty ? chatTitleShown(listed.trim()) : appL10n.commonNewChat;
-    // The call stays with the conversation it began in, whatever is opened meanwhile.
-    var pinned = sessionId;
-    unawaited(
-      openChatCall(
-        context,
-        title: title,
-        session: () async {
-          // Another host now: its conversation of the same id is not this call's.
-          if (!mounted || ref.read(activeHostProvider) != host) return null;
-          final id = pinned;
-          if (id == null) {
-            // Begun on the new-chat screen: another conversation opened since is not this call's.
-            if (ref.read(currentSessionProvider) != null) return null;
-            String? created;
-            final made = await _ensureSession(isCurrent: () => mounted, onCreated: (id) => created = id);
-            // Made but its picks failed to apply: still this call's, the next line retries them.
-            pinned = made ?? created;
-            return made;
-          }
-          // Picks it still owes (a failed apply on the new-chat screen) are settled before it is spoken to.
-          final owed = ref.read(owedSetupsProvider.notifier).of(host, id);
-          if (owed != null && !await _applyOwedSetup(host, id, owed, () => mounted)) return null;
-          return id;
-        },
-      ),
-    );
   }
 
   /// The stop key; what waits in the inbox goes right away (see
@@ -2262,7 +2219,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
                                         : l10n.mediaHintImage,
                                     onSend: _send,
                                     onSendOptions: chat?.controlReady ?? true ? _sendOptions : null,
-                                    voice: _voice,
                                     onKeyEvent: _composerKey,
                                     onContentInserted: connected ? _pasteContent : null,
                                     onStop: _stop,
