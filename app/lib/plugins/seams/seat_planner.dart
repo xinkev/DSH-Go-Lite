@@ -7,7 +7,6 @@ import 'package:flutter/widgets.dart';
 
 import 'adapters/cordis_adapter.dart';
 import 'adapters/dsh_ui_panel_adapter.dart';
-import 'adapters/pet_adapter.dart';
 import 'adapters/schema_config_adapter.dart';
 import 'seat_inventory.dart';
 import 'seat_models.dart';
@@ -104,7 +103,7 @@ class SlotAdapterRegistry {
 
   /// The first batch (§4.2): schema forms, Cordis, declarative panels, pets.
   factory SlotAdapterRegistry.standard() =>
-      SlotAdapterRegistry(const [SchemaConfigAdapter(), CordisAdapter(), DshUiPanelAdapter(), PetAdapter()]);
+      SlotAdapterRegistry(const [SchemaConfigAdapter(), CordisAdapter(), DshUiPanelAdapter()]);
 
   final List<NativeSlotAdapter> _adapters = [];
 

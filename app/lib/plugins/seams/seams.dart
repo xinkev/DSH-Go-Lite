@@ -4,7 +4,6 @@
 
 export 'adapters/cordis_adapter.dart' show CordisAdapter, CordisSeat;
 export 'adapters/dsh_ui_panel_adapter.dart' show DshUiPanelAdapter;
-export 'adapters/pet_adapter.dart' show PetAdapter;
 export 'adapters/schema_config_adapter.dart' show SchemaConfigAdapter, SchemaConfigSeat;
 export 'plugin_seat.dart';
 export 'seat_inventory.dart';

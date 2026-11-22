@@ -171,7 +171,6 @@ void main() {
         );
       }
       const pet = SlotOccupant(slot: Slots.shellOverlay, package: 'dsh-pet', cell: 'pet');
-      expect(const PetAdapter().canRender(pet, const PluginClientInfo(package: 'dsh-pet', pet: 'codex')), isFalse);
     });
   });
 }
