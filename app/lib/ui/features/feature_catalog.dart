@@ -11,10 +11,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
 import '../../plugins/native/native_icons.dart';
-import '../../plugins/native/native_state.dart';
 import '../../plugins/seams/seams.dart';
 import '../../state/android_features.dart';
-import '../../state/plugins_state.dart';
 import '../common/feature_tile.dart';
 import '../agents/team_page.dart';
 import '../bots/bots_page.dart';
@@ -24,7 +22,6 @@ import '../files/files_page.dart';
 import '../forum/forum_home_page.dart';
 import '../phone/phone_control_screen.dart';
 import '../phone/system_actions_page.dart';
-import '../plugins/plugin_detail_sheet.dart';
 import '../plugins/seats/plugin_seat_page.dart';
 import '../plugins/seats/seat_links.dart';
 import '../providers/providers_page.dart';

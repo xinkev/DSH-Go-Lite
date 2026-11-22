@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:archive/archive.dart';
-import 'package:flutter/foundation.dart' show compute;
 import 'package:flutter/services.dart';
 
 import '../pets/pet_library.dart';
@@ -11,7 +10,6 @@ import '../update/installer.dart';
 import '../update/update_config.dart' show DownloadUrl;
 import '../update/update_http.dart';
 import 'workshop_client.dart';
-import 'workshop_export.dart';
 import 'workshop_http.dart';
 import 'workshop_models.dart';
 import 'workshop_preview.dart';

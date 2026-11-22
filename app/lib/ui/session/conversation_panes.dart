@@ -2,15 +2,9 @@
 // side panel a left swipe pulls in, the page behind the title, the column beside the
 // chat on a wide window) picks from these instead of keeping a list of its own.
 
-import 'package:dsh_client/dsh_client.dart' show DshGoPanel;
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
-import '../../plugins/native/native_icons.dart';
-import '../../plugins/native/native_model.dart';
-import '../../plugins/native/native_state.dart';
-import '../../plugins/seams/seat_planner.dart';
 import '../plugins/seats/session_plugins_tab.dart';
 import '../theme/app_icons.dart';
 import 'conversation_overview.dart';

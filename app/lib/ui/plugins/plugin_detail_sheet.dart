@@ -15,7 +15,6 @@ import '../../update/version.dart';
 import '../common/app_sheet.dart';
 import '../common/list_page_row.dart';
 import '../common/sheet_navigator.dart';
-import '../engine_settings/engine_settings_page.dart';
 import '../share_code/plugin_share_sheet.dart';
 import '../theme/app_icons.dart';
 import '../theme/theme.dart';

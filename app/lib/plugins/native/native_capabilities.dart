@@ -16,7 +16,6 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:dsh_client/dsh_client.dart';
-import 'package:flutter/services.dart' show PlatformException;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';

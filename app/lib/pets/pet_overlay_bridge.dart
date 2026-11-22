@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../state/live_activity_state.dart';
-import '../ui/common/app_dialog.dart';
 import 'overlay_channel.dart';
 import 'pet_signals.dart';
 import 'pet_state.dart';

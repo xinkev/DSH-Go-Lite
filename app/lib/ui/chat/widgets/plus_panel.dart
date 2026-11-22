@@ -23,7 +23,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../l10n/l10n.dart';
 import '../../../plugins/native/native_model.dart';
-import '../../../plugins/native/native_state.dart';
 import '../../../state/android_features.dart';
 import '../../../state/chat_state.dart';
 import '../../../state/connection_state.dart';

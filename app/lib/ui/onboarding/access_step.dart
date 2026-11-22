@@ -9,7 +9,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
 import '../../state/access_state.dart';
-import '../../state/android_features.dart';
 import '../access/access_pick_page.dart';
 import '../access/access_summary_page.dart';
 import '../access/access_walk.dart';
