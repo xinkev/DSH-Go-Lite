@@ -11,7 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../plugins/native/native_effects.dart';
-import '../plugins/native/native_file_platform.dart';
+import '../platform/native_file_platform.dart';
 import 'custom_launch.dart';
 
 /// Why a picked file didn't become the launch screen.

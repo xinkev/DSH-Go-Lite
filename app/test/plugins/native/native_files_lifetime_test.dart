@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:dsh_app/plugins/native/native_effects.dart';
-import 'package:dsh_app/plugins/native/native_file_platform.dart';
+import 'package:dsh_app/platform/native_file_platform.dart';
 import 'package:dsh_app/plugins/native/native_files.dart';
 import 'package:dsh_client/dsh_client.dart';
 import 'package:flutter/foundation.dart';

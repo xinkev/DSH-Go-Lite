@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../launch/custom_launch.dart' show CustomLaunch;
 import '../launch/launch_import.dart';
-import '../plugins/native/native_file_platform.dart';
+import '../platform/native_file_platform.dart';
 import 'custom_wallpaper.dart';
 
 export '../launch/launch_import.dart' show LaunchImportProblem;
