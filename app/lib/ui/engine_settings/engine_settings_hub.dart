@@ -10,7 +10,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
 import '../../state/engine_settings_state.dart';
-import '../../state/plugins_state.dart';
 import '../features/feature_widgets.dart';
 import '../settings/index/spots.dart';
 import '../settings/settings_widgets.dart' as sw show SettingsSection, SettingsTile;
@@ -45,7 +44,6 @@ class EngineSettingsHubPage extends ConsumerWidget {
         : 'bash-sandbox';
     final depth = settings?.valueOf(const FieldRef('subagent', ['maxDepth']));
     // Every plugin with something to set, live fields or not.
-    final bundles = ref.watch(installedPluginsProvider.select((s) => s.value));
     final rows = <(IconData, SettingsPageId, String?, Widget)>[
       (
         AppIcons.subagents,

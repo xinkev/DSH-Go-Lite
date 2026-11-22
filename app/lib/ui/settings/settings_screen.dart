@@ -15,7 +15,6 @@ import '../../state/engine_settings_state.dart';
 import '../../state/features_state.dart';
 import '../../state/hosts_state.dart';
 import '../../state/phone_state.dart';
-import '../../state/plugins_state.dart';
 import '../../state/sessions_state.dart';
 import '../../state/settings_state.dart';
 import '../../state/system_actions_state.dart';
@@ -110,7 +109,6 @@ class SettingsScreen extends ConsumerWidget {
         : (ios ? phone.status.bridgeListening : phone.status.a11y.ok)
         ? l10n.pluginsTurnedOn
         : l10n.hubValueOneStep;
-    final plugins = ref.watch(installedPluginsProvider.select((s) => s.value?.length));
     // Read only once the host's settings are at hand: the hub asks for nothing.
     final search = ref.exists(engineSettingsProvider) ? ref.watch(engineSettingsProvider).value : null;
     final newApi = search == null

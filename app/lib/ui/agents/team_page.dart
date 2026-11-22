@@ -13,7 +13,6 @@ import '../../l10n/l10n.dart';
 import '../../state/agents_state.dart';
 import '../../state/connection_state.dart';
 import '../../state/models_state.dart';
-import '../../state/plugins_state.dart';
 import '../../state/sessions_state.dart';
 import '../chat/model_sheet.dart' show modelShortName;
 import '../chat/widgets/live_clock.dart' show runClock;
@@ -50,11 +49,6 @@ class TeamPage extends ConsumerStatefulWidget {
 
 class _TeamPageState extends ConsumerState<TeamPage> {
   _TeamTab _tab = _TeamTab.members;
-  bool _enabling = false;
-
-  Future<void> _enable(PluginBundle bundle) async {
-    // Plugin bundles are retired: nothing to enable.
-  }
 
   void _open(String leadId, TeamMember member) {
     if (member.lead) {
@@ -95,8 +89,6 @@ class _TeamPageState extends ConsumerState<TeamPage> {
             const QuietSpinner()
           else
             _TeamOff(
-              enabling: _enabling,
-              onEnable: _enable,
               onRetry: () => ref.read(teamProvider(leadId).notifier).refresh(),
             ),
         ],
@@ -116,43 +108,17 @@ class _TeamPageState extends ConsumerState<TeamPage> {
 /// The bundle is off (or this host doesn't offer it, or it is on but the
 /// Lead has no Team projection yet).
 class _TeamOff extends ConsumerWidget {
-  const _TeamOff({required this.enabling, required this.onEnable, required this.onRetry});
-
-  final bool enabling;
-  final ValueChanged<PluginBundle> onEnable;
-  final VoidCallback onRetry;
+  const _TeamOff({required this.onRetry});  final VoidCallback onRetry;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
-    final bundle = ref.watch(agentTeamBundleProvider);
-    final row = bundle.value;
-    final canSwitch = row != null && row.readOnlyReason == null && !ref.watch(localSafeModeProvider);
-    if (bundle.isLoading && row == null) return const QuietSpinner();
-    if (row != null && row.enabled) {
-      return EmptyView(
-        icon: AppIcons.team,
-        title: l10n.botsTeamReadFailed,
-        padding: const EdgeInsets.fromLTRB(32, 40, 32, 24),
-        actionLabel: l10n.commonRetry,
-        onAction: onRetry,
-      );
-    }
     return EmptyView(
       icon: AppIcons.team,
-      title: row == null ? l10n.botsNoTeamOnHost : l10n.botsTeamNotEnabled,
-      message: row == null ? null : l10n.botsTeamDescription,
+      title: l10n.botsNoTeamOnHost,
       padding: const EdgeInsets.fromLTRB(32, 40, 32, 24),
-      action: !canSwitch
-          ? null
-          : FilledButton(
-              onPressed: enabling ? null : () => onEnable(row),
-              style: FilledButton.styleFrom(
-                minimumSize: const Size(0, 44),
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-              ),
-              child: Text(enabling ? l10n.botsTeamEnabling : l10n.botsTeamEnable),
-            ),
+      actionLabel: l10n.commonRetry,
+      onAction: onRetry,
     );
   }
 }
