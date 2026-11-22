@@ -19,9 +19,6 @@ import '../../state/hosts_state.dart';
 import '../../state/plugins_state.dart';
 import '../common/app_sheet.dart';
 import '../common/empty_view.dart';
-import '../plugins/plugin_detail_sheet.dart' show showMarketPluginSheet;
-import '../plugins/plugin_widgets.dart' show PluginInstallProgress;
-import '../plugins/plugins_screen.dart';
 import '../shell/page_frame.dart';
 import '../theme/app_icons.dart';
 import 'media/media_settings_home.dart';
@@ -66,15 +63,9 @@ class MediaInstallPrompt extends ConsumerWidget {
             .value
             ?.any((b) => isMediaPluginName(b.name) && (b.installed || b.availability == 'profile')) ??
         false;
-    if (entry == null || listed) {
-      await openMediaPluginMarket(context, tab: listed ? PluginsTab.installed : PluginsTab.market);
-      return;
-    }
+    if (entry == null || listed) return;
     final host = ref.read(pluginHostProvider);
-    if (host == null || !host.canInstall || marketNeedsApp(entry, ref.read(appVersionProvider)) != null) {
-      await showMarketPluginSheet(context, entry);
-      return;
-    }
+    if (host == null || !host.canInstall || marketNeedsApp(entry, ref.read(appVersionProvider)) != null) return;
     // This consumer closes its sheet; the shared install result may still be
     // returned after its Host or route has lost ownership.
     final container = ProviderScope.containerOf(context, listen: false);
@@ -119,13 +110,7 @@ class MediaInstallPrompt extends ConsumerWidget {
       action: refused
           ? null
           : job != null && job.isActive
-          ? ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 320),
-              child: PluginInstallProgress(
-                job: job,
-                onCancel: () => unawaited(ref.read(pluginInstallsProvider.notifier).cancel(job.request.name)),
-              ),
-            )
+          ? const SizedBox.shrink()
           : OutlinedButton(
               onPressed: () => unawaited(_install(context, ref, entry)),
               style: OutlinedButton.styleFrom(
@@ -140,8 +125,9 @@ class MediaInstallPrompt extends ConsumerWidget {
 
 /// The plugin market, where the media plugin is installed on this host (or
 /// [tab]: the installed list, where it is updated).
-Future<void> openMediaPluginMarket(BuildContext context, {PluginsTab tab = PluginsTab.market}) =>
-    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => PluginsScreen(initialTab: tab)));
+Future<void> openMediaPluginMarket(BuildContext context, {Object? tab}) async {
+  // Plugin market is retired.
+}
 
 /// 生成 where the plugin runs but its catalogue is missing, damaged or of a
 /// version this app doesn't know (§4.3): no generation mode, and a word that
@@ -160,7 +146,7 @@ Future<void> showMediaUnavailableSheet(BuildContext context) => showAppSheet<voi
         actionLabel: context.l10n.mediaUnavailableAction,
         onAction: () {
           Navigator.of(sheet).pop();
-          openMediaPluginMarket(context, tab: PluginsTab.installed);
+          openMediaPluginMarket(context);
         },
       ),
     ),
