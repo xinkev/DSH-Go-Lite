@@ -20,7 +20,7 @@ class NativeCapabilityScope extends ConsumerWidget {
     ref.watch(nativeCapabilityDiscoveryProvider);
     // Audio, listening and the caption window need the runtime; `micro`
     // alone is drawn in Flutter and needs none.
-    if (ref.watch(nativeFeatureStateProvider).any({'audio', 'voice', 'overlay'}.contains)) {
+    if (ref.watch(nativeFeatureStateProvider).any({'audio', 'overlay'}.contains)) {
       ref.watch(nativeCapabilityRuntimeProvider);
       // The native indicator and caption go just under the chat header.
       final top = ChatHeader.heightOf(context);

@@ -128,28 +128,6 @@ class NativePluginSection extends ConsumerWidget {
                   );
                 },
               ),
-          // v1.2: whether it may hear the person speak (asked on first use).
-          if (plugin.native && plugin.capabilities.contains('voice'))
-            Builder(
-              builder: (context) {
-                final on = ref.watch(nativeVoiceConsentProvider)[NativeVoiceConsents.keyOf(host, package)] == true;
-                // HarmonyOS says whether it can listen at all: no dead switch where it can't.
-                final cannot =
-                    ref.watch(operatingSystemProvider) == 'ohos' &&
-                    !(ref.watch(nativePlatformFeaturesProvider).value?.contains('voice') ?? true);
-                void set(bool value) => ref.read(nativeVoiceConsentProvider.notifier).set(host, package, value);
-                return MergeSemantics(
-                  child: ListPageRow(
-                    key: const ValueKey('native-switch-voice'),
-                    icon: AppIcons.voice,
-                    title: l10n.plugslotsVoiceSwitch,
-                    subtitle: cannot ? l10n.harmonyPluginVoiceUnavailable : null,
-                    onTap: cannot ? null : () => set(!on),
-                    trailing: Switch.adaptive(value: on && !cannot, onChanged: cannot ? null : set),
-                  ),
-                );
-              },
-            ),
           ListPageRow(
             key: const ValueKey('native-status'),
             icon: AppIcons.diagnostics,

@@ -38,7 +38,6 @@ import '../../features/feature_catalog.dart';
 import '../../settings/index/settings_pages.dart' show SettingsIndex, settingsPageForLink;
 import '../../settings/settings_screen.dart';
 import 'native_panel.dart';
-import 'native_voice_consent.dart';
 
 /// The composer a tap may write into: the chat screen lends its own.
 abstract interface class NativeComposerHost {
@@ -553,11 +552,6 @@ Future<bool> _invoke(
   // answer's arrival, not to the end of a consent question — which comes
   // first, before anything starts playing.
   if (!guard.current) return false;
-  bool? mayListen;
-  if (capabilityEffects.any((e) => e['type'] == 'voice' && e['op'] == 'start') && context.mounted) {
-    mayListen = await askNativeVoiceConsent(context, ref, package);
-    if (!guard.current) return false;
-  }
   for (final raw in capabilityEffects) {
     if (!guard.current) return false;
     final effect = NativeCapabilityEffect.parse(raw);
@@ -572,7 +566,7 @@ Future<bool> _invoke(
           connection: invocation.stream,
           tappedAt: tappedAt,
           now: arrived,
-          consent: (pkg) async => mayListen ?? false,
+          consent: (pkg) async => false,
         );
     if (!taken) issues.add(NativeIssue('/effects', nativeIssueText('bad-effect'), code: 'bad-effect'));
   }
