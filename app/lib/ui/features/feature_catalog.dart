@@ -5,8 +5,8 @@
 
 import 'dart:async';
 
-import 'package:dsh_client/dsh_client.dart' show PluginBundle;
 import 'package:flutter/material.dart';
+import 'package:dsh_client/dsh_client.dart' show PluginBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
@@ -25,7 +25,6 @@ import '../forum/forum_home_page.dart';
 import '../phone/phone_control_screen.dart';
 import '../phone/system_actions_page.dart';
 import '../plugins/plugin_detail_sheet.dart';
-import '../plugins/plugins_screen.dart';
 import '../plugins/seats/plugin_seat_page.dart';
 import '../plugins/seats/seat_links.dart';
 import '../providers/providers_page.dart';
@@ -157,29 +156,8 @@ Widget communityPage() =>
 void _backToChat(BuildContext context, WidgetRef ref, String? _) =>
     Navigator.of(context).popUntil((route) => route.isFirst);
 
-/// The settings sheet of an official optional bundle, when the host has it.
-Future<void> _bundleSheet(BuildContext context, WidgetRef ref, String name) async {
-  final messenger = ScaffoldMessenger.maybeOf(context);
-  List<PluginBundle>? bundles;
-  try {
-    bundles = await ref.read(installedPluginsProvider.future).timeout(const Duration(seconds: 10));
-  } catch (_) {
-    bundles = null;
-  }
-  final bundle = bundles?.where((b) => b.name == name).firstOrNull;
-  if (!context.mounted) return;
-  if (bundle == null) {
-    final l10n = context.l10n;
-    messenger?.showSnackBar(
-      SnackBar(content: Text(bundles == null ? l10n.commonEngineUnreachable : l10n.catalogHostPluginMissing)),
-    );
-    return;
-  }
-  await showBundleSheet(context, bundle);
-}
-
 /// DSH's optional reasoning-translation bundle.
-const cotTranslationBundle = '@deepseek-ai/dsh-experimental-cot-translation-bundle';
+
 
 /// The last section: shortcuts to settings pages (the same pages, by the same
 /// names), followed by 全部设置.
@@ -284,14 +262,6 @@ final featureSections = <FeatureSection>[
   ]),
   FeatureSection.localized((l10n) => l10n.catalogPlugins, [
     FeatureItem.localized(
-      id: 'plugins',
-      title: (l10n) => l10n.catalogPlugins,
-      summary: (l10n) => l10n.catalogPluginsSummary,
-      icon: AppIcons.plugin,
-      tile: FeatureKind.plugins,
-      native: (_) => const PluginsScreen(),
-    ),
-    FeatureItem.localized(
       id: 'cordis',
       title: (_) => 'Cordis',
       summary: (l10n) => l10n.catalogCordisSummary,
@@ -304,13 +274,6 @@ final featureSections = <FeatureSection>[
       summary: (l10n) => l10n.catalogAgentTeamSummary,
       icon: AppIcons.team,
       native: (id) => TeamPage(sessionId: id),
-    ),
-    FeatureItem.localized(
-      id: 'cot-translation',
-      title: (l10n) => l10n.catalogCotTranslation,
-      summary: (l10n) => l10n.catalogCotTranslationSummary,
-      icon: AppIcons.translate,
-      action: (context, ref, _) => _bundleSheet(context, ref, cotTranslationBundle),
     ),
   ]),
   FeatureSection.localized((l10n) => l10n.catalogCommunitySharingSection, [
