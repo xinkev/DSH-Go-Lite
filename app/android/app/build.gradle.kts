@@ -72,7 +72,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "io.github.ccch1mneyyy.dsh_app"
+        applicationId = "io.github.ccch1mneyyy.dsh_app.lite"
         if (sideBuild) applicationIdSuffix = sideSuffix
         manifestPlaceholders["appLabel"] = if (sideBuild) "DSH Go Lite 测试" else "DSH Go Lite"
         // java.nio.file (symlinks while unpacking the rootfs) needs API 26.
