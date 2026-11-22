@@ -48,7 +48,7 @@ class NativeCapabilityEffect {
 
   bool get starts => op == 'play' || op == 'start' || op == 'show';
 
-  static bool isType(Object? value) => const {'audio', 'voice', 'overlay'}.contains(value);
+  static bool isType(Object? value) => const {'audio', 'overlay'}.contains(value);
 
   static final _key = RegExp(r'^[A-Za-z0-9_-]{1,128}$');
 
@@ -67,7 +67,6 @@ class NativeCapabilityEffect {
     }
     final ops = switch (type) {
       'audio' => const {'play', 'pause', 'resume', 'stop'},
-      'voice' => const {'start', 'stop'},
       'overlay' => const {'show', 'hide'},
       _ => const <String>{},
     };
@@ -133,7 +132,7 @@ Future<(File, String)> downloadNativeMedia(
 /// back on).
 typedef NativeVoiceConsent = Future<bool> Function(String package);
 
-const _terminals = {'audio.ended', 'audio.stopped', 'audio.error', 'voice.stopped', 'voice.error', 'overlay.closed'};
+const _terminals = {'audio.ended', 'audio.stopped', 'audio.error', 'overlay.closed'};
 
 class _Owner {
   _Owner(this.token, this.generation, this.pkg, this.instance, this.lease, this.scope, this.conn);
@@ -255,7 +254,7 @@ class NativeCapabilityRuntime {
         !declaration.native ||
         !declaration.capabilities.contains(effect.type) ||
         !stream.negotiatedFeatures.contains(effect.type) ||
-        (effect.type == 'voice' && effect.op == 'start' && _deniedLeases.contains(effect.lease))) {
+        false) {
       return false;
     }
     if (effect.type == 'audio' && effect.op == 'play' && !declaration.media.contains(effect.resource)) return false;
@@ -321,44 +320,6 @@ class NativeCapabilityRuntime {
             if (!_current(o)) return false;
             if (effect.op == 'stop') _terminal(o, 'audio.stopped');
           }
-        case 'voice':
-          if (effect.op == 'start') {
-            if (o.denied || o.roles.contains('voice') || o.ended.contains('voice')) return false;
-            final allowed = consent == null ? false : await consent(pkg);
-            if (!_current(o)) return false;
-            if (!allowed) {
-              _deny(o, 'declined');
-              return false;
-            }
-            // The system permission (asked once by Android, then remembered).
-            final granted = await platform.call('requestVoiceGrant', o.args);
-            if (!_current(o)) return false;
-            if (granted != true) {
-              _deny(o, 'permission');
-              return false;
-            }
-            o.granted = true;
-            o.roles.add('voice');
-            try {
-              await platform.call('startVoice', o.args);
-            } on PlatformException catch (e) {
-              // No microphone now (dictation has it, it would not open): listening is off,
-              // the clip and the caption go on.
-              if (_current(o)) {
-                _terminal(
-                  o,
-                  'voice.error',
-                  const {'busy', 'permission', 'capture', 'indicator'}.contains(e.code) ? e.code : 'error',
-                );
-              }
-              return false;
-            }
-            if (!_current(o)) return false;
-          } else {
-            if (!o.roles.contains('voice')) return false;
-            await platform.call('stopVoice', o.args);
-            if (_current(o)) _terminal(o, 'voice.stopped');
-          }
         case 'overlay':
           if (effect.op == 'show') {
             if (o.roles.contains('overlay') || o.ended.contains('overlay')) return false;
@@ -406,8 +367,6 @@ class NativeCapabilityRuntime {
     o.denied = true;
     _deniedLeases.add(o.lease);
     if (_deniedLeases.length > 32) _deniedLeases.remove(_deniedLeases.first);
-    o.ended.add('voice');
-    _queue(o, 'voice.error', reason);
   }
 
   Future<void> _prepare(_Owner o, NativeCapabilityEffect effect, int audioGeneration) async {
@@ -451,21 +410,7 @@ class NativeCapabilityRuntime {
       unawaited(_revokeOwner(o));
       return;
     }
-    if (kind == 'voice.speechStart') {
-      // Only with proof that this owner's playback is already stopped.
-      if (!o.granted || !o.roles.contains('voice') || o.speaking || value['localStopped'] != true) return;
-      o.speaking = true;
-      ++o.audioGeneration;
-      // The bridge ends the audio role on speechStart; no audio.stopped follows.
-      if (o.roles.remove('audio')) o.ended.add('audio');
-      _queue(o, 'voice.speechStart');
-      _afterAudio(o);
-    } else if (kind == 'voice.speechEnd') {
-      if (!o.roles.contains('voice') || !o.speaking) return;
-      o.speaking = false;
-      _queue(o, 'voice.speechEnd');
-      _afterAudio(o, 'speech-ended');
-    } else if (kind is String && _terminals.contains(kind)) {
+    if (kind is String && _terminals.contains(kind)) {
       _terminal(o, kind, reason);
     }
   }
@@ -473,7 +418,6 @@ class NativeCapabilityRuntime {
   void _terminal(_Owner o, String event, [String? reason]) {
     final role = event.split('.').first;
     if (!o.roles.remove(role) || !o.ended.add(role)) return;
-    if (role == 'voice') o.granted = false;
     if (role == 'overlay') {
       unawaited(o.captions?.cancel());
       o.captions = null;
@@ -487,7 +431,6 @@ class NativeCapabilityRuntime {
   void _afterAudio(_Owner o, [String reason = 'audio-ended']) {
     if (!o.claimed.contains('audio') || o.roles.contains('audio')) return;
     if (o.roles.contains('overlay')) unawaited(_stopRole(o, 'overlay', 'audio-ended'));
-    if (o.roles.contains('voice') && !o.speaking) unawaited(_stopRole(o, 'voice', reason));
   }
 
   Future<void> _stopRole(_Owner o, String role, String reason) async {
