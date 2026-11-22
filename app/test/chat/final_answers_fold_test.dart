@@ -171,12 +171,7 @@ void main() {
       'weather_card',
       {},
       meta: {
-        'dsh-go/view': {
-          'type': 'stack',
-          'children': [
-            {'type': 'text', 'text': id},
-          ],
-        },
+        'dsh-go/media': {'v': 1, 'kind': 'image', 'status': 'running', 'prompt': id},
       },
     );
     final rows = deriveRows(

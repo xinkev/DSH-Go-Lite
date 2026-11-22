@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 import '../../../l10n/l10n.dart';
 import 'dsh_ui_bind.dart';
 import 'dsh_ui_model.dart';
-import 'dsh_ui_plugin.dart';
+import 'dsh_ui_blocks.dart' show PluginAction, PluginActionHandler, PluginActionSource;
 
 class _Draft {
   _Draft(this.value, this.revision);

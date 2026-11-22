@@ -1,8 +1,7 @@
-// The Flutter side of the plugin-view blocks
-// (docs/design/native-plugins-views.md §2.2, §4): list, keyValue, progress,
-// table, actions, image, the empty state, restricted text, and the options /
-// confirm variants that invoke the plugin instead of sending a reply; and the
-// v2 emptyState and gallery (docs/design/plugin-ui-v3.md §4.2).
+// The Flutter side of the dsh-ui view blocks: list, keyValue, progress, table,
+// actions, image, the empty state, restricted text, and the options / confirm
+// variants that answer through an action instead of sending a reply; and the
+// v2 emptyState and gallery.
 
 import 'dart:async';
 import 'dart:typed_data';
@@ -16,13 +15,81 @@ import '../../common/pressable.dart';
 import '../../theme/app_icons.dart';
 import '../../theme/theme.dart';
 import 'dsh_ui_model.dart';
-import 'dsh_ui_plugin.dart';
 import 'dsh_ui_plugin_figures.dart';
 import 'dsh_ui_plugin_styles.dart';
 import 'dsh_ui_style.dart';
 import 'dsh_ui_widgets.dart';
 
-/// 插件视图的上下文：点按交给谁、同源图片怎么取、要不要播生长动画。
+/// 动作从哪个元素来。
+enum PluginActionSource { button, row, option, confirm, change, submit }
+
+/// 用户在视图里点了一下：App 据此发 invoke（`id` + `args`）。
+final class PluginAction {
+  const PluginAction({
+    required this.id,
+    this.args = const {},
+    required this.source,
+    required this.path,
+    this.gestureAt,
+  });
+
+  final String id;
+
+  /// 已求值的纯 JSON 对象。
+  final Map<String, Object?> args;
+  final PluginActionSource source;
+
+  /// Host-only time of the originating user gesture, captured before queuing.
+  /// Never read from view JSON or forwarded as plugin-provided arguments.
+  final DateTime? gestureAt;
+
+  PluginAction withGestureAt(DateTime time) =>
+      PluginAction(id: id, args: args, source: source, path: path, gestureAt: time);
+
+  /// 元素在视图里的路径（`view.children[1].items[0]`），调试用。
+  final String path;
+
+  @override
+  bool operator ==(Object other) =>
+      other is PluginAction &&
+      other.id == id &&
+      other.source == source &&
+      other.path == path &&
+      other.gestureAt == gestureAt &&
+      _sameJson(other.args, args);
+
+  @override
+  int get hashCode => Object.hash(id, source, path, gestureAt);
+
+  @override
+  String toString() => 'PluginAction($id, $args, ${source.name}, $path)';
+}
+
+bool _sameJson(Object? a, Object? b) {
+  if (a is Map && b is Map) {
+    if (a.length != b.length) return false;
+    for (final e in a.entries) {
+      if (!b.containsKey(e.key) || !_sameJson(e.value, b[e.key])) return false;
+    }
+    return true;
+  }
+  if (a is List && b is List) {
+    if (a.length != b.length) return false;
+    for (var i = 0; i < a.length; i++) {
+      if (!_sameJson(a[i], b[i])) return false;
+    }
+    return true;
+  }
+  return a == b;
+}
+
+/// 发一次动作并执行效果；返回 false 表示失败（被点的元素复原）。不要抛错。
+typedef PluginActionHandler = Future<bool> Function(PluginAction action);
+
+/// 把 `asset:<路径>` 换成带凭据的图片；返回 null 画占位。
+typedef PluginImageResolver = ImageProvider? Function(String src);
+
+/// 视图的上下文：点按交给谁、同源图片怎么取、要不要播生长动画。
 /// 有它就按插件视图画（options / confirm 走 invoke）；[onAction] 为 null 时
 /// 只读：`actions`、`confirm` 不显示，`options` 只读，`list` 行不可点。
 class DshUiPluginScope extends InheritedWidget {

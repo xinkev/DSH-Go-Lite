@@ -4,21 +4,9 @@ import 'package:dsh_client/dsh_client.dart';
 
 import '../../l10n/l10n.dart';
 import '../common/tool_glyph.dart';
-import 'dsh_ui/dsh_ui_model.dart' show DshUiParse, DshUiParsed;
-import 'dsh_ui/dsh_ui_plugin.dart';
 import '../../state/sessions_state.dart' show localWorkspaceDir;
 import 'render/code_block.dart' show languageForPath;
 import 'render/diff_view.dart';
-
-/// 插件工具的原生卡片(结果 meta 里的 `dsh-go/view`,见
-/// `docs/design/native-plugins-views.md` §8):null = 没有;
-/// `DshUiInvalid` = 有但画不了。只在成功的调用上读;解析按 meta 对象缓存。
-DshUiParse? toolCardParse(ToolChatItem item) {
-  if (item.status != ToolStatus.succeeded) return null;
-  final meta = item.meta;
-  if (meta is! Map || !meta.containsKey(toolCardViewKey)) return null;
-  return parsePluginView(meta[toolCardViewKey], budget: PluginViewBudget.toolCard);
-}
 
 /// 生成的图片 / 视频(结果 meta 里的 `dsh-go/media`,见
 /// `docs/design/media-generation.md` §2.5):null = 没有。任何状态都读(视频
@@ -83,9 +71,8 @@ List<QuestionReply> _parseQuestionReplies(ToolChatItem item) {
   return List.unmodifiable(replies);
 }
 
-/// 这次调用带了一张画得出来的原生卡片(插件卡片、媒体卡或提问回执)。
-bool hasToolCard(ToolChatItem item) =>
-    toolCardParse(item) is DshUiParsed || toolMedia(item) != null || toolQuestionReplies(item).isNotEmpty;
+/// 这次调用带了一张原生卡片(媒体卡或提问回执)。
+bool hasToolCard(ToolChatItem item) => toolMedia(item) != null || toolQuestionReplies(item).isNotEmpty;
 
 /// 带原生卡片的工具调用,卡片画在哪(`ToolCallRow.card`)。
 enum ToolCardPlacement {
@@ -222,22 +209,10 @@ class ToolView {
   /// 一行摘要(行内显示时由 Text 自己省略)。
   String get summary => _summary();
 
-  /// 插件工具的原生卡片,见 [toolCardParse]。
-  /// Read through the parse cache each time: it starts over when the
-  /// person's palette changes (a card that asked for `accent: "app"`).
-  // Plugin tool views are retired: the row always uses the plain tool card.
-  DshUiParse? get pluginView => null;
-
   /// 生成的媒体,见 [toolMedia]。
   late final MediaMeta? media = toolMedia(item);
 
   late final List<QuestionReply> questionReplies = toolQuestionReplies(item);
-
-  /// 原生卡片的标题:折叠行的摘要用它(卡片画不了或没写标题时为 null)。
-  String? get pluginTitle => switch (pluginView) {
-    DshUiParsed(:final view) => view.title,
-    _ => null,
-  };
 
   String _summary() {
     String oneLine(String s) => s.trim().replaceAll(RegExp(r'\s+'), ' ');

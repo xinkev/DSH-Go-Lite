@@ -456,7 +456,7 @@ DSH npm 前缀（runtime/locks）→ rtbuild 按 series 应用目标平台的补
 | 目录 | 数量 | 什么时候读 |
 |---|---|---|
 | `docs/architecture.md` | 1 | 本文，全局入口 |
-| `docs/design/` | 50 | 实现规格/方案：改对应子系统前读（`bridge-contract`、`native-plugins-*`、`runtime-*`、`plugin-*`、`settings-ia`、`rendering`、`roleplay-*`、`pets`、`companion`、`phone-*`、`share-*`、`self-update-installation` 等） |
+| `docs/design/` | 47 | 实现规格/方案：改对应子系统前读（`bridge-contract`、`runtime-*`、`plugin-*`、`settings-ia`、`rendering`、`roleplay-*`、`pets`、`companion`、`phone-*`、`share-*`、`self-update-installation` 等） |
 | `docs/maintenance/` | 61 | 45 份 `*-contract` 是某行为/补丁的合同（复现+边界+测试），改对应代码前读；其余是故障/迁移记录 |
 | `docs/testing/` | 14 | 真机/专项验证记录（remote、self-update、android-shell 等） |
 | `docs/guide/` | 12+12 | 用户指南（中文/英文），App 内置技能输入；`docs/guide/harmony/` 是鸿蒙版单独一套 |

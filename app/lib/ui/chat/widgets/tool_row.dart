@@ -75,7 +75,7 @@ class ToolRow extends StatefulWidget {
   final ToolChatItem item;
   final ApprovalResponder onRespond;
 
-  /// 带原生卡片(`meta["dsh-go/view"]`)时卡片画在哪,见 [ToolCardPlacement]。
+  /// 带媒体卡或提问回执时卡片画在哪,见 [ToolCardPlacement]。
   /// 不带卡片的调用不受影响。
   final ToolCardPlacement card;
 
@@ -133,8 +133,6 @@ class _ToolRowState extends State<ToolRow> {
           autoAllowing: auto,
           expanded: expanded,
           opens: child != null,
-          // 卡片正摊开在下面(标题就在卡片上):行里照旧写参数摘要。
-          titled: !(expanded && widget.card == ToolCardPlacement.inline && false),
           onTap: () {
             if (child != null && opener!(child)) return;
             setState(() => _toggled = !expanded);
@@ -144,11 +142,10 @@ class _ToolRowState extends State<ToolRow> {
           open: expanded,
           child: Padding(
             padding: const EdgeInsets.only(top: 4, bottom: 8),
-            child: switch (v.pluginView) {
-              // 生成的图片 / 视频:媒体卡(折进过程里的那一行不画,卡片在外面)。
-              _ when v.media != null && widget.card == ToolCardPlacement.inline => MediaCard(meta: v.media!),
-              _ => ToolDetail(view: v),
-            },
+            // 生成的图片 / 视频:媒体卡(折进过程里的那一行不画,卡片在外面)。
+            child: v.media != null && widget.card == ToolCardPlacement.inline
+                ? MediaCard(meta: v.media!)
+                : ToolDetail(view: v),
           ),
         ),
         if (widget.card == ToolCardPlacement.inline && v.questionReplies.isNotEmpty)
@@ -177,7 +174,6 @@ class _ToolHeader extends StatelessWidget {
     this.autoAllowing = false,
     required this.expanded,
     this.opens = false,
-    this.titled = true,
     required this.onTap,
   });
 
@@ -188,8 +184,6 @@ class _ToolHeader extends StatelessWidget {
   /// A tap opens another conversation: a chevron at the row's end.
   final bool opens;
 
-  /// 摘要用原生卡片的标题(有的话)。
-  final bool titled;
   final VoidCallback onTap;
 
   @override
@@ -200,10 +194,9 @@ class _ToolHeader extends StatelessWidget {
     final blocked = view.sandboxBlocked;
     final failed = status == ToolStatus.failed && !blocked && (view.phoneResult?.isFault ?? true);
 
-    final title = titled ? view.pluginTitle : null;
-    final summary = blocked ? l10n.chatToolNeedsApproval : title ?? view.summary;
+    final summary = blocked ? l10n.chatToolNeedsApproval : view.summary;
     final summaryColor = failed ? dsh.danger : dsh.textTertiary;
-    final summaryStyle = view.summaryIsCode && !blocked && title == null
+    final summaryStyle = view.summaryIsCode && !blocked
         ? AppType.mono(size: 12.5, color: summaryColor, height: 1.3)
         : StreamRow.detail(context)?.copyWith(color: summaryColor);
 
