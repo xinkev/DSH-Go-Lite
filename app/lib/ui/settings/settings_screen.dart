@@ -200,20 +200,6 @@ class SettingsScreen extends ConsumerWidget {
               onTap: () => _push(context, const MediaSettingsPage()),
             ),
             if (ref.watch(operatingSystemProvider) == 'ohos') const LinuxEnvironmentTile(tint: SettingsHues.abilities),
-            SettingsTile(
-              icon: AppIcons.plugin,
-              tint: SettingsHues.abilities,
-              spot: SettingsIndex.entry(SettingsPageId.plugins),
-              value: plugins == null || plugins == 0
-                  ? null
-                  : Text(
-                      l10n.hubValuePlugins(plugins),
-                      style: AppType.tabular(Theme.of(context).textTheme.bodyMedium!),
-                    ),
-              onTap: () => _push(context, const PluginsScreen()),
-            ),
-            // The plugins' own settings sections, when the host has any.
-            ...pluginSettingsTiles(ref, tint: SettingsHues.abilities),
           ],
         ),
         SettingsSection(

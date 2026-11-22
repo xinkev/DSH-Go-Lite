@@ -77,7 +77,6 @@ enum SettingsPageId {
   linuxEnvironment,
   webSearch,
   media,
-  plugins,
   appearance,
   pets,
   interface,
@@ -93,7 +92,6 @@ enum SettingsPageId {
   subagent,
   agentLoop,
   shell,
-  pluginInventory,
   allFeatures,
   diagnostics,
   about,
@@ -493,14 +491,6 @@ final _pages = <SettingsPageMeta>[
     freq: Freq.medium,
     links: const ['media'],
   ),
-  SettingsPageMeta(
-    SettingsPageId.plugins,
-    title: (l) => l.hubPlugins,
-    group: _abilities,
-    keywords: (l) => l.searchKwPlugins,
-    freq: Freq.medium,
-    links: const ['plugins'],
-  ),
   // 外观
   SettingsPageMeta(
     SettingsPageId.appearance,
@@ -618,13 +608,6 @@ final _pages = <SettingsPageMeta>[
     parent: SettingsPageId.engineParams,
     keywords: (l) => l.searchKwShell,
     links: const ['shell-settings'],
-  ),
-  SettingsPageMeta(
-    SettingsPageId.pluginInventory,
-    title: (l) => l.engineSettingsPluginInventory,
-    parent: SettingsPageId.engineParams,
-    keywords: (l) => l.searchKwPluginInventory,
-    links: const ['plugin-inventory'],
   ),
   SettingsPageMeta(
     SettingsPageId.allFeatures,
@@ -789,14 +772,6 @@ abstract final class Spots {
     title: (l) => l.phoneBackgroundGuideTitle,
     keywords: (l) => l.searchKwPhoneBackgroundGuide,
     condition: SpotCondition.phoneControlOn,
-  );
-
-  // 插件 (its 插件市场 tab; the page opens on its first tab).
-  static final pluginsMarket = SettingSpot(
-    'plugins-market',
-    page: SettingsPageId.plugins,
-    title: (l) => l.pluginsMarketTitle,
-    keywords: (l) => l.searchKwPluginsMarket,
   );
 
   // 联网搜索 (drawn from the engine's schema).
@@ -1183,7 +1158,6 @@ final _rows = <SettingSpot>[
   Spots.phoneAutoCollapse,
   Spots.phoneReturn,
   Spots.phoneBackgroundGuide,
-  Spots.pluginsMarket,
   Spots.webSearchKey,
   Spots.darkMode,
   Spots.petSize,

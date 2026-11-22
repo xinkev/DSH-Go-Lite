@@ -21,8 +21,6 @@ import '../../phone/dnd_mode_page.dart';
 import '../../phone/phone_control_screen.dart';
 import '../../phone/phone_unlock_page.dart';
 import '../../phone/system_actions_page.dart';
-import '../../plugins/plugin_inventory_page.dart';
-import '../../plugins/plugins_screen.dart';
 import '../../providers/providers_page.dart';
 import '../../remote/remote_screen.dart';
 import '../../share_hosted/hosted_links_page.dart';
@@ -74,8 +72,6 @@ Widget settingsPage(SettingsPageId id, {String? sessionId}) => switch (id) {
   SettingsPageId.shell => const ShellSettingsPage(),
   SettingsPageId.webSearch => const WebSearchSettingsPage(),
   SettingsPageId.media => const MediaSettingsPage(),
-  SettingsPageId.pluginInventory => const PluginInventoryPage(),
-  SettingsPageId.plugins => const PluginsScreen(),
   SettingsPageId.allFeatures => const AllFeaturesPage(),
   SettingsPageId.account => const AccountPage(),
   SettingsPageId.remote => const RemoteScreen(),

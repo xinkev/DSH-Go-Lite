@@ -99,12 +99,7 @@ class EngineSettingsHubPage extends ConsumerWidget {
           sw.SettingsSection(
             title: l10n.engineSettingsPlugins,
             children: [
-              sw.SettingsTile(
-                icon: AppIcons.pluginInventory,
-                tinted: false,
-                spot: SettingsIndex.entry(SettingsPageId.pluginInventory),
-                onTap: () => _open(context, const PluginInventoryPage()),
-              ),
+
               // No confirmed plugin list: no plugin's settings, and a way to ask again.
               if (config?.scope.status == PluginScopeStatus.failed)
                 sw.SettingsTile(
