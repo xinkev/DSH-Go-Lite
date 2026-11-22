@@ -17,6 +17,8 @@ import 'native_taps.dart';
 /// The plugin groups of [item]'s menu: none outside the chat screen, for a
 /// reply the host hasn't saved yet, or without plugins.
 List<MenuGroup> nativeMessageMenuGroups(BuildContext context, AssistantChatItem item, {String? text}) {
+  return const [];
+  // ignore: dead_code
   final scope = NativeComposerScope.of(context);
   final sessionId = scope?.host.sessionId;
   if (scope == null || sessionId == null) return const [];
