@@ -173,36 +173,7 @@ class _PetStageState extends ConsumerState<PetStage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    // The overlay outside the app hears every state while the chat lives.
-    ref.listen<void>(petOverlayBridgeProvider, (_, _) {});
-    return PetPerchScope(
-      registry: _registry,
-      child: Listener(
-        behavior: HitTestBehavior.translucent,
-        onPointerDown: (_) => ref.read(petInteractionProvider.notifier).touch(),
-        child: NotificationListener<ScrollNotification>(
-          onNotification: (n) {
-            if (n is ScrollStartNotification) _scrolling.value = true;
-            if (n is ScrollEndNotification) _scrolling.value = false;
-            return false;
-          },
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              _FocusReporter(
-                sessionId: widget.sessionId,
-                child: KeyedSubtree(key: _content, child: widget.child),
-              ),
-              Positioned.fill(
-                child: PetLayer(registry: _registry, aside: widget.aside, scrolling: _scrolling, onReveal: _reveal),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => widget.child;
 }
 
 /// What the page's conversation is doing, for [_FocusReporter] (null: a new chat).
