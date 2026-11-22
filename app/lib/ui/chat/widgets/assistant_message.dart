@@ -14,7 +14,6 @@ import '../../common/typing_indicator.dart';
 import '../../theme/app_icons.dart';
 import '../../theme/theme.dart';
 import '../dsh_ui/dsh_ui.dart';
-import '../../plugins/native/message_plugin_menu.dart';
 import '../../share/share_entry.dart' show shareReply;
 import '../render/markdown_body.dart';
 import 'message_actions.dart';
@@ -244,8 +243,6 @@ class _AssistantMessageState extends State<AssistantMessage> {
     final action = await showMessageMenu(
       context,
       text: text,
-      // Plugins' items for this reply, under each plugin's name.
-      extra: nativeMessageMenuGroups(context, widget.item, text: markdown),
       actions: [
         MessageAction.copy,
         MessageAction.selectText,
