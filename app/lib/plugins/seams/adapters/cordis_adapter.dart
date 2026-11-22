@@ -12,9 +12,9 @@ import '../../../state/cordis_state.dart';
 import '../../../ui/common/list_page_row.dart';
 import '../../../ui/cordis/cordis_page.dart' show CordisPluginRow;
 import '../../../ui/cordis/cordis_plugin_sheet.dart';
-import '../seat_models.dart';
+import '../../../platform/seat_models.dart';
 import '../seat_planner.dart';
-import '../slot_catalog.dart';
+import '../../../platform/slot_catalog.dart';
 
 class CordisAdapter implements NativeSlotAdapter {
   const CordisAdapter();

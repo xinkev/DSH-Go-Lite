@@ -5,7 +5,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'seat_models.dart';
+import '../../platform/seat_models.dart';
 import 'seat_planner.dart';
 import 'seat_state.dart';
 

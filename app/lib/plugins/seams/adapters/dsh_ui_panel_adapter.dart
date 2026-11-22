@@ -10,10 +10,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../ui/plugins/native/native_panel.dart';
 import '../seat_inventory.dart';
-import '../seat_models.dart';
+import '../../../platform/seat_models.dart';
 import '../seat_planner.dart';
 import '../seat_state.dart';
-import '../slot_catalog.dart';
+import '../../../platform/slot_catalog.dart';
 
 class DshUiPanelAdapter implements NativeSlotAdapter {
   const DshUiPanelAdapter();

@@ -16,10 +16,10 @@ import '../../../ui/engine_settings/engine_settings_page.dart' show namespaceTit
 import '../../../ui/engine_settings/namespace_copy.dart';
 import '../../../ui/engine_settings/schema_form.dart';
 import '../../../ui/theme/app_icons.dart';
-import '../seat_models.dart';
+import '../../../platform/seat_models.dart';
 import '../seat_planner.dart';
 import '../seat_state.dart';
-import '../slot_catalog.dart';
+import '../../../platform/slot_catalog.dart';
 
 class SchemaConfigAdapter implements NativeSlotAdapter {
   const SchemaConfigAdapter();

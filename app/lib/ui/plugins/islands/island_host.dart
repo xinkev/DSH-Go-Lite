@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../plugins/seams/seat_models.dart';
+import '../../../platform/seat_models.dart';
 import '../../../state/hosts_state.dart';
 import 'island_assets.dart';
 import 'island_budget.dart';

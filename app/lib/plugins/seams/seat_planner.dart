@@ -9,8 +9,8 @@ import 'adapters/cordis_adapter.dart';
 import 'adapters/dsh_ui_panel_adapter.dart';
 import 'adapters/schema_config_adapter.dart';
 import 'seat_inventory.dart';
-import 'seat_models.dart';
-import 'slot_catalog.dart';
+import '../../platform/seat_models.dart';
+import '../../platform/slot_catalog.dart';
 
 /// How much of an occupant an adapter draws.
 enum NativeCoverage {

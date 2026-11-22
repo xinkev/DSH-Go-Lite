@@ -3,7 +3,7 @@
 
 import 'package:flutter/foundation.dart';
 
-import '../../state/hosts_state.dart' show HostRef;
+import '../state/hosts_state.dart' show HostRef;
 import 'slot_catalog.dart';
 
 export 'slot_catalog.dart' show IslandForm;

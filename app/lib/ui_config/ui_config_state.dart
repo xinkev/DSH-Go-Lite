@@ -12,7 +12,7 @@ import 'package:flutter/material.dart' show AppLifecycleListener, Color, ThemeMo
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../plugins/seams/seat_models.dart' show SeatOverride, SeatOverrides;
+import '../platform/seat_models.dart' show SeatOverride, SeatOverrides;
 import '../runtime/runtime_bridge.dart' show RuntimePhase;
 import '../runtime/runtime_state.dart';
 import '../share_code/guest_fs.dart';

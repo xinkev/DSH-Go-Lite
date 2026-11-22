@@ -10,7 +10,7 @@
 import 'dart:convert';
 
 import '../l10n/l10n.dart';
-import '../plugins/seams/slot_catalog.dart' show slotInfo;
+import '../platform/slot_catalog.dart' show slotInfo;
 import 'ui_config_model.dart';
 import 'ui_config_schema.dart';
 import 'ui_json_reader.dart';

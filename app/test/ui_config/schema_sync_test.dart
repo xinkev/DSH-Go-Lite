@@ -4,7 +4,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dsh_app/plugins/seams/slot_catalog.dart';
+import 'package:dsh_app/platform/slot_catalog.dart';
 import 'package:dsh_app/ui_config/ui_config.dart';
 import 'package:flutter_test/flutter_test.dart';
 

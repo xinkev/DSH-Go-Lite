@@ -4,7 +4,7 @@
 
 import 'dart:io';
 
-import 'package:dsh_app/plugins/seams/seat_models.dart' show SeatOverride, SeatOverrides;
+import 'package:dsh_app/platform/seat_models.dart' show SeatOverride, SeatOverrides;
 import 'package:dsh_app/runtime/runtime_bridge.dart';
 import 'package:dsh_app/runtime/runtime_state.dart';
 import 'package:dsh_app/state/appearance_state.dart';

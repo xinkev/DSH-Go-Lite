@@ -17,10 +17,10 @@ import '../../ui/plugins/seats/seat_links.dart';
 import '../../ui_config/ui_config_state.dart' show uiConfigProvider, uiSeatOverridesProvider;
 import '../native/native_state.dart' show nativePanelsProvider;
 import 'seat_inventory.dart';
-import 'seat_models.dart';
+import '../../platform/seat_models.dart';
 import 'seat_planner.dart';
 import 'seat_preferences.dart';
-import 'slot_catalog.dart' show Slots;
+import '../../platform/slot_catalog.dart' show Slots;
 
 // ── Inventory ────────────────────────────────────────────────────────────────
 

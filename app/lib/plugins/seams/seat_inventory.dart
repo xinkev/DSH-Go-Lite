@@ -8,8 +8,8 @@ import 'package:flutter/foundation.dart';
 import '../../ui/engine_settings/engine_settings_page.dart' show isPluginForm;
 import '../../ui/engine_settings/schema_form.dart' show schemaSections;
 import '../../platform/native_model.dart' show NativePanel;
-import 'seat_models.dart';
-import 'slot_catalog.dart';
+import '../../platform/seat_models.dart';
+import '../../platform/slot_catalog.dart';
 
 /// Packages and slot occupancy of the active host.
 @immutable

@@ -8,7 +8,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:dsh_app/plugins/seams/seat_models.dart';
+import 'package:dsh_app/platform/seat_models.dart';
 import 'package:dsh_app/state/hosts_state.dart';
 import 'package:dsh_app/ui/plugins/islands/islands.dart';
 import 'package:dsh_app/ui/theme/theme.dart';
