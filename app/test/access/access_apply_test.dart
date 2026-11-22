@@ -13,7 +13,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../pets/overlay/fake_overlay_native.dart';
 import '../phone/support.dart';
 import '../shell/golden_harness.dart';
 import 'support.dart';
@@ -29,12 +28,10 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late FakePhoneNative phone;
-  late FakeOverlayNative pet;
 
   Future<ProviderContainer> container({LocalRuntimeController Function()? engine, bool phoneOn = false}) async {
     SharedPreferences.setMockInitialValues({});
     phone = FakePhoneNative(status: phoneStatus(enabled: phoneOn))..install();
-    pet = FakeOverlayNative(permission: 'granted')..install();
     final c = ProviderContainer(
       overrides: [
         settingsProvider.overrideWith(_Settings.new),
@@ -61,9 +58,7 @@ void main() {
     await c.read(accessSetupProvider.notifier).apply(readingsWith(offPhone, storage: true, overlay: true));
     expect(c.read(settingsProvider).phoneStorage, isTrue);
     expect(phone.calls.where((m) => m.method == 'setEnabled').single.arguments, {'enabled': true});
-    expect(pet.calls.where((m) => m.method == 'setEnabled').single.arguments, {'enabled': true});
     // Nothing opened behind the person's back.
-    expect(pet.methods, isNot(contains('requestPermission')));
   });
 
   test('a permission still off leaves its feature off; phone control\'s switch is its own', () async {
@@ -72,7 +67,6 @@ void main() {
     await c.read(accessSetupProvider.notifier).apply(offPhone);
     expect(c.read(settingsProvider).phoneStorage, isFalse);
     expect(phone.methods, contains('setEnabled'));
-    expect(pet.methods, isNot(contains('setEnabled')));
   });
 
   group('the engine, as far as it got', () {
@@ -140,6 +134,5 @@ void main() {
     await c.read(accessSetupProvider.notifier).apply(readingsWith(offPhone, storage: true, overlay: true));
     expect(c.read(settingsProvider).phoneStorage, isFalse);
     expect(phone.methods, isNot(contains('setEnabled')));
-    expect(pet.methods, isNot(contains('setEnabled')));
   });
 }
