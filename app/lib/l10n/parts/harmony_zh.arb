@@ -84,8 +84,6 @@
   "harmonyKwNotifyLive": "进度通知,通知栏进度,状态栏进度",
   "harmonyTerminalNoPty": "这个引擎没有交互终端，可连 SSH 主机",
   "harmonyTerminalSupportedHosts": "在 SSH 主机上可用",
-  "harmonyPluginRemoveRefused": "这个引擎不能卸载插件",
-  "harmonyPluginRefusedHint": "可以开关随包插件，或连接电脑管理插件",
   "harmonyPasswordStorageHelp": "只保存在这台手机上，由系统密钥库加密",
   "harmonyKeyStorageHelp": "只保存在这台手机上，由系统密钥库加密。支持 Ed25519、RSA、ECDSA",
   "harmonyUsageNotSent": "鸿蒙版暂不发送使用统计",

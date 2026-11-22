@@ -109,7 +109,7 @@ class DiagnosticsPlugin : FlutterPlugin, io.flutter.embedding.engine.plugins.act
             "abis" to Build.SUPPORTED_ABIS.toList(),
             "memoryMb" to memory.totalMem / MB,
             "freeStorageMb" to context.filesDir.usableSpace / MB,
-            // What dp and the pet's k are computed from (pet/PetPack.kt): a size that looks wrong
+            // A size that looks wrong
             // in the overlay or the app is read against these.
             "display" to display(),
         )

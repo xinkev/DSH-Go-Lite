@@ -79,14 +79,6 @@
     }
   },
   "plugslotsNeedsChat": "先打开一个对话",
-  "plugslotsFromPlugin": "来自「{plugin}」",
-  "@plugslotsFromPlugin": {
-    "placeholders": {
-      "plugin": {
-        "type": "String"
-      }
-    }
-  },
   "plugslotsPanelOffline": "连不上插件",
   "plugslotsIssueTooMany": "最多 {max} 个，其余不显示",
   "@plugslotsIssueTooMany": {
@@ -212,7 +204,6 @@
   "plugslotsPlaceRightbar": "右侧栏",
   "plugslotsPlaceFiles": "文件预览",
   "plugslotsPlaceSettings": "设置",
-  "plugslotsPlacePlugins": "插件页",
   "plugslotsPlaceNewChat": "新对话页",
   "plugslotsPlaceElsewhere": "其他位置",
   "plugslotsPlaceUnknown": "它的网页界面",

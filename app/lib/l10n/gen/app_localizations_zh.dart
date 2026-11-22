@@ -2737,16 +2737,7 @@ class L10nZh extends L10n {
   String get botsOpenSource => '开源项目';
 
   @override
-  String get botsPluginCatalogFailed => '插件目录没打开';
-
-  @override
   String get botsTapRetry => '点一下重试';
-
-  @override
-  String get botsFeaturedPlugins => '精选插件';
-
-  @override
-  String get botsPluginSource => '插件信息来自 dshfind';
 
   @override
   String get botsPromptIdeas => '玩法';
@@ -3262,15 +3253,6 @@ class L10nZh extends L10n {
   String get catalogPlugins => '插件';
 
   @override
-  String get catalogPluginsSummary => '已安装与插件市场';
-
-  @override
-  String get catalogPluginInventory => '插件清单';
-
-  @override
-  String get catalogPluginInventorySummary => '已加载的全部插件';
-
-  @override
   String get catalogCordisSummary => '插件创建的动态面板';
 
   @override
@@ -3365,12 +3347,6 @@ class L10nZh extends L10n {
 
   @override
   String get catalogWebSummary => 'DSH 官方界面';
-
-  @override
-  String get catalogPluginPanel => '插件面板';
-
-  @override
-  String get catalogHostPluginMissing => '这台主机没有这个插件';
 
   @override
   String get catalogAllFeatures => '全部功能';
@@ -5726,12 +5702,6 @@ class L10nZh extends L10n {
 
   @override
   String get engineSettingsRun => '运行';
-
-  @override
-  String get engineSettingsPlugins => '插件';
-
-  @override
-  String get engineSettingsPluginInventory => '插件清单';
 
   @override
   String get engineSettingsPluginStopped => '插件没有在运行';
@@ -8235,12 +8205,6 @@ class L10nZh extends L10n {
   String get harmonyTerminalSupportedHosts => '在 SSH 主机上可用';
 
   @override
-  String get harmonyPluginRemoveRefused => '这个引擎不能卸载插件';
-
-  @override
-  String get harmonyPluginRefusedHint => '可以开关随包插件，或连接电脑管理插件';
-
-  @override
   String get harmonyPasswordStorageHelp => '只保存在这台手机上，由系统密钥库加密';
 
   @override
@@ -8552,84 +8516,6 @@ class L10nZh extends L10n {
   String get hubSettingsOrApiKey => '或填写 API Key';
 
   @override
-  String get hubPluginShare => '分享插件';
-
-  @override
-  String get hubPluginDetails => '插件详情';
-
-  @override
-  String get hubPluginFeatured => 'dshfind 推荐';
-
-  @override
-  String get hubPluginWebOnly => '仅网页版';
-
-  @override
-  String get hubPluginStars => '星标';
-
-  @override
-  String get hubPluginSource => '来源';
-
-  @override
-  String get hubPluginInstalledVersion => '已装版本';
-
-  @override
-  String get hubPluginRequiresDsh => '需要 DSH';
-
-  @override
-  String get hubPluginPackageName => '包名';
-
-  @override
-  String get hubPluginHomepage => '主页';
-
-  @override
-  String get hubPluginRepository => '代码仓库';
-
-  @override
-  String get hubPluginManageTitle => '管理插件';
-
-  @override
-  String get hubPluginManage => '管理';
-
-  @override
-  String get hubPluginSafeModeInstall => '安全模式下不能安装';
-
-  @override
-  String get hubPluginInstallCommand => '获取安装命令';
-
-  @override
-  String get hubPluginInstallComputer => '在电脑上安装';
-
-  @override
-  String get hubPluginInstalling => '安装中…';
-
-  @override
-  String get hubPluginAllowBuilds => '允许构建脚本并重试';
-
-  @override
-  String get hubPluginRetryInstall => '重试安装';
-
-  @override
-  String get hubPluginOfficial => 'DSH 官方';
-
-  @override
-  String get hubPluginNotLoaded => '没有正常加载';
-
-  @override
-  String get hubPluginComponents => '组件';
-
-  @override
-  String get hubPluginSafeModeRemove => '安全模式下不能卸载';
-
-  @override
-  String get hubPluginRemoveCommand => '获取卸载命令';
-
-  @override
-  String get hubPluginRemoveComputer => '在电脑上卸载';
-
-  @override
-  String get hubPluginUninstall => '卸载';
-
-  @override
   String hubSessionTurns(int count) {
     return '共 $count 轮';
   }
@@ -8712,34 +8598,6 @@ class L10nZh extends L10n {
 
   @override
   String get hubSettingsApiKey => 'DeepSeek API Key';
-
-  @override
-  String hubPluginBrowserFailed(String address) {
-    return '没能打开浏览器，请手动访问 $address';
-  }
-
-  @override
-  String hubPluginYearMonth(int year, String month) {
-    return '$year年$month月';
-  }
-
-  @override
-  String hubPluginUpdateTo(String version) {
-    return '更新到 $version';
-  }
-
-  @override
-  String hubPluginInstallOn(String host) {
-    return '安装到$host';
-  }
-
-  @override
-  String hubPluginComponentCount(int count) {
-    return '$count 个';
-  }
-
-  @override
-  String get hubPluginComponentSeparator => '、';
 
   @override
   String get hubGroupAi => 'AI';
@@ -8849,11 +8707,6 @@ class L10nZh extends L10n {
   String get hubValueNoHosts => '未添加';
 
   @override
-  String hubValuePlugins(int count) {
-    return '$count 个';
-  }
-
-  @override
   String get hubEngineStartup => '启动';
 
   @override
@@ -8903,12 +8756,6 @@ class L10nZh extends L10n {
 
   @override
   String get iosNotificationSettingsFailed => '没能打开系统设置。到「设置 → DSH Go → 通知」里开启';
-
-  @override
-  String get iosPluginsPermissionLocalThirdParty => '插件以 DSH 的权限运行：能读写文件、执行命令、读取 API Key，不受工作区沙箱限制。由第三方提供，DSH 官方未审核。';
-
-  @override
-  String get iosPluginsPermissionLocalTrusted => '插件以 DSH 的权限运行：能读写文件、执行命令、读取 API Key，不受工作区沙箱限制。只装你信任的插件。';
 
   @override
   String get iosIconChanged => '桌面图标已更换';
@@ -12753,146 +12600,7 @@ class L10nZh extends L10n {
   String get pluginConfigUnsaved => '未保存';
 
   @override
-  String get pluginConfigSecretSet => '已设置';
-
-  @override
-  String get pluginConfigAdvanced => '高级';
-
-  @override
-  String get pluginConfigSearchHint => '搜索设置';
-
-  @override
-  String get pluginConfigNoMatch => '没有匹配的设置';
-
-  @override
-  String get pluginConfigOpenWeb => '在网页版设置';
-
-  @override
-  String get pluginConfigOpenWebHint => '插件自带的设置页';
-
-  @override
-  String get pluginConfigResetAll => '全部恢复默认';
-
-  @override
-  String get pluginConfigResetAllTitle => '全部恢复默认？';
-
-  @override
-  String get pluginConfigReset => '恢复';
-
-  @override
-  String pluginConfigChanges(int count) {
-    return '$count 项更改';
-  }
-
-  @override
-  String get pluginConfigAppliesOnReload => '保存后重新载入插件';
-
-  @override
-  String get pluginConfigSaving => '正在保存…';
-
-  @override
-  String get pluginConfigReloading => '正在重新载入…';
-
-  @override
-  String get pluginConfigApplied => '已生效';
-
-  @override
-  String get pluginConfigFailed => '没能生效';
-
-  @override
-  String get pluginConfigRestored => '已恢复原设置';
-
-  @override
-  String get pluginConfigStopped => '没能生效，原设置也没能恢复';
-
-  @override
-  String get pluginConfigRestore => '恢复原设置';
-
-  @override
-  String get pluginConfigDiscard => '放弃';
-
-  @override
-  String get pluginConfigNotStarted => '插件没有启动';
-
-  @override
-  String get pluginConfigNone => '没有可设置的项';
-
-  @override
-  String get pluginConfigInvalidOperation => '这项改动无法应用';
-
-  @override
-  String get pluginConfigGone => '插件已不在运行，已刷新';
-
-  @override
-  String get pluginConfigUnknown => '连接中断，已重新读取';
-
-  @override
-  String get pluginConfigUnsupported => '暂不支持在这里设置';
-
-  @override
   String get pluginConfigSecretUnbound => '需插件适配后设置';
-
-  @override
-  String get pluginConfigListFailed => '插件清单读取失败，稍后重试';
-
-  @override
-  String get pluginConfigListUpdating => '插件清单正在更新，请稍后再试';
-
-  @override
-  String get pluginConfigFixed => '由配置文件固定';
-
-  @override
-  String get pluginConfigFixedNote => '由配置文件固定，这里只能查看';
-
-  @override
-  String get pluginConfigReadOnly => '只读';
-
-  @override
-  String pluginConfigEntryTitle(String bundle, String entry) {
-    return '$bundle · $entry';
-  }
-
-  @override
-  String get pluginConfigNameSpeechToText => '语音识别';
-
-  @override
-  String get pluginConfigNameSenseVoice => 'SenseVoice 识别';
-
-  @override
-  String get pluginConfigNameSpeechApi => '转写接口';
-
-  @override
-  String get pluginConfigNameTranslator => '翻译服务';
-
-  @override
-  String get pluginConfigNameSessionIndex => '会话索引';
-
-  @override
-  String get pluginConfigNameSessionSearchTool => '会话搜索工具';
-
-  @override
-  String get pluginConfigNameTerminalService => '终端服务';
-
-  @override
-  String get pluginConfigNameTerminalBash => 'Bash 终端';
-
-  @override
-  String get pluginConfigNameTerminalPwsh => 'PowerShell 终端';
-
-  @override
-  String get pluginConfigNameTerminalTools => '终端工具';
-
-  @override
-  String get pluginConfigNameWorktree => '工作树管理';
-
-  @override
-  String get pluginConfigNameWorktreeTools => '工作树工具';
-
-  @override
-  String get pluginConfigNameRalphWorkflow => '工作流引擎';
-
-  @override
-  String get pluginConfigNameRalphTools => 'Ralph 工具';
 
   @override
   String get plugInputRequired => '请填写此项';
@@ -13013,35 +12721,6 @@ class L10nZh extends L10n {
   String get seamsDetailPage => '插件详情扩展';
 
   @override
-  String get pluginsOperationHostChanged => '主机已切换，未执行';
-
-  @override
-  String get pluginsReloadLocal => '重启内核以重载';
-
-  @override
-  String get pluginsReloadInterrupts => '会中断正在运行的任务';
-
-  @override
-  String pluginsReloadConfirm(String name) {
-    return '重载「$name」？';
-  }
-
-  @override
-  String get pluginsReloadExplanation => '将重启本机内核，重新加载插件。正在运行的任务会中断。';
-
-  @override
-  String get pluginsReloadProceed => '重启并重载';
-
-  @override
-  String get pluginsReloadRequested => '已请求重启内核';
-
-  @override
-  String get pluginsReloadChanged => '主机或插件状态已变化，请重试';
-
-  @override
-  String get pluginsReloadFailed => '未能重启内核，请查看引擎日志';
-
-  @override
   String get pluginsFile => '文件';
 
   @override
@@ -13126,17 +12805,6 @@ class L10nZh extends L10n {
   String get pluginsNamespaceVoiceInput => '语音输入';
 
   @override
-  String get pluginsOfficialPlugin => '官方插件';
-
-  @override
-  String get pluginsLocalUnshareable => '本地安装，无法分享';
-
-  @override
-  String pluginsIncludesPresets(String names) {
-    return '含预设「$names」';
-  }
-
-  @override
   String get pluginsSecretsUnshareable => '含有密钥，无法分享';
 
   @override
@@ -13152,31 +12820,6 @@ class L10nZh extends L10n {
 
   @override
   String get pluginsOffValue => '关';
-
-  @override
-  String get pluginsOfficialUnavailable => '这台主机没有这个官方插件';
-
-  @override
-  String get pluginsEnabled => '已启用';
-
-  @override
-  String get pluginsVersionMismatch => '与分享时的版本不一致';
-
-  @override
-  String get pluginsCurrentVersion => '当前版本';
-
-  @override
-  String get pluginsNewVersion => '新版本';
-
-  @override
-  String pluginsAddedWith(String title) {
-    return '随「$title」添加';
-  }
-
-  @override
-  String pluginsApplyAfterInstall(String detail) {
-    return '装好插件后应用 · $detail';
-  }
 
   @override
   String get pluginsSettingsReadFailed => '没能读取这台主机的设置';
@@ -13195,18 +12838,6 @@ class L10nZh extends L10n {
 
   @override
   String get pluginsReplaceContent => '替换现有内容';
-
-  @override
-  String get pluginsSafeModeInstallBlocked => '安全模式下不能安装插件';
-
-  @override
-  String get pluginsHostInstallBlocked => '这台主机不能从这里安装插件';
-
-  @override
-  String get pluginsInstallFailed => '安装失败';
-
-  @override
-  String get pluginsAfterRestart => '重启后生效';
 
   @override
   String get pluginsSettingsChanged => '设置刚被改过';
@@ -13250,30 +12881,6 @@ class L10nZh extends L10n {
   String get pluginsGistReadFailed => '没能读取 Gist';
 
   @override
-  String get pluginsListReadFailed => '没能读取插件列表';
-
-  @override
-  String get pluginsReadingPlugins => '正在读取插件…';
-
-  @override
-  String get pluginsDshOfficial => 'DSH 官方';
-
-  @override
-  String get pluginsOfficialToggleOnly => '官方组件只能开关，不能卸载；对这台主机上的所有对话生效';
-
-  @override
-  String get pluginsOfficial => '官方';
-
-  @override
-  String get pluginsNoThirdParty => '还没装第三方插件';
-
-  @override
-  String get pluginsPluginsDescription => '插件能给 DSH 加工具、记忆和模型';
-
-  @override
-  String get pluginsBrowseMarket => '逛逛插件市场';
-
-  @override
   String get pluginsLoading => '正在加载';
 
   @override
@@ -13288,353 +12895,22 @@ class L10nZh extends L10n {
   }
 
   @override
-  String get pluginsSearch => '搜索插件';
-
-  @override
-  String get pluginsMarketLoading => '正在载入插件目录…';
-
-  @override
-  String get pluginsMarketLoadFailed => '插件目录没打开';
-
-  @override
-  String get pluginsMarketInvalid => '目录格式有误';
-
-  @override
   String get pluginsAll => '全部';
-
-  @override
-  String pluginsMarketCount(int count) {
-    return '$count 个插件 · 来自 dshfind';
-  }
-
-  @override
-  String get pluginsHideWeb => '隐藏网页版插件';
-
-  @override
-  String pluginsShowWebCount(int count) {
-    return '显示 $count 个网页版插件';
-  }
-
-  @override
-  String get pluginsNoCategoryPlugins => '这个分类下没有插件';
-
-  @override
-  String pluginsNoSearchResults(String query) {
-    return '没有找到「$query」';
-  }
-
-  @override
-  String pluginsFailureDetails(String title) {
-    return '$title · 点开查看';
-  }
-
-  @override
-  String get pluginsFeatured => '推荐';
-
-  @override
-  String pluginsInstalledRemoteRestart(String name, String host) {
-    return '已安装「$name」，重启$host上的 DSH 后生效';
-  }
-
-  @override
-  String pluginsInstalledNamed(String name) {
-    return '已安装「$name」';
-  }
-
-  @override
-  String get pluginsInstallCancelled => '已取消安装';
-
-  @override
-  String pluginsInstallFailureNamed(String name, String reason) {
-    return '「$name」$reason';
-  }
-
-  @override
-  String get pluginsRestartRequired => '需要重启引擎';
-
-  @override
-  String pluginsRestartExplanation(String name) {
-    return '「$name」重启引擎后生效，进行中的回复会中断。';
-  }
 
   @override
   String get pluginsRestartEngine => '重启引擎';
 
   @override
-  String get pluginsAllowBuildScripts => '允许构建脚本？';
-
-  @override
-  String get pluginsBuildScriptPackages => '下面这些包要在安装时运行脚本：';
-
-  @override
-  String pluginsBuildScriptWarning(String host) {
-    return '脚本会以 DSH 的权限在$host上执行，能读写文件、联网。只在你信任这个插件时允许。';
-  }
-
-  @override
-  String get pluginsThisDevice => '这台设备';
-
-  @override
-  String get pluginsAllowRetry => '允许并重试';
-
-  @override
-  String pluginsUpdateNamed(String name) {
-    return '更新「$name」？';
-  }
-
-  @override
-  String pluginsUninstallNamed(String title) {
-    return '卸载「$title」？';
-  }
-
-  @override
-  String pluginsUninstallExplanation(String host) {
-    return '插件会从$host上移除，它保存的数据和设置不会删除。';
-  }
-
-  @override
-  String get pluginsThisHost => '这台主机';
-
-  @override
-  String get pluginsUninstall => '卸载';
-
-  @override
-  String pluginsUninstalledNamed(String title) {
-    return '已卸载「$title」';
-  }
-
-  @override
-  String get pluginsRestartNow => '立即重启';
-
-  @override
-  String get pluginsUninstallFailed => '没能卸载';
-
-  @override
   String get pluginsThatComputer => '那台电脑';
-
-  @override
-  String get pluginsCommandAfterInstall => '装好后重启那台电脑上的 DSH，再回来刷新';
 
   @override
   String get pluginsError => '出错';
 
   @override
-  String get pluginsInventoryTitle => '插件清单';
-
-  @override
-  String get pluginsGlobalPlugins => '全局插件';
-
-  @override
-  String get pluginsAgentPresets => 'Agent 预设';
-
-  @override
-  String get pluginsInventoryReadFailed => '没能读取插件清单';
-
-  @override
-  String pluginsComponentCount(int count) {
-    return '$count 个组件';
-  }
-
-  @override
-  String pluginsEnabledCount(int count) {
-    return '$count 个已启用';
-  }
-
-  @override
-  String pluginsErrorCount(int count) {
-    return '$count 个出错';
-  }
-
-  @override
-  String get pluginsNoPlugins => '没有插件';
-
-  @override
-  String get pluginsNoMatchingPlugins => '没有匹配的插件';
-
-  @override
-  String get pluginsPresetLoadFailed => '这个预设没能加载';
-
-  @override
-  String get pluginsPresetNoPlugins => '这个预设没有插件';
-
-  @override
-  String get pluginsStandard => '标准';
-
-  @override
-  String get pluginsMinimal => '精简';
-
-  @override
-  String pluginsDefaultPresetName(String name) {
-    return '$name（默认）';
-  }
-
-  @override
-  String get pluginsSystemComponents => '系统组件';
-
-  @override
-  String pluginsCount(int count) {
-    return '$count 个';
-  }
-
-  @override
   String get pluginsSource => '来源';
 
   @override
-  String get pluginsDisableCondition => '禁用条件';
-
-  @override
-  String get pluginsProvidedByPreset => '由预设提供';
-
-  @override
-  String get pluginsDetailsTitle => '插件详情';
-
-  @override
-  String pluginsPackageInfoError(String error) {
-    return '包信息有误：$error';
-  }
-
-  @override
-  String get pluginsInstalling => '安装中';
-
-  @override
-  String get pluginsGet => '获取';
-
-  @override
-  String get pluginsLoadingCannotCancel => '正在加载插件，这一步不能取消';
-
-  @override
-  String get pluginsInstallDuration => '约需一两分钟，可以先离开';
-
-  @override
-  String get pluginsViewInstallLogs => '查看安装日志';
-
-  @override
-  String get pluginsViewDetails => '查看详情';
-
-  @override
-  String get pluginsCopyCommand => '复制命令';
-
-  @override
-  String get pluginsCommandCopied => '命令已复制';
-
-  @override
-  String get pluginsMissingFiles => '插件文件缺失，重新安装可修复';
-
-  @override
-  String get pluginsNotDshPlugin => '不是 DSH 插件，无法加载';
-
-  @override
-  String get pluginsIncompatible => '与当前 DSH 版本不兼容，未加载';
-
-  @override
-  String pluginsRequiresDshVersion(String requiredVersion, String currentVersion) {
-    return '需要 DSH $requiredVersion，当前 $currentVersion，未加载';
-  }
-
-  @override
-  String pluginsLoadFailure(String reason) {
-    return '加载失败：$reason';
-  }
-
-  @override
-  String get pluginsUnknownReason => '原因未知';
-
-  @override
-  String pluginsBundleProblem(String reason) {
-    return '有问题：$reason';
-  }
-
-  @override
-  String pluginsRefreshFailure(String reason) {
-    return '刷新失败：$reason';
-  }
-
-  @override
-  String get pluginsTitle => '插件';
-
-  @override
-  String get pluginsRefresh => '刷新';
-
-  @override
-  String get pluginsMarketTitle => '插件市场';
-
-  @override
-  String get pluginsConnectToManage => '连上引擎后管理插件';
-
-  @override
-  String get pluginsSafeModeOperationsBlocked => '安全模式下不能安装或卸载插件';
-
-  @override
-  String pluginsRelayToggleOnly(String host) {
-    return '$host · 经中转只能开关，安装请在那台电脑上进行';
-  }
-
-  @override
-  String get pluginsInstallThisPhone => '安装到：本机';
-
-  @override
-  String pluginsInstallHost(String host) {
-    return '安装到：$host';
-  }
-
-  @override
-  String get pluginsOfflineDescription => '引擎运行后显示已装插件，插件市场现在就能逛';
-
-  @override
-  String get pluginsIconChanged => '桌面图标已选择，回到桌面后更新';
-
-  @override
-  String get pluginsIconChangeFailed => '没能更换，稍后再试';
-
-  @override
   String get pluginsTheme => '主题';
-
-  @override
-  String get pluginsAppearance => '外观';
-
-  @override
-  String get pluginsColors => '配色';
-
-  @override
-  String get pluginsFeatureIcons => '功能图标';
-
-  @override
-  String get pluginsAppIcon => '桌面图标';
-
-  @override
-  String get pluginsCustomColor => '自定义';
-
-  @override
-  String pluginsColorLabel(String label) {
-    return '配色：$label';
-  }
-
-  @override
-  String get pluginsCoral => '珊瑚';
-
-  @override
-  String get pluginsRouge => '胭脂';
-
-  @override
-  String get pluginsOchre => '赭石';
-
-  @override
-  String get pluginsMoss => '苔绿';
-
-  @override
-  String get pluginsLake => '湖蓝';
-
-  @override
-  String get pluginsIndigo => '靛紫';
-
-  @override
-  String get pluginsHue => '色相';
-
-  @override
-  String get pluginsWallpaper => '壁纸';
-
-  @override
-  String get pluginsFollowWallpaper => '跟随壁纸';
 
   @override
   String get pluginsAllowHighPower => '允许后台高耗电';
@@ -13889,34 +13165,13 @@ class L10nZh extends L10n {
   String get pluginsShareLink => '分享链接';
 
   @override
-  String get pluginsInstallPlugin => '安装插件';
-
-  @override
   String get pluginsImportProfile => '导入配置';
 
   @override
   String get pluginsImportTo => '导入到';
 
   @override
-  String get pluginsInstallTo => '安装到';
-
-  @override
-  String get pluginsVerification => '校验';
-
-  @override
   String get pluginsSize => '大小';
-
-  @override
-  String get pluginsVerified => '校验通过';
-
-  @override
-  String get pluginsVerificationMismatch => '校验不一致';
-
-  @override
-  String get pluginsCannotVerify => '无法校验';
-
-  @override
-  String get pluginsVerifying => '校验中';
 
   @override
   String get pluginsPresets => '预设';
@@ -13958,11 +13213,6 @@ class L10nZh extends L10n {
   String get pluginsHostPluginsReadFailed => '没能读取这台主机的插件';
 
   @override
-  String pluginsUpdateTo(String version) {
-    return '更新到 $version';
-  }
-
-  @override
   String pluginsImportCount(int count) {
     return '导入 $count 项';
   }
@@ -13971,15 +13221,9 @@ class L10nZh extends L10n {
   String get pluginsImporting => '正在导入';
 
   @override
-  String get pluginsInstallingActive => '正在安装';
-
-  @override
   String pluginsImportFailedCount(int count) {
     return '$count 项没成功';
   }
-
-  @override
-  String get pluginsCouldNotInstall => '没能安装';
 
   @override
   String get pluginsEngineRestartToApply => '重启引擎后生效';
@@ -13992,17 +13236,6 @@ class L10nZh extends L10n {
   @override
   String pluginsImportedCount(int count) {
     return '已导入 $count 项';
-  }
-
-  @override
-  String get pluginsLocalPluginUnshareable => '这个插件是本地安装的，无法分享';
-
-  @override
-  String get pluginsSharePlugin => '分享插件';
-
-  @override
-  String pluginsPluginCount(int count) {
-    return '$count 个插件';
   }
 
   @override
@@ -14056,9 +13289,6 @@ class L10nZh extends L10n {
   String get pluginsShareOpenFailed => '没能打开这个分享码';
 
   @override
-  String get pluginsPluginShareTitle => 'DSH Go 插件';
-
-  @override
   String get pluginsShareSheetOpenFailed => '没能打开分享';
 
   @override
@@ -14092,66 +13322,6 @@ class L10nZh extends L10n {
   String get pluginsShareQrCode => '分享码二维码';
 
   @override
-  String pluginsUpdateCurrentWarning(String to) {
-    return '会先卸载当前版本，再安装 $to。如果新版本没装上，插件会处于未安装状态，需要重新安装。';
-  }
-
-  @override
-  String pluginsUpdateVersionWarning(String from, String to) {
-    return '会先卸载 $from，再安装 $to。如果新版本没装上，插件会处于未安装状态，需要重新安装。';
-  }
-
-  @override
-  String pluginsUninstalledRestartLocal(String title) {
-    return '已卸载「$title」，重启引擎后完全移除';
-  }
-
-  @override
-  String pluginsUninstalledRestartRemote(String title, String host) {
-    return '已卸载「$title」，重启$host上的 DSH 后完全移除';
-  }
-
-  @override
-  String get pluginsEnableFailed => '没能启用';
-
-  @override
-  String get pluginsDisableFailed => '没能停用';
-
-  @override
-  String get pluginsEnabledRestartLocal => '已启用，重启引擎后生效';
-
-  @override
-  String pluginsEnabledRestartRemote(String host) {
-    return '已启用，重启$host上的 DSH 后生效';
-  }
-
-  @override
-  String get pluginsDisabledRestartLocal => '已停用，重启引擎后生效';
-
-  @override
-  String pluginsDisabledRestartRemote(String host) {
-    return '已停用，重启$host上的 DSH 后生效';
-  }
-
-  @override
-  String pluginsRelayCommandInstruction(String host) {
-    return '经 DSH Remote 中转时只能开关插件。在$host的终端里运行：';
-  }
-
-  @override
-  String get pluginsPermissionLocalThirdParty =>
-      '插件以 DSH 的权限运行：能读写文件、执行命令、读取 API Key 和已授权的手机存储，不受工作区沙箱限制。由第三方提供，DSH 官方未审核。';
-
-  @override
-  String get pluginsPermissionLocalTrusted => '插件以 DSH 的权限运行：能读写文件、执行命令、读取 API Key 和已授权的手机存储，不受工作区沙箱限制。只装你信任的插件。';
-
-  @override
-  String get pluginsPermissionRemoteThirdParty => '插件以 DSH 的权限运行：能读写文件、执行命令、读取 API Key，不受工作区沙箱限制。由第三方提供，DSH 官方未审核。';
-
-  @override
-  String get pluginsPermissionRemoteTrusted => '插件以 DSH 的权限运行：能读写文件、执行命令、读取 API Key，不受工作区沙箱限制。只装你信任的插件。';
-
-  @override
   String pluginsSelectedQrCount(int count) {
     return '已选 $count 项 · 可生成二维码';
   }
@@ -14165,48 +13335,9 @@ class L10nZh extends L10n {
   String get pluginsListSeparator => '、';
 
   @override
-  String pluginsActionFailure(String action, String reason) {
-    return '$action：$reason';
-  }
-
-  @override
-  String pluginsInventorySemantics(String title, String status) {
-    return '$title，$status';
-  }
-
-  @override
   String pluginsSettingsChanges(String shown, int count) {
     return '$shown 等 $count 项';
   }
-
-  @override
-  String get pluginsLoadStatus => '加载状态';
-
-  @override
-  String get pluginsLoadPartial => '部分生效';
-
-  @override
-  String get pluginsLoadFailed => '加载失败';
-
-  @override
-  String get pluginsLoadNotReady => '尚未就绪';
-
-  @override
-  String get pluginsLoadMetadata => '元数据诊断';
-
-  @override
-  String pluginsLoadRunningCount(int running, int total) {
-    return '$running / $total 个组件运行中';
-  }
-
-  @override
-  String get pluginsLoadUnreported => '状态未报告';
-
-  @override
-  String get pluginsLoadNoRuntimeDetail => '主机未返回运行时错误详情，请查看引擎日志。';
-
-  @override
-  String get pluginsLoadRemoteLogs => '请在这台主机上查看引擎日志。';
 
   @override
   String get plugslotsSurfaceComposerTools => '加号面板';
@@ -14295,11 +13426,6 @@ class L10nZh extends L10n {
 
   @override
   String get plugslotsNeedsChat => '先打开一个对话';
-
-  @override
-  String plugslotsFromPlugin(String plugin) {
-    return '来自「$plugin」';
-  }
 
   @override
   String get plugslotsPanelOffline => '连不上插件';
@@ -14485,9 +13611,6 @@ class L10nZh extends L10n {
 
   @override
   String get plugslotsPlaceSettings => '设置';
-
-  @override
-  String get plugslotsPlacePlugins => '插件页';
 
   @override
   String get plugslotsPlaceNewChat => '新对话页';
@@ -16621,12 +15744,6 @@ class L10nZh extends L10n {
   String get searchKwGeneral => '通用,网页版设置';
 
   @override
-  String get searchKwPluginInventory => '插件清单,已装插件';
-
-  @override
-  String get searchKwPlugins => '扩展,市场,安装插件,插件市场';
-
-  @override
   String get searchKwAllFeatures => '功能,目录,所有功能';
 
   @override
@@ -16855,9 +15972,6 @@ class L10nZh extends L10n {
 
   @override
   String get searchKwWebBusySend => '发送,排队,插话,AI 工作时';
-
-  @override
-  String get searchKwPluginsMarket => '插件市场,安装插件,市场,获取插件';
 
   @override
   String get searchKwUsageStats => '统计,使用统计,匿名,隐私,数据,改进,遥测,分析';
@@ -18149,9 +17263,6 @@ class L10nZh extends L10n {
   String get stateSignInIncompleteRetry => '登录没有完成，请重试';
 
   @override
-  String get statePluginLabel => '插件';
-
-  @override
   String get stateConfigLabel => '配置';
 
   @override
@@ -18740,160 +17851,7 @@ class L10nZh extends L10n {
   String get stateRegistryMirror => 'npmmirror 镜像';
 
   @override
-  String get statePluginIncompatible => '这个插件不支持当前的 DSH 版本。';
-
-  @override
-  String get statePluginInstallCancelled => '已取消安装';
-
-  @override
-  String get statePluginNoChanges => '没有改动任何东西';
-
-  @override
-  String get statePluginIncompatibleTitle => '和当前 DSH 不兼容';
-
-  @override
-  String get statePluginNetworkFailed => '网络连不上';
-
-  @override
-  String get statePluginSourceUnreachable => '连不上插件源码所在的网站';
-
-  @override
-  String get statePluginDownloadTimeout => '下载超时';
-
-  @override
-  String get statePluginRegistryUnavailable => '安装源暂时没有响应';
-
-  @override
-  String get statePluginPnpmMissing => '缺少 pnpm';
-
-  @override
-  String get statePluginPhonePnpmMissing => '这台手机缺少 pnpm';
-
-  @override
-  String get statePluginHostPnpmMissing => '这台主机缺少 pnpm';
-
-  @override
-  String get statePluginNotFound => '找不到这个插件';
-
-  @override
-  String get statePluginPackageMissing => '安装源里没有这个包';
-
-  @override
-  String get statePluginTooNew => '版本太新';
-
-  @override
-  String get statePluginWaitForRelease => '发布满 24 小时后才能安装';
-
-  @override
-  String get statePluginVersionMissing => '找不到这个版本';
-
-  @override
-  String get statePluginRegistryVersionMissing => '安装源里还没有这个版本';
-
-  @override
   String get stateDeviceStorageFull => '设备存储空间不足';
-
-  @override
-  String get statePluginNoWritePermission => '没有写入权限';
-
-  @override
-  String get statePluginConfigReadOnly => '引擎配置目录不可写';
-
-  @override
-  String get statePluginIntegrityFailed => '文件校验失败';
-
-  @override
-  String get statePluginDownloadIncomplete => '下载的文件不完整';
-
-  @override
-  String get statePluginBuildScripts => '需要运行构建脚本';
-
-  @override
-  String get statePluginBuildApproval => '构建脚本等待允许';
-
-  @override
-  String get statePluginAlreadyInstalled => '已经装过了';
-
-  @override
-  String get statePluginUninstallFirst => '换版本需先卸载';
-
-  @override
-  String get statePluginInvalid => '这不是 DSH 插件';
-
-  @override
-  String get statePluginNoEntry => '这个包没有插件入口，已撤销安装';
-
-  @override
-  String get statePluginInUse => '插件正在被使用';
-
-  @override
-  String get statePluginHasDependents => '有其他插件依赖它';
-
-  @override
-  String get statePluginManagedElsewhere => '不能在这里修改';
-
-  @override
-  String get statePluginEngineManaged => '这个插件由引擎单独管理';
-
-  @override
-  String get statePluginAuthorizationExpired => '授权已过期';
-
-  @override
-  String get statePluginBuildChanged => '构建脚本已变化，需要重新安装';
-
-  @override
-  String get statePluginInvalidAddress => '安装地址无效';
-
-  @override
-  String get statePluginCatalogInvalidAddress => '插件目录的安装地址不正确';
-
-  @override
-  String get statePluginOperationIncomplete => '操作没有完成';
-
-  @override
-  String get statePluginRemoteForbidden => '这台主机不允许远程安装';
-
-  @override
-  String get statePluginRelayToggleOnly => '经中转连接只能开关插件';
-
-  @override
-  String get statePluginManagementUnsupported => '主机不支持插件管理';
-
-  @override
-  String get statePluginEngineUnsupported => '当前引擎不支持插件管理';
-
-  @override
-  String get statePluginResultMissing => '没能拿到安装结果';
-
-  @override
-  String get statePluginResultPending => '安装结果待确认';
-
-  @override
-  String get statePluginDisconnected => '连接断开了';
-
-  @override
-  String get statePluginQueued => '排队中';
-
-  @override
-  String get statePluginRemoving => '正在卸载旧版本';
-
-  @override
-  String get statePluginInstalling => '正在下载安装';
-
-  @override
-  String get statePluginApplying => '正在启用';
-
-  @override
-  String get statePluginCancelling => '正在取消';
-
-  @override
-  String get statePluginInstalledRestart => '已安装，重启后生效';
-
-  @override
-  String get statePluginInstallFailed => '安装失败';
-
-  @override
-  String get statePluginConnectFirst => '连接后可安装插件';
 
   @override
   String get stateProviderOpenAi => 'OpenAI 兼容';
@@ -19054,11 +18012,6 @@ class L10nZh extends L10n {
   String get stateDownloadsPrefix => '下载/';
 
   @override
-  String stateSharePluginCount(int count) {
-    return '$count 个插件';
-  }
-
-  @override
   String stateShareSkillCount(int count) {
     return '$count 个技能';
   }
@@ -19208,34 +18161,6 @@ class L10nZh extends L10n {
   }
 
   @override
-  String statePluginRuntimeIncompatible(String version) {
-    return '这个插件不支持当前的 DSH 版本（$version）。';
-  }
-
-  @override
-  String statePluginRequiredVersion(String wanted, String current) {
-    return '这个插件要求 DSH $wanted，当前是 $current。';
-  }
-
-  @override
-  String get statePluginRegistryUnreachable => '没能连上安装源';
-
-  @override
-  String statePluginNamedRegistryUnreachable(String registry) {
-    return '没能连上安装源（$registry）';
-  }
-
-  @override
-  String statePluginBuildsPending(String builds) {
-    return '等待允许：$builds';
-  }
-
-  @override
-  String statePluginRegistryProgress(String registry, int attempt, int attempts) {
-    return '换用$registry下载（第 $attempt/$attempts 个源）';
-  }
-
-  @override
   String stateProviderServiceUnavailable(int status) {
     return '服务暂时不可用（$status）';
   }
@@ -19305,11 +18230,6 @@ class L10nZh extends L10n {
 
   @override
   String get stateUiWeb => '网页';
-
-  @override
-  String statePluginRegistryProgressUnknown(String registry, int attempt) {
-    return '换用$registry下载（第 $attempt/null 个源）';
-  }
 
   @override
   String get stateProviderTokenCountInvalid => '填写数字，如 128K';
@@ -24795,11 +23715,6 @@ class L10nZh extends L10n {
 
   @override
   String get viewShareStars => '星标';
-
-  @override
-  String viewSharePluginTitle(String value) {
-    return 'DSH 插件「$value」';
-  }
 
   @override
   String viewShareInstallCommand(String value) {

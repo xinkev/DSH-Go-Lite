@@ -26,8 +26,6 @@
   "searchKwShell": "commands,timeout,output,terminal,shell,bash",
   "searchKwWebSearch": "search,internet,browse,api key",
   "searchKwGeneral": "general,web settings",
-  "searchKwPluginInventory": "inventory,installed plugins,bundles",
-  "searchKwPlugins": "extensions,market,install,marketplace",
   "searchKwAllFeatures": "features,catalog,everything",
   "searchKwAccount": "account,balance,top up,sign in,sign out,api key,usage,DeepSeek",
   "searchKwRemote": "remote,ssh,computer,server,DSH Remote,connect",
@@ -111,7 +109,6 @@
   "searchKwWebCodingView": "coding view,work view,web",
   "searchKwWebCollapse": "work steps,collapse,web",
   "searchKwWebBusySend": "send,queue,while AI works",
-  "searchKwPluginsMarket": "plugin market,install plugins,marketplace",
   "searchKwUsageStats": "statistics,stats,usage data,analytics,telemetry,anonymous,privacy,data",
   "searchKwQuickPanel": "swipe,left swipe,shortcuts,gesture,quick panel,quick access"
 }

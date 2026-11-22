@@ -13,7 +13,6 @@
   "stateBrowserOpenFailed": "没能打开浏览器",
   "stateSignInStartFailed": "没能开始登录",
   "stateSignInIncompleteRetry": "登录没有完成，请重试",
-  "statePluginLabel": "插件",
   "stateConfigLabel": "配置",
   "stateConfigShare": "配置分享",
   "stateShareCode": "分享码",
@@ -210,58 +209,7 @@
   "stateRegistryDefault": "默认安装源",
   "stateRegistryNpm": "npm 官方源",
   "stateRegistryMirror": "npmmirror 镜像",
-  "statePluginIncompatible": "这个插件不支持当前的 DSH 版本。",
-  "statePluginInstallCancelled": "已取消安装",
-  "statePluginNoChanges": "没有改动任何东西",
-  "statePluginIncompatibleTitle": "和当前 DSH 不兼容",
-  "statePluginNetworkFailed": "网络连不上",
-  "statePluginSourceUnreachable": "连不上插件源码所在的网站",
-  "statePluginDownloadTimeout": "下载超时",
-  "statePluginRegistryUnavailable": "安装源暂时没有响应",
-  "statePluginPnpmMissing": "缺少 pnpm",
-  "statePluginPhonePnpmMissing": "这台手机缺少 pnpm",
-  "statePluginHostPnpmMissing": "这台主机缺少 pnpm",
-  "statePluginNotFound": "找不到这个插件",
-  "statePluginPackageMissing": "安装源里没有这个包",
-  "statePluginTooNew": "版本太新",
-  "statePluginWaitForRelease": "发布满 24 小时后才能安装",
-  "statePluginVersionMissing": "找不到这个版本",
-  "statePluginRegistryVersionMissing": "安装源里还没有这个版本",
   "stateDeviceStorageFull": "设备存储空间不足",
-  "statePluginNoWritePermission": "没有写入权限",
-  "statePluginConfigReadOnly": "引擎配置目录不可写",
-  "statePluginIntegrityFailed": "文件校验失败",
-  "statePluginDownloadIncomplete": "下载的文件不完整",
-  "statePluginBuildScripts": "需要运行构建脚本",
-  "statePluginBuildApproval": "构建脚本等待允许",
-  "statePluginAlreadyInstalled": "已经装过了",
-  "statePluginUninstallFirst": "换版本需先卸载",
-  "statePluginInvalid": "这不是 DSH 插件",
-  "statePluginNoEntry": "这个包没有插件入口，已撤销安装",
-  "statePluginInUse": "插件正在被使用",
-  "statePluginHasDependents": "有其他插件依赖它",
-  "statePluginManagedElsewhere": "不能在这里修改",
-  "statePluginEngineManaged": "这个插件由引擎单独管理",
-  "statePluginAuthorizationExpired": "授权已过期",
-  "statePluginBuildChanged": "构建脚本已变化，需要重新安装",
-  "statePluginInvalidAddress": "安装地址无效",
-  "statePluginCatalogInvalidAddress": "插件目录的安装地址不正确",
-  "statePluginOperationIncomplete": "操作没有完成",
-  "statePluginRemoteForbidden": "这台主机不允许远程安装",
-  "statePluginRelayToggleOnly": "经中转连接只能开关插件",
-  "statePluginManagementUnsupported": "主机不支持插件管理",
-  "statePluginEngineUnsupported": "当前引擎不支持插件管理",
-  "statePluginResultMissing": "没能拿到安装结果",
-  "statePluginResultPending": "安装结果待确认",
-  "statePluginDisconnected": "连接断开了",
-  "statePluginQueued": "排队中",
-  "statePluginRemoving": "正在卸载旧版本",
-  "statePluginInstalling": "正在下载安装",
-  "statePluginApplying": "正在启用",
-  "statePluginCancelling": "正在取消",
-  "statePluginInstalledRestart": "已安装，重启后生效",
-  "statePluginInstallFailed": "安装失败",
-  "statePluginConnectFirst": "连接后可安装插件",
   "stateProviderOpenAi": "OpenAI 兼容",
   "stateProviderAnthropic": "Anthropic 兼容",
   "stateProviderUrlRequired": "填写 Base URL",
@@ -321,14 +269,6 @@
     }
   },
   "stateDownloadsPrefix": "下载/",
-  "stateSharePluginCount": "{count} 个插件",
-  "@stateSharePluginCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
   "stateShareSkillCount": "{count} 个技能",
   "@stateShareSkillCount": {
     "placeholders": {
@@ -568,56 +508,6 @@
       }
     }
   },
-  "statePluginRuntimeIncompatible": "这个插件不支持当前的 DSH 版本（{version}）。",
-  "@statePluginRuntimeIncompatible": {
-    "placeholders": {
-      "version": {
-        "type": "String"
-      }
-    }
-  },
-  "statePluginRequiredVersion": "这个插件要求 DSH {wanted}，当前是 {current}。",
-  "@statePluginRequiredVersion": {
-    "placeholders": {
-      "wanted": {
-        "type": "String"
-      },
-      "current": {
-        "type": "String"
-      }
-    }
-  },
-  "statePluginRegistryUnreachable": "没能连上安装源",
-  "statePluginNamedRegistryUnreachable": "没能连上安装源（{registry}）",
-  "@statePluginNamedRegistryUnreachable": {
-    "placeholders": {
-      "registry": {
-        "type": "String"
-      }
-    }
-  },
-  "statePluginBuildsPending": "等待允许：{builds}",
-  "@statePluginBuildsPending": {
-    "placeholders": {
-      "builds": {
-        "type": "String"
-      }
-    }
-  },
-  "statePluginRegistryProgress": "换用{registry}下载（第 {attempt}/{attempts} 个源）",
-  "@statePluginRegistryProgress": {
-    "placeholders": {
-      "registry": {
-        "type": "String"
-      },
-      "attempt": {
-        "type": "int"
-      },
-      "attempts": {
-        "type": "int"
-      }
-    }
-  },
   "stateProviderServiceUnavailable": "服务暂时不可用（{status}）",
   "@stateProviderServiceUnavailable": {
     "placeholders": {
@@ -739,17 +629,6 @@
     }
   },
   "stateUiWeb": "网页",
-  "statePluginRegistryProgressUnknown": "换用{registry}下载（第 {attempt}/null 个源）",
-  "@statePluginRegistryProgressUnknown": {
-    "placeholders": {
-      "registry": {
-        "type": "String"
-      },
-      "attempt": {
-        "type": "int"
-      }
-    }
-  },
   "stateProviderTokenCountInvalid": "填写数字，如 128K",
   "appSlogan": "随时随刻，想go就Go！",
   "statePasteEmpty": "剪贴板中没有可粘贴的文本。",

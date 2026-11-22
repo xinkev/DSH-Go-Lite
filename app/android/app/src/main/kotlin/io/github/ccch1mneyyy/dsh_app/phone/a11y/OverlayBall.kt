@@ -25,11 +25,11 @@ import android.view.WindowManager
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.FrameLayout
 import io.github.ccch1mneyyy.dsh_app.R
-import io.github.ccch1mneyyy.dsh_app.pet.Dock
-import io.github.ccch1mneyyy.dsh_app.pet.EdgeSnap
-import io.github.ccch1mneyyy.dsh_app.pet.SafeArea
-import io.github.ccch1mneyyy.dsh_app.pet.Side
-import io.github.ccch1mneyyy.dsh_app.pet.WindowPos
+import io.github.ccch1mneyyy.dsh_app.overlay.Dock
+import io.github.ccch1mneyyy.dsh_app.overlay.EdgeSnap
+import io.github.ccch1mneyyy.dsh_app.overlay.SafeArea
+import io.github.ccch1mneyyy.dsh_app.overlay.Side
+import io.github.ccch1mneyyy.dsh_app.overlay.WindowPos
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -40,7 +40,7 @@ import kotlin.math.roundToInt
  * task ([HoldToStop]: a ring fills round it first, letting go cancels); screen readers get the
  * same stop as an action. It first rests on the right, level with the capsule; dragged, it follows
  * the finger and settles on the nearer side, where it stays (side and height kept across tasks,
- * like the pet's dock: pet/EdgeSnap.kt). A confirm card lifts a resting ball above it. Left alone
+ * like a dock: overlay/EdgeSnap.kt). A confirm card lifts a resting ball above it. Left alone
  * it fades, all of it alike, to the 闲置时不透明度, and slides half out of sight over its side
  * ([tucked]); a touch brings it back. The whole window (the ball and the room round it) takes the
  * touch, so the half that shows is easy to hit, and it is kept out of the system's edge-back

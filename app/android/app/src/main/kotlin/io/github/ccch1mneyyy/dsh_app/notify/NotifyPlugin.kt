@@ -148,7 +148,6 @@ class NotifyPlugin :
                 LiveActivity.update(
                     appContext,
                     enabled = call.argument<Boolean>("enabled") != false,
-                    packId = call.argument<String>("packId"),
                     agent = LiveContent.fromMap(call.argument<Map<*, *>>("activity")),
                 )
                 result.success(null)

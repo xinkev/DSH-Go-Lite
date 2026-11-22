@@ -150,7 +150,6 @@ flutter:
     # Full upstream WebRTC Android release notices, shown by LicenseRegistry.
     - assets/licenses/webrtc-150.7871.04.md
     # Unicode 15.0 tables used by pet archive filename normalization.
-    - assets/licenses/unicode-15.0.txt
     - assets/licenses/jquery-3.7.1-LICENSE.txt
     - assets/licenses/lodash-4.17.21-LICENSE.txt
     - assets/licenses/zod-4.6.7-LICENSE.txt
@@ -178,11 +177,9 @@ flutter:
     # separate download, see docs/design/companion.md.
     - assets/companion/
     - assets/skills/dsh-go-ui/
-    - assets/skills/dsh-go-plugin/
     - assets/skills/dsh-go-guide/
     - assets/skills/dsh-go-support/
     - assets/skills/companion-adapt/
-    - assets/skills/pet-theme/
 
 
   # To add assets to your application, add an assets section, like this:

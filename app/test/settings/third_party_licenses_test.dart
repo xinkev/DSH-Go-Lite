@@ -200,7 +200,6 @@ void main() {
     expect(textOf('WebRTC'), allOf(contains('Neither the name of Google'), contains('Additional IP Rights Grant')));
     expect(textOf('XZ for Java'), contains('Permission to use, copy, modify, and/or distribute'));
     expect(textOf('JetBrains Mono'), contains('SIL OPEN FONT LICENSE Version 1.1'));
-    expect(textOf('Unicode Character Database (15.0.0)'), File('tool/unicode-15.0-LICENSE.txt').readAsStringSync());
     // The canvas libraries: their own LICENSE files, as published (npm tarball integrity in
     // THIRD_PARTY_NOTICES.md), and the shipped builds those files go with.
     for (final (package, license, build, licenseSha, buildSha) in [

@@ -5084,29 +5084,11 @@ abstract class L10n {
   /// **'开源项目'**
   String get botsOpenSource;
 
-  /// No description provided for @botsPluginCatalogFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件目录没打开'**
-  String get botsPluginCatalogFailed;
-
   /// No description provided for @botsTapRetry.
   ///
   /// In zh, this message translates to:
   /// **'点一下重试'**
   String get botsTapRetry;
-
-  /// No description provided for @botsFeaturedPlugins.
-  ///
-  /// In zh, this message translates to:
-  /// **'精选插件'**
-  String get botsFeaturedPlugins;
-
-  /// No description provided for @botsPluginSource.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件信息来自 dshfind'**
-  String get botsPluginSource;
 
   /// No description provided for @botsPromptIdeas.
   ///
@@ -6038,24 +6020,6 @@ abstract class L10n {
   /// **'插件'**
   String get catalogPlugins;
 
-  /// No description provided for @catalogPluginsSummary.
-  ///
-  /// In zh, this message translates to:
-  /// **'已安装与插件市场'**
-  String get catalogPluginsSummary;
-
-  /// No description provided for @catalogPluginInventory.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件清单'**
-  String get catalogPluginInventory;
-
-  /// No description provided for @catalogPluginInventorySummary.
-  ///
-  /// In zh, this message translates to:
-  /// **'已加载的全部插件'**
-  String get catalogPluginInventorySummary;
-
   /// No description provided for @catalogCordisSummary.
   ///
   /// In zh, this message translates to:
@@ -6247,18 +6211,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'DSH 官方界面'**
   String get catalogWebSummary;
-
-  /// No description provided for @catalogPluginPanel.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件面板'**
-  String get catalogPluginPanel;
-
-  /// No description provided for @catalogHostPluginMissing.
-  ///
-  /// In zh, this message translates to:
-  /// **'这台主机没有这个插件'**
-  String get catalogHostPluginMissing;
 
   /// No description provided for @catalogAllFeatures.
   ///
@@ -10669,18 +10621,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'运行'**
   String get engineSettingsRun;
-
-  /// No description provided for @engineSettingsPlugins.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件'**
-  String get engineSettingsPlugins;
-
-  /// No description provided for @engineSettingsPluginInventory.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件清单'**
-  String get engineSettingsPluginInventory;
 
   /// No description provided for @engineSettingsPluginStopped.
   ///
@@ -15218,18 +15158,6 @@ abstract class L10n {
   /// **'在 SSH 主机上可用'**
   String get harmonyTerminalSupportedHosts;
 
-  /// No description provided for @harmonyPluginRemoveRefused.
-  ///
-  /// In zh, this message translates to:
-  /// **'这个引擎不能卸载插件'**
-  String get harmonyPluginRemoveRefused;
-
-  /// No description provided for @harmonyPluginRefusedHint.
-  ///
-  /// In zh, this message translates to:
-  /// **'可以开关随包插件，或连接电脑管理插件'**
-  String get harmonyPluginRefusedHint;
-
   /// No description provided for @harmonyPasswordStorageHelp.
   ///
   /// In zh, this message translates to:
@@ -15848,162 +15776,6 @@ abstract class L10n {
   /// **'或填写 API Key'**
   String get hubSettingsOrApiKey;
 
-  /// No description provided for @hubPluginShare.
-  ///
-  /// In zh, this message translates to:
-  /// **'分享插件'**
-  String get hubPluginShare;
-
-  /// No description provided for @hubPluginDetails.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件详情'**
-  String get hubPluginDetails;
-
-  /// No description provided for @hubPluginFeatured.
-  ///
-  /// In zh, this message translates to:
-  /// **'dshfind 推荐'**
-  String get hubPluginFeatured;
-
-  /// No description provided for @hubPluginWebOnly.
-  ///
-  /// In zh, this message translates to:
-  /// **'仅网页版'**
-  String get hubPluginWebOnly;
-
-  /// No description provided for @hubPluginStars.
-  ///
-  /// In zh, this message translates to:
-  /// **'星标'**
-  String get hubPluginStars;
-
-  /// No description provided for @hubPluginSource.
-  ///
-  /// In zh, this message translates to:
-  /// **'来源'**
-  String get hubPluginSource;
-
-  /// No description provided for @hubPluginInstalledVersion.
-  ///
-  /// In zh, this message translates to:
-  /// **'已装版本'**
-  String get hubPluginInstalledVersion;
-
-  /// No description provided for @hubPluginRequiresDsh.
-  ///
-  /// In zh, this message translates to:
-  /// **'需要 DSH'**
-  String get hubPluginRequiresDsh;
-
-  /// No description provided for @hubPluginPackageName.
-  ///
-  /// In zh, this message translates to:
-  /// **'包名'**
-  String get hubPluginPackageName;
-
-  /// No description provided for @hubPluginHomepage.
-  ///
-  /// In zh, this message translates to:
-  /// **'主页'**
-  String get hubPluginHomepage;
-
-  /// No description provided for @hubPluginRepository.
-  ///
-  /// In zh, this message translates to:
-  /// **'代码仓库'**
-  String get hubPluginRepository;
-
-  /// No description provided for @hubPluginManageTitle.
-  ///
-  /// In zh, this message translates to:
-  /// **'管理插件'**
-  String get hubPluginManageTitle;
-
-  /// No description provided for @hubPluginManage.
-  ///
-  /// In zh, this message translates to:
-  /// **'管理'**
-  String get hubPluginManage;
-
-  /// No description provided for @hubPluginSafeModeInstall.
-  ///
-  /// In zh, this message translates to:
-  /// **'安全模式下不能安装'**
-  String get hubPluginSafeModeInstall;
-
-  /// No description provided for @hubPluginInstallCommand.
-  ///
-  /// In zh, this message translates to:
-  /// **'获取安装命令'**
-  String get hubPluginInstallCommand;
-
-  /// No description provided for @hubPluginInstallComputer.
-  ///
-  /// In zh, this message translates to:
-  /// **'在电脑上安装'**
-  String get hubPluginInstallComputer;
-
-  /// No description provided for @hubPluginInstalling.
-  ///
-  /// In zh, this message translates to:
-  /// **'安装中…'**
-  String get hubPluginInstalling;
-
-  /// No description provided for @hubPluginAllowBuilds.
-  ///
-  /// In zh, this message translates to:
-  /// **'允许构建脚本并重试'**
-  String get hubPluginAllowBuilds;
-
-  /// No description provided for @hubPluginRetryInstall.
-  ///
-  /// In zh, this message translates to:
-  /// **'重试安装'**
-  String get hubPluginRetryInstall;
-
-  /// No description provided for @hubPluginOfficial.
-  ///
-  /// In zh, this message translates to:
-  /// **'DSH 官方'**
-  String get hubPluginOfficial;
-
-  /// No description provided for @hubPluginNotLoaded.
-  ///
-  /// In zh, this message translates to:
-  /// **'没有正常加载'**
-  String get hubPluginNotLoaded;
-
-  /// No description provided for @hubPluginComponents.
-  ///
-  /// In zh, this message translates to:
-  /// **'组件'**
-  String get hubPluginComponents;
-
-  /// No description provided for @hubPluginSafeModeRemove.
-  ///
-  /// In zh, this message translates to:
-  /// **'安全模式下不能卸载'**
-  String get hubPluginSafeModeRemove;
-
-  /// No description provided for @hubPluginRemoveCommand.
-  ///
-  /// In zh, this message translates to:
-  /// **'获取卸载命令'**
-  String get hubPluginRemoveCommand;
-
-  /// No description provided for @hubPluginRemoveComputer.
-  ///
-  /// In zh, this message translates to:
-  /// **'在电脑上卸载'**
-  String get hubPluginRemoveComputer;
-
-  /// No description provided for @hubPluginUninstall.
-  ///
-  /// In zh, this message translates to:
-  /// **'卸载'**
-  String get hubPluginUninstall;
-
   /// No description provided for @hubSessionTurns.
   ///
   /// In zh, this message translates to:
@@ -16111,42 +15883,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'DeepSeek API Key'**
   String get hubSettingsApiKey;
-
-  /// No description provided for @hubPluginBrowserFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'没能打开浏览器，请手动访问 {address}'**
-  String hubPluginBrowserFailed(String address);
-
-  /// No description provided for @hubPluginYearMonth.
-  ///
-  /// In zh, this message translates to:
-  /// **'{year}年{month}月'**
-  String hubPluginYearMonth(int year, String month);
-
-  /// No description provided for @hubPluginUpdateTo.
-  ///
-  /// In zh, this message translates to:
-  /// **'更新到 {version}'**
-  String hubPluginUpdateTo(String version);
-
-  /// No description provided for @hubPluginInstallOn.
-  ///
-  /// In zh, this message translates to:
-  /// **'安装到{host}'**
-  String hubPluginInstallOn(String host);
-
-  /// No description provided for @hubPluginComponentCount.
-  ///
-  /// In zh, this message translates to:
-  /// **'{count} 个'**
-  String hubPluginComponentCount(int count);
-
-  /// No description provided for @hubPluginComponentSeparator.
-  ///
-  /// In zh, this message translates to:
-  /// **'、'**
-  String get hubPluginComponentSeparator;
 
   /// No description provided for @hubGroupAi.
   ///
@@ -16358,12 +16094,6 @@ abstract class L10n {
   /// **'未添加'**
   String get hubValueNoHosts;
 
-  /// No description provided for @hubValuePlugins.
-  ///
-  /// In zh, this message translates to:
-  /// **'{count} 个'**
-  String hubValuePlugins(int count);
-
   /// No description provided for @hubEngineStartup.
   ///
   /// In zh, this message translates to:
@@ -16465,18 +16195,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'没能打开系统设置。到「设置 → DSH Go → 通知」里开启'**
   String get iosNotificationSettingsFailed;
-
-  /// No description provided for @iosPluginsPermissionLocalThirdParty.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件以 DSH 的权限运行：能读写文件、执行命令、读取 API Key，不受工作区沙箱限制。由第三方提供，DSH 官方未审核。'**
-  String get iosPluginsPermissionLocalThirdParty;
-
-  /// No description provided for @iosPluginsPermissionLocalTrusted.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件以 DSH 的权限运行：能读写文件、执行命令、读取 API Key，不受工作区沙箱限制。只装你信任的插件。'**
-  String get iosPluginsPermissionLocalTrusted;
 
   /// No description provided for @iosIconChanged.
   ///
@@ -23558,281 +23276,11 @@ abstract class L10n {
   /// **'未保存'**
   String get pluginConfigUnsaved;
 
-  /// No description provided for @pluginConfigSecretSet.
-  ///
-  /// In zh, this message translates to:
-  /// **'已设置'**
-  String get pluginConfigSecretSet;
-
-  /// No description provided for @pluginConfigAdvanced.
-  ///
-  /// In zh, this message translates to:
-  /// **'高级'**
-  String get pluginConfigAdvanced;
-
-  /// No description provided for @pluginConfigSearchHint.
-  ///
-  /// In zh, this message translates to:
-  /// **'搜索设置'**
-  String get pluginConfigSearchHint;
-
-  /// No description provided for @pluginConfigNoMatch.
-  ///
-  /// In zh, this message translates to:
-  /// **'没有匹配的设置'**
-  String get pluginConfigNoMatch;
-
-  /// No description provided for @pluginConfigOpenWeb.
-  ///
-  /// In zh, this message translates to:
-  /// **'在网页版设置'**
-  String get pluginConfigOpenWeb;
-
-  /// No description provided for @pluginConfigOpenWebHint.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件自带的设置页'**
-  String get pluginConfigOpenWebHint;
-
-  /// No description provided for @pluginConfigResetAll.
-  ///
-  /// In zh, this message translates to:
-  /// **'全部恢复默认'**
-  String get pluginConfigResetAll;
-
-  /// No description provided for @pluginConfigResetAllTitle.
-  ///
-  /// In zh, this message translates to:
-  /// **'全部恢复默认？'**
-  String get pluginConfigResetAllTitle;
-
-  /// No description provided for @pluginConfigReset.
-  ///
-  /// In zh, this message translates to:
-  /// **'恢复'**
-  String get pluginConfigReset;
-
-  /// No description provided for @pluginConfigChanges.
-  ///
-  /// In zh, this message translates to:
-  /// **'{count} 项更改'**
-  String pluginConfigChanges(int count);
-
-  /// No description provided for @pluginConfigAppliesOnReload.
-  ///
-  /// In zh, this message translates to:
-  /// **'保存后重新载入插件'**
-  String get pluginConfigAppliesOnReload;
-
-  /// No description provided for @pluginConfigSaving.
-  ///
-  /// In zh, this message translates to:
-  /// **'正在保存…'**
-  String get pluginConfigSaving;
-
-  /// No description provided for @pluginConfigReloading.
-  ///
-  /// In zh, this message translates to:
-  /// **'正在重新载入…'**
-  String get pluginConfigReloading;
-
-  /// No description provided for @pluginConfigApplied.
-  ///
-  /// In zh, this message translates to:
-  /// **'已生效'**
-  String get pluginConfigApplied;
-
-  /// No description provided for @pluginConfigFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'没能生效'**
-  String get pluginConfigFailed;
-
-  /// No description provided for @pluginConfigRestored.
-  ///
-  /// In zh, this message translates to:
-  /// **'已恢复原设置'**
-  String get pluginConfigRestored;
-
-  /// No description provided for @pluginConfigStopped.
-  ///
-  /// In zh, this message translates to:
-  /// **'没能生效，原设置也没能恢复'**
-  String get pluginConfigStopped;
-
-  /// No description provided for @pluginConfigRestore.
-  ///
-  /// In zh, this message translates to:
-  /// **'恢复原设置'**
-  String get pluginConfigRestore;
-
-  /// No description provided for @pluginConfigDiscard.
-  ///
-  /// In zh, this message translates to:
-  /// **'放弃'**
-  String get pluginConfigDiscard;
-
-  /// No description provided for @pluginConfigNotStarted.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件没有启动'**
-  String get pluginConfigNotStarted;
-
-  /// No description provided for @pluginConfigNone.
-  ///
-  /// In zh, this message translates to:
-  /// **'没有可设置的项'**
-  String get pluginConfigNone;
-
-  /// No description provided for @pluginConfigInvalidOperation.
-  ///
-  /// In zh, this message translates to:
-  /// **'这项改动无法应用'**
-  String get pluginConfigInvalidOperation;
-
-  /// No description provided for @pluginConfigGone.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件已不在运行，已刷新'**
-  String get pluginConfigGone;
-
-  /// No description provided for @pluginConfigUnknown.
-  ///
-  /// In zh, this message translates to:
-  /// **'连接中断，已重新读取'**
-  String get pluginConfigUnknown;
-
-  /// No description provided for @pluginConfigUnsupported.
-  ///
-  /// In zh, this message translates to:
-  /// **'暂不支持在这里设置'**
-  String get pluginConfigUnsupported;
-
   /// No description provided for @pluginConfigSecretUnbound.
   ///
   /// In zh, this message translates to:
   /// **'需插件适配后设置'**
   String get pluginConfigSecretUnbound;
-
-  /// No description provided for @pluginConfigListFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件清单读取失败，稍后重试'**
-  String get pluginConfigListFailed;
-
-  /// No description provided for @pluginConfigListUpdating.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件清单正在更新，请稍后再试'**
-  String get pluginConfigListUpdating;
-
-  /// No description provided for @pluginConfigFixed.
-  ///
-  /// In zh, this message translates to:
-  /// **'由配置文件固定'**
-  String get pluginConfigFixed;
-
-  /// No description provided for @pluginConfigFixedNote.
-  ///
-  /// In zh, this message translates to:
-  /// **'由配置文件固定，这里只能查看'**
-  String get pluginConfigFixedNote;
-
-  /// No description provided for @pluginConfigReadOnly.
-  ///
-  /// In zh, this message translates to:
-  /// **'只读'**
-  String get pluginConfigReadOnly;
-
-  /// No description provided for @pluginConfigEntryTitle.
-  ///
-  /// In zh, this message translates to:
-  /// **'{bundle} · {entry}'**
-  String pluginConfigEntryTitle(String bundle, String entry);
-
-  /// No description provided for @pluginConfigNameSpeechToText.
-  ///
-  /// In zh, this message translates to:
-  /// **'语音识别'**
-  String get pluginConfigNameSpeechToText;
-
-  /// No description provided for @pluginConfigNameSenseVoice.
-  ///
-  /// In zh, this message translates to:
-  /// **'SenseVoice 识别'**
-  String get pluginConfigNameSenseVoice;
-
-  /// No description provided for @pluginConfigNameSpeechApi.
-  ///
-  /// In zh, this message translates to:
-  /// **'转写接口'**
-  String get pluginConfigNameSpeechApi;
-
-  /// No description provided for @pluginConfigNameTranslator.
-  ///
-  /// In zh, this message translates to:
-  /// **'翻译服务'**
-  String get pluginConfigNameTranslator;
-
-  /// No description provided for @pluginConfigNameSessionIndex.
-  ///
-  /// In zh, this message translates to:
-  /// **'会话索引'**
-  String get pluginConfigNameSessionIndex;
-
-  /// No description provided for @pluginConfigNameSessionSearchTool.
-  ///
-  /// In zh, this message translates to:
-  /// **'会话搜索工具'**
-  String get pluginConfigNameSessionSearchTool;
-
-  /// No description provided for @pluginConfigNameTerminalService.
-  ///
-  /// In zh, this message translates to:
-  /// **'终端服务'**
-  String get pluginConfigNameTerminalService;
-
-  /// No description provided for @pluginConfigNameTerminalBash.
-  ///
-  /// In zh, this message translates to:
-  /// **'Bash 终端'**
-  String get pluginConfigNameTerminalBash;
-
-  /// No description provided for @pluginConfigNameTerminalPwsh.
-  ///
-  /// In zh, this message translates to:
-  /// **'PowerShell 终端'**
-  String get pluginConfigNameTerminalPwsh;
-
-  /// No description provided for @pluginConfigNameTerminalTools.
-  ///
-  /// In zh, this message translates to:
-  /// **'终端工具'**
-  String get pluginConfigNameTerminalTools;
-
-  /// No description provided for @pluginConfigNameWorktree.
-  ///
-  /// In zh, this message translates to:
-  /// **'工作树管理'**
-  String get pluginConfigNameWorktree;
-
-  /// No description provided for @pluginConfigNameWorktreeTools.
-  ///
-  /// In zh, this message translates to:
-  /// **'工作树工具'**
-  String get pluginConfigNameWorktreeTools;
-
-  /// No description provided for @pluginConfigNameRalphWorkflow.
-  ///
-  /// In zh, this message translates to:
-  /// **'工作流引擎'**
-  String get pluginConfigNameRalphWorkflow;
-
-  /// No description provided for @pluginConfigNameRalphTools.
-  ///
-  /// In zh, this message translates to:
-  /// **'Ralph 工具'**
-  String get pluginConfigNameRalphTools;
 
   /// No description provided for @plugInputRequired.
   ///
@@ -24050,60 +23498,6 @@ abstract class L10n {
   /// **'插件详情扩展'**
   String get seamsDetailPage;
 
-  /// No description provided for @pluginsOperationHostChanged.
-  ///
-  /// In zh, this message translates to:
-  /// **'主机已切换，未执行'**
-  String get pluginsOperationHostChanged;
-
-  /// No description provided for @pluginsReloadLocal.
-  ///
-  /// In zh, this message translates to:
-  /// **'重启内核以重载'**
-  String get pluginsReloadLocal;
-
-  /// No description provided for @pluginsReloadInterrupts.
-  ///
-  /// In zh, this message translates to:
-  /// **'会中断正在运行的任务'**
-  String get pluginsReloadInterrupts;
-
-  /// No description provided for @pluginsReloadConfirm.
-  ///
-  /// In zh, this message translates to:
-  /// **'重载「{name}」？'**
-  String pluginsReloadConfirm(String name);
-
-  /// No description provided for @pluginsReloadExplanation.
-  ///
-  /// In zh, this message translates to:
-  /// **'将重启本机内核，重新加载插件。正在运行的任务会中断。'**
-  String get pluginsReloadExplanation;
-
-  /// No description provided for @pluginsReloadProceed.
-  ///
-  /// In zh, this message translates to:
-  /// **'重启并重载'**
-  String get pluginsReloadProceed;
-
-  /// No description provided for @pluginsReloadRequested.
-  ///
-  /// In zh, this message translates to:
-  /// **'已请求重启内核'**
-  String get pluginsReloadRequested;
-
-  /// No description provided for @pluginsReloadChanged.
-  ///
-  /// In zh, this message translates to:
-  /// **'主机或插件状态已变化，请重试'**
-  String get pluginsReloadChanged;
-
-  /// No description provided for @pluginsReloadFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'未能重启内核，请查看引擎日志'**
-  String get pluginsReloadFailed;
-
   /// No description provided for @pluginsFile.
   ///
   /// In zh, this message translates to:
@@ -24272,24 +23666,6 @@ abstract class L10n {
   /// **'语音输入'**
   String get pluginsNamespaceVoiceInput;
 
-  /// No description provided for @pluginsOfficialPlugin.
-  ///
-  /// In zh, this message translates to:
-  /// **'官方插件'**
-  String get pluginsOfficialPlugin;
-
-  /// No description provided for @pluginsLocalUnshareable.
-  ///
-  /// In zh, this message translates to:
-  /// **'本地安装，无法分享'**
-  String get pluginsLocalUnshareable;
-
-  /// No description provided for @pluginsIncludesPresets.
-  ///
-  /// In zh, this message translates to:
-  /// **'含预设「{names}」'**
-  String pluginsIncludesPresets(String names);
-
   /// No description provided for @pluginsSecretsUnshareable.
   ///
   /// In zh, this message translates to:
@@ -24319,48 +23695,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'关'**
   String get pluginsOffValue;
-
-  /// No description provided for @pluginsOfficialUnavailable.
-  ///
-  /// In zh, this message translates to:
-  /// **'这台主机没有这个官方插件'**
-  String get pluginsOfficialUnavailable;
-
-  /// No description provided for @pluginsEnabled.
-  ///
-  /// In zh, this message translates to:
-  /// **'已启用'**
-  String get pluginsEnabled;
-
-  /// No description provided for @pluginsVersionMismatch.
-  ///
-  /// In zh, this message translates to:
-  /// **'与分享时的版本不一致'**
-  String get pluginsVersionMismatch;
-
-  /// No description provided for @pluginsCurrentVersion.
-  ///
-  /// In zh, this message translates to:
-  /// **'当前版本'**
-  String get pluginsCurrentVersion;
-
-  /// No description provided for @pluginsNewVersion.
-  ///
-  /// In zh, this message translates to:
-  /// **'新版本'**
-  String get pluginsNewVersion;
-
-  /// No description provided for @pluginsAddedWith.
-  ///
-  /// In zh, this message translates to:
-  /// **'随「{title}」添加'**
-  String pluginsAddedWith(String title);
-
-  /// No description provided for @pluginsApplyAfterInstall.
-  ///
-  /// In zh, this message translates to:
-  /// **'装好插件后应用 · {detail}'**
-  String pluginsApplyAfterInstall(String detail);
 
   /// No description provided for @pluginsSettingsReadFailed.
   ///
@@ -24397,30 +23731,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'替换现有内容'**
   String get pluginsReplaceContent;
-
-  /// No description provided for @pluginsSafeModeInstallBlocked.
-  ///
-  /// In zh, this message translates to:
-  /// **'安全模式下不能安装插件'**
-  String get pluginsSafeModeInstallBlocked;
-
-  /// No description provided for @pluginsHostInstallBlocked.
-  ///
-  /// In zh, this message translates to:
-  /// **'这台主机不能从这里安装插件'**
-  String get pluginsHostInstallBlocked;
-
-  /// No description provided for @pluginsInstallFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'安装失败'**
-  String get pluginsInstallFailed;
-
-  /// No description provided for @pluginsAfterRestart.
-  ///
-  /// In zh, this message translates to:
-  /// **'重启后生效'**
-  String get pluginsAfterRestart;
 
   /// No description provided for @pluginsSettingsChanged.
   ///
@@ -24500,54 +23810,6 @@ abstract class L10n {
   /// **'没能读取 Gist'**
   String get pluginsGistReadFailed;
 
-  /// No description provided for @pluginsListReadFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'没能读取插件列表'**
-  String get pluginsListReadFailed;
-
-  /// No description provided for @pluginsReadingPlugins.
-  ///
-  /// In zh, this message translates to:
-  /// **'正在读取插件…'**
-  String get pluginsReadingPlugins;
-
-  /// No description provided for @pluginsDshOfficial.
-  ///
-  /// In zh, this message translates to:
-  /// **'DSH 官方'**
-  String get pluginsDshOfficial;
-
-  /// No description provided for @pluginsOfficialToggleOnly.
-  ///
-  /// In zh, this message translates to:
-  /// **'官方组件只能开关，不能卸载；对这台主机上的所有对话生效'**
-  String get pluginsOfficialToggleOnly;
-
-  /// No description provided for @pluginsOfficial.
-  ///
-  /// In zh, this message translates to:
-  /// **'官方'**
-  String get pluginsOfficial;
-
-  /// No description provided for @pluginsNoThirdParty.
-  ///
-  /// In zh, this message translates to:
-  /// **'还没装第三方插件'**
-  String get pluginsNoThirdParty;
-
-  /// No description provided for @pluginsPluginsDescription.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件能给 DSH 加工具、记忆和模型'**
-  String get pluginsPluginsDescription;
-
-  /// No description provided for @pluginsBrowseMarket.
-  ///
-  /// In zh, this message translates to:
-  /// **'逛逛插件市场'**
-  String get pluginsBrowseMarket;
-
   /// No description provided for @pluginsLoading.
   ///
   /// In zh, this message translates to:
@@ -24572,113 +23834,11 @@ abstract class L10n {
   /// **'在浏览器打开 {host}？'**
   String pluginsOpenBrowserHost(String host);
 
-  /// No description provided for @pluginsSearch.
-  ///
-  /// In zh, this message translates to:
-  /// **'搜索插件'**
-  String get pluginsSearch;
-
-  /// No description provided for @pluginsMarketLoading.
-  ///
-  /// In zh, this message translates to:
-  /// **'正在载入插件目录…'**
-  String get pluginsMarketLoading;
-
-  /// No description provided for @pluginsMarketLoadFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件目录没打开'**
-  String get pluginsMarketLoadFailed;
-
-  /// No description provided for @pluginsMarketInvalid.
-  ///
-  /// In zh, this message translates to:
-  /// **'目录格式有误'**
-  String get pluginsMarketInvalid;
-
   /// No description provided for @pluginsAll.
   ///
   /// In zh, this message translates to:
   /// **'全部'**
   String get pluginsAll;
-
-  /// No description provided for @pluginsMarketCount.
-  ///
-  /// In zh, this message translates to:
-  /// **'{count} 个插件 · 来自 dshfind'**
-  String pluginsMarketCount(int count);
-
-  /// No description provided for @pluginsHideWeb.
-  ///
-  /// In zh, this message translates to:
-  /// **'隐藏网页版插件'**
-  String get pluginsHideWeb;
-
-  /// No description provided for @pluginsShowWebCount.
-  ///
-  /// In zh, this message translates to:
-  /// **'显示 {count} 个网页版插件'**
-  String pluginsShowWebCount(int count);
-
-  /// No description provided for @pluginsNoCategoryPlugins.
-  ///
-  /// In zh, this message translates to:
-  /// **'这个分类下没有插件'**
-  String get pluginsNoCategoryPlugins;
-
-  /// No description provided for @pluginsNoSearchResults.
-  ///
-  /// In zh, this message translates to:
-  /// **'没有找到「{query}」'**
-  String pluginsNoSearchResults(String query);
-
-  /// No description provided for @pluginsFailureDetails.
-  ///
-  /// In zh, this message translates to:
-  /// **'{title} · 点开查看'**
-  String pluginsFailureDetails(String title);
-
-  /// No description provided for @pluginsFeatured.
-  ///
-  /// In zh, this message translates to:
-  /// **'推荐'**
-  String get pluginsFeatured;
-
-  /// No description provided for @pluginsInstalledRemoteRestart.
-  ///
-  /// In zh, this message translates to:
-  /// **'已安装「{name}」，重启{host}上的 DSH 后生效'**
-  String pluginsInstalledRemoteRestart(String name, String host);
-
-  /// No description provided for @pluginsInstalledNamed.
-  ///
-  /// In zh, this message translates to:
-  /// **'已安装「{name}」'**
-  String pluginsInstalledNamed(String name);
-
-  /// No description provided for @pluginsInstallCancelled.
-  ///
-  /// In zh, this message translates to:
-  /// **'已取消安装'**
-  String get pluginsInstallCancelled;
-
-  /// No description provided for @pluginsInstallFailureNamed.
-  ///
-  /// In zh, this message translates to:
-  /// **'「{name}」{reason}'**
-  String pluginsInstallFailureNamed(String name, String reason);
-
-  /// No description provided for @pluginsRestartRequired.
-  ///
-  /// In zh, this message translates to:
-  /// **'需要重启引擎'**
-  String get pluginsRestartRequired;
-
-  /// No description provided for @pluginsRestartExplanation.
-  ///
-  /// In zh, this message translates to:
-  /// **'「{name}」重启引擎后生效，进行中的回复会中断。'**
-  String pluginsRestartExplanation(String name);
 
   /// No description provided for @pluginsRestartEngine.
   ///
@@ -24686,95 +23846,11 @@ abstract class L10n {
   /// **'重启引擎'**
   String get pluginsRestartEngine;
 
-  /// No description provided for @pluginsAllowBuildScripts.
-  ///
-  /// In zh, this message translates to:
-  /// **'允许构建脚本？'**
-  String get pluginsAllowBuildScripts;
-
-  /// No description provided for @pluginsBuildScriptPackages.
-  ///
-  /// In zh, this message translates to:
-  /// **'下面这些包要在安装时运行脚本：'**
-  String get pluginsBuildScriptPackages;
-
-  /// No description provided for @pluginsBuildScriptWarning.
-  ///
-  /// In zh, this message translates to:
-  /// **'脚本会以 DSH 的权限在{host}上执行，能读写文件、联网。只在你信任这个插件时允许。'**
-  String pluginsBuildScriptWarning(String host);
-
-  /// No description provided for @pluginsThisDevice.
-  ///
-  /// In zh, this message translates to:
-  /// **'这台设备'**
-  String get pluginsThisDevice;
-
-  /// No description provided for @pluginsAllowRetry.
-  ///
-  /// In zh, this message translates to:
-  /// **'允许并重试'**
-  String get pluginsAllowRetry;
-
-  /// No description provided for @pluginsUpdateNamed.
-  ///
-  /// In zh, this message translates to:
-  /// **'更新「{name}」？'**
-  String pluginsUpdateNamed(String name);
-
-  /// No description provided for @pluginsUninstallNamed.
-  ///
-  /// In zh, this message translates to:
-  /// **'卸载「{title}」？'**
-  String pluginsUninstallNamed(String title);
-
-  /// No description provided for @pluginsUninstallExplanation.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件会从{host}上移除，它保存的数据和设置不会删除。'**
-  String pluginsUninstallExplanation(String host);
-
-  /// No description provided for @pluginsThisHost.
-  ///
-  /// In zh, this message translates to:
-  /// **'这台主机'**
-  String get pluginsThisHost;
-
-  /// No description provided for @pluginsUninstall.
-  ///
-  /// In zh, this message translates to:
-  /// **'卸载'**
-  String get pluginsUninstall;
-
-  /// No description provided for @pluginsUninstalledNamed.
-  ///
-  /// In zh, this message translates to:
-  /// **'已卸载「{title}」'**
-  String pluginsUninstalledNamed(String title);
-
-  /// No description provided for @pluginsRestartNow.
-  ///
-  /// In zh, this message translates to:
-  /// **'立即重启'**
-  String get pluginsRestartNow;
-
-  /// No description provided for @pluginsUninstallFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'没能卸载'**
-  String get pluginsUninstallFailed;
-
   /// No description provided for @pluginsThatComputer.
   ///
   /// In zh, this message translates to:
   /// **'那台电脑'**
   String get pluginsThatComputer;
-
-  /// No description provided for @pluginsCommandAfterInstall.
-  ///
-  /// In zh, this message translates to:
-  /// **'装好后重启那台电脑上的 DSH，再回来刷新'**
-  String get pluginsCommandAfterInstall;
 
   /// No description provided for @pluginsError.
   ///
@@ -24782,389 +23858,17 @@ abstract class L10n {
   /// **'出错'**
   String get pluginsError;
 
-  /// No description provided for @pluginsInventoryTitle.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件清单'**
-  String get pluginsInventoryTitle;
-
-  /// No description provided for @pluginsGlobalPlugins.
-  ///
-  /// In zh, this message translates to:
-  /// **'全局插件'**
-  String get pluginsGlobalPlugins;
-
-  /// No description provided for @pluginsAgentPresets.
-  ///
-  /// In zh, this message translates to:
-  /// **'Agent 预设'**
-  String get pluginsAgentPresets;
-
-  /// No description provided for @pluginsInventoryReadFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'没能读取插件清单'**
-  String get pluginsInventoryReadFailed;
-
-  /// No description provided for @pluginsComponentCount.
-  ///
-  /// In zh, this message translates to:
-  /// **'{count} 个组件'**
-  String pluginsComponentCount(int count);
-
-  /// No description provided for @pluginsEnabledCount.
-  ///
-  /// In zh, this message translates to:
-  /// **'{count} 个已启用'**
-  String pluginsEnabledCount(int count);
-
-  /// No description provided for @pluginsErrorCount.
-  ///
-  /// In zh, this message translates to:
-  /// **'{count} 个出错'**
-  String pluginsErrorCount(int count);
-
-  /// No description provided for @pluginsNoPlugins.
-  ///
-  /// In zh, this message translates to:
-  /// **'没有插件'**
-  String get pluginsNoPlugins;
-
-  /// No description provided for @pluginsNoMatchingPlugins.
-  ///
-  /// In zh, this message translates to:
-  /// **'没有匹配的插件'**
-  String get pluginsNoMatchingPlugins;
-
-  /// No description provided for @pluginsPresetLoadFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'这个预设没能加载'**
-  String get pluginsPresetLoadFailed;
-
-  /// No description provided for @pluginsPresetNoPlugins.
-  ///
-  /// In zh, this message translates to:
-  /// **'这个预设没有插件'**
-  String get pluginsPresetNoPlugins;
-
-  /// No description provided for @pluginsStandard.
-  ///
-  /// In zh, this message translates to:
-  /// **'标准'**
-  String get pluginsStandard;
-
-  /// No description provided for @pluginsMinimal.
-  ///
-  /// In zh, this message translates to:
-  /// **'精简'**
-  String get pluginsMinimal;
-
-  /// No description provided for @pluginsDefaultPresetName.
-  ///
-  /// In zh, this message translates to:
-  /// **'{name}（默认）'**
-  String pluginsDefaultPresetName(String name);
-
-  /// No description provided for @pluginsSystemComponents.
-  ///
-  /// In zh, this message translates to:
-  /// **'系统组件'**
-  String get pluginsSystemComponents;
-
-  /// No description provided for @pluginsCount.
-  ///
-  /// In zh, this message translates to:
-  /// **'{count} 个'**
-  String pluginsCount(int count);
-
   /// No description provided for @pluginsSource.
   ///
   /// In zh, this message translates to:
   /// **'来源'**
   String get pluginsSource;
 
-  /// No description provided for @pluginsDisableCondition.
-  ///
-  /// In zh, this message translates to:
-  /// **'禁用条件'**
-  String get pluginsDisableCondition;
-
-  /// No description provided for @pluginsProvidedByPreset.
-  ///
-  /// In zh, this message translates to:
-  /// **'由预设提供'**
-  String get pluginsProvidedByPreset;
-
-  /// No description provided for @pluginsDetailsTitle.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件详情'**
-  String get pluginsDetailsTitle;
-
-  /// No description provided for @pluginsPackageInfoError.
-  ///
-  /// In zh, this message translates to:
-  /// **'包信息有误：{error}'**
-  String pluginsPackageInfoError(String error);
-
-  /// No description provided for @pluginsInstalling.
-  ///
-  /// In zh, this message translates to:
-  /// **'安装中'**
-  String get pluginsInstalling;
-
-  /// No description provided for @pluginsGet.
-  ///
-  /// In zh, this message translates to:
-  /// **'获取'**
-  String get pluginsGet;
-
-  /// No description provided for @pluginsLoadingCannotCancel.
-  ///
-  /// In zh, this message translates to:
-  /// **'正在加载插件，这一步不能取消'**
-  String get pluginsLoadingCannotCancel;
-
-  /// No description provided for @pluginsInstallDuration.
-  ///
-  /// In zh, this message translates to:
-  /// **'约需一两分钟，可以先离开'**
-  String get pluginsInstallDuration;
-
-  /// No description provided for @pluginsViewInstallLogs.
-  ///
-  /// In zh, this message translates to:
-  /// **'查看安装日志'**
-  String get pluginsViewInstallLogs;
-
-  /// No description provided for @pluginsViewDetails.
-  ///
-  /// In zh, this message translates to:
-  /// **'查看详情'**
-  String get pluginsViewDetails;
-
-  /// No description provided for @pluginsCopyCommand.
-  ///
-  /// In zh, this message translates to:
-  /// **'复制命令'**
-  String get pluginsCopyCommand;
-
-  /// No description provided for @pluginsCommandCopied.
-  ///
-  /// In zh, this message translates to:
-  /// **'命令已复制'**
-  String get pluginsCommandCopied;
-
-  /// No description provided for @pluginsMissingFiles.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件文件缺失，重新安装可修复'**
-  String get pluginsMissingFiles;
-
-  /// No description provided for @pluginsNotDshPlugin.
-  ///
-  /// In zh, this message translates to:
-  /// **'不是 DSH 插件，无法加载'**
-  String get pluginsNotDshPlugin;
-
-  /// No description provided for @pluginsIncompatible.
-  ///
-  /// In zh, this message translates to:
-  /// **'与当前 DSH 版本不兼容，未加载'**
-  String get pluginsIncompatible;
-
-  /// No description provided for @pluginsRequiresDshVersion.
-  ///
-  /// In zh, this message translates to:
-  /// **'需要 DSH {requiredVersion}，当前 {currentVersion}，未加载'**
-  String pluginsRequiresDshVersion(String requiredVersion, String currentVersion);
-
-  /// No description provided for @pluginsLoadFailure.
-  ///
-  /// In zh, this message translates to:
-  /// **'加载失败：{reason}'**
-  String pluginsLoadFailure(String reason);
-
-  /// No description provided for @pluginsUnknownReason.
-  ///
-  /// In zh, this message translates to:
-  /// **'原因未知'**
-  String get pluginsUnknownReason;
-
-  /// No description provided for @pluginsBundleProblem.
-  ///
-  /// In zh, this message translates to:
-  /// **'有问题：{reason}'**
-  String pluginsBundleProblem(String reason);
-
-  /// No description provided for @pluginsRefreshFailure.
-  ///
-  /// In zh, this message translates to:
-  /// **'刷新失败：{reason}'**
-  String pluginsRefreshFailure(String reason);
-
-  /// No description provided for @pluginsTitle.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件'**
-  String get pluginsTitle;
-
-  /// No description provided for @pluginsRefresh.
-  ///
-  /// In zh, this message translates to:
-  /// **'刷新'**
-  String get pluginsRefresh;
-
-  /// No description provided for @pluginsMarketTitle.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件市场'**
-  String get pluginsMarketTitle;
-
-  /// No description provided for @pluginsConnectToManage.
-  ///
-  /// In zh, this message translates to:
-  /// **'连上引擎后管理插件'**
-  String get pluginsConnectToManage;
-
-  /// No description provided for @pluginsSafeModeOperationsBlocked.
-  ///
-  /// In zh, this message translates to:
-  /// **'安全模式下不能安装或卸载插件'**
-  String get pluginsSafeModeOperationsBlocked;
-
-  /// No description provided for @pluginsRelayToggleOnly.
-  ///
-  /// In zh, this message translates to:
-  /// **'{host} · 经中转只能开关，安装请在那台电脑上进行'**
-  String pluginsRelayToggleOnly(String host);
-
-  /// No description provided for @pluginsInstallThisPhone.
-  ///
-  /// In zh, this message translates to:
-  /// **'安装到：本机'**
-  String get pluginsInstallThisPhone;
-
-  /// No description provided for @pluginsInstallHost.
-  ///
-  /// In zh, this message translates to:
-  /// **'安装到：{host}'**
-  String pluginsInstallHost(String host);
-
-  /// No description provided for @pluginsOfflineDescription.
-  ///
-  /// In zh, this message translates to:
-  /// **'引擎运行后显示已装插件，插件市场现在就能逛'**
-  String get pluginsOfflineDescription;
-
-  /// No description provided for @pluginsIconChanged.
-  ///
-  /// In zh, this message translates to:
-  /// **'桌面图标已选择，回到桌面后更新'**
-  String get pluginsIconChanged;
-
-  /// No description provided for @pluginsIconChangeFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'没能更换，稍后再试'**
-  String get pluginsIconChangeFailed;
-
   /// No description provided for @pluginsTheme.
   ///
   /// In zh, this message translates to:
   /// **'主题'**
   String get pluginsTheme;
-
-  /// No description provided for @pluginsAppearance.
-  ///
-  /// In zh, this message translates to:
-  /// **'外观'**
-  String get pluginsAppearance;
-
-  /// No description provided for @pluginsColors.
-  ///
-  /// In zh, this message translates to:
-  /// **'配色'**
-  String get pluginsColors;
-
-  /// No description provided for @pluginsFeatureIcons.
-  ///
-  /// In zh, this message translates to:
-  /// **'功能图标'**
-  String get pluginsFeatureIcons;
-
-  /// No description provided for @pluginsAppIcon.
-  ///
-  /// In zh, this message translates to:
-  /// **'桌面图标'**
-  String get pluginsAppIcon;
-
-  /// No description provided for @pluginsCustomColor.
-  ///
-  /// In zh, this message translates to:
-  /// **'自定义'**
-  String get pluginsCustomColor;
-
-  /// No description provided for @pluginsColorLabel.
-  ///
-  /// In zh, this message translates to:
-  /// **'配色：{label}'**
-  String pluginsColorLabel(String label);
-
-  /// No description provided for @pluginsCoral.
-  ///
-  /// In zh, this message translates to:
-  /// **'珊瑚'**
-  String get pluginsCoral;
-
-  /// No description provided for @pluginsRouge.
-  ///
-  /// In zh, this message translates to:
-  /// **'胭脂'**
-  String get pluginsRouge;
-
-  /// No description provided for @pluginsOchre.
-  ///
-  /// In zh, this message translates to:
-  /// **'赭石'**
-  String get pluginsOchre;
-
-  /// No description provided for @pluginsMoss.
-  ///
-  /// In zh, this message translates to:
-  /// **'苔绿'**
-  String get pluginsMoss;
-
-  /// No description provided for @pluginsLake.
-  ///
-  /// In zh, this message translates to:
-  /// **'湖蓝'**
-  String get pluginsLake;
-
-  /// No description provided for @pluginsIndigo.
-  ///
-  /// In zh, this message translates to:
-  /// **'靛紫'**
-  String get pluginsIndigo;
-
-  /// No description provided for @pluginsHue.
-  ///
-  /// In zh, this message translates to:
-  /// **'色相'**
-  String get pluginsHue;
-
-  /// No description provided for @pluginsWallpaper.
-  ///
-  /// In zh, this message translates to:
-  /// **'壁纸'**
-  String get pluginsWallpaper;
-
-  /// No description provided for @pluginsFollowWallpaper.
-  ///
-  /// In zh, this message translates to:
-  /// **'跟随壁纸'**
-  String get pluginsFollowWallpaper;
 
   /// No description provided for @pluginsAllowHighPower.
   ///
@@ -25634,12 +24338,6 @@ abstract class L10n {
   /// **'分享链接'**
   String get pluginsShareLink;
 
-  /// No description provided for @pluginsInstallPlugin.
-  ///
-  /// In zh, this message translates to:
-  /// **'安装插件'**
-  String get pluginsInstallPlugin;
-
   /// No description provided for @pluginsImportProfile.
   ///
   /// In zh, this message translates to:
@@ -25652,47 +24350,11 @@ abstract class L10n {
   /// **'导入到'**
   String get pluginsImportTo;
 
-  /// No description provided for @pluginsInstallTo.
-  ///
-  /// In zh, this message translates to:
-  /// **'安装到'**
-  String get pluginsInstallTo;
-
-  /// No description provided for @pluginsVerification.
-  ///
-  /// In zh, this message translates to:
-  /// **'校验'**
-  String get pluginsVerification;
-
   /// No description provided for @pluginsSize.
   ///
   /// In zh, this message translates to:
   /// **'大小'**
   String get pluginsSize;
-
-  /// No description provided for @pluginsVerified.
-  ///
-  /// In zh, this message translates to:
-  /// **'校验通过'**
-  String get pluginsVerified;
-
-  /// No description provided for @pluginsVerificationMismatch.
-  ///
-  /// In zh, this message translates to:
-  /// **'校验不一致'**
-  String get pluginsVerificationMismatch;
-
-  /// No description provided for @pluginsCannotVerify.
-  ///
-  /// In zh, this message translates to:
-  /// **'无法校验'**
-  String get pluginsCannotVerify;
-
-  /// No description provided for @pluginsVerifying.
-  ///
-  /// In zh, this message translates to:
-  /// **'校验中'**
-  String get pluginsVerifying;
 
   /// No description provided for @pluginsPresets.
   ///
@@ -25772,12 +24434,6 @@ abstract class L10n {
   /// **'没能读取这台主机的插件'**
   String get pluginsHostPluginsReadFailed;
 
-  /// No description provided for @pluginsUpdateTo.
-  ///
-  /// In zh, this message translates to:
-  /// **'更新到 {version}'**
-  String pluginsUpdateTo(String version);
-
   /// No description provided for @pluginsImportCount.
   ///
   /// In zh, this message translates to:
@@ -25790,23 +24446,11 @@ abstract class L10n {
   /// **'正在导入'**
   String get pluginsImporting;
 
-  /// No description provided for @pluginsInstallingActive.
-  ///
-  /// In zh, this message translates to:
-  /// **'正在安装'**
-  String get pluginsInstallingActive;
-
   /// No description provided for @pluginsImportFailedCount.
   ///
   /// In zh, this message translates to:
   /// **'{count} 项没成功'**
   String pluginsImportFailedCount(int count);
-
-  /// No description provided for @pluginsCouldNotInstall.
-  ///
-  /// In zh, this message translates to:
-  /// **'没能安装'**
-  String get pluginsCouldNotInstall;
 
   /// No description provided for @pluginsEngineRestartToApply.
   ///
@@ -25825,24 +24469,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'已导入 {count} 项'**
   String pluginsImportedCount(int count);
-
-  /// No description provided for @pluginsLocalPluginUnshareable.
-  ///
-  /// In zh, this message translates to:
-  /// **'这个插件是本地安装的，无法分享'**
-  String get pluginsLocalPluginUnshareable;
-
-  /// No description provided for @pluginsSharePlugin.
-  ///
-  /// In zh, this message translates to:
-  /// **'分享插件'**
-  String get pluginsSharePlugin;
-
-  /// No description provided for @pluginsPluginCount.
-  ///
-  /// In zh, this message translates to:
-  /// **'{count} 个插件'**
-  String pluginsPluginCount(int count);
 
   /// No description provided for @pluginsSettingsCount.
   ///
@@ -25928,12 +24554,6 @@ abstract class L10n {
   /// **'没能打开这个分享码'**
   String get pluginsShareOpenFailed;
 
-  /// No description provided for @pluginsPluginShareTitle.
-  ///
-  /// In zh, this message translates to:
-  /// **'DSH Go 插件'**
-  String get pluginsPluginShareTitle;
-
   /// No description provided for @pluginsShareSheetOpenFailed.
   ///
   /// In zh, this message translates to:
@@ -26000,96 +24620,6 @@ abstract class L10n {
   /// **'分享码二维码'**
   String get pluginsShareQrCode;
 
-  /// No description provided for @pluginsUpdateCurrentWarning.
-  ///
-  /// In zh, this message translates to:
-  /// **'会先卸载当前版本，再安装 {to}。如果新版本没装上，插件会处于未安装状态，需要重新安装。'**
-  String pluginsUpdateCurrentWarning(String to);
-
-  /// No description provided for @pluginsUpdateVersionWarning.
-  ///
-  /// In zh, this message translates to:
-  /// **'会先卸载 {from}，再安装 {to}。如果新版本没装上，插件会处于未安装状态，需要重新安装。'**
-  String pluginsUpdateVersionWarning(String from, String to);
-
-  /// No description provided for @pluginsUninstalledRestartLocal.
-  ///
-  /// In zh, this message translates to:
-  /// **'已卸载「{title}」，重启引擎后完全移除'**
-  String pluginsUninstalledRestartLocal(String title);
-
-  /// No description provided for @pluginsUninstalledRestartRemote.
-  ///
-  /// In zh, this message translates to:
-  /// **'已卸载「{title}」，重启{host}上的 DSH 后完全移除'**
-  String pluginsUninstalledRestartRemote(String title, String host);
-
-  /// No description provided for @pluginsEnableFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'没能启用'**
-  String get pluginsEnableFailed;
-
-  /// No description provided for @pluginsDisableFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'没能停用'**
-  String get pluginsDisableFailed;
-
-  /// No description provided for @pluginsEnabledRestartLocal.
-  ///
-  /// In zh, this message translates to:
-  /// **'已启用，重启引擎后生效'**
-  String get pluginsEnabledRestartLocal;
-
-  /// No description provided for @pluginsEnabledRestartRemote.
-  ///
-  /// In zh, this message translates to:
-  /// **'已启用，重启{host}上的 DSH 后生效'**
-  String pluginsEnabledRestartRemote(String host);
-
-  /// No description provided for @pluginsDisabledRestartLocal.
-  ///
-  /// In zh, this message translates to:
-  /// **'已停用，重启引擎后生效'**
-  String get pluginsDisabledRestartLocal;
-
-  /// No description provided for @pluginsDisabledRestartRemote.
-  ///
-  /// In zh, this message translates to:
-  /// **'已停用，重启{host}上的 DSH 后生效'**
-  String pluginsDisabledRestartRemote(String host);
-
-  /// No description provided for @pluginsRelayCommandInstruction.
-  ///
-  /// In zh, this message translates to:
-  /// **'经 DSH Remote 中转时只能开关插件。在{host}的终端里运行：'**
-  String pluginsRelayCommandInstruction(String host);
-
-  /// No description provided for @pluginsPermissionLocalThirdParty.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件以 DSH 的权限运行：能读写文件、执行命令、读取 API Key 和已授权的手机存储，不受工作区沙箱限制。由第三方提供，DSH 官方未审核。'**
-  String get pluginsPermissionLocalThirdParty;
-
-  /// No description provided for @pluginsPermissionLocalTrusted.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件以 DSH 的权限运行：能读写文件、执行命令、读取 API Key 和已授权的手机存储，不受工作区沙箱限制。只装你信任的插件。'**
-  String get pluginsPermissionLocalTrusted;
-
-  /// No description provided for @pluginsPermissionRemoteThirdParty.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件以 DSH 的权限运行：能读写文件、执行命令、读取 API Key，不受工作区沙箱限制。由第三方提供，DSH 官方未审核。'**
-  String get pluginsPermissionRemoteThirdParty;
-
-  /// No description provided for @pluginsPermissionRemoteTrusted.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件以 DSH 的权限运行：能读写文件、执行命令、读取 API Key，不受工作区沙箱限制。只装你信任的插件。'**
-  String get pluginsPermissionRemoteTrusted;
-
   /// No description provided for @pluginsSelectedQrCount.
   ///
   /// In zh, this message translates to:
@@ -26108,77 +24638,11 @@ abstract class L10n {
   /// **'、'**
   String get pluginsListSeparator;
 
-  /// No description provided for @pluginsActionFailure.
-  ///
-  /// In zh, this message translates to:
-  /// **'{action}：{reason}'**
-  String pluginsActionFailure(String action, String reason);
-
-  /// No description provided for @pluginsInventorySemantics.
-  ///
-  /// In zh, this message translates to:
-  /// **'{title}，{status}'**
-  String pluginsInventorySemantics(String title, String status);
-
   /// No description provided for @pluginsSettingsChanges.
   ///
   /// In zh, this message translates to:
   /// **'{shown} 等 {count} 项'**
   String pluginsSettingsChanges(String shown, int count);
-
-  /// No description provided for @pluginsLoadStatus.
-  ///
-  /// In zh, this message translates to:
-  /// **'加载状态'**
-  String get pluginsLoadStatus;
-
-  /// No description provided for @pluginsLoadPartial.
-  ///
-  /// In zh, this message translates to:
-  /// **'部分生效'**
-  String get pluginsLoadPartial;
-
-  /// No description provided for @pluginsLoadFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'加载失败'**
-  String get pluginsLoadFailed;
-
-  /// No description provided for @pluginsLoadNotReady.
-  ///
-  /// In zh, this message translates to:
-  /// **'尚未就绪'**
-  String get pluginsLoadNotReady;
-
-  /// No description provided for @pluginsLoadMetadata.
-  ///
-  /// In zh, this message translates to:
-  /// **'元数据诊断'**
-  String get pluginsLoadMetadata;
-
-  /// No description provided for @pluginsLoadRunningCount.
-  ///
-  /// In zh, this message translates to:
-  /// **'{running} / {total} 个组件运行中'**
-  String pluginsLoadRunningCount(int running, int total);
-
-  /// No description provided for @pluginsLoadUnreported.
-  ///
-  /// In zh, this message translates to:
-  /// **'状态未报告'**
-  String get pluginsLoadUnreported;
-
-  /// No description provided for @pluginsLoadNoRuntimeDetail.
-  ///
-  /// In zh, this message translates to:
-  /// **'主机未返回运行时错误详情，请查看引擎日志。'**
-  String get pluginsLoadNoRuntimeDetail;
-
-  /// No description provided for @pluginsLoadRemoteLogs.
-  ///
-  /// In zh, this message translates to:
-  /// **'请在这台主机上查看引擎日志。'**
-  String get pluginsLoadRemoteLogs;
 
   /// No description provided for @plugslotsSurfaceComposerTools.
   ///
@@ -26323,12 +24787,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'先打开一个对话'**
   String get plugslotsNeedsChat;
-
-  /// No description provided for @plugslotsFromPlugin.
-  ///
-  /// In zh, this message translates to:
-  /// **'来自「{plugin}」'**
-  String plugslotsFromPlugin(String plugin);
 
   /// No description provided for @plugslotsPanelOffline.
   ///
@@ -26659,12 +25117,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'设置'**
   String get plugslotsPlaceSettings;
-
-  /// No description provided for @plugslotsPlacePlugins.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件页'**
-  String get plugslotsPlacePlugins;
 
   /// No description provided for @plugslotsPlaceNewChat.
   ///
@@ -30494,18 +28946,6 @@ abstract class L10n {
   /// **'通用,网页版设置'**
   String get searchKwGeneral;
 
-  /// No description provided for @searchKwPluginInventory.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件清单,已装插件'**
-  String get searchKwPluginInventory;
-
-  /// No description provided for @searchKwPlugins.
-  ///
-  /// In zh, this message translates to:
-  /// **'扩展,市场,安装插件,插件市场'**
-  String get searchKwPlugins;
-
   /// No description provided for @searchKwAllFeatures.
   ///
   /// In zh, this message translates to:
@@ -30961,12 +29401,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'发送,排队,插话,AI 工作时'**
   String get searchKwWebBusySend;
-
-  /// No description provided for @searchKwPluginsMarket.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件市场,安装插件,市场,获取插件'**
-  String get searchKwPluginsMarket;
 
   /// No description provided for @searchKwUsageStats.
   ///
@@ -33284,12 +31718,6 @@ abstract class L10n {
   /// **'登录没有完成，请重试'**
   String get stateSignInIncompleteRetry;
 
-  /// No description provided for @statePluginLabel.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件'**
-  String get statePluginLabel;
-
   /// No description provided for @stateConfigLabel.
   ///
   /// In zh, this message translates to:
@@ -34466,317 +32894,11 @@ abstract class L10n {
   /// **'npmmirror 镜像'**
   String get stateRegistryMirror;
 
-  /// No description provided for @statePluginIncompatible.
-  ///
-  /// In zh, this message translates to:
-  /// **'这个插件不支持当前的 DSH 版本。'**
-  String get statePluginIncompatible;
-
-  /// No description provided for @statePluginInstallCancelled.
-  ///
-  /// In zh, this message translates to:
-  /// **'已取消安装'**
-  String get statePluginInstallCancelled;
-
-  /// No description provided for @statePluginNoChanges.
-  ///
-  /// In zh, this message translates to:
-  /// **'没有改动任何东西'**
-  String get statePluginNoChanges;
-
-  /// No description provided for @statePluginIncompatibleTitle.
-  ///
-  /// In zh, this message translates to:
-  /// **'和当前 DSH 不兼容'**
-  String get statePluginIncompatibleTitle;
-
-  /// No description provided for @statePluginNetworkFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'网络连不上'**
-  String get statePluginNetworkFailed;
-
-  /// No description provided for @statePluginSourceUnreachable.
-  ///
-  /// In zh, this message translates to:
-  /// **'连不上插件源码所在的网站'**
-  String get statePluginSourceUnreachable;
-
-  /// No description provided for @statePluginDownloadTimeout.
-  ///
-  /// In zh, this message translates to:
-  /// **'下载超时'**
-  String get statePluginDownloadTimeout;
-
-  /// No description provided for @statePluginRegistryUnavailable.
-  ///
-  /// In zh, this message translates to:
-  /// **'安装源暂时没有响应'**
-  String get statePluginRegistryUnavailable;
-
-  /// No description provided for @statePluginPnpmMissing.
-  ///
-  /// In zh, this message translates to:
-  /// **'缺少 pnpm'**
-  String get statePluginPnpmMissing;
-
-  /// No description provided for @statePluginPhonePnpmMissing.
-  ///
-  /// In zh, this message translates to:
-  /// **'这台手机缺少 pnpm'**
-  String get statePluginPhonePnpmMissing;
-
-  /// No description provided for @statePluginHostPnpmMissing.
-  ///
-  /// In zh, this message translates to:
-  /// **'这台主机缺少 pnpm'**
-  String get statePluginHostPnpmMissing;
-
-  /// No description provided for @statePluginNotFound.
-  ///
-  /// In zh, this message translates to:
-  /// **'找不到这个插件'**
-  String get statePluginNotFound;
-
-  /// No description provided for @statePluginPackageMissing.
-  ///
-  /// In zh, this message translates to:
-  /// **'安装源里没有这个包'**
-  String get statePluginPackageMissing;
-
-  /// No description provided for @statePluginTooNew.
-  ///
-  /// In zh, this message translates to:
-  /// **'版本太新'**
-  String get statePluginTooNew;
-
-  /// No description provided for @statePluginWaitForRelease.
-  ///
-  /// In zh, this message translates to:
-  /// **'发布满 24 小时后才能安装'**
-  String get statePluginWaitForRelease;
-
-  /// No description provided for @statePluginVersionMissing.
-  ///
-  /// In zh, this message translates to:
-  /// **'找不到这个版本'**
-  String get statePluginVersionMissing;
-
-  /// No description provided for @statePluginRegistryVersionMissing.
-  ///
-  /// In zh, this message translates to:
-  /// **'安装源里还没有这个版本'**
-  String get statePluginRegistryVersionMissing;
-
   /// No description provided for @stateDeviceStorageFull.
   ///
   /// In zh, this message translates to:
   /// **'设备存储空间不足'**
   String get stateDeviceStorageFull;
-
-  /// No description provided for @statePluginNoWritePermission.
-  ///
-  /// In zh, this message translates to:
-  /// **'没有写入权限'**
-  String get statePluginNoWritePermission;
-
-  /// No description provided for @statePluginConfigReadOnly.
-  ///
-  /// In zh, this message translates to:
-  /// **'引擎配置目录不可写'**
-  String get statePluginConfigReadOnly;
-
-  /// No description provided for @statePluginIntegrityFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'文件校验失败'**
-  String get statePluginIntegrityFailed;
-
-  /// No description provided for @statePluginDownloadIncomplete.
-  ///
-  /// In zh, this message translates to:
-  /// **'下载的文件不完整'**
-  String get statePluginDownloadIncomplete;
-
-  /// No description provided for @statePluginBuildScripts.
-  ///
-  /// In zh, this message translates to:
-  /// **'需要运行构建脚本'**
-  String get statePluginBuildScripts;
-
-  /// No description provided for @statePluginBuildApproval.
-  ///
-  /// In zh, this message translates to:
-  /// **'构建脚本等待允许'**
-  String get statePluginBuildApproval;
-
-  /// No description provided for @statePluginAlreadyInstalled.
-  ///
-  /// In zh, this message translates to:
-  /// **'已经装过了'**
-  String get statePluginAlreadyInstalled;
-
-  /// No description provided for @statePluginUninstallFirst.
-  ///
-  /// In zh, this message translates to:
-  /// **'换版本需先卸载'**
-  String get statePluginUninstallFirst;
-
-  /// No description provided for @statePluginInvalid.
-  ///
-  /// In zh, this message translates to:
-  /// **'这不是 DSH 插件'**
-  String get statePluginInvalid;
-
-  /// No description provided for @statePluginNoEntry.
-  ///
-  /// In zh, this message translates to:
-  /// **'这个包没有插件入口，已撤销安装'**
-  String get statePluginNoEntry;
-
-  /// No description provided for @statePluginInUse.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件正在被使用'**
-  String get statePluginInUse;
-
-  /// No description provided for @statePluginHasDependents.
-  ///
-  /// In zh, this message translates to:
-  /// **'有其他插件依赖它'**
-  String get statePluginHasDependents;
-
-  /// No description provided for @statePluginManagedElsewhere.
-  ///
-  /// In zh, this message translates to:
-  /// **'不能在这里修改'**
-  String get statePluginManagedElsewhere;
-
-  /// No description provided for @statePluginEngineManaged.
-  ///
-  /// In zh, this message translates to:
-  /// **'这个插件由引擎单独管理'**
-  String get statePluginEngineManaged;
-
-  /// No description provided for @statePluginAuthorizationExpired.
-  ///
-  /// In zh, this message translates to:
-  /// **'授权已过期'**
-  String get statePluginAuthorizationExpired;
-
-  /// No description provided for @statePluginBuildChanged.
-  ///
-  /// In zh, this message translates to:
-  /// **'构建脚本已变化，需要重新安装'**
-  String get statePluginBuildChanged;
-
-  /// No description provided for @statePluginInvalidAddress.
-  ///
-  /// In zh, this message translates to:
-  /// **'安装地址无效'**
-  String get statePluginInvalidAddress;
-
-  /// No description provided for @statePluginCatalogInvalidAddress.
-  ///
-  /// In zh, this message translates to:
-  /// **'插件目录的安装地址不正确'**
-  String get statePluginCatalogInvalidAddress;
-
-  /// No description provided for @statePluginOperationIncomplete.
-  ///
-  /// In zh, this message translates to:
-  /// **'操作没有完成'**
-  String get statePluginOperationIncomplete;
-
-  /// No description provided for @statePluginRemoteForbidden.
-  ///
-  /// In zh, this message translates to:
-  /// **'这台主机不允许远程安装'**
-  String get statePluginRemoteForbidden;
-
-  /// No description provided for @statePluginRelayToggleOnly.
-  ///
-  /// In zh, this message translates to:
-  /// **'经中转连接只能开关插件'**
-  String get statePluginRelayToggleOnly;
-
-  /// No description provided for @statePluginManagementUnsupported.
-  ///
-  /// In zh, this message translates to:
-  /// **'主机不支持插件管理'**
-  String get statePluginManagementUnsupported;
-
-  /// No description provided for @statePluginEngineUnsupported.
-  ///
-  /// In zh, this message translates to:
-  /// **'当前引擎不支持插件管理'**
-  String get statePluginEngineUnsupported;
-
-  /// No description provided for @statePluginResultMissing.
-  ///
-  /// In zh, this message translates to:
-  /// **'没能拿到安装结果'**
-  String get statePluginResultMissing;
-
-  /// No description provided for @statePluginResultPending.
-  ///
-  /// In zh, this message translates to:
-  /// **'安装结果待确认'**
-  String get statePluginResultPending;
-
-  /// No description provided for @statePluginDisconnected.
-  ///
-  /// In zh, this message translates to:
-  /// **'连接断开了'**
-  String get statePluginDisconnected;
-
-  /// No description provided for @statePluginQueued.
-  ///
-  /// In zh, this message translates to:
-  /// **'排队中'**
-  String get statePluginQueued;
-
-  /// No description provided for @statePluginRemoving.
-  ///
-  /// In zh, this message translates to:
-  /// **'正在卸载旧版本'**
-  String get statePluginRemoving;
-
-  /// No description provided for @statePluginInstalling.
-  ///
-  /// In zh, this message translates to:
-  /// **'正在下载安装'**
-  String get statePluginInstalling;
-
-  /// No description provided for @statePluginApplying.
-  ///
-  /// In zh, this message translates to:
-  /// **'正在启用'**
-  String get statePluginApplying;
-
-  /// No description provided for @statePluginCancelling.
-  ///
-  /// In zh, this message translates to:
-  /// **'正在取消'**
-  String get statePluginCancelling;
-
-  /// No description provided for @statePluginInstalledRestart.
-  ///
-  /// In zh, this message translates to:
-  /// **'已安装，重启后生效'**
-  String get statePluginInstalledRestart;
-
-  /// No description provided for @statePluginInstallFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'安装失败'**
-  String get statePluginInstallFailed;
-
-  /// No description provided for @statePluginConnectFirst.
-  ///
-  /// In zh, this message translates to:
-  /// **'连接后可安装插件'**
-  String get statePluginConnectFirst;
 
   /// No description provided for @stateProviderOpenAi.
   ///
@@ -35090,12 +33212,6 @@ abstract class L10n {
   /// **'下载/'**
   String get stateDownloadsPrefix;
 
-  /// No description provided for @stateSharePluginCount.
-  ///
-  /// In zh, this message translates to:
-  /// **'{count} 个插件'**
-  String stateSharePluginCount(int count);
-
   /// No description provided for @stateShareSkillCount.
   ///
   /// In zh, this message translates to:
@@ -35282,42 +33398,6 @@ abstract class L10n {
   /// **'插件目录暂时打不开（HTTP {status}）'**
   String stateMarketHttpError(int status);
 
-  /// No description provided for @statePluginRuntimeIncompatible.
-  ///
-  /// In zh, this message translates to:
-  /// **'这个插件不支持当前的 DSH 版本（{version}）。'**
-  String statePluginRuntimeIncompatible(String version);
-
-  /// No description provided for @statePluginRequiredVersion.
-  ///
-  /// In zh, this message translates to:
-  /// **'这个插件要求 DSH {wanted}，当前是 {current}。'**
-  String statePluginRequiredVersion(String wanted, String current);
-
-  /// No description provided for @statePluginRegistryUnreachable.
-  ///
-  /// In zh, this message translates to:
-  /// **'没能连上安装源'**
-  String get statePluginRegistryUnreachable;
-
-  /// No description provided for @statePluginNamedRegistryUnreachable.
-  ///
-  /// In zh, this message translates to:
-  /// **'没能连上安装源（{registry}）'**
-  String statePluginNamedRegistryUnreachable(String registry);
-
-  /// No description provided for @statePluginBuildsPending.
-  ///
-  /// In zh, this message translates to:
-  /// **'等待允许：{builds}'**
-  String statePluginBuildsPending(String builds);
-
-  /// No description provided for @statePluginRegistryProgress.
-  ///
-  /// In zh, this message translates to:
-  /// **'换用{registry}下载（第 {attempt}/{attempts} 个源）'**
-  String statePluginRegistryProgress(String registry, int attempt, int attempts);
-
   /// No description provided for @stateProviderServiceUnavailable.
   ///
   /// In zh, this message translates to:
@@ -35407,12 +33487,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'网页'**
   String get stateUiWeb;
-
-  /// No description provided for @statePluginRegistryProgressUnknown.
-  ///
-  /// In zh, this message translates to:
-  /// **'换用{registry}下载（第 {attempt}/null 个源）'**
-  String statePluginRegistryProgressUnknown(String registry, int attempt);
 
   /// No description provided for @stateProviderTokenCountInvalid.
   ///
@@ -45229,12 +43303,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'星标'**
   String get viewShareStars;
-
-  /// No description provided for @viewSharePluginTitle.
-  ///
-  /// In zh, this message translates to:
-  /// **'DSH 插件「{value}」'**
-  String viewSharePluginTitle(String value);
 
   /// No description provided for @viewShareInstallCommand.
   ///

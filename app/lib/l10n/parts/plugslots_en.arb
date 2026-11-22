@@ -79,14 +79,6 @@
     }
   },
   "plugslotsNeedsChat": "Open a chat first",
-  "plugslotsFromPlugin": "From {plugin}",
-  "@plugslotsFromPlugin": {
-    "placeholders": {
-      "plugin": {
-        "type": "String"
-      }
-    }
-  },
   "plugslotsPanelOffline": "Can't reach the plugin",
   "plugslotsIssueTooMany": "Up to {max}; the rest are hidden",
   "@plugslotsIssueTooMany": {
@@ -212,7 +204,6 @@
   "plugslotsPlaceRightbar": "Right sidebar",
   "plugslotsPlaceFiles": "File previews",
   "plugslotsPlaceSettings": "Settings",
-  "plugslotsPlacePlugins": "Plugins page",
   "plugslotsPlaceNewChat": "New conversation",
   "plugslotsPlaceElsewhere": "Elsewhere",
   "plugslotsPlaceUnknown": "Its web interface",

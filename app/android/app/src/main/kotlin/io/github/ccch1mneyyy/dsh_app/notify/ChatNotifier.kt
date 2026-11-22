@@ -118,8 +118,6 @@ class ChatNotifier(private val app: Context) {
             .setGroup(tag)
             .setContentIntent(openIntent(post, tag, id))
         if (post.attention) builder.setCategory(Notification.CATEGORY_REMINDER)
-        // The floating pet is out and its bubble says 做完了 / 出错了: posted, but no banner, no sound.
-        io.github.ccch1mneyyy.dsh_app.pet.ResultSilence.apply(builder, tag, post.attention)
         // Approval buttons, in the approval card's order; not on the lock screen.
         if (!processing) {
             if (post.canApprove) actions[tag to id] = ActionEntry(post, postedAt) else actions.remove(tag to id)

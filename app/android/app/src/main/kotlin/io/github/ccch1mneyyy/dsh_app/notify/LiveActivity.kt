@@ -18,7 +18,6 @@ import android.provider.Settings
 import io.github.ccch1mneyyy.dsh_app.MainActivity
 import io.github.ccch1mneyyy.dsh_app.R
 import io.github.ccch1mneyyy.dsh_app.i18n.AppStrings
-import io.github.ccch1mneyyy.dsh_app.pet.PetOverlay
 import io.github.ccch1mneyyy.dsh_app.phone.PhoneControl
 import io.github.ccch1mneyyy.dsh_app.runtime.DshService
 import io.github.ccch1mneyyy.dsh_app.theme.ThemeAccent
@@ -57,13 +56,11 @@ object LiveActivity {
     private const val REFRESH_MS = 4 * 60_000L
     private const val TIMEOUT_MS = 10 * 60_000L
     private const val ENDING_TIMEOUT_MS = 15_000L
-    private const val PORTRAIT_DP = 64
 
     private val handler: Handler by lazy { Handler(HandlerThread("dsh-live").apply { start() }.looper) }
 
     @Volatile private var app: Context? = null
     @Volatile private var agent: LiveContent? = null
-    @Volatile private var packId: String? = null
 
     // Live thread only.
     private var shown: LiveContent? = null
@@ -72,8 +69,6 @@ object LiveActivity {
     private var postedAt = 0L
     private var phoneTask = 0L
     private var phoneSince = 0L
-    private var portraitKey: String? = null
-    private var portrait: Bitmap? = null
 
     private val applyNow = Runnable { apply() }
     private val repost = Runnable {
@@ -83,31 +78,14 @@ object LiveActivity {
 
     /**
      * Dart's part: whether the live activity is on ([enabled], kept for phone control while no
-     * engine runs), the pet pack the pictures come from, and what the agent is doing (null: nothing).
+     * engine runs), and what the agent is doing (null: nothing).
      */
-    fun update(context: Context, enabled: Boolean, packId: String?, agent: LiveContent?) {
+    fun update(context: Context, enabled: Boolean, agent: LiveContent?) {
         val ctx = attach(context)
         val prefs = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         if (prefs.getBoolean(K_ENABLED, true) != enabled) prefs.edit().putBoolean(K_ENABLED, enabled).apply()
-        this.packId = packId?.takeIf { it.isNotEmpty() && it != "none" }
         this.agent = agent
         refresh(ctx)
-    }
-
-    /**
-     * A brought pet's files changed (imported again, removed): its cached portrait is stale though
-     * its id isn't. Drawn again from the files, and a post showing it is redone. Any thread.
-     */
-    fun forgetPack(context: Context, pack: String) {
-        val ctx = attach(context)
-        handler.post {
-            if (portraitKey?.startsWith("$pack/") != true) return@post
-            portraitKey = null
-            portrait = null
-            // The post carries the old picture; the same content would not be posted again.
-            shown = null
-            refresh(ctx)
-        }
     }
 
     /** Something it shows changed: post the latest within [MIN_GAP_MS] of the last post. Any thread. */
@@ -189,8 +167,6 @@ object LiveActivity {
             chip = AppStrings.get(ctx, if (task.paused) R.string.live_chip_paused else R.string.live_chip_phone),
             publicText = title,
             sinceMs = phoneSince,
-            packId = packId,
-            mood = "working",
             phoneTaskId = task.id,
         )
     }
@@ -199,7 +175,6 @@ object LiveActivity {
         val nm = nm(ctx)
         ensureChannel(ctx, nm)
         val color = ThemeAccent.notificationColor(ctx)
-        val picture = c.packId?.let { portraitOf(ctx, it, c.mood) }
         val builder = Notification.Builder(ctx, CHANNEL)
             .setSmallIcon(R.drawable.ic_stat_dsh)
             .setColor(color)
@@ -215,7 +190,6 @@ object LiveActivity {
             .addExtras(Bundle().apply { putBoolean(EXTRA_REQUEST_PROMOTED_ONGOING, true) })
         val since = c.sinceMs
         if (since != null && !c.ending) builder.setWhen(since).setShowWhen(true).setUsesChronometer(true) else builder.setShowWhen(false)
-        picture?.let(builder::setLargeIcon)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
             builder.setStyle(
                 if (c.busy) {
@@ -239,7 +213,7 @@ object LiveActivity {
             )
             builder.addAction(Notification.Action.Builder(null, AppStrings.get(ctx, R.string.service_stop_phone), stop).build())
         }
-        val icon = picture?.let(Icon::createWithBitmap) ?: Icon.createWithResource(ctx, R.mipmap.ic_launcher)
+        val icon = Icon.createWithResource(ctx, R.mipmap.ic_launcher)
         XiaomiFocus.apply(ctx, builder, c, icon)
         nm.notify(ID, builder.build())
     }
@@ -264,16 +238,6 @@ object LiveActivity {
             ctx, ID, Intent(ctx, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
-    }
-
-    /** The pet doing what the activity says, in the shade and in HyperOS's island. */
-    private fun portraitOf(ctx: Context, pack: String, mood: String): Bitmap? {
-        val key = "$pack/$mood"
-        if (key == portraitKey) return portrait
-        val px = (PORTRAIT_DP * ctx.resources.displayMetrics.density).toInt().coerceIn(96, 256)
-        portrait = PetOverlay.portrait(pack, mood, px)
-        portraitKey = key
-        return portrait
     }
 
     private fun ensureChannel(ctx: Context, nm: NotificationManager) {

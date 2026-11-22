@@ -1,6 +1,6 @@
 package io.github.ccch1mneyyy.dsh_app.phone.a11y
 
-/** Main-thread paired holds: overlapping pet/agent captures restore only after both finish. */
+/** Main-thread paired holds: overlapping captures restore only after both finish. */
 internal class CaptureVisibility {
     private var holds = 0
     val hidden: Boolean get() = holds > 0

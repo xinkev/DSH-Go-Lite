@@ -16,7 +16,6 @@ class LiveContentTest {
         "chip" to "工作中",
         "publicText" to "DSH 正在工作",
         "sinceMs" to 1_793_000_000_000L,
-        "packId" to "deepy",
         "mood" to "working",
         "sessionId" to "s1",
         "host" to "local",
@@ -28,7 +27,6 @@ class LiveContentTest {
         assertEquals("修一下登录页", c.title)
         assertEquals("工作中", c.chip)
         assertEquals(1_793_000_000_000L, c.sinceMs)
-        assertEquals("deepy", c.packId)
         assertEquals("s1", c.sessionId)
         assertTrue(c.busy)
         assertFalse(c.ending)
@@ -44,8 +42,7 @@ class LiveContentTest {
     }
 
     @Test fun noPetAndNoClockAreReadAsNone() {
-        val c = LiveContent.fromMap(running + ("packId" to "none") + ("sinceMs" to 0))!!
-        assertNull(c.packId)
+        val c = LiveContent.fromMap(running + ("sinceMs" to 0))!!
         assertNull(c.sinceMs)
     }
 

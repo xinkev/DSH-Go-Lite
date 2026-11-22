@@ -36,7 +36,7 @@ import android.widget.ImageView
 import android.widget.ScrollView
 import android.widget.TextView
 import io.github.ccch1mneyyy.dsh_app.R
-import io.github.ccch1mneyyy.dsh_app.pet.Side
+import io.github.ccch1mneyyy.dsh_app.overlay.Side
 import kotlin.math.abs
 import kotlin.math.roundToInt
 

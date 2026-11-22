@@ -159,7 +159,13 @@
   "botsDuplicateHint": "Same settings, fresh chat and memory",
   "botsDuplicateNamed": "Duplicate {name}?",
   "botsDuplicateBody": "The new Bot keeps its job, instructions and model settings, starts with a fresh chat and personal memory, and gets its name from the host. When a model is available, it opens with a greeting.",
-  "@botsDuplicateNamed": {"placeholders": {"name": {"type": "String"}}},
+  "@botsDuplicateNamed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "botsChooseModelStart": "Choose a model to start",
   "botsNoChats": "No chats yet",
   "botsUnreadCount": "{count, plural, =1{1 unread} other{{count} unread}}",
@@ -263,10 +269,7 @@
   "botsForumSubtitle": "Ask, share, connect",
   "botsProjectHome": "DSH Go project home",
   "botsOpenSource": "Open-source project",
-  "botsPluginCatalogFailed": "Couldn’t open the plugin catalog",
   "botsTapRetry": "Tap to retry",
-  "botsFeaturedPlugins": "Featured plugins",
-  "botsPluginSource": "Plugin info from dshfind",
   "botsPromptIdeas": "Try this",
   "botsUpdates": "What’s new",
   "botsLink": "link",

@@ -24,7 +24,7 @@ class _Prefs extends NotifyPrefsController {
 void main() {
   testWidgets('coming back to 设置 → 通知 offers the same live activity again', (tester) async {
     final channel = _Channel();
-    const push = LivePush(enabled: true, packId: 'cat');
+    const push = LivePush(enabled: true);
     await tester.pumpWidget(
       testApp(
         const NotificationSettingsPage(),

@@ -1014,14 +1014,6 @@
   "viewShareWorkflow": "工作流",
   "viewSharePlugin": "调用插件",
   "viewShareStars": "星标",
-  "viewSharePluginTitle": "DSH 插件「{value}」",
-  "@viewSharePluginTitle": {
-    "placeholders": {
-      "value": {
-        "type": "String"
-      }
-    }
-  },
   "viewShareInstallCommand": "安装：dsh plugin add {value}",
   "@viewShareInstallCommand": {
     "placeholders": {

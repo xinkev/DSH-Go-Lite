@@ -71,32 +71,6 @@
   "hubSettingsApiKeyHint": "填写 Key 后即可对话",
   "hubSettingsSignInAccount": "登录 DeepSeek 账号",
   "hubSettingsOrApiKey": "或填写 API Key",
-  "hubPluginShare": "分享插件",
-  "hubPluginDetails": "插件详情",
-  "hubPluginFeatured": "dshfind 推荐",
-  "hubPluginWebOnly": "仅网页版",
-  "hubPluginStars": "星标",
-  "hubPluginSource": "来源",
-  "hubPluginInstalledVersion": "已装版本",
-  "hubPluginRequiresDsh": "需要 DSH",
-  "hubPluginPackageName": "包名",
-  "hubPluginHomepage": "主页",
-  "hubPluginRepository": "代码仓库",
-  "hubPluginManageTitle": "管理插件",
-  "hubPluginManage": "管理",
-  "hubPluginSafeModeInstall": "安全模式下不能安装",
-  "hubPluginInstallCommand": "获取安装命令",
-  "hubPluginInstallComputer": "在电脑上安装",
-  "hubPluginInstalling": "安装中…",
-  "hubPluginAllowBuilds": "允许构建脚本并重试",
-  "hubPluginRetryInstall": "重试安装",
-  "hubPluginOfficial": "DSH 官方",
-  "hubPluginNotLoaded": "没有正常加载",
-  "hubPluginComponents": "组件",
-  "hubPluginSafeModeRemove": "安全模式下不能卸载",
-  "hubPluginRemoveCommand": "获取卸载命令",
-  "hubPluginRemoveComputer": "在电脑上卸载",
-  "hubPluginUninstall": "卸载",
   "hubSessionTurns": "共 {count} 轮",
   "@hubSessionTurns": {
     "placeholders": {
@@ -232,50 +206,6 @@
     }
   },
   "hubSettingsApiKey": "DeepSeek API Key",
-  "hubPluginBrowserFailed": "没能打开浏览器，请手动访问 {address}",
-  "@hubPluginBrowserFailed": {
-    "placeholders": {
-      "address": {
-        "type": "String"
-      }
-    }
-  },
-  "hubPluginYearMonth": "{year}年{month}月",
-  "@hubPluginYearMonth": {
-    "placeholders": {
-      "year": {
-        "type": "int"
-      },
-      "month": {
-        "type": "String"
-      }
-    }
-  },
-  "hubPluginUpdateTo": "更新到 {version}",
-  "@hubPluginUpdateTo": {
-    "placeholders": {
-      "version": {
-        "type": "String"
-      }
-    }
-  },
-  "hubPluginInstallOn": "安装到{host}",
-  "@hubPluginInstallOn": {
-    "placeholders": {
-      "host": {
-        "type": "String"
-      }
-    }
-  },
-  "hubPluginComponentCount": "{count} 个",
-  "@hubPluginComponentCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "hubPluginComponentSeparator": "、",
   "hubGroupAi": "AI",
   "hubGroupCapabilities": "能力",
   "hubGroupGeneral": "通用",
@@ -318,14 +248,6 @@
     }
   },
   "hubValueNoHosts": "未添加",
-  "hubValuePlugins": "{count} 个",
-  "@hubValuePlugins": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
   "hubEngineStartup": "启动",
   "hubThemeLightDark": "明暗",
   "hubPermissionPhone": "手机",

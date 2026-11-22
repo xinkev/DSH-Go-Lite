@@ -84,8 +84,6 @@
   "harmonyKwNotifyLive": "progress notification,notification progress,status bar progress",
   "harmonyTerminalNoPty": "This engine has no interactive terminal. Connect to an SSH host for one",
   "harmonyTerminalSupportedHosts": "Available on SSH hosts",
-  "harmonyPluginRemoveRefused": "This engine can't remove plugins",
-  "harmonyPluginRefusedHint": "You can turn bundled plugins on or off, or connect a computer to manage plugins",
   "harmonyPasswordStorageHelp": "Saved only on this phone, encrypted by the system keystore",
   "harmonyKeyStorageHelp": "Saved only on this phone, encrypted by the system keystore. Supports Ed25519, RSA and ECDSA.",
   "harmonyUsageNotSent": "Usage statistics aren't sent on HarmonyOS for now",

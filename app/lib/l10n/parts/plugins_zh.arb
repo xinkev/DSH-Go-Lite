@@ -1,20 +1,4 @@
 {
-  "pluginsOperationHostChanged": "主机已切换，未执行",
-  "pluginsReloadLocal": "重启内核以重载",
-  "pluginsReloadInterrupts": "会中断正在运行的任务",
-  "pluginsReloadConfirm": "重载「{name}」？",
-  "pluginsReloadExplanation": "将重启本机内核，重新加载插件。正在运行的任务会中断。",
-  "pluginsReloadProceed": "重启并重载",
-  "pluginsReloadRequested": "已请求重启内核",
-  "pluginsReloadChanged": "主机或插件状态已变化，请重试",
-  "pluginsReloadFailed": "未能重启内核，请查看引擎日志",
-  "@pluginsReloadConfirm": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "pluginsFile": "文件",
   "pluginsChat": "对话",
   "pluginsImage": "图片",
@@ -43,16 +27,6 @@
   "pluginsNamespaceAutoReview": "自动审查",
   "pluginsNamespaceAgentTeam": "智能体团队",
   "pluginsNamespaceVoiceInput": "语音输入",
-  "pluginsOfficialPlugin": "官方插件",
-  "pluginsLocalUnshareable": "本地安装，无法分享",
-  "pluginsIncludesPresets": "含预设「{names}」",
-  "@pluginsIncludesPresets": {
-    "placeholders": {
-      "names": {
-        "type": "String"
-      }
-    }
-  },
   "pluginsSecretsUnshareable": "含有密钥，无法分享",
   "pluginsLineCount": "{count} 行",
   "@pluginsLineCount": {
@@ -65,37 +39,12 @@
   "pluginsEmptyValue": "空",
   "pluginsOnValue": "开",
   "pluginsOffValue": "关",
-  "pluginsOfficialUnavailable": "这台主机没有这个官方插件",
-  "pluginsEnabled": "已启用",
-  "pluginsVersionMismatch": "与分享时的版本不一致",
-  "pluginsCurrentVersion": "当前版本",
-  "pluginsNewVersion": "新版本",
-  "pluginsAddedWith": "随「{title}」添加",
-  "@pluginsAddedWith": {
-    "placeholders": {
-      "title": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsApplyAfterInstall": "装好插件后应用 · {detail}",
-  "@pluginsApplyAfterInstall": {
-    "placeholders": {
-      "detail": {
-        "type": "String"
-      }
-    }
-  },
   "pluginsSettingsReadFailed": "没能读取这台主机的设置",
   "pluginsSettingUnavailable": "这台主机没有这项设置",
   "pluginsSettingsReadOnly": "这台主机的设置是只读的",
   "pluginsImportLocalOnly": "只能导入到本机",
   "pluginsReplaceSkill": "替换同名技能",
   "pluginsReplaceContent": "替换现有内容",
-  "pluginsSafeModeInstallBlocked": "安全模式下不能安装插件",
-  "pluginsHostInstallBlocked": "这台主机不能从这里安装插件",
-  "pluginsInstallFailed": "安装失败",
-  "pluginsAfterRestart": "重启后生效",
   "pluginsSettingsChanged": "设置刚被改过",
   "pluginsWriteFailed": "没能写入",
   "pluginsHostUnreachable": "没能连上主机",
@@ -116,14 +65,6 @@
   "pluginsGistNotFound": "找不到这个 Gist",
   "pluginsGistNoProfile": "这个 Gist 里没有可导入的配置",
   "pluginsGistReadFailed": "没能读取 Gist",
-  "pluginsListReadFailed": "没能读取插件列表",
-  "pluginsReadingPlugins": "正在读取插件…",
-  "pluginsDshOfficial": "DSH 官方",
-  "pluginsOfficialToggleOnly": "官方组件只能开关，不能卸载；对这台主机上的所有对话生效",
-  "pluginsOfficial": "官方",
-  "pluginsNoThirdParty": "还没装第三方插件",
-  "pluginsPluginsDescription": "插件能给 DSH 加工具、记忆和模型",
-  "pluginsBrowseMarket": "逛逛插件市场",
   "pluginsLoading": "正在加载",
   "pluginsIslandClosed": "插件界面已关闭",
   "pluginsReopen": "重新打开",
@@ -135,296 +76,12 @@
       }
     }
   },
-  "pluginsSearch": "搜索插件",
-  "pluginsMarketLoading": "正在载入插件目录…",
-  "pluginsMarketLoadFailed": "插件目录没打开",
-  "pluginsMarketInvalid": "目录格式有误",
   "pluginsAll": "全部",
-  "pluginsMarketCount": "{count} 个插件 · 来自 dshfind",
-  "@pluginsMarketCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "pluginsHideWeb": "隐藏网页版插件",
-  "pluginsShowWebCount": "显示 {count} 个网页版插件",
-  "@pluginsShowWebCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "pluginsNoCategoryPlugins": "这个分类下没有插件",
-  "pluginsNoSearchResults": "没有找到「{query}」",
-  "@pluginsNoSearchResults": {
-    "placeholders": {
-      "query": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsFailureDetails": "{title} · 点开查看",
-  "@pluginsFailureDetails": {
-    "placeholders": {
-      "title": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsFeatured": "推荐",
-  "pluginsInstalledRemoteRestart": "已安装「{name}」，重启{host}上的 DSH 后生效",
-  "@pluginsInstalledRemoteRestart": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      },
-      "host": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsInstalledNamed": "已安装「{name}」",
-  "@pluginsInstalledNamed": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsInstallCancelled": "已取消安装",
-  "pluginsInstallFailureNamed": "「{name}」{reason}",
-  "@pluginsInstallFailureNamed": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      },
-      "reason": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsRestartRequired": "需要重启引擎",
-  "pluginsRestartExplanation": "「{name}」重启引擎后生效，进行中的回复会中断。",
-  "@pluginsRestartExplanation": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "pluginsRestartEngine": "重启引擎",
-  "pluginsAllowBuildScripts": "允许构建脚本？",
-  "pluginsBuildScriptPackages": "下面这些包要在安装时运行脚本：",
-  "pluginsBuildScriptWarning": "脚本会以 DSH 的权限在{host}上执行，能读写文件、联网。只在你信任这个插件时允许。",
-  "@pluginsBuildScriptWarning": {
-    "placeholders": {
-      "host": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsThisDevice": "这台设备",
-  "pluginsAllowRetry": "允许并重试",
-  "pluginsUpdateNamed": "更新「{name}」？",
-  "@pluginsUpdateNamed": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsUninstallNamed": "卸载「{title}」？",
-  "@pluginsUninstallNamed": {
-    "placeholders": {
-      "title": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsUninstallExplanation": "插件会从{host}上移除，它保存的数据和设置不会删除。",
-  "@pluginsUninstallExplanation": {
-    "placeholders": {
-      "host": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsThisHost": "这台主机",
-  "pluginsUninstall": "卸载",
-  "pluginsUninstalledNamed": "已卸载「{title}」",
-  "@pluginsUninstalledNamed": {
-    "placeholders": {
-      "title": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsRestartNow": "立即重启",
-  "pluginsUninstallFailed": "没能卸载",
   "pluginsThatComputer": "那台电脑",
-  "pluginsCommandAfterInstall": "装好后重启那台电脑上的 DSH，再回来刷新",
   "pluginsError": "出错",
-  "pluginsInventoryTitle": "插件清单",
-  "pluginsGlobalPlugins": "全局插件",
-  "pluginsAgentPresets": "Agent 预设",
-  "pluginsInventoryReadFailed": "没能读取插件清单",
-  "pluginsComponentCount": "{count} 个组件",
-  "@pluginsComponentCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "pluginsEnabledCount": "{count} 个已启用",
-  "@pluginsEnabledCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "pluginsErrorCount": "{count} 个出错",
-  "@pluginsErrorCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "pluginsNoPlugins": "没有插件",
-  "pluginsNoMatchingPlugins": "没有匹配的插件",
-  "pluginsPresetLoadFailed": "这个预设没能加载",
-  "pluginsPresetNoPlugins": "这个预设没有插件",
-  "pluginsStandard": "标准",
-  "pluginsMinimal": "精简",
-  "pluginsDefaultPresetName": "{name}（默认）",
-  "@pluginsDefaultPresetName": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsSystemComponents": "系统组件",
-  "pluginsCount": "{count} 个",
-  "@pluginsCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
   "pluginsSource": "来源",
-  "pluginsDisableCondition": "禁用条件",
-  "pluginsProvidedByPreset": "由预设提供",
-  "pluginsDetailsTitle": "插件详情",
-  "pluginsPackageInfoError": "包信息有误：{error}",
-  "@pluginsPackageInfoError": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsInstalling": "安装中",
-  "pluginsGet": "获取",
-  "pluginsLoadingCannotCancel": "正在加载插件，这一步不能取消",
-  "pluginsInstallDuration": "约需一两分钟，可以先离开",
-  "pluginsViewInstallLogs": "查看安装日志",
-  "pluginsViewDetails": "查看详情",
-  "pluginsCopyCommand": "复制命令",
-  "pluginsCommandCopied": "命令已复制",
-  "pluginsMissingFiles": "插件文件缺失，重新安装可修复",
-  "pluginsNotDshPlugin": "不是 DSH 插件，无法加载",
-  "pluginsIncompatible": "与当前 DSH 版本不兼容，未加载",
-  "pluginsRequiresDshVersion": "需要 DSH {requiredVersion}，当前 {currentVersion}，未加载",
-  "@pluginsRequiresDshVersion": {
-    "placeholders": {
-      "requiredVersion": {
-        "type": "String"
-      },
-      "currentVersion": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsLoadFailure": "加载失败：{reason}",
-  "@pluginsLoadFailure": {
-    "placeholders": {
-      "reason": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsUnknownReason": "原因未知",
-  "pluginsBundleProblem": "有问题：{reason}",
-  "@pluginsBundleProblem": {
-    "placeholders": {
-      "reason": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsRefreshFailure": "刷新失败：{reason}",
-  "@pluginsRefreshFailure": {
-    "placeholders": {
-      "reason": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsTitle": "插件",
-  "pluginsRefresh": "刷新",
-  "pluginsMarketTitle": "插件市场",
-  "pluginsConnectToManage": "连上引擎后管理插件",
-  "pluginsSafeModeOperationsBlocked": "安全模式下不能安装或卸载插件",
-  "pluginsRelayToggleOnly": "{host} · 经中转只能开关，安装请在那台电脑上进行",
-  "@pluginsRelayToggleOnly": {
-    "placeholders": {
-      "host": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsInstallThisPhone": "安装到：本机",
-  "pluginsInstallHost": "安装到：{host}",
-  "@pluginsInstallHost": {
-    "placeholders": {
-      "host": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsOfflineDescription": "引擎运行后显示已装插件，插件市场现在就能逛",
-  "pluginsIconChanged": "桌面图标已选择，回到桌面后更新",
-  "pluginsIconChangeFailed": "没能更换，稍后再试",
   "pluginsTheme": "主题",
-  "pluginsAppearance": "外观",
-  "pluginsColors": "配色",
-  "pluginsFeatureIcons": "功能图标",
-  "pluginsAppIcon": "桌面图标",
-  "pluginsCustomColor": "自定义",
-  "pluginsColorLabel": "配色：{label}",
-  "@pluginsColorLabel": {
-    "placeholders": {
-      "label": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsCoral": "珊瑚",
-  "pluginsRouge": "胭脂",
-  "pluginsOchre": "赭石",
-  "pluginsMoss": "苔绿",
-  "pluginsLake": "湖蓝",
-  "pluginsIndigo": "靛紫",
-  "pluginsHue": "色相",
-  "pluginsWallpaper": "壁纸",
-  "pluginsFollowWallpaper": "跟随壁纸",
   "pluginsAllowHighPower": "允许后台高耗电",
   "pluginsVivoBatteryPath": "电池 › 后台耗电管理 › {app}",
   "@pluginsVivoBatteryPath": {
@@ -566,16 +223,9 @@
   "pluginsPreferencesHint": "比如：用中文回答，我主要写 Flutter",
   "pluginsSaving": "正在保存",
   "pluginsShareLink": "分享链接",
-  "pluginsInstallPlugin": "安装插件",
   "pluginsImportProfile": "导入配置",
   "pluginsImportTo": "导入到",
-  "pluginsInstallTo": "安装到",
-  "pluginsVerification": "校验",
   "pluginsSize": "大小",
-  "pluginsVerified": "校验通过",
-  "pluginsVerificationMismatch": "校验不一致",
-  "pluginsCannotVerify": "无法校验",
-  "pluginsVerifying": "校验中",
   "pluginsPresets": "预设",
   "pluginsSkills": "技能",
   "pluginsAdded": "新增",
@@ -589,14 +239,6 @@
   "pluginsView": "查看",
   "pluginsImport": "导入",
   "pluginsHostPluginsReadFailed": "没能读取这台主机的插件",
-  "pluginsUpdateTo": "更新到 {version}",
-  "@pluginsUpdateTo": {
-    "placeholders": {
-      "version": {
-        "type": "String"
-      }
-    }
-  },
   "pluginsImportCount": "导入 {count} 项",
   "@pluginsImportCount": {
     "placeholders": {
@@ -606,7 +248,6 @@
     }
   },
   "pluginsImporting": "正在导入",
-  "pluginsInstallingActive": "正在安装",
   "pluginsImportFailedCount": "{count} 项没成功",
   "@pluginsImportFailedCount": {
     "placeholders": {
@@ -615,7 +256,6 @@
       }
     }
   },
-  "pluginsCouldNotInstall": "没能安装",
   "pluginsEngineRestartToApply": "重启引擎后生效",
   "pluginsRemoteRestartToApply": "重启{host}上的 DSH 后生效",
   "@pluginsRemoteRestartToApply": {
@@ -627,16 +267,6 @@
   },
   "pluginsImportedCount": "已导入 {count} 项",
   "@pluginsImportedCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "pluginsLocalPluginUnshareable": "这个插件是本地安装的，无法分享",
-  "pluginsSharePlugin": "分享插件",
-  "pluginsPluginCount": "{count} 个插件",
-  "@pluginsPluginCount": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -685,7 +315,6 @@
   "pluginsShareDamaged": "这个分享码不完整或已损坏",
   "pluginsShareFileReadFailed": "没能读取这个文件",
   "pluginsShareOpenFailed": "没能打开这个分享码",
-  "pluginsPluginShareTitle": "DSH Go 插件",
   "pluginsShareSheetOpenFailed": "没能打开分享",
   "pluginsSavePermissionDenied": "没有存储权限，没能保存",
   "pluginsQrCode": "二维码",
@@ -697,76 +326,6 @@
   "pluginsGistPermissionNeeded": "需要 gist 权限",
   "pluginsGenerateGistLink": "用 Gist 生成链接",
   "pluginsShareQrCode": "分享码二维码",
-  "pluginsUpdateCurrentWarning": "会先卸载当前版本，再安装 {to}。如果新版本没装上，插件会处于未安装状态，需要重新安装。",
-  "@pluginsUpdateCurrentWarning": {
-    "placeholders": {
-      "to": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsUpdateVersionWarning": "会先卸载 {from}，再安装 {to}。如果新版本没装上，插件会处于未安装状态，需要重新安装。",
-  "@pluginsUpdateVersionWarning": {
-    "placeholders": {
-      "from": {
-        "type": "String"
-      },
-      "to": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsUninstalledRestartLocal": "已卸载「{title}」，重启引擎后完全移除",
-  "@pluginsUninstalledRestartLocal": {
-    "placeholders": {
-      "title": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsUninstalledRestartRemote": "已卸载「{title}」，重启{host}上的 DSH 后完全移除",
-  "@pluginsUninstalledRestartRemote": {
-    "placeholders": {
-      "title": {
-        "type": "String"
-      },
-      "host": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsEnableFailed": "没能启用",
-  "pluginsDisableFailed": "没能停用",
-  "pluginsEnabledRestartLocal": "已启用，重启引擎后生效",
-  "pluginsEnabledRestartRemote": "已启用，重启{host}上的 DSH 后生效",
-  "@pluginsEnabledRestartRemote": {
-    "placeholders": {
-      "host": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsDisabledRestartLocal": "已停用，重启引擎后生效",
-  "pluginsDisabledRestartRemote": "已停用，重启{host}上的 DSH 后生效",
-  "@pluginsDisabledRestartRemote": {
-    "placeholders": {
-      "host": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsRelayCommandInstruction": "经 DSH Remote 中转时只能开关插件。在{host}的终端里运行：",
-  "@pluginsRelayCommandInstruction": {
-    "placeholders": {
-      "host": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsPermissionLocalThirdParty": "插件以 DSH 的权限运行：能读写文件、执行命令、读取 API Key 和已授权的手机存储，不受工作区沙箱限制。由第三方提供，DSH 官方未审核。",
-  "pluginsPermissionLocalTrusted": "插件以 DSH 的权限运行：能读写文件、执行命令、读取 API Key 和已授权的手机存储，不受工作区沙箱限制。只装你信任的插件。",
-  "pluginsPermissionRemoteThirdParty": "插件以 DSH 的权限运行：能读写文件、执行命令、读取 API Key，不受工作区沙箱限制。由第三方提供，DSH 官方未审核。",
-  "pluginsPermissionRemoteTrusted": "插件以 DSH 的权限运行：能读写文件、执行命令、读取 API Key，不受工作区沙箱限制。只装你信任的插件。",
   "pluginsSelectedQrCount": "已选 {count} 项 · 可生成二维码",
   "@pluginsSelectedQrCount": {
     "placeholders": {
@@ -784,28 +343,6 @@
     }
   },
   "pluginsListSeparator": "、",
-  "pluginsActionFailure": "{action}：{reason}",
-  "@pluginsActionFailure": {
-    "placeholders": {
-      "action": {
-        "type": "String"
-      },
-      "reason": {
-        "type": "String"
-      }
-    }
-  },
-  "pluginsInventorySemantics": "{title}，{status}",
-  "@pluginsInventorySemantics": {
-    "placeholders": {
-      "title": {
-        "type": "String"
-      },
-      "status": {
-        "type": "String"
-      }
-    }
-  },
   "pluginsSettingsChanges": "{shown} 等 {count} 项",
   "@pluginsSettingsChanges": {
     "placeholders": {
@@ -813,25 +350,6 @@
         "type": "String"
       },
       "count": {
-        "type": "int"
-      }
-    }
-  },
-  "pluginsLoadStatus": "加载状态",
-  "pluginsLoadPartial": "部分生效",
-  "pluginsLoadFailed": "加载失败",
-  "pluginsLoadNotReady": "尚未就绪",
-  "pluginsLoadMetadata": "元数据诊断",
-  "pluginsLoadRunningCount": "{running} / {total} 个组件运行中",
-  "pluginsLoadUnreported": "状态未报告",
-  "pluginsLoadNoRuntimeDetail": "主机未返回运行时错误详情，请查看引擎日志。",
-  "pluginsLoadRemoteLogs": "请在这台主机上查看引擎日志。",
-  "@pluginsLoadRunningCount": {
-    "placeholders": {
-      "running": {
-        "type": "int"
-      },
-      "total": {
         "type": "int"
       }
     }

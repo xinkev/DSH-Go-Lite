@@ -1,10 +1,10 @@
 package io.github.ccch1mneyyy.dsh_app.phone.a11y
 
-import io.github.ccch1mneyyy.dsh_app.pet.Dock
-import io.github.ccch1mneyyy.dsh_app.pet.EdgeSnap
-import io.github.ccch1mneyyy.dsh_app.pet.SafeArea
-import io.github.ccch1mneyyy.dsh_app.pet.Side
-import io.github.ccch1mneyyy.dsh_app.pet.WindowPos
+import io.github.ccch1mneyyy.dsh_app.overlay.Dock
+import io.github.ccch1mneyyy.dsh_app.overlay.EdgeSnap
+import io.github.ccch1mneyyy.dsh_app.overlay.SafeArea
+import io.github.ccch1mneyyy.dsh_app.overlay.Side
+import io.github.ccch1mneyyy.dsh_app.overlay.WindowPos
 import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.roundToInt

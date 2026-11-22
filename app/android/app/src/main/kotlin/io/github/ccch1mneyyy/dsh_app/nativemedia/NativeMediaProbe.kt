@@ -8,7 +8,7 @@ import android.os.Build
 import android.util.Log
 
 /**
- * Debug builds only (registered when the app is debuggable, like pet/PetOverlayProbe): an emulator
+ * Debug builds only (registered when the app is debuggable): an emulator
  * has no voice to hear, so this stands in for the speech gate's edges and logs the state.
  *
  * ```

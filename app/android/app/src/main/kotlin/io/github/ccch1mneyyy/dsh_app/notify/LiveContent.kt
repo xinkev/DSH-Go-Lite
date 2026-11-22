@@ -19,10 +19,6 @@ data class LiveContent(
     val publicText: String,
     /** Wall-clock start: the chronometer counts from it; null: no clock. */
     val sinceMs: Long? = null,
-    /** The pet pack whose picture goes with it; null: none chosen. */
-    val packId: String? = null,
-    /** The pet state (Clawd's names) the picture shows. */
-    val mood: String = "idle",
     /** The conversation a tap opens; null opens the app. */
     val sessionId: String? = null,
     val host: String? = null,
@@ -65,8 +61,6 @@ data class LiveContent(
                 chip = str("chip", CHIP_MAX),
                 publicText = str("publicText", TEXT_MAX) ?: title.take(TITLE_MAX),
                 sinceMs = (m["sinceMs"] as? Number)?.toLong()?.takeIf { it > 0 },
-                packId = str("packId", 64)?.takeIf { it != "none" },
-                mood = str("mood", 32) ?: "idle",
                 sessionId = str("sessionId", 200),
                 host = str("host", 400),
                 eventId = str("eventId", 200),

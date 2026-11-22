@@ -63,9 +63,9 @@ import io.github.ccch1mneyyy.dsh_app.phone.PhonePromptPresenter
 import io.github.ccch1mneyyy.dsh_app.phone.PhonePromptUi
 import io.github.ccch1mneyyy.dsh_app.phone.PromptPresentation
 import io.github.ccch1mneyyy.dsh_app.phone.MainThreadCall
-import io.github.ccch1mneyyy.dsh_app.pet.SafeArea
-import io.github.ccch1mneyyy.dsh_app.pet.Side
-import io.github.ccch1mneyyy.dsh_app.pet.WindowPos
+import io.github.ccch1mneyyy.dsh_app.overlay.SafeArea
+import io.github.ccch1mneyyy.dsh_app.overlay.Side
+import io.github.ccch1mneyyy.dsh_app.overlay.WindowPos
 import kotlin.math.roundToInt
 import io.github.ccch1mneyyy.dsh_app.theme.ThemeAccent
 import android.animation.ValueAnimator

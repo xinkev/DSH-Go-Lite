@@ -27,7 +27,7 @@ import java.util.concurrent.Executors
  * calls, `{kind: new | voice | chat | screenshot, sessionId?, host?, text?, path?}`, after
  * Dart's `ready` (held until then, like links/LinksPlugin). An entry without this process's
  * [token] is ignored. `text` is
- * 问一句's text the floating pet couldn't send itself (pet/PetOverlay.kt): it waits in the composer.
+ * 问一句's text: it waits in the composer.
  *
  * - `setRecent {items: [{id, title, host}]}`: the recent conversations as dynamic shortcuts
  *   (newest first, at most [MAX_RECENT]; an empty list clears them). Pinned copies of a

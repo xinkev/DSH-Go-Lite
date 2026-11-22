@@ -25,8 +25,6 @@ void registerThirdPartyLicenses({String? os}) {
       final bundledNotices = await rootBundle.loadString('assets/licenses/webrtc-150.7871.04.md');
       yield LicenseEntryWithLineBreaks(<String>['WebRTC'], '$_webrtcBsd\n$bundledNotices');
     }
-    final unicodeNotice = await rootBundle.loadString('assets/licenses/unicode-15.0.txt');
-    yield LicenseEntryWithLineBreaks(<String>['Unicode Character Database (15.0.0)'], unicodeNotice);
     // The libraries a card's scripts find on the tavern's canvas page, as 酒馆助手's pages
     // give them; each package's own LICENSE file, verbatim.
     yield LicenseEntryWithLineBreaks(<String>[

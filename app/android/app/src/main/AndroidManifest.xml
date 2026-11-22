@@ -32,7 +32,7 @@
     <!-- 不打扰模式 (optional, default off): Shizuku provides the shell-uid channel. -->
     <uses-permission android:name="moe.shizuku.manager.permission.API_V23" />
 
-    <!-- App 外悬浮窗 (pet/PetOverlay.kt): the floating pet over other apps, off until the person turns it on. -->
+    <!-- 悬浮窗 (phone/a11y): the phone-control capsule and its confirm card, off until the person turns it on. -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <!-- In-app update: installs the downloaded APK through a PackageInstaller session (update/). -->
@@ -252,16 +252,6 @@
             <property
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
                 android:value="Runs the user's local DeepSeek Harness agent server" />
-        </service>
-
-        <!-- Keeps the floating pet's process up when only remote hosts are used (pet/PetOverlayService.kt). -->
-        <service
-            android:name=".pet.PetOverlayService"
-            android:exported="false"
-            android:foregroundServiceType="specialUse">
-            <property
-                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="Shows the user's floating assistant pet while their remote agent session runs" />
         </service>
 
         <!-- 手机操控: reads and drives the main screen, owns the status bar / confirm overlay (phone/a11y). -->

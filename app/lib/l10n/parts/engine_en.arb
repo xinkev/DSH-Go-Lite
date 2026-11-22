@@ -66,8 +66,6 @@
   "engineSettingsTitle": "Engine parameters",
   "engineSettingsReadFailed": "Couldn’t load settings",
   "engineSettingsRun": "Runtime",
-  "engineSettingsPlugins": "Plugins",
-  "engineSettingsPluginInventory": "Plugin inventory",
   "engineSettingsPluginStopped": "Plugin isn’t running",
   "engineSettingsEnablePlugin": "Enable it to change its settings",
   "engineSettingsNoEditableFields": "No settings to change here",

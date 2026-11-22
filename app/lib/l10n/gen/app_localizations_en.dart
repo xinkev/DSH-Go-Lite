@@ -2897,16 +2897,7 @@ class L10nEn extends L10n {
   String get botsOpenSource => 'Open-source project';
 
   @override
-  String get botsPluginCatalogFailed => 'Couldn’t open the plugin catalog';
-
-  @override
   String get botsTapRetry => 'Tap to retry';
-
-  @override
-  String get botsFeaturedPlugins => 'Featured plugins';
-
-  @override
-  String get botsPluginSource => 'Plugin info from dshfind';
 
   @override
   String get botsPromptIdeas => 'Try this';
@@ -3445,15 +3436,6 @@ class L10nEn extends L10n {
   String get catalogPlugins => 'Plugins';
 
   @override
-  String get catalogPluginsSummary => 'Installed plugins and markets';
-
-  @override
-  String get catalogPluginInventory => 'Plugin inventory';
-
-  @override
-  String get catalogPluginInventorySummary => 'All loaded plugins';
-
-  @override
   String get catalogCordisSummary => 'Dynamic panels from plugins';
 
   @override
@@ -3548,12 +3530,6 @@ class L10nEn extends L10n {
 
   @override
   String get catalogWebSummary => 'Official DSH interface';
-
-  @override
-  String get catalogPluginPanel => 'Plugin panel';
-
-  @override
-  String get catalogHostPluginMissing => 'This host doesn’t have this plugin';
 
   @override
   String get catalogAllFeatures => 'All features';
@@ -6092,12 +6068,6 @@ class L10nEn extends L10n {
 
   @override
   String get engineSettingsRun => 'Runtime';
-
-  @override
-  String get engineSettingsPlugins => 'Plugins';
-
-  @override
-  String get engineSettingsPluginInventory => 'Plugin inventory';
 
   @override
   String get engineSettingsPluginStopped => 'Plugin isn’t running';
@@ -8714,13 +8684,6 @@ class L10nEn extends L10n {
   String get harmonyTerminalSupportedHosts => 'Available on SSH hosts';
 
   @override
-  String get harmonyPluginRemoveRefused => 'This engine can\'t remove plugins';
-
-  @override
-  String get harmonyPluginRefusedHint =>
-      'You can turn bundled plugins on or off, or connect a computer to manage plugins';
-
-  @override
   String get harmonyPasswordStorageHelp => 'Saved only on this phone, encrypted by the system keystore';
 
   @override
@@ -9041,84 +9004,6 @@ class L10nEn extends L10n {
   String get hubSettingsOrApiKey => 'Or add an API key';
 
   @override
-  String get hubPluginShare => 'Share plugin';
-
-  @override
-  String get hubPluginDetails => 'Plugin details';
-
-  @override
-  String get hubPluginFeatured => 'Featured on dshfind';
-
-  @override
-  String get hubPluginWebOnly => 'Web only';
-
-  @override
-  String get hubPluginStars => 'Stars';
-
-  @override
-  String get hubPluginSource => 'Source';
-
-  @override
-  String get hubPluginInstalledVersion => 'Installed version';
-
-  @override
-  String get hubPluginRequiresDsh => 'Requires DSH';
-
-  @override
-  String get hubPluginPackageName => 'Package name';
-
-  @override
-  String get hubPluginHomepage => 'Homepage';
-
-  @override
-  String get hubPluginRepository => 'Repository';
-
-  @override
-  String get hubPluginManageTitle => 'Manage plugin';
-
-  @override
-  String get hubPluginManage => 'Manage';
-
-  @override
-  String get hubPluginSafeModeInstall => 'Can’t install in Safe mode';
-
-  @override
-  String get hubPluginInstallCommand => 'Get install command';
-
-  @override
-  String get hubPluginInstallComputer => 'Install on computer';
-
-  @override
-  String get hubPluginInstalling => 'Installing…';
-
-  @override
-  String get hubPluginAllowBuilds => 'Allow scripts and retry';
-
-  @override
-  String get hubPluginRetryInstall => 'Retry install';
-
-  @override
-  String get hubPluginOfficial => 'Official DSH';
-
-  @override
-  String get hubPluginNotLoaded => 'Couldn’t load';
-
-  @override
-  String get hubPluginComponents => 'Components';
-
-  @override
-  String get hubPluginSafeModeRemove => 'Can’t uninstall in Safe mode';
-
-  @override
-  String get hubPluginRemoveCommand => 'Get uninstall command';
-
-  @override
-  String get hubPluginRemoveComputer => 'Uninstall on computer';
-
-  @override
-  String get hubPluginUninstall => 'Uninstall';
-
-  @override
   String hubSessionTurns(int count) {
     String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count turns', one: '1 turn');
     return '$_temp0';
@@ -9217,50 +9102,6 @@ class L10nEn extends L10n {
 
   @override
   String get hubSettingsApiKey => 'DeepSeek API key';
-
-  @override
-  String hubPluginBrowserFailed(String address) {
-    return 'Couldn’t open the browser. Visit $address manually';
-  }
-
-  @override
-  String hubPluginYearMonth(int year, String month) {
-    String _temp0 = intl.Intl.selectLogic(month, {
-      '1': 'Jan',
-      '2': 'Feb',
-      '3': 'Mar',
-      '4': 'Apr',
-      '5': 'May',
-      '6': 'Jun',
-      '7': 'Jul',
-      '8': 'Aug',
-      '9': 'Sep',
-      '10': 'Oct',
-      '11': 'Nov',
-      '12': 'Dec',
-      'other': '$month',
-    });
-    return '$_temp0 $year';
-  }
-
-  @override
-  String hubPluginUpdateTo(String version) {
-    return 'Update to $version';
-  }
-
-  @override
-  String hubPluginInstallOn(String host) {
-    return 'Install on $host';
-  }
-
-  @override
-  String hubPluginComponentCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count components', one: '1 component');
-    return '$_temp0';
-  }
-
-  @override
-  String get hubPluginComponentSeparator => ', ';
 
   @override
   String get hubGroupAi => 'AI';
@@ -9371,12 +9212,6 @@ class L10nEn extends L10n {
   String get hubValueNoHosts => 'None';
 
   @override
-  String hubValuePlugins(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count plugins', one: '1 plugin');
-    return '$_temp0';
-  }
-
-  @override
   String get hubEngineStartup => 'Startup';
 
   @override
@@ -9429,14 +9264,6 @@ class L10nEn extends L10n {
   @override
   String get iosNotificationSettingsFailed =>
       'Couldn’t open system settings. Turn on notifications in Settings → DSH Go → Notifications.';
-
-  @override
-  String get iosPluginsPermissionLocalThirdParty =>
-      'Plugins run with DSH’s permissions: they can read and write files, run commands, and read API keys. They aren’t restricted by the workspace sandbox. Provided by a third party and not reviewed by DSH.';
-
-  @override
-  String get iosPluginsPermissionLocalTrusted =>
-      'Plugins run with DSH’s permissions: they can read and write files, run commands, and read API keys. They aren’t restricted by the workspace sandbox. Only install plugins you trust.';
 
   @override
   String get iosIconChanged => 'Icon changed';
@@ -13467,147 +13294,7 @@ class L10nEn extends L10n {
   String get pluginConfigUnsaved => 'Unsaved';
 
   @override
-  String get pluginConfigSecretSet => 'Set';
-
-  @override
-  String get pluginConfigAdvanced => 'Advanced';
-
-  @override
-  String get pluginConfigSearchHint => 'Search settings';
-
-  @override
-  String get pluginConfigNoMatch => 'No matching settings';
-
-  @override
-  String get pluginConfigOpenWeb => 'Set up on the web';
-
-  @override
-  String get pluginConfigOpenWebHint => 'The plugin\'s own page';
-
-  @override
-  String get pluginConfigResetAll => 'Reset all to defaults';
-
-  @override
-  String get pluginConfigResetAllTitle => 'Reset all to defaults?';
-
-  @override
-  String get pluginConfigReset => 'Reset';
-
-  @override
-  String pluginConfigChanges(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count changes', one: '1 change');
-    return '$_temp0';
-  }
-
-  @override
-  String get pluginConfigAppliesOnReload => 'Saving reloads the plugin';
-
-  @override
-  String get pluginConfigSaving => 'Saving…';
-
-  @override
-  String get pluginConfigReloading => 'Reloading…';
-
-  @override
-  String get pluginConfigApplied => 'Applied';
-
-  @override
-  String get pluginConfigFailed => 'Didn\'t take effect';
-
-  @override
-  String get pluginConfigRestored => 'Previous settings restored';
-
-  @override
-  String get pluginConfigStopped => 'Didn\'t take effect, and the previous settings couldn\'t be restored';
-
-  @override
-  String get pluginConfigRestore => 'Restore';
-
-  @override
-  String get pluginConfigDiscard => 'Discard';
-
-  @override
-  String get pluginConfigNotStarted => 'The plugin didn\'t start';
-
-  @override
-  String get pluginConfigNone => 'Nothing to set';
-
-  @override
-  String get pluginConfigInvalidOperation => 'This change can\'t be applied';
-
-  @override
-  String get pluginConfigGone => 'The plugin is no longer running. Refreshed.';
-
-  @override
-  String get pluginConfigUnknown => 'Connection lost. Settings reloaded.';
-
-  @override
-  String get pluginConfigUnsupported => 'Can\'t be set here yet';
-
-  @override
   String get pluginConfigSecretUnbound => 'Needs plugin support';
-
-  @override
-  String get pluginConfigListFailed => 'Couldn\'t read the plugin list. Try again later.';
-
-  @override
-  String get pluginConfigListUpdating => 'The plugin list is updating. Try again in a moment.';
-
-  @override
-  String get pluginConfigFixed => 'Set by configuration file';
-
-  @override
-  String get pluginConfigFixedNote => 'Set by a configuration file. View only here.';
-
-  @override
-  String get pluginConfigReadOnly => 'Read-only';
-
-  @override
-  String pluginConfigEntryTitle(String bundle, String entry) {
-    return '$bundle · $entry';
-  }
-
-  @override
-  String get pluginConfigNameSpeechToText => 'Speech recognition';
-
-  @override
-  String get pluginConfigNameSenseVoice => 'SenseVoice recognition';
-
-  @override
-  String get pluginConfigNameSpeechApi => 'Transcription API';
-
-  @override
-  String get pluginConfigNameTranslator => 'Translation service';
-
-  @override
-  String get pluginConfigNameSessionIndex => 'Session index';
-
-  @override
-  String get pluginConfigNameSessionSearchTool => 'Session search tool';
-
-  @override
-  String get pluginConfigNameTerminalService => 'Terminal service';
-
-  @override
-  String get pluginConfigNameTerminalBash => 'Bash terminal';
-
-  @override
-  String get pluginConfigNameTerminalPwsh => 'PowerShell terminal';
-
-  @override
-  String get pluginConfigNameTerminalTools => 'Terminal tools';
-
-  @override
-  String get pluginConfigNameWorktree => 'Worktree manager';
-
-  @override
-  String get pluginConfigNameWorktreeTools => 'Worktree tools';
-
-  @override
-  String get pluginConfigNameRalphWorkflow => 'Workflow engine';
-
-  @override
-  String get pluginConfigNameRalphTools => 'Ralph tools';
 
   @override
   String get plugInputRequired => 'Complete this field';
@@ -13728,36 +13415,6 @@ class L10nEn extends L10n {
   String get seamsDetailPage => 'Plugin detail extension';
 
   @override
-  String get pluginsOperationHostChanged => 'Host changed — nothing was done';
-
-  @override
-  String get pluginsReloadLocal => 'Restart engine to reload';
-
-  @override
-  String get pluginsReloadInterrupts => 'Interrupts running tasks';
-
-  @override
-  String pluginsReloadConfirm(String name) {
-    return 'Reload “$name”?';
-  }
-
-  @override
-  String get pluginsReloadExplanation =>
-      'This restarts the local engine and reloads plugins. Running tasks will be interrupted.';
-
-  @override
-  String get pluginsReloadProceed => 'Restart and reload';
-
-  @override
-  String get pluginsReloadRequested => 'Engine restart requested';
-
-  @override
-  String get pluginsReloadChanged => 'The host or plugin state changed. Try again.';
-
-  @override
-  String get pluginsReloadFailed => 'Couldn’t restart the engine. Check its logs.';
-
-  @override
   String get pluginsFile => 'File';
 
   @override
@@ -13842,17 +13499,6 @@ class L10nEn extends L10n {
   String get pluginsNamespaceVoiceInput => 'Voice input';
 
   @override
-  String get pluginsOfficialPlugin => 'Official plugin';
-
-  @override
-  String get pluginsLocalUnshareable => 'Installed locally, can’t share';
-
-  @override
-  String pluginsIncludesPresets(String names) {
-    return 'Includes presets “$names”';
-  }
-
-  @override
   String get pluginsSecretsUnshareable => 'Contains secrets, can’t share';
 
   @override
@@ -13871,31 +13517,6 @@ class L10nEn extends L10n {
   String get pluginsOffValue => 'Off';
 
   @override
-  String get pluginsOfficialUnavailable => 'This host doesn’t have this official plugin';
-
-  @override
-  String get pluginsEnabled => 'Enabled';
-
-  @override
-  String get pluginsVersionMismatch => 'Version differs from the shared version';
-
-  @override
-  String get pluginsCurrentVersion => 'Current version';
-
-  @override
-  String get pluginsNewVersion => 'New version';
-
-  @override
-  String pluginsAddedWith(String title) {
-    return 'Added with “$title”';
-  }
-
-  @override
-  String pluginsApplyAfterInstall(String detail) {
-    return 'Apply after installing plugins · $detail';
-  }
-
-  @override
   String get pluginsSettingsReadFailed => 'Couldn’t read this host’s settings';
 
   @override
@@ -13912,18 +13533,6 @@ class L10nEn extends L10n {
 
   @override
   String get pluginsReplaceContent => 'Replace existing content';
-
-  @override
-  String get pluginsSafeModeInstallBlocked => 'Can’t install plugins in Safe mode';
-
-  @override
-  String get pluginsHostInstallBlocked => 'Can’t install plugins on this host from here';
-
-  @override
-  String get pluginsInstallFailed => 'Installation failed';
-
-  @override
-  String get pluginsAfterRestart => 'Takes effect after restart';
 
   @override
   String get pluginsSettingsChanged => 'Settings just changed';
@@ -13967,31 +13576,6 @@ class L10nEn extends L10n {
   String get pluginsGistReadFailed => 'Couldn’t read Gist';
 
   @override
-  String get pluginsListReadFailed => 'Couldn’t read the plugin list';
-
-  @override
-  String get pluginsReadingPlugins => 'Reading plugins…';
-
-  @override
-  String get pluginsDshOfficial => 'DSH official';
-
-  @override
-  String get pluginsOfficialToggleOnly =>
-      'Official components can only be turned on or off, and apply to all chats on this host';
-
-  @override
-  String get pluginsOfficial => 'Official';
-
-  @override
-  String get pluginsNoThirdParty => 'No third-party plugins yet';
-
-  @override
-  String get pluginsPluginsDescription => 'Add tools, memory, and models to DSH';
-
-  @override
-  String get pluginsBrowseMarket => 'Browse plugins';
-
-  @override
   String get pluginsLoading => 'Loading';
 
   @override
@@ -14006,365 +13590,22 @@ class L10nEn extends L10n {
   }
 
   @override
-  String get pluginsSearch => 'Search plugins';
-
-  @override
-  String get pluginsMarketLoading => 'Loading plugin directory…';
-
-  @override
-  String get pluginsMarketLoadFailed => 'Couldn’t open the plugin directory';
-
-  @override
-  String get pluginsMarketInvalid => 'Invalid directory format';
-
-  @override
   String get pluginsAll => 'All';
-
-  @override
-  String pluginsMarketCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count plugins', one: '1 plugin');
-    return '$_temp0 · from dshfind';
-  }
-
-  @override
-  String get pluginsHideWeb => 'Hide Web plugins';
-
-  @override
-  String pluginsShowWebCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Show $count Web plugins',
-      one: 'Show 1 Web plugin',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get pluginsNoCategoryPlugins => 'No plugins in this category';
-
-  @override
-  String pluginsNoSearchResults(String query) {
-    return 'No results for “$query”';
-  }
-
-  @override
-  String pluginsFailureDetails(String title) {
-    return '$title · Tap to view';
-  }
-
-  @override
-  String get pluginsFeatured => 'Recommended';
-
-  @override
-  String pluginsInstalledRemoteRestart(String name, String host) {
-    return 'Installed “$name”. Restart DSH on $host to apply.';
-  }
-
-  @override
-  String pluginsInstalledNamed(String name) {
-    return 'Installed “$name”';
-  }
-
-  @override
-  String get pluginsInstallCancelled => 'Installation cancelled';
-
-  @override
-  String pluginsInstallFailureNamed(String name, String reason) {
-    return '“$name” $reason';
-  }
-
-  @override
-  String get pluginsRestartRequired => 'Engine restart needed';
-
-  @override
-  String pluginsRestartExplanation(String name) {
-    return 'Restart the engine to apply “$name”. Replies in progress will be interrupted.';
-  }
 
   @override
   String get pluginsRestartEngine => 'Restart engine';
 
   @override
-  String get pluginsAllowBuildScripts => 'Allow build scripts?';
-
-  @override
-  String get pluginsBuildScriptPackages => 'These packages run scripts during installation:';
-
-  @override
-  String pluginsBuildScriptWarning(String host) {
-    return 'Scripts run with DSH’s permissions on $host and can read and write files and access the internet. Only allow this if you trust the plugin.';
-  }
-
-  @override
-  String get pluginsThisDevice => 'This device';
-
-  @override
-  String get pluginsAllowRetry => 'Allow and retry';
-
-  @override
-  String pluginsUpdateNamed(String name) {
-    return 'Update “$name”?';
-  }
-
-  @override
-  String pluginsUninstallNamed(String title) {
-    return 'Uninstall “$title”?';
-  }
-
-  @override
-  String pluginsUninstallExplanation(String host) {
-    return 'The plugin will be removed from $host. Its data and settings will stay.';
-  }
-
-  @override
-  String get pluginsThisHost => 'This host';
-
-  @override
-  String get pluginsUninstall => 'Uninstall';
-
-  @override
-  String pluginsUninstalledNamed(String title) {
-    return 'Uninstalled “$title”';
-  }
-
-  @override
-  String get pluginsRestartNow => 'Restart now';
-
-  @override
-  String get pluginsUninstallFailed => 'Couldn’t uninstall';
-
-  @override
   String get pluginsThatComputer => 'That computer';
-
-  @override
-  String get pluginsCommandAfterInstall => 'After installing, restart DSH on that computer, then refresh here';
 
   @override
   String get pluginsError => 'Error';
 
   @override
-  String get pluginsInventoryTitle => 'Plugin inventory';
-
-  @override
-  String get pluginsGlobalPlugins => 'Global plugins';
-
-  @override
-  String get pluginsAgentPresets => 'Agent presets';
-
-  @override
-  String get pluginsInventoryReadFailed => 'Couldn’t read the plugin inventory';
-
-  @override
-  String pluginsComponentCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count components', one: '1 component');
-    return '$_temp0';
-  }
-
-  @override
-  String pluginsEnabledCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count enabled', one: '1 enabled');
-    return '$_temp0';
-  }
-
-  @override
-  String pluginsErrorCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count errors', one: '1 error');
-    return '$_temp0';
-  }
-
-  @override
-  String get pluginsNoPlugins => 'No plugins';
-
-  @override
-  String get pluginsNoMatchingPlugins => 'No matching plugins';
-
-  @override
-  String get pluginsPresetLoadFailed => 'Couldn’t load this preset';
-
-  @override
-  String get pluginsPresetNoPlugins => 'This preset has no plugins';
-
-  @override
-  String get pluginsStandard => 'Standard';
-
-  @override
-  String get pluginsMinimal => 'Minimal';
-
-  @override
-  String pluginsDefaultPresetName(String name) {
-    return '$name (default)';
-  }
-
-  @override
-  String get pluginsSystemComponents => 'System components';
-
-  @override
-  String pluginsCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count items', one: '1 item');
-    return '$_temp0';
-  }
-
-  @override
   String get pluginsSource => 'Source';
 
   @override
-  String get pluginsDisableCondition => 'Disabled when';
-
-  @override
-  String get pluginsProvidedByPreset => 'Provided by preset';
-
-  @override
-  String get pluginsDetailsTitle => 'Plugin details';
-
-  @override
-  String pluginsPackageInfoError(String error) {
-    return 'Invalid package info: $error';
-  }
-
-  @override
-  String get pluginsInstalling => 'Installing';
-
-  @override
-  String get pluginsGet => 'Get';
-
-  @override
-  String get pluginsLoadingCannotCancel => 'Loading the plugin. This step can’t be cancelled.';
-
-  @override
-  String get pluginsInstallDuration => 'Takes a minute or two. You can leave this page.';
-
-  @override
-  String get pluginsViewInstallLogs => 'View install logs';
-
-  @override
-  String get pluginsViewDetails => 'View details';
-
-  @override
-  String get pluginsCopyCommand => 'Copy command';
-
-  @override
-  String get pluginsCommandCopied => 'Command copied';
-
-  @override
-  String get pluginsMissingFiles => 'Plugin files are missing. Reinstall to fix.';
-
-  @override
-  String get pluginsNotDshPlugin => 'Not a DSH plugin, can’t load';
-
-  @override
-  String get pluginsIncompatible => 'Incompatible with this DSH version, not loaded';
-
-  @override
-  String pluginsRequiresDshVersion(String requiredVersion, String currentVersion) {
-    return 'Requires DSH $requiredVersion, currently $currentVersion, not loaded';
-  }
-
-  @override
-  String pluginsLoadFailure(String reason) {
-    return 'Couldn’t load: $reason';
-  }
-
-  @override
-  String get pluginsUnknownReason => 'Unknown reason';
-
-  @override
-  String pluginsBundleProblem(String reason) {
-    return 'Problem: $reason';
-  }
-
-  @override
-  String pluginsRefreshFailure(String reason) {
-    return 'Couldn’t refresh: $reason';
-  }
-
-  @override
-  String get pluginsTitle => 'Plugins';
-
-  @override
-  String get pluginsRefresh => 'Refresh';
-
-  @override
-  String get pluginsMarketTitle => 'Plugin market';
-
-  @override
-  String get pluginsConnectToManage => 'Connect to the engine to manage plugins';
-
-  @override
-  String get pluginsSafeModeOperationsBlocked => 'Can’t install or uninstall plugins in Safe mode';
-
-  @override
-  String pluginsRelayToggleOnly(String host) {
-    return '$host · Relay only supports turning plugins on or off. Install on that computer.';
-  }
-
-  @override
-  String get pluginsInstallThisPhone => 'Install to: This phone';
-
-  @override
-  String pluginsInstallHost(String host) {
-    return 'Install to: $host';
-  }
-
-  @override
-  String get pluginsOfflineDescription =>
-      'Installed plugins appear when the engine is running. You can browse the market now.';
-
-  @override
-  String get pluginsIconChanged => 'Icon selected. Return to your home screen to see the change.';
-
-  @override
-  String get pluginsIconChangeFailed => 'Couldn’t change the icon. Try again later.';
-
-  @override
   String get pluginsTheme => 'Theme';
-
-  @override
-  String get pluginsAppearance => 'Appearance';
-
-  @override
-  String get pluginsColors => 'Colors';
-
-  @override
-  String get pluginsFeatureIcons => 'Feature icons';
-
-  @override
-  String get pluginsAppIcon => 'App icon';
-
-  @override
-  String get pluginsCustomColor => 'Custom';
-
-  @override
-  String pluginsColorLabel(String label) {
-    return 'Color: $label';
-  }
-
-  @override
-  String get pluginsCoral => 'Coral';
-
-  @override
-  String get pluginsRouge => 'Rouge';
-
-  @override
-  String get pluginsOchre => 'Ochre';
-
-  @override
-  String get pluginsMoss => 'Moss';
-
-  @override
-  String get pluginsLake => 'Lake';
-
-  @override
-  String get pluginsIndigo => 'Indigo';
-
-  @override
-  String get pluginsHue => 'Hue';
-
-  @override
-  String get pluginsWallpaper => 'Wallpaper';
-
-  @override
-  String get pluginsFollowWallpaper => 'Use wallpaper colors';
 
   @override
   String get pluginsAllowHighPower => 'Allow high background power usage';
@@ -14621,34 +13862,13 @@ class L10nEn extends L10n {
   String get pluginsShareLink => 'Share link';
 
   @override
-  String get pluginsInstallPlugin => 'Install plugin';
-
-  @override
   String get pluginsImportProfile => 'Import settings';
 
   @override
   String get pluginsImportTo => 'Import to';
 
   @override
-  String get pluginsInstallTo => 'Install to';
-
-  @override
-  String get pluginsVerification => 'Verification';
-
-  @override
   String get pluginsSize => 'Size';
-
-  @override
-  String get pluginsVerified => 'Verified';
-
-  @override
-  String get pluginsVerificationMismatch => 'Verification mismatch';
-
-  @override
-  String get pluginsCannotVerify => 'Can’t verify';
-
-  @override
-  String get pluginsVerifying => 'Verifying';
 
   @override
   String get pluginsPresets => 'Presets';
@@ -14690,11 +13910,6 @@ class L10nEn extends L10n {
   String get pluginsHostPluginsReadFailed => 'Couldn’t read this host’s plugins';
 
   @override
-  String pluginsUpdateTo(String version) {
-    return 'Update to $version';
-  }
-
-  @override
   String pluginsImportCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -14709,9 +13924,6 @@ class L10nEn extends L10n {
   String get pluginsImporting => 'Importing';
 
   @override
-  String get pluginsInstallingActive => 'Installing';
-
-  @override
   String pluginsImportFailedCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -14721,9 +13933,6 @@ class L10nEn extends L10n {
     );
     return '$_temp0';
   }
-
-  @override
-  String get pluginsCouldNotInstall => 'Couldn’t install';
 
   @override
   String get pluginsEngineRestartToApply => 'Restart the engine to apply';
@@ -14741,18 +13950,6 @@ class L10nEn extends L10n {
       other: 'Imported $count items',
       one: 'Imported 1 item',
     );
-    return '$_temp0';
-  }
-
-  @override
-  String get pluginsLocalPluginUnshareable => 'This plugin was installed locally and can’t be shared';
-
-  @override
-  String get pluginsSharePlugin => 'Share plugin';
-
-  @override
-  String pluginsPluginCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count plugins', one: '1 plugin');
     return '$_temp0';
   }
 
@@ -14811,9 +14008,6 @@ class L10nEn extends L10n {
   String get pluginsShareOpenFailed => 'Couldn’t open this share code';
 
   @override
-  String get pluginsPluginShareTitle => 'DSH Go plugin';
-
-  @override
   String get pluginsShareSheetOpenFailed => 'Couldn’t open sharing';
 
   @override
@@ -14847,69 +14041,6 @@ class L10nEn extends L10n {
   String get pluginsShareQrCode => 'Share code QR code';
 
   @override
-  String pluginsUpdateCurrentWarning(String to) {
-    return 'The current version will be uninstalled, then $to installed. If installation fails, the plugin will need to be reinstalled.';
-  }
-
-  @override
-  String pluginsUpdateVersionWarning(String from, String to) {
-    return '$from will be uninstalled, then $to installed. If installation fails, the plugin will need to be reinstalled.';
-  }
-
-  @override
-  String pluginsUninstalledRestartLocal(String title) {
-    return 'Uninstalled “$title”. Restart the engine to finish removing it.';
-  }
-
-  @override
-  String pluginsUninstalledRestartRemote(String title, String host) {
-    return 'Uninstalled “$title”. Restart DSH on $host to finish removing it.';
-  }
-
-  @override
-  String get pluginsEnableFailed => 'Couldn’t enable';
-
-  @override
-  String get pluginsDisableFailed => 'Couldn’t disable';
-
-  @override
-  String get pluginsEnabledRestartLocal => 'Enabled. Restart the engine to apply.';
-
-  @override
-  String pluginsEnabledRestartRemote(String host) {
-    return 'Enabled. Restart DSH on $host to apply.';
-  }
-
-  @override
-  String get pluginsDisabledRestartLocal => 'Disabled. Restart the engine to apply.';
-
-  @override
-  String pluginsDisabledRestartRemote(String host) {
-    return 'Disabled. Restart DSH on $host to apply.';
-  }
-
-  @override
-  String pluginsRelayCommandInstruction(String host) {
-    return 'DSH Remote only supports turning plugins on or off. Run this in a terminal on $host:';
-  }
-
-  @override
-  String get pluginsPermissionLocalThirdParty =>
-      'Plugins run with DSH’s permissions: they can read and write files, run commands, and read API keys and phone storage you’ve granted access to. They aren’t restricted by the workspace sandbox. Provided by a third party and not reviewed by DSH.';
-
-  @override
-  String get pluginsPermissionLocalTrusted =>
-      'Plugins run with DSH’s permissions: they can read and write files, run commands, and read API keys and phone storage you’ve granted access to. They aren’t restricted by the workspace sandbox. Only install plugins you trust.';
-
-  @override
-  String get pluginsPermissionRemoteThirdParty =>
-      'Plugins run with DSH’s permissions: they can read and write files, run commands, and read API keys. They aren’t restricted by the workspace sandbox. Provided by a third party and not reviewed by DSH.';
-
-  @override
-  String get pluginsPermissionRemoteTrusted =>
-      'Plugins run with DSH’s permissions: they can read and write files, run commands, and read API keys. They aren’t restricted by the workspace sandbox. Only install plugins you trust.';
-
-  @override
   String pluginsSelectedQrCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -14935,49 +14066,10 @@ class L10nEn extends L10n {
   String get pluginsListSeparator => ', ';
 
   @override
-  String pluginsActionFailure(String action, String reason) {
-    return '$action: $reason';
-  }
-
-  @override
-  String pluginsInventorySemantics(String title, String status) {
-    return '$title, $status';
-  }
-
-  @override
   String pluginsSettingsChanges(String shown, int count) {
     String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count items', one: '1 item');
     return '$shown and more · $_temp0';
   }
-
-  @override
-  String get pluginsLoadStatus => 'Load status';
-
-  @override
-  String get pluginsLoadPartial => 'Partly active';
-
-  @override
-  String get pluginsLoadFailed => 'Load failed';
-
-  @override
-  String get pluginsLoadNotReady => 'Not ready';
-
-  @override
-  String get pluginsLoadMetadata => 'Metadata diagnostics';
-
-  @override
-  String pluginsLoadRunningCount(int running, int total) {
-    return '$running of $total components running';
-  }
-
-  @override
-  String get pluginsLoadUnreported => 'Not reported';
-
-  @override
-  String get pluginsLoadNoRuntimeDetail => 'The host did not return the runtime error details. Check its engine logs.';
-
-  @override
-  String get pluginsLoadRemoteLogs => 'Check the engine logs on this host.';
 
   @override
   String get plugslotsSurfaceComposerTools => 'Plus panel tools';
@@ -15067,11 +14159,6 @@ class L10nEn extends L10n {
 
   @override
   String get plugslotsNeedsChat => 'Open a chat first';
-
-  @override
-  String plugslotsFromPlugin(String plugin) {
-    return 'From $plugin';
-  }
 
   @override
   String get plugslotsPanelOffline => 'Can\'t reach the plugin';
@@ -15258,9 +14345,6 @@ class L10nEn extends L10n {
 
   @override
   String get plugslotsPlaceSettings => 'Settings';
-
-  @override
-  String get plugslotsPlacePlugins => 'Plugins page';
 
   @override
   String get plugslotsPlaceNewChat => 'New conversation';
@@ -17533,12 +16617,6 @@ class L10nEn extends L10n {
   String get searchKwGeneral => 'general,web settings';
 
   @override
-  String get searchKwPluginInventory => 'inventory,installed plugins,bundles';
-
-  @override
-  String get searchKwPlugins => 'extensions,market,install,marketplace';
-
-  @override
   String get searchKwAllFeatures => 'features,catalog,everything';
 
   @override
@@ -17769,9 +16847,6 @@ class L10nEn extends L10n {
 
   @override
   String get searchKwWebBusySend => 'send,queue,while AI works';
-
-  @override
-  String get searchKwPluginsMarket => 'plugin market,install plugins,marketplace';
 
   @override
   String get searchKwUsageStats => 'statistics,stats,usage data,analytics,telemetry,anonymous,privacy,data';
@@ -19195,9 +18270,6 @@ class L10nEn extends L10n {
   String get stateSignInIncompleteRetry => 'Sign-in didn’t finish. Try again.';
 
   @override
-  String get statePluginLabel => 'Plugin';
-
-  @override
   String get stateConfigLabel => 'Configuration';
 
   @override
@@ -19791,160 +18863,7 @@ class L10nEn extends L10n {
   String get stateRegistryMirror => 'npmmirror mirror';
 
   @override
-  String get statePluginIncompatible => 'This plugin doesn’t support the current DSH version.';
-
-  @override
-  String get statePluginInstallCancelled => 'Installation cancelled';
-
-  @override
-  String get statePluginNoChanges => 'Nothing was changed';
-
-  @override
-  String get statePluginIncompatibleTitle => 'Incompatible with this DSH';
-
-  @override
-  String get statePluginNetworkFailed => 'Can’t connect';
-
-  @override
-  String get statePluginSourceUnreachable => 'Can’t reach the plugin’s source website';
-
-  @override
-  String get statePluginDownloadTimeout => 'Download timed out';
-
-  @override
-  String get statePluginRegistryUnavailable => 'Registry isn’t responding';
-
-  @override
-  String get statePluginPnpmMissing => 'pnpm missing';
-
-  @override
-  String get statePluginPhonePnpmMissing => 'pnpm is missing on this phone';
-
-  @override
-  String get statePluginHostPnpmMissing => 'pnpm is missing on this host';
-
-  @override
-  String get statePluginNotFound => 'Plugin not found';
-
-  @override
-  String get statePluginPackageMissing => 'Package not found in the registry';
-
-  @override
-  String get statePluginTooNew => 'Version is too new';
-
-  @override
-  String get statePluginWaitForRelease => 'Available to install 24 hours after release';
-
-  @override
-  String get statePluginVersionMissing => 'Version not found';
-
-  @override
-  String get statePluginRegistryVersionMissing => 'This version isn’t in the registry yet';
-
-  @override
   String get stateDeviceStorageFull => 'Not enough device storage';
-
-  @override
-  String get statePluginNoWritePermission => 'No write permission';
-
-  @override
-  String get statePluginConfigReadOnly => 'Engine configuration directory isn’t writable';
-
-  @override
-  String get statePluginIntegrityFailed => 'File verification failed';
-
-  @override
-  String get statePluginDownloadIncomplete => 'Downloaded file is incomplete';
-
-  @override
-  String get statePluginBuildScripts => 'Build scripts required';
-
-  @override
-  String get statePluginBuildApproval => 'Build scripts need approval';
-
-  @override
-  String get statePluginAlreadyInstalled => 'Already installed';
-
-  @override
-  String get statePluginUninstallFirst => 'Uninstall before switching versions';
-
-  @override
-  String get statePluginInvalid => 'Not a DSH plugin';
-
-  @override
-  String get statePluginNoEntry => 'This package has no plugin entry. Installation rolled back.';
-
-  @override
-  String get statePluginInUse => 'Plugin is in use';
-
-  @override
-  String get statePluginHasDependents => 'Other plugins depend on it';
-
-  @override
-  String get statePluginManagedElsewhere => 'Can’t change this here';
-
-  @override
-  String get statePluginEngineManaged => 'This plugin is managed by the engine';
-
-  @override
-  String get statePluginAuthorizationExpired => 'Authorization expired';
-
-  @override
-  String get statePluginBuildChanged => 'Build scripts changed. Reinstall the plugin.';
-
-  @override
-  String get statePluginInvalidAddress => 'Invalid installation URL';
-
-  @override
-  String get statePluginCatalogInvalidAddress => 'The catalog’s installation URL is invalid';
-
-  @override
-  String get statePluginOperationIncomplete => 'Operation didn’t finish';
-
-  @override
-  String get statePluginRemoteForbidden => 'This host doesn’t allow remote installation';
-
-  @override
-  String get statePluginRelayToggleOnly => 'Relay connections can only turn plugins on or off';
-
-  @override
-  String get statePluginManagementUnsupported => 'Host doesn’t support plugin management';
-
-  @override
-  String get statePluginEngineUnsupported => 'This engine doesn’t support plugin management';
-
-  @override
-  String get statePluginResultMissing => 'Couldn’t get the installation result';
-
-  @override
-  String get statePluginResultPending => 'Installation result pending';
-
-  @override
-  String get statePluginDisconnected => 'Disconnected';
-
-  @override
-  String get statePluginQueued => 'Queued';
-
-  @override
-  String get statePluginRemoving => 'Uninstalling old version';
-
-  @override
-  String get statePluginInstalling => 'Downloading and installing';
-
-  @override
-  String get statePluginApplying => 'Enabling';
-
-  @override
-  String get statePluginCancelling => 'Cancelling';
-
-  @override
-  String get statePluginInstalledRestart => 'Installed. Restart to apply.';
-
-  @override
-  String get statePluginInstallFailed => 'Couldn’t install';
-
-  @override
-  String get statePluginConnectFirst => 'Connect to install plugins';
 
   @override
   String get stateProviderOpenAi => 'OpenAI compatible';
@@ -20105,12 +19024,6 @@ class L10nEn extends L10n {
 
   @override
   String get stateDownloadsPrefix => 'Downloads/';
-
-  @override
-  String stateSharePluginCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count plugins', one: '1 plugin');
-    return '$_temp0';
-  }
 
   @override
   String stateShareSkillCount(int count) {
@@ -20299,34 +19212,6 @@ class L10nEn extends L10n {
   }
 
   @override
-  String statePluginRuntimeIncompatible(String version) {
-    return 'This plugin doesn’t support the current DSH version ($version).';
-  }
-
-  @override
-  String statePluginRequiredVersion(String wanted, String current) {
-    return 'This plugin requires DSH $wanted. Current version: $current.';
-  }
-
-  @override
-  String get statePluginRegistryUnreachable => 'Can’t reach the registry';
-
-  @override
-  String statePluginNamedRegistryUnreachable(String registry) {
-    return 'Can’t reach the registry ($registry)';
-  }
-
-  @override
-  String statePluginBuildsPending(String builds) {
-    return 'Needs approval: $builds';
-  }
-
-  @override
-  String statePluginRegistryProgress(String registry, int attempt, int attempts) {
-    return 'Downloading from $registry (registry $attempt/$attempts)';
-  }
-
-  @override
   String stateProviderServiceUnavailable(int status) {
     return 'Service unavailable ($status)';
   }
@@ -20396,11 +19281,6 @@ class L10nEn extends L10n {
 
   @override
   String get stateUiWeb => 'Web';
-
-  @override
-  String statePluginRegistryProgressUnknown(String registry, int attempt) {
-    return 'Downloading from $registry (registry $attempt/null)';
-  }
 
   @override
   String get stateProviderTokenCountInvalid => 'Enter a number, like 128K';
@@ -26153,11 +25033,6 @@ class L10nEn extends L10n {
 
   @override
   String get viewShareStars => 'Stars';
-
-  @override
-  String viewSharePluginTitle(String value) {
-    return 'DSH plugin “$value”';
-  }
 
   @override
   String viewShareInstallCommand(String value) {
