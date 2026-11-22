@@ -34,7 +34,6 @@ class DshWebTarget {
   final DshWebSettings? settings;
 
   /// Names of a card on the Plugins page: its titles (zh and en), e.g. a
-  /// built-in config page ("Agent 循环") or an experimental bundle ("语音输入"),
   /// and a bundle's package name (the page marks its card with it).
   final List<String> pluginItem;
 
@@ -86,7 +85,6 @@ class DshWebTarget {
   DshWebTarget inSession(String? sessionId) => _copy(sessionId: sessionId, pluginItem: pluginItem);
 
   /// A copy whose [pluginItem] also names the bundle behind each name that is
-  /// one of its rows (an entry id, `speech-to-text-sensevoice`): its titles
   /// and its package name, which is what the Plugins page shows and marks a
   /// card with. An entry id alone matches no card there.
   DshWebTarget withPluginNames(Iterable<PluginBundle>? bundles) {

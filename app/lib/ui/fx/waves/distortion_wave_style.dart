@@ -103,7 +103,6 @@ class DistortionWavePalette {
   /// 波前后方的色边。
   final Color behind;
 
-  /// 原作的彩色(VoiceGlow 那套):粉色前边,蓝色后边。
   static const colorful = DistortionWavePalette(
     colors: [
       Color(0xFFFFC915),

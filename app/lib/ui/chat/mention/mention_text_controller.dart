@@ -19,7 +19,6 @@ import 'mention_syntax.dart';
 /// - 整段换进来的文字(恢复草稿、粘贴)里的引用自动成签,一个字一个字打出来
 ///   的 `@xxx` 仍是普通文字,要从面板里选。
 ///
-/// [provisional] 是语音识别还没定下来的那一段,画成次级文字色。
 class MentionTextController extends TextEditingController {
   MentionTextController({super.text}) {
     _tokens = parseDraftMentions(text);

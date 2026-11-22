@@ -5,7 +5,6 @@
 // Nothing here detects or opens anything on its own: the readings come from
 // the channels the rest of the app already uses (runtime bridge for storage,
 // battery and the makers' pages; notify, phone and pet overlay channels; the
-// voice plugin), so a grant seen here is the grant the feature sees.
 //
 // feature → items (this phone's maker decides the last few):
 //
@@ -13,7 +12,6 @@
 //   桌宠与悬浮窗     overlay
 //   手机操控        accessibility · notifications · popup (vivo, Xiaomi)
 //   后台持续运行     notifications · battery · vendorBackground · autostart (vivo, Xiaomi)
-//   语音输入        mic
 //   回复提醒        notifications (HarmonyOS, which has no other way to them)
 
 import 'dart:async';
@@ -35,7 +33,6 @@ import 'phone_state.dart';
 import 'settings_state.dart';
 import 'system_actions_state.dart';
 
-/// The offline voice model's download in MB as the voice settings show it,
 /// What a person picks on first run: things DSH Go does, not permission names.
 /// What [os] offers is [accessFeaturesFor]'s, never all of these.
 enum AccessFeature { files, pet, phone, background, alerts, systemActions }
@@ -500,9 +497,6 @@ class AccessSetupController extends Notifier<AccessSetup> {
     } catch (_) {}
   }
 
-  /// 「开启所选」: the walk starts, and the voice answer is written for the
-  /// voice feature to pick up (never yes where there is no model to fetch,
-  /// [accessVoiceDownloads]). [phoneMode], picked with 手机操控, goes to the
   /// phone's policies now, or as soon as they can be written
   /// ([PhoneController.chooseConfirmMode]).
   Future<void> choose(Set<AccessFeature> features, {PhoneConfirmMode? phoneMode}) async {

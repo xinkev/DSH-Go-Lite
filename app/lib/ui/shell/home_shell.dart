@@ -354,7 +354,6 @@ class _HomeShellState extends ConsumerState<HomeShell> with TickerProviderStateM
                         ],
                       ],
                       // Daily update check + install resume (draws nothing).
-                      // The voice model chosen during setup: download, resume, ready / failed notices (draws nothing).
                       // 公测版: once in a while, an invitation to star the project (draws nothing).
                       StarPromptHost(drawer: _drawer, quickPanel: _quickPanel),
                       // App links / shared files: routes them to their feature (draws nothing).

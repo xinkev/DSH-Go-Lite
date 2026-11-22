@@ -806,7 +806,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
   /// The share sheet, a launcher shortcut, the tile, a file opened with the
   /// app (ui/shell/system_entry_host.dart): 新对话, its composer filled — the
   /// shared text under what was there, attachments after its own — and
-  /// focused, or listening for 「语音输入」. Nothing is sent.
   void _takeCompose() {
     if (_takingCompose) return;
     _takingCompose = true;

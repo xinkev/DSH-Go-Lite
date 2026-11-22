@@ -9,7 +9,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../state/android_features.dart';
 import 'system_ime_evidence.dart';
 
-/// A second content boundary for the native voice observation. Unexpected
 /// transcript/audio fields never enter an export, even from an older plugin.
 Map<String, Object?> voiceDiagnosticsFacts(Object? raw) {
   if (raw is! Map) return const {};
@@ -216,7 +215,6 @@ class DiagnosticsChannel {
     } on MissingPluginException {
       // Older apps have no persistent evidence API.
     } on PlatformException {
-      // Native availability reports a failed write; the original error/voice chain stays intact.
     }
   }
 

@@ -21,7 +21,6 @@ enum OrbState {
   /// 几条环带按四分之一圈打乱再拧回原样:跑代码、算题、调试。
   solving(OrbMode.rubik),
 
-  /// 波形滚过一圈圈纬线:麦克风开着、听写、语音。
   listening(OrbMode.wave),
 
   /// 星座自己连线,线上跑着数据包:连服务、接数据源。

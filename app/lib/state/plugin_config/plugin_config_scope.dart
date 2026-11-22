@@ -114,7 +114,6 @@ class PluginConfigScope {
 
   /// A bundle the person chose and whose rows are theirs to configure:
   /// switched on, loaded without a problem, and either an official optional
-  /// bundle (shipped for the person to switch on: the voice-input kit, ...)
   /// or a package the profile installed itself (market, local path, an
   /// official on-demand one), which is what `source` marks.
   ///

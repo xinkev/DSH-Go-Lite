@@ -1,4 +1,3 @@
-// Notes the app writes into a message for the model alone: a voice call's
 // "this is a call" and where a cut-in landed, her persona for a host without
 // her preset. DSH has no field for words the model reads but the person never
 // said, so the notes ride in the message inside <dsh-note> and every place

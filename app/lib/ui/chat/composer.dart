@@ -29,7 +29,6 @@ const _lineHeight = 1.45;
 /// 圆角 28 = 键半径 20 + 8,圆键与胶囊两端同心;文字在 40 高里居中。
 /// 多行时键贴底,底边和侧边仍是 8。
 ///
-/// 听写时 ＋ 换成 ✕(取消)、发送键换成主色的停止键,中间文字处显示
 /// 识别结果,停止键左边是音量条。四颗键始终同一位置、同一尺寸。
 class Composer extends StatefulWidget {
   const Composer({
@@ -719,7 +718,6 @@ enum _KeyMode {
 
 }
 
-/// 40 圆键:↑ 发送 / ■ 停止(实心主色);🎙 麦克风是 ＋ 键那样的淡底圆。
 /// 禁用时是 onSurface 12% 的底。
 class _SendButton extends StatefulWidget {
   const _SendButton({

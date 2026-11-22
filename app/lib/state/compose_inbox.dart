@@ -38,7 +38,6 @@ class ComposeRequest {
   });
 
   /// 新对话 from the launcher or the tile: an empty composer, focused — or
-  /// listening, with [voice].
   const ComposeRequest.newChat({this.voice = false})
     : text = '',
       attachments = const [],

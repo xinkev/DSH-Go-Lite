@@ -182,7 +182,6 @@ final launchNoticeShownProvider = NotifierProvider<FlagController, bool>(() => F
 /// A conversation on a host.
 typedef ChatTarget = ({HostRef host, String sessionId});
 
-/// The conversation a voice call is having, while the call is up.
 final callChatProvider = NotifierProvider<CallChat, ChatTarget?>(CallChat.new);
 
 class CallChat extends Notifier<ChatTarget?> {

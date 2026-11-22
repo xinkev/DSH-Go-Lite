@@ -1,5 +1,4 @@
 // The ways in from outside the app other than links and
-// shares — the launcher icon's long-press shortcuts (新对话, 语音输入, the
 // three latest conversations), the Quick Settings tile (新对话), and a
 // screenshot taken explicitly from the floating pet. Native
 // side: android/.../shortcuts/ (EntryActivity, ShortcutsPlugin — MethodChannel
@@ -41,7 +40,6 @@ sealed class LauncherEntry {
   }
 }
 
-/// A new conversation; [voice] starts dictation in its composer.
 class NewChatEntry extends LauncherEntry {
   const NewChatEntry({this.voice = false, this.text = ''});
 

@@ -54,7 +54,6 @@ abstract final class AppIcons {
   // ── 输入框 ──────────────────────────────────────────────────
   static const send = DshGlyphs.arrowUp;
 
-  /// 输入框圆键里的停止(生成、语音):实心方块。
   static const stopGenerating = DshGlyphs.stopFill;
   static const voice = DshGlyphs.microphone;
 
@@ -375,23 +374,16 @@ abstract final class AppIcons {
   /// 伙伴小屋: she now and then asks you to rest with her (companion_page.dart).
   static const companionInvite = DshGlyphs.chatTeardropText;
 
-  /// 伙伴小屋: her words read aloud (companion_voice.dart). Not the microphone: that is the person's voice.
   static const companionVoice = DshGlyphs.musicNote;
 
-  /// 朗读: a reply read aloud (speech/read_aloud.dart); also the loudspeaker during a call.
 
-  /// 语音通话: start a call with the conversation (speech/call/).
 
-  /// 语音通话: hang up.
   static const hangUp = DshGlyphs.phoneDisconnect;
 
-  /// 语音通话: the call's captions in full (as 回放's 全文).
   static const callTranscript = DshGlyphs.article;
 
-  /// 语音通话: the microphone is muted.
   static const micMuted = DshGlyphs.microphoneSlash;
 
-  /// 语音通话: the voice plays at the ear (earpiece), not on the loudspeaker.
   static const earpiece = DshGlyphs.ear;
 
   /// 「问 AI」: a question about the app for the agent (ui/common/ask_ai.dart).

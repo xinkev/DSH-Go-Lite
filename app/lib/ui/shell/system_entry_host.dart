@@ -6,7 +6,6 @@
 //                      its replay; a lone character card → 酒馆; anything
 //                      else → 新对话 with the text and attachments in the
 //                      composer, not sent
-//   launcher shortcut  新对话 / 语音输入 → 新对话 (listening) · a recent
 //                      conversation → that conversation, on its host
 //   Quick Settings     新对话
 //   pet screenshot     新对话 with the image attached, focused and unsent
@@ -182,7 +181,6 @@ class _SystemEntryHostState extends ConsumerState<SystemEntryHost> {
     final revealed = await _showChat();
     if (!mounted) return;
     // Siri dictation needs the visible composer. Keeping an edit page open
-    // cancels this voice request; text and files may still wait in its draft.
     if (!revealed && request.voice && ref.read(operatingSystemProvider) == 'ios') return;
     ref.read(composeInboxProvider.notifier).push(request);
   }

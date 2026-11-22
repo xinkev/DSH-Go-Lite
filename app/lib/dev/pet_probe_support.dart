@@ -365,7 +365,6 @@ Uint8List silentWav(double seconds) {
   return bytes.buffer.asUint8List();
 }
 
-/// `speech/catalog` with SenseVoice ready, as the voice-input bundle serves it.
 Map<String, Object?> readySpeechCatalog({String phase = 'standby'}) => {
   'providers': [
     {
