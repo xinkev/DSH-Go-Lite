@@ -15842,12 +15842,6 @@ abstract class L10n {
   /// **'系统没有接受提醒，没有设置。'**
   String get harmonyReminderRefused;
 
-  /// No description provided for @harmonyPluginVoiceUnavailable.
-  ///
-  /// In zh, this message translates to:
-  /// **'这台设备不能听你开口'**
-  String get harmonyPluginVoiceUnavailable;
-
   /// No description provided for @hostDetailsConnectionType.
   ///
   /// In zh, this message translates to:
@@ -27182,30 +27176,6 @@ abstract class L10n {
   /// **'连接断了'**
   String get plugslotsCodeNoStream;
 
-  /// No description provided for @plugslotsVoiceAsk.
-  ///
-  /// In zh, this message translates to:
-  /// **'允许「{plugin}」听你开口？'**
-  String plugslotsVoiceAsk(String plugin);
-
-  /// No description provided for @plugslotsVoiceWhen.
-  ///
-  /// In zh, this message translates to:
-  /// **'朗读时你一开口就停。声音只在手机上判断，不保存、不上传'**
-  String get plugslotsVoiceWhen;
-
-  /// No description provided for @plugslotsVoiceDeny.
-  ///
-  /// In zh, this message translates to:
-  /// **'不允许'**
-  String get plugslotsVoiceDeny;
-
-  /// No description provided for @plugslotsVoiceSwitch.
-  ///
-  /// In zh, this message translates to:
-  /// **'听你开口'**
-  String get plugslotsVoiceSwitch;
-
   /// No description provided for @plugslotsPickerUnavailable.
   ///
   /// In zh, this message translates to:
@@ -33805,12 +33775,6 @@ abstract class L10n {
   /// In zh, this message translates to:
   /// **'在「{path}」里调整'**
   String shellQuickPanelHint(String path);
-
-  /// No description provided for @speechCallTile.
-  ///
-  /// In zh, this message translates to:
-  /// **'语音通话'**
-  String get speechCallTile;
 
   /// The star prompt's first line. hours is the whole hours of use so far, rounded down; 0 is half an hour (the first ask comes after 30 minutes). The word joiner keeps the ~ on the line of the word before it.
   ///

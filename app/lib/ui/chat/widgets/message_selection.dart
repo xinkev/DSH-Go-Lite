@@ -12,16 +12,13 @@ import 'message_menu.dart';
 
 /// A message's text, selectable where it is: a long-press selects the word
 /// under the finger, the handles drag the range. The toolbar over the
-/// selection: 复制 · 引用 ([onQuote]) · 分享 · 朗读 · 更多 ([onMore], the
 /// message's own menu) · 全选, then the system's text actions.
 ///
 /// It copies and shares what is drawn (a masked credential stays
-/// masked; the eye shows it, the menu's 「复制」 takes the original); 朗读
 /// leaves credentials out ([speakableSelection]).
 class MessageSelection extends StatefulWidget {
   const MessageSelection({super.key, required this.text, required this.child, this.onQuote, this.onMore});
 
-  /// The whole message: 朗读 finds its credentials here, where a selected
   /// piece of one would no longer look like one.
   final String text;
 
@@ -84,7 +81,6 @@ class _MessageSelectionState extends State<MessageSelection> {
 
 /// [selected] without any part of a credential in [message]: a whole one, one
 /// cut at either end of the selection, or a selection inside one (nothing is
-/// left). Neither a voice service nor the speaker gets it, as with a whole
 /// reply. Text only, without positions: a cut counts from [_least] characters,
 /// so an ordinary word that merely shares a letter with a key stays.
 @visibleForTesting

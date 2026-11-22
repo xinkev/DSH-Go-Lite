@@ -381,7 +381,6 @@ abstract final class AppIcons {
   /// 朗读: a reply read aloud (speech/read_aloud.dart); also the loudspeaker during a call.
 
   /// 语音通话: start a call with the conversation (speech/call/).
-  static const call = DshGlyphs.phone;
 
   /// 语音通话: hang up.
   static const hangUp = DshGlyphs.phoneDisconnect;

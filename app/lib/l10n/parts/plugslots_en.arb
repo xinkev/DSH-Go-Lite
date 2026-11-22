@@ -192,17 +192,6 @@
   "plugslotsTapToCancel": "Tap to cancel",
   "plugslotsCodeTooManyPending": "Two are still running",
   "plugslotsCodeNoStream": "The connection dropped",
-  "plugslotsVoiceAsk": "Let {plugin} hear you speak?",
-  "@plugslotsVoiceAsk": {
-    "placeholders": {
-      "plugin": {
-        "type": "String"
-      }
-    }
-  },
-  "plugslotsVoiceWhen": "Reading stops the moment you speak. Your voice is checked on this phone, never saved or sent",
-  "plugslotsVoiceDeny": "Don't allow",
-  "plugslotsVoiceSwitch": "Hear you speak",
   "plugslotsPickerUnavailable": "File selection is unavailable on this device",
   "plugslotsPickerBusy": "Finish the current file selection first",
   "plugslotsPickerLimit": "Up to {count} files, 8 MiB each and 16 MiB total",

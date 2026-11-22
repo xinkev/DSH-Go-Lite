@@ -990,11 +990,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
         files: canStageFiles(ref.read(activeConnectionProvider).value, ref.read(activeHostProvider)),
         sessionId: ref.read(currentSessionProvider),
         generate: ref.read(mediaPluginProvider) != MediaPluginState.absent,
-        call: true,
       );
-      if (choice is CallChoice) {
-        return;
-      }
       if (choice is GenerateChoice) {
         if (ownsDraft()) _enterGenerate();
         return;
@@ -1395,12 +1391,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
 
   void _openUsage(String sessionId, ModelSelection? model) {
     showUsageSheet(context, sessionId: sessionId, model: model);
-  }
-
-  /// The header's 语音通话 key: a call with the conversation on screen.
-  void _callFromHeader() {
-    HapticFeedback.selectionClick();
-    final scope = _draftScope;
   }
 
   /// The stop key; what waits in the inbox goes right away (see
@@ -1849,7 +1839,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
                                 HapticFeedback.selectionClick();
                                 ref.read(currentSessionProvider.notifier).select(null);
                               },
-                        onCall: isChild ? null : _callFromHeader,
                         // The title pill opens the whole session's details (on a
                         // wide window it folds and unfolds the panel beside us).
                         onTitleTap: sessionId == null

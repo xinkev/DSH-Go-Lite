@@ -8569,9 +8569,6 @@ class L10nZh extends L10n {
   String get harmonyReminderRefused => '系统没有接受提醒，没有设置。';
 
   @override
-  String get harmonyPluginVoiceUnavailable => '这台设备不能听你开口';
-
-  @override
   String get hostDetailsConnectionType => '连接方式';
 
   @override
@@ -14768,20 +14765,6 @@ class L10nZh extends L10n {
   String get plugslotsCodeNoStream => '连接断了';
 
   @override
-  String plugslotsVoiceAsk(String plugin) {
-    return '允许「$plugin」听你开口？';
-  }
-
-  @override
-  String get plugslotsVoiceWhen => '朗读时你一开口就停。声音只在手机上判断，不保存、不上传';
-
-  @override
-  String get plugslotsVoiceDeny => '不允许';
-
-  @override
-  String get plugslotsVoiceSwitch => '听你开口';
-
-  @override
   String get plugslotsPickerUnavailable => '此设备暂不支持文件选择';
 
   @override
@@ -18421,9 +18404,6 @@ class L10nZh extends L10n {
   String shellQuickPanelHint(String path) {
     return '在「$path」里调整';
   }
-
-  @override
-  String get speechCallTile => '语音通话';
 
   @override
   String starPromptTitle(int hours) {

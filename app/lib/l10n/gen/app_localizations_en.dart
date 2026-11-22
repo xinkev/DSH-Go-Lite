@@ -9059,9 +9059,6 @@ class L10nEn extends L10n {
       'The system didn\'t accept the reminder, so nothing was set. It may be at its limit, or this version may not have the service.';
 
   @override
-  String get harmonyPluginVoiceUnavailable => 'This device can\'t listen for you';
-
-  @override
   String get hostDetailsConnectionType => 'Connection type';
 
   @override
@@ -15544,21 +15541,6 @@ class L10nEn extends L10n {
   String get plugslotsCodeNoStream => 'The connection dropped';
 
   @override
-  String plugslotsVoiceAsk(String plugin) {
-    return 'Let $plugin hear you speak?';
-  }
-
-  @override
-  String get plugslotsVoiceWhen =>
-      'Reading stops the moment you speak. Your voice is checked on this phone, never saved or sent';
-
-  @override
-  String get plugslotsVoiceDeny => 'Don\'t allow';
-
-  @override
-  String get plugslotsVoiceSwitch => 'Hear you speak';
-
-  @override
   String get plugslotsPickerUnavailable => 'File selection is unavailable on this device';
 
   @override
@@ -19469,9 +19451,6 @@ class L10nEn extends L10n {
   String shellQuickPanelHint(String path) {
     return 'Change these in $path';
   }
-
-  @override
-  String get speechCallTile => 'Voice call';
 
   @override
   String starPromptTitle(int hours) {

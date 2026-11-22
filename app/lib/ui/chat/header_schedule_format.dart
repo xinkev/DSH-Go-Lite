@@ -1,6 +1,5 @@
 // Wording of the header clock and its sheet. The official surfaces pair each
 // run's time on the reader's clock with its distance (`nextRunParts`:
-// `9月19日 15:51（3小时后）`); here in the app's own voice: `今天 21:30`,
 // `3 小时后`, `已逾期 5 分钟`.
 
 import 'dart:math' as math;

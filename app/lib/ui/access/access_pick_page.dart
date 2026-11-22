@@ -43,7 +43,6 @@ import 'phone_mode_sheet.dart';
 /// there, the way their switches in settings do; declining either leaves the
 /// box empty. HarmonyOS lists fewer ([accessFeaturesFor]); its 系统操作 shows the
 /// same disclosure, with no 确认方式 to choose (it follows the permission page),
-/// and its voice input has nothing to download.
 class AccessPickPage extends ConsumerStatefulWidget {
   const AccessPickPage({super.key, required this.onPicked, required this.onSkip});
 

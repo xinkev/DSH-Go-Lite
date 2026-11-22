@@ -5232,7 +5232,6 @@
   "harmonyRemindersNoDevice": "这台设备没有系统提醒",
   "harmonyReminderSet": "已设提醒",
   "harmonyReminderRefused": "系统没有接受提醒，没有设置。",
-  "harmonyPluginVoiceUnavailable": "这台设备不能听你开口",
   "hostDetailsConnectionType": "连接方式",
   "hostDetailsSshNetworkHint": "通过 SSH 隧道连接。此连接不提供 LAN / P2P 路径检测或延迟测量。",
   "hubSessionDetails": "对话详情",
@@ -8687,17 +8686,6 @@
   "plugslotsTapToCancel": "点按取消",
   "plugslotsCodeTooManyPending": "还有两件没做完",
   "plugslotsCodeNoStream": "连接断了",
-  "plugslotsVoiceAsk": "允许「{plugin}」听你开口？",
-  "@plugslotsVoiceAsk": {
-    "placeholders": {
-      "plugin": {
-        "type": "String"
-      }
-    }
-  },
-  "plugslotsVoiceWhen": "朗读时你一开口就停。声音只在手机上判断，不保存、不上传",
-  "plugslotsVoiceDeny": "不允许",
-  "plugslotsVoiceSwitch": "听你开口",
   "plugslotsPickerUnavailable": "此设备暂不支持文件选择",
   "plugslotsPickerBusy": "请先完成当前文件选择",
   "plugslotsPickerLimit": "最多选 {count} 个文件，单个 8 MiB，总计 16 MiB",
@@ -11080,7 +11068,6 @@
       }
     }
   },
-  "speechCallTile": "语音通话",
   "starPromptTitle": "{hours, plural, =0{本鱼已经在 DSH Go 里陪你半个小时啦⁠~} =1{本鱼已经在 DSH Go 里陪你一个小时啦⁠~} other{本鱼已经在 DSH Go 里陪你 {hours} 个小时啦⁠~}}",
   "@starPromptTitle": {
     "description": "The star prompt's first line. hours is the whole hours of use so far, rounded down; 0 is half an hour (the first ask comes after 30 minutes). The word joiner keeps the ~ on the line of the word before it.",

@@ -192,17 +192,6 @@
   "plugslotsTapToCancel": "点按取消",
   "plugslotsCodeTooManyPending": "还有两件没做完",
   "plugslotsCodeNoStream": "连接断了",
-  "plugslotsVoiceAsk": "允许「{plugin}」听你开口？",
-  "@plugslotsVoiceAsk": {
-    "placeholders": {
-      "plugin": {
-        "type": "String"
-      }
-    }
-  },
-  "plugslotsVoiceWhen": "朗读时你一开口就停。声音只在手机上判断，不保存、不上传",
-  "plugslotsVoiceDeny": "不允许",
-  "plugslotsVoiceSwitch": "听你开口",
   "plugslotsPickerUnavailable": "此设备暂不支持文件选择",
   "plugslotsPickerBusy": "请先完成当前文件选择",
   "plugslotsPickerLimit": "最多选 {count} 个文件，单个 8 MiB，总计 16 MiB",

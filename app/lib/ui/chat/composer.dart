@@ -29,7 +29,6 @@ const _lineHeight = 1.45;
 /// 圆角 28 = 键半径 20 + 8,圆键与胶囊两端同心;文字在 40 高里居中。
 /// 多行时键贴底,底边和侧边仍是 8。
 ///
-/// 语音([voice]):草稿为空时发送键是麦克风(和 ＋ 键同样的淡底圆);
 /// 听写时 ＋ 换成 ✕(取消)、发送键换成主色的停止键,中间文字处显示
 /// 识别结果,停止键左边是音量条。四颗键始终同一位置、同一尺寸。
 class Composer extends StatefulWidget {
@@ -523,8 +522,6 @@ class _ComposerState extends State<Composer> with SingleTickerProviderStateMixin
               padding: EdgeInsets.fromLTRB(leading == null ? 18 : _keyGap, _keyGap, _keyGap, _keyGap),
               child: content,
             );
-            // Dictating: the pet steps away from the voice controls, and a soft light
-            // (Libraries.dev Voice) rises from the glass's bottom edge with the voice,
             // under the text and keys.
             return PetCover(active: false, child: padded);;
           },
@@ -719,9 +716,7 @@ enum _KeyMode {
   /// ■ stop the running turn.
   stopRun,
 
-  /// 🎙 start dictating (draft empty).
 
-  /// ■ stop dictating and keep the text.
 }
 
 /// 40 圆键:↑ 发送 / ■ 停止(实心主色);🎙 麦克风是 ＋ 键那样的淡底圆。
