@@ -9,7 +9,6 @@ import '../../l10n/l10n.dart';
 import '../../state/bots_state.dart';
 import '../../state/plugins_state.dart';
 import '../common/empty_view.dart';
-import '../plugins/plugin_actions.dart';
 import '../theme/app_icons.dart';
 import '../theme/theme.dart';
 import '../common/brief_notice.dart';
@@ -33,12 +32,7 @@ class DsBotInstallCard extends ConsumerWidget {
   bool get _update => status.availability == DsBotAvailability.outdated;
 
   Future<void> _install(BuildContext context, WidgetRef ref) async {
-    final hub = ref.read(dsBotProvider.notifier);
-    final job = await runPluginInstall(
-      context,
-      PluginInstallRequest(name: dsBotPackage, spec: dsBotPackage, title: 'DS Bot', replaceInstalled: _update),
-    );
-    if (job.phase == PluginInstallPhase.succeeded && !job.needsRestart) hub.retry();
+    // Plugin installs are retired: there is nothing to install.
   }
 
   @override
