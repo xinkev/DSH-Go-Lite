@@ -16,7 +16,6 @@ import '../../state/features_state.dart';
 import '../../state/preset_editor_state.dart';
 import '../common/app_dialog.dart';
 import '../common/app_sheet.dart';
-import '../plugins/plugin_widgets.dart';
 import '../common/list_page_row.dart';
 import '../common/smooth_size.dart';
 import '../shell/page_frame.dart';
@@ -249,9 +248,9 @@ class AgentPresetsPage extends ConsumerWidget {
                     },
                     title: agentPresetName(preset),
                     badge: preset.broken != null
-                        ? PluginBadge(l10n.featuresLoadFailed, tone: PluginBadgeTone.danger)
+                        ? _PresetBadge(l10n.featuresLoadFailed, danger: true)
                         : preset.isDefault
-                        ? PluginBadge(l10n.featuresNewChatDefault, tone: PluginBadgeTone.official)
+                        ? _PresetBadge(l10n.featuresNewChatDefault)
                         : null,
                     subtitle: agentPresetDescription(preset),
                     subtitleMaxLines: 2,
@@ -296,6 +295,28 @@ class _PresetDocumentPage extends ConsumerWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+class _PresetBadge extends StatelessWidget {
+  const _PresetBadge(this.text, {this.danger = false});
+
+  final String text;
+  final bool danger;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colors = DshColors.of(context);
+    final color = danger ? colors.danger : theme.colorScheme.primary;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Text(text, style: theme.textTheme.labelSmall?.copyWith(color: color, fontWeight: FontWeight.w600)),
     );
   }
 }
