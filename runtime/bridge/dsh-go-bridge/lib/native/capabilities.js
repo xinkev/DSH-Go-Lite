@@ -4,7 +4,7 @@
 import { ID } from "./limits.js";
 import { chars, isPlainObject, toJson } from "./util.js";
 
-export const FEATURES = ["audio", "micro", "overlay", "files"];
+export const FEATURES = ["audio", "overlay", "files"];
 /** Capability effect types (`micro` is a data channel, not an effect). */
 export const EFFECT_FEATURES = ["audio", "overlay"];
 export const PICKER_TYPES = ["pickFile", "pickImage"];
@@ -15,7 +15,7 @@ export const FILE_LIMITS = Object.freeze({
   cacheBytes: 64 * 1024 * 1024, requests: 8, requestMs: 5 * 60 * 1000,
   uploadMs: 30 * 1000, nameChars: 128,
 });
-export const RESOURCE_KINDS = ["media", "micro", "overlays"];
+export const RESOURCE_KINDS = ["media", "overlays"];
 export const CAP_LIMITS = Object.freeze({
   mediaBytes: 16 * 1024 * 1024, mediaMs: 30000, mediaConcurrent: 2,
   leases: 8, pluginLeases: 2, eventBurst: 4, eventsPerSecond: 10,
@@ -30,7 +30,7 @@ export const CAP_EVENTS = Object.freeze({
 export const TERMINAL_EVENTS = new Set(["audio.ended", "audio.stopped", "audio.error", "overlay.closed"]);
 export const featuresOf = (value) => (Array.isArray(value) ? FEATURES.filter((x) => value.includes(x)) : []);
 export const KEY = /^[A-Za-z0-9_-]{1,128}$/;
-const FEATURE_OF = { media: "audio", micro: "micro", overlays: "overlay" };
+const FEATURE_OF = { media: "audio", overlays: "overlay" };
 
 /** A micro value -> the complete small model `{text?, progress?}`, or undefined. */
 export function microModel(value) {
