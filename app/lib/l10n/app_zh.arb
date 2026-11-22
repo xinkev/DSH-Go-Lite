@@ -28,19 +28,8 @@
   "accessFeaturePhoneNeeds": "需要无障碍和通知权限",
   "accessFeatureBackground": "后台持续运行",
   "accessFeatureBackgroundNeeds": "任务跑完通知你，需要通知和后台权限",
-  "accessFeatureVoice": "语音输入",
-  "accessFeatureVoiceNeeds": "需要麦克风权限",
   "accessFeatureAlerts": "回复提醒",
   "accessFeatureAlertsNeeds": "需要通知权限",
-  "accessVoiceModel": "离线识别，需下载约 {size} MB 语音模型",
-  "@accessVoiceModel": {
-    "placeholders": {
-      "size": {
-        "type": "int"
-      }
-    }
-  },
-  "accessVoiceMetered": "当前是移动数据，下载会消耗流量",
   "accessFilesRiskBody": "AI 能读取和修改相册、下载、文档等手机文件。",
   "accessStepCount": "{index} / {total}",
   "@accessStepCount": {
@@ -69,8 +58,6 @@
     }
   },
   "accessOpenFailed": "没能打开系统设置",
-  "accessMicTitle": "允许使用麦克风",
-  "accessMicWhy": "语音输入要用到",
   "accessStorageTitle": "允许访问文件",
   "accessStorageWhy": "让 AI 读写相册、下载和文档",
   "accessNotifyTitle": "允许通知",
@@ -2202,8 +2189,6 @@
   "catalogAgentTeamSummary": "成员、任务板与消息",
   "catalogCotTranslation": "思考过程翻译",
   "catalogCotTranslationSummary": "展开思考后点「翻译」",
-  "catalogVoiceInput": "语音输入",
-  "catalogVoiceInputSummary": "输入框里的麦克风",
   "catalogCommunitySharingSection": "社区与分享",
   "catalogForum": "论坛",
   "catalogForumSummary": "提问、分享、找同好",
@@ -2371,14 +2356,10 @@
   "chatReconnecting": "重新连接中",
   "chatGenerating": "生成中",
   "chatGoToSettings": "去设置",
-  "chatListeningEllipsis": "正在聆听…",
-  "chatTranscribingEllipsis": "正在转写…",
   "chatConnectToSend": "连接引擎后即可发送",
   "chatGeneratingSteerHint": "生成中 · 可直接插话",
   "chatComposerHint": "给 DSH 发消息…",
   "chatStopGenerating": "停止生成",
-  "chatVoiceInput": "语音输入",
-  "chatStopVoiceInput": "停止语音输入",
   "chatGoal": "目标",
   "chatGoalActions": "目标操作",
   "chatGoalBlocked": "受阻",
@@ -2526,20 +2507,6 @@
   "chatChartPreview": "图表预览",
   "chatCopyCode": "复制代码",
   "chatChartClosed": "图表已关闭",
-  "chatVoiceMicrophoneFailed": "没能打开麦克风",
-  "chatVoicePermissionOff": "麦克风权限已关闭",
-  "chatVoicePermissionNeeded": "需要麦克风权限才能语音输入",
-  "chatVoiceUnavailable": "这台手机没有可用的语音识别",
-  "chatVoiceNotHeard": "没有听清，再说一次",
-  "chatVoiceTranscriptionFailed": "没能转写这段语音",
-  "chatVoiceNetworkFailed": "网络不太好，没能识别",
-  "chatVoiceLanguageUnsupported": "暂不支持这种语言",
-  "chatVoiceMicrophoneBusy": "麦克风正被占用",
-  "chatVoiceBusy": "语音识别正忙，稍后再试",
-  "chatVoiceRecognitionFailed": "语音识别出错了",
-  "chatListening": "正在聆听",
-  "chatTranscribing": "正在转写",
-  "chatCancelVoiceInput": "取消语音输入",
   "chatViewTurnTrace": "查看本轮轨迹",
   "chatTokensPerSecond": "约 {count} tokens/秒",
   "@chatTokensPerSecond": {
@@ -3246,12 +3213,10 @@
   "companionShake2": "头好晕……水都晃起来了。",
   "companionShake3": "再摇我要吐泡泡了！",
   "companionStatusIdle": "在发呆",
-  "companionStatusListening": "在听你说",
   "companionStatusThinking": "在想",
   "companionStatusSpeaking": "在说话",
   "companionStatusSleeping": "睡着了",
   "companionStatusAway": "不在",
-  "companionListening": "在听…",
   "companionTouchHint": "摸摸她的头试试",
   "companionArriving": "她正在游过来…",
   "companionPrivacyLine": "素材只存在这台手机上，聊天走当前主机。",
@@ -3341,10 +3306,6 @@
   "companionSignalsHint": "这些只在小屋里说给你听，不会发给模型。说多说少跟着「她多主动」，和邀请共用次数，深夜不说；选「安静」她也不说。",
   "companionSignalState": "留意别的对话",
   "companionSignalStateHint": "这台主机上别的对话跑完或出错时，她心里有数",
-  "companionSignalSpeech": "提一句",
-  "companionSignalSpeechHint": "挑你安静的时候说一句",
-  "companionSignalVoice": "用声音说出来",
-  "companionSignalVoiceHint": "她的声音开着时，把这句读出来",
   "companionSignalNight": "深夜提醒你休息",
   "companionSignalNightHint": "深夜在小屋里待了一阵，她轻轻提醒一次",
   "companionSignalLateUse": "这么晚了还陪着我……要不要早点歇一会儿？",
@@ -3359,52 +3320,7 @@
   "companionRecallOff": "自动想起记忆关了，下一句会开始一段新对话",
   "companionRecallOffFailed": "自动想起记忆没关掉，再试一次吧",
   "companionRecallStopped": "自动想起记忆停了（她记得的事有改动），换成了一段新对话。想要的话可以在菜单里再打开。",
-  "companionMenuVoice": "她的声音",
-  "companionMenuVoiceHint": "用手机自带的语音读出她说的话",
-  "companionVoiceHello": "你好呀，这是我的声音。喜欢的话就留着吧。",
-  "companionVoiceUnavailable": "这台手机没有能用的中文语音。可以在系统设置的「文字转语音」里装一个。",
   "companionWidgetWaiting": "在小屋里等你",
-  "companionVoiceOn": "让她出声",
-  "companionVoiceOffHint": "打开时她会先用选好的声音打个招呼。",
-  "companionVoiceOff": "关",
-  "companionVoiceSource": "声音来源",
-  "companionVoiceSystem": "手机自带",
-  "companionVoiceSystemHint": "系统的文字转语音，不联网也能用",
-  "companionVoiceOpenai": "OpenAI 兼容接口",
-  "companionVoiceOpenaiHint": "OpenAI、硅基流动，以及大多数自建的 GPT-SoVITS、CosyVoice、edge-tts 服务",
-  "companionVoiceCustom": "自定义 HTTP",
-  "companionVoiceCustomHint": "别的接口：自己填请求和返回的格式",
-  "companionVoiceApi": "接口",
-  "companionVoiceBase": "地址",
-  "companionVoiceBaseHelper": "填到 /v1 为止，App 会接上 /audio/speech",
-  "companionVoiceKeyHelper": "存在这台手机的安全存储里",
-  "companionVoiceModel": "模型",
-  "companionVoiceVoice": "音色",
-  "companionVoiceVoiceHelper": "服务给的音色名，比如 alloy，或你自建服务里的角色名",
-  "companionVoiceRequest": "请求",
-  "companionVoiceUrl": "请求地址",
-  "companionVoiceUrlHelper": "地址里也可以用 {text}",
-  "companionVoiceMethod": "方法",
-  "companionVoiceHeaders": "请求头",
-  "companionVoiceHeadersHelper": "每行一个；会存进安全存储",
-  "companionVoiceBody": "请求体",
-  "companionVoiceBodyHelper": "{text} 会换成她要说的话",
-  "companionVoiceField": "音频字段",
-  "companionVoiceFieldHelper": "返回 JSON 时，音频在哪个字段（base64 或链接），比如 data.audio；直接返回音频就留空",
-  "companionVoicePrivacy": "她要说的话会发给你填的这个服务。",
-  "companionVoicePreview": "试听",
-  "companionVoicePreviewing": "正在请求…",
-  "companionVoicePreviewOk": "能用，听到了吗？",
-  "companionVoicePreviewFailed": "没成功：{reason}",
-  "@companionVoicePreviewFailed": {
-    "placeholders": {
-      "reason": {
-        "type": "String"
-      }
-    }
-  },
-  "companionVoiceNotSetUp": "先把上面的地址填好。",
-  "companionVoiceFallback": "外接的声音这次没连上，先用了手机自带的声音",
   "companionGreetFirstNameless": "你好呀，以后我就住在这里了，请多指教。",
   "companionRenamed": "「{name}」……好，以后我就叫这个名字啦。",
   "@companionRenamed": {
@@ -3414,25 +3330,8 @@
       }
     }
   },
-  "companionVoicePreset": "常用服务",
-  "companionVoicePresetHint": "小米 MiMo、OpenAI、硅基流动、阿里云百炼：填个 Key 就能用",
-  "companionVoiceService": "服务",
-  "companionVoiceKeyWhere": "在 {site} 申请；存在这台手机的安全存储里",
-  "@companionVoiceKeyWhere": {
-    "placeholders": {
-      "site": {
-        "type": "String"
-      }
-    }
-  },
-  "companionVoiceVoiceCustomHelper": "点一个，或者直接填服务给的音色 ID",
-  "companionVoiceStyle": "说话风格",
-  "companionVoiceStyleHelper": "描述她说话的语气，服务会照着读；留空用默认的温柔少女音",
-  "companionVoiceFemale": "女声",
-  "companionVoiceMale": "男声",
   "companionClonePreset": "预置音色",
   "companionCloneMine": "克隆声音",
-  "companionVoicePresetVoice": "预置音色",
   "companionCloneRecording": "录音",
   "companionCloneHelper": "5–30 秒、只有一个人在说话、没有背景音的 mp3 或 wav，最大 7 MB。请只用你自己的声音，或本人同意过的声音。她说的每句话都会带上这段录音发给小米。",
   "companionCloneNone": "还没有录音",
@@ -5296,14 +5195,9 @@
   "harmonyTerminalSupportedHosts": "在 SSH 主机上可用",
   "harmonyPluginRemoveRefused": "这个引擎不能卸载插件",
   "harmonyPluginRefusedHint": "可以开关随包插件，或连接电脑管理插件",
-  "harmonyVoiceLocalLine": "鸿蒙本机没有语音模型",
   "harmonyPasswordStorageHelp": "只保存在这台手机上，由系统密钥库加密",
   "harmonyKeyStorageHelp": "只保存在这台手机上，由系统密钥库加密。支持 Ed25519、RSA、ECDSA",
   "harmonyUsageNotSent": "鸿蒙版暂不发送使用统计",
-  "harmonyVoiceSystemHint": "使用系统的语音识别",
-  "harmonyVoiceSystemHintChinese": "使用系统的语音识别，只认中文",
-  "harmonyVoiceAutoHint": "有 DeepSeek 账号或 API Key 时用 DeepSeek，否则用系统识别",
-  "harmonyVoiceSystemUnavailable": "系统语音识别不可用",
   "harmonyNetworkRelayOnly": "当前版本走 Relay 中继，全程端到端加密。",
   "harmonyNetworkFallbackRelayOnly": "当前版本只走 Relay 中继",
   "harmonySetupStay": "安装时请留在这个页面",
@@ -5311,7 +5205,6 @@
   "harmonyLaunchNodeExited": "引擎已退出",
   "harmonyKwAccent": "颜色,主题色,强调色",
   "harmonyKwPets": "宠物,小鲸,桌宠,鲸鱼",
-  "harmonyKwVoice": "语音识别,麦克风,听写,说话,语音",
   "harmonyBackgroundSubtitleLong": "应用离开屏幕后，正在跑的对话会尽量继续",
   "harmonyBackgroundLocalLong": "这个版本可以申请长时任务：对话留在后台继续跑，通知栏会有一条提示。系统不批准或中途收回时，对话跟着应用暂停，回到应用后会尽量接着跑",
   "harmonyEngineBackgroundHintLong": "离开屏幕后，正在跑的对话会尽量继续",
@@ -5686,8 +5579,6 @@
   "iosCommandExportDescription": "把这个对话的完整记录打包成 ZIP，分享或存到「文件」",
   "iosEnableBanners": "横幅不弹时，到系统设置打开「横幅」",
   "iosNotificationSettingsFailed": "没能打开系统设置。到「设置 → DSH Go → 通知」里开启",
-  "iosVoiceSystemHint": "使用系统的语音识别",
-  "iosVoiceAllowSystem": "请在系统设置里允许语音识别",
   "iosPluginsPermissionLocalThirdParty": "插件以 DSH 的权限运行：能读写文件、执行命令、读取 API Key，不受工作区沙箱限制。由第三方提供，DSH 官方未审核。",
   "iosPluginsPermissionLocalTrusted": "插件以 DSH 的权限运行：能读写文件、执行命令、读取 API Key，不受工作区沙箱限制。只装你信任的插件。",
   "iosIconChanged": "桌面图标已更换",
@@ -5776,8 +5667,6 @@
   "iosPhoneLinkErrorStorage": "保存没成功。「记住在这台手机上」需要手机设了解锁密码。",
   "iosPhoneLinkErrorPairingRequired": "先导入配对凭据。",
   "iosPhoneLinkErrorTunnel": "连不上本机服务。先确认用于本机连接的 LocalDevVPN 已接通、开发者模式已打开，再检查连接。",
-  "iosSpeechCallEndNoRecognizer": "语音通话需要能识别录音的方式：登录 DeepSeek 账号、填写 API Key，或配置其他可用的云端识别。iOS 暂不提供本地语音模型下载。",
-  "iosSpeechCallEndNoRecognizerSignedIn": "当前连接不能用已登录账号识别通话录音（例如经 DSH Remote 中继）；请填写 DeepSeek API Key 或配置其他可用的云端识别。iOS 暂不提供本地语音模型下载。",
   "iosPhoneLinkErrorPairingRejected": "手机不认这份配对凭据。重新生成一份再导入。",
   "iosPhoneLinkErrorDdiNeeded": "需要先准备开发者镜像。",
   "iosPhoneLinkErrorDdiDownload": "镜像下载没成功。检查网络后再试。",
@@ -6528,11 +6417,6 @@
   "petActionTargetChanged": "主机已变化，重新打开「问一句」；文字已保留",
   "petActionSendFailed": "没能发出，文字已保留，请重试",
   "petActionBusy": "这个对话正在忙，请选择「新对话」",
-  "petActionVoiceMissing": "先到 App 下载离线语音模型",
-  "petActionVoiceTitle": "语音问一句",
-  "petActionVoiceReturn": "返回桌宠",
-  "petActionVoiceStop": "结束录音",
-  "petActionVoiceStart": "开始录音",
   "phoneDiagnosticsCollecting": "正在收集…",
   "phoneDiagnosticsPacking": "正在打包…",
   "phoneDiagnosticsSharing": "正在打开分享…",
@@ -10279,8 +10163,6 @@
   "searchKwTheme": "外观,配色,颜色,主题色,强调色,图标",
   "searchKwPets": "宠物,小鲸,桌宠,悬浮,鲸鱼",
   "searchKwPerformance": "省电,流畅,卡顿,发热,轻量,完整",
-  "searchKwVoice": "语音识别,麦克风,听写,说话,语音,朗读,语音通话,打电话,TTS,声音",
-  "searchKwVoiceReading": "朗读,朗读的声音,TTS,音色,海星,暗潮,声音",
   "searchKwNotifications": "提醒,推送,横幅,消息,铃声",
   "searchKwReplyPrefs": "偏好,关于我,自我介绍,回答风格,称呼,AGENTS.md",
   "searchKwSharedLinks": "分享链接,链接,公开链接,分享",
@@ -11198,142 +11080,7 @@
       }
     }
   },
-  "speechReadAloud": "朗读",
-  "speechReadAloudStop": "停止朗读",
-  "speechReadSection": "朗读",
-  "speechReadFooter": "回复下方的朗读键、伙伴小屋和语音通话都用这个声音。",
-  "speechVoiceTitle": "朗读的声音",
-  "speechVoiceHello": "你好，这是朗读的声音。",
-  "speechVoiceDeepseek": "DeepSeek",
-  "speechVoiceDeepseekHint": "登录的 DeepSeek 账号付费；没登录，或账号不能用于语音时，用设置里的 API Key。不用另外配置",
-  "speechVoiceDeepseekFooter": "按朗读的字数计费，价格见 DeepSeek 开放平台。读出前会去掉代码块、表格和链接地址。",
-  "speechVoiceStella": "海星（女声）",
-  "speechVoiceTide": "暗潮（男声）",
-  "speechVoiceStellaShort": "海星",
-  "speechVoiceTideShort": "暗潮",
-  "speechVoiceFollow": "跟朗读一样",
-  "speechVoiceFollowHint": "用设置 › 语音里朗读的声音",
-  "speechNotSetUp": "朗读的声音还没设置好，去设置 › 语音看看",
-  "speechNoCredential": "要先登录 DeepSeek 账号，或在设置里填 API Key",
-  "speechAccountUnusable": "已登录的账号在这里付不了 DeepSeek 语音：当前连接的 DSH 版本较旧（更新后就行），或正经 DSH Remote 中继连接。在设置里填 DeepSeek API Key 就能用",
-  "speechSignIn": "DeepSeek 账号用不了语音（可能登录过期，或语音只认 API Key）。重新登录，或在设置里填上 API Key",
-  "speechUnauthorized": "DeepSeek API Key 无效，请在设置里检查",
-  "speechBalance": "DeepSeek 余额不足",
-  "speechRateLimited": "请求太频繁，稍后再试",
-  "speechNothingToRead": "这条回复没有可以朗读的文字",
-  "speechNotHeard": "没听清，再说一次",
-  "speechTooLong": "录音太长了，分几段说吧",
-  "speechBusy": "语音服务正忙，稍后再试",
-  "speechNetwork": "连不上语音服务，请检查网络",
-  "speechReadFailed": "朗读失败",
-  "speechListenFailed": "识别失败",
-  "speechCloudNotice": "语音会发给 DeepSeek 识别。想在手机上识别，可以换成语音模型。",
-  "speechCloudNotSetUp": "还没设置云端识别服务",
   "speechCallTile": "语音通话",
-  "speechCallSection": "语音通话",
-  "speechCallFooter": "通话时说完一句停一下，就会发出去；回答边写边读。",
-  "speechCallBargeIn": "插话打断",
-  "speechCallBargeInHint": "AI 说话时你一开口，它先轻下来；「嗯」「对」它接着说，说别的它就停下听你",
-  "speechCallSpoken": "口语回答",
-  "speechCallSpokenHint": "通话的第一条消息会请 AI 简短、口语化地回答",
-  "speechCallSpeaker": "默认免提",
-  "speechCallSpeakerHint": "接上耳机时总用耳机",
-  "speechCallHint": "（这是语音通话，我说的话由语音识别转成文字。请用简短、口语化的中文回答，不要用 Markdown、列表、表格和代码块。）",
-  "speechCallCutNote": "（你说到「{heard}」时我打断了你，后面的我没听到。）",
-  "@speechCallCutNote": {
-    "placeholders": {
-      "heard": {
-        "type": "String"
-      }
-    }
-  },
-  "speechCallCutEarly": "（你刚开口我就打断了你，这条回答我没听到。）",
-  "speechCallCue": "思考提示音",
-  "speechCallCueHint": "回答一时没出声时，轻响一声表示还在想",
-  "speechLiveSection": "实时字幕",
-  "speechLiveName": "流式识别模型",
-  "speechLiveSystemName": "系统识别（普通话）",
-  "speechLiveSystemReadyNote": "由鸿蒙系统提供，不用下载模型，通话时自动使用",
-  "speechLiveSystemBusy": "使用中",
-  "speechLiveSystemBusyNote": "语音输入或另一项识别正在用它，用完后点重试",
-  "speechLiveSystemFailedNote": "这台手机现在用不了系统识别：{reason}",
-  "@speechLiveSystemFailedNote": {
-    "placeholders": {
-      "reason": {
-        "type": "String"
-      }
-    }
-  },
-  "speechLiveSystemFooter": "字幕和插话判断由鸿蒙系统识别在手机上完成；发给 AI 的文字仍由上面选的识别方式给出，选了云端识别录音就会上传。",
-  "speechLiveAbsentNote": "下载后，通话时一边说一边出字，插话也停得更快。约 {mb}，在手机上运行",
-  "@speechLiveAbsentNote": {
-    "placeholders": {
-      "mb": {
-        "type": "String"
-      }
-    }
-  },
-  "speechLiveReadyNote": "已占用 {mb}，通话时自动使用",
-  "@speechLiveReadyNote": {
-    "placeholders": {
-      "mb": {
-        "type": "String"
-      }
-    }
-  },
-  "speechLiveBlocked": "已停用",
-  "speechLiveBlockedNote": "在这台手机上运行时出过问题，实时字幕已停用，通话照常。删除后重新下载可以再试。",
-  "speechLiveFooter": "字幕和插话判断在手机上完成；发给 AI 的文字仍由上面选的识别方式给出，选了云端识别录音就会上传。",
-  "speechLiveDeleteTitle": "删除流式识别模型？",
-  "speechLiveDeleteBody": "删除后通话不再显示实时字幕，随时可以重新下载。",
-  "speechCallStarting": "正在接通",
-  "speechCallListening": "在听",
-  "speechCallHearing": "你在说",
-  "speechCallThinking": "想一想",
-  "speechCallSpeaking": "正在说，轻点光球可以跳过",
-  "speechCallMuted": "已静音",
-  "speechCallEnded": "通话已结束",
-  "speechCallEndPermission": "没有麦克风权限",
-  "speechCallEndMicrophone": "麦克风被占用或打不开",
-  "speechCallEndNoRecognizerSignedIn": "通话要能识别录音。已登录的账号在这里付不了 DeepSeek 语音（当前连接的 DSH 版本较旧，或经 DSH Remote 中继）：在设置里填 DeepSeek API Key，或在设置 › 语音里下载语音模型",
-  "speechCallEndNoRecognizer": "通话需要能识别录音的方式：登录 DeepSeek 账号、填 API Key，或下载语音模型",
-  "speechCallEndBackground": "切到后台时通话会结束",
-  "speechCallEndFailed": "录音出错，通话已结束",
-  "speechCallSendFailed": "没发出去，再说一次",
-  "speechCallSkipHint": "跳过这段回答",
-  "speechCallTranscript": "字幕",
-  "speechCallTranscriptHint": "这次通话的全部字幕",
-  "speechCallTranscriptEmpty": "还没开口。你们说的话会一句句记在这里。",
-  "speechCallTranscriptCut": "你在这里插话",
-  "speechCallMute": "静音",
-  "speechCallUnmute": "取消静音",
-  "speechCallHangUp": "挂断",
-  "speechCallSpeakerOn": "免提",
-  "speechCallEarpiece": "听筒",
-  "speechBackdropTitle": "通话背景",
-  "speechCallSettings": "通话设置",
-  "speechCallPause": "停顿多久算说完",
-  "speechCallPauseQuick": "快",
-  "speechCallPauseNormal": "适中",
-  "speechCallPausePatient": "耐心",
-  "speechCallPauseHint": "说话爱停顿、常被她抢话，就选「耐心」；嫌她接得慢，选「快」。",
-  "speechCallSpeechSection": "声音和识别",
-  "speechCallVoice": "她的声音",
-  "speechCallSpeechHint": "改了从下一句开始生效。",
-  "speechBackdropSea": "深海",
-  "speechBackdropImage": "我的图片",
-  "speechBackdropImagePick": "选一张图",
-  "speechBackdropCompanion": "伙伴",
-  "speechBackdropHint": "图片会虚化、压暗，字幕看得清。选伙伴时，她会跟着声音说话。",
-  "speechBackdropHintChange": "再点一次「我的图片」可以换一张。选伙伴时，她会跟着声音说话。",
-  "speechBackdropNoCompanion": "先在伙伴小屋里请她住进来，才能把她放进通话里。",
-  "speechBackdropReplace": "换一张图",
-  "speechBackdropPickFailed": "这张图用不了，换一张试试",
-  "speechCallVisual": "光效",
-  "speechCallVisualRing": "光环",
-  "speechCallVisualMono": "细线",
-  "speechCallVisualGlass": "光球",
-  "speechInsecure": "这个云端服务的地址不是 https，Key 不能这样发出去",
   "starPromptTitle": "{hours, plural, =0{本鱼已经在 DSH Go 里陪你半个小时啦⁠~} =1{本鱼已经在 DSH Go 里陪你一个小时啦⁠~} other{本鱼已经在 DSH Go 里陪你 {hours} 个小时啦⁠~}}",
   "@starPromptTitle": {
     "description": "The star prompt's first line. hours is the whole hours of use so far, rounded down; 0 is half an hour (the first ask comes after 30 minutes). The word joiner keeps the ~ on the line of the word before it.",
@@ -13739,14 +13486,6 @@
   "tavernRollSuccess": "成功",
   "tavernRollFailure": "失败",
   "tavernGameHere": "这里有一个小游戏，现在还不能在这里玩",
-  "tavernCanvasReplied": "{name}回复了",
-  "@tavernCanvasReplied": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "tavernMvuIssues": "这张卡的变量更新有问题",
   "tavernMvuUnfinished": "这一层的变量没有更新完，正文已经保留",
   "tavernRegexEdit": "编辑规则",
@@ -13797,7 +13536,6 @@
   "tavernRenderIslands": "消息网页",
   "tavernRenderCanvas": "整页画布",
   "tavernCanvasSubtitle": "整段对话放进一张网页，按 SillyTavern 的结构排，卡写给 ST 的样式能跨消息生效。卡里的脚本会运行，不想让它跑就打开「网页里不运行卡的脚本」。视觉小说不用它。",
-  "tavernCanvasReloaded": "画面重新加载了",
   "tavernLowPower": "省电渲染",
   "tavernLowPowerSubtitle": "去掉卡片网页里的模糊和循环动画，手机更流畅",
   "tavernGroupSpeaking": "{name} 在说",
@@ -16247,176 +15985,6 @@
   "viewUiDialectKindOther": "这部分",
   "viewUiDialectInvalid": "这块内容在网页版查看",
   "viewUiDialectNote": "在网页版查看",
-  "voiceSettingsTitle": "语音",
-  "voiceModeAuto": "自动",
-  "voiceModeSystem": "系统",
-  "voiceModeEngine": "语音模型",
-  "voiceModeAutoHint": "有 DeepSeek 账号或 API Key 时用 DeepSeek，否则用语音模型或系统识别",
-  "voiceModeSystemHint": "使用手机设置中的识别服务",
-  "voiceModeEngineHint": "用引擎里的语音模型识别",
-  "voiceFallbackStarted": "已改用语音模型，请再说一次",
-  "voiceChooseSystem": "请在系统设置中选择语音识别服务",
-  "voiceConfigureEngine": "请先在语音设置里下载语音模型",
-  "voiceConfigureEither": "系统识别用不了，可以在语音设置里下载语音模型",
-  "voiceErrorNetworkTimeout": "语音识别连接超时，请检查网络",
-  "voiceErrorNetwork": "语音识别网络连接失败",
-  "voiceErrorAudio": "语音录音失败，请检查麦克风",
-  "voiceErrorServer": "系统识别服务出错，请稍后再试",
-  "voiceErrorClient": "无法启动系统识别，请检查语音服务",
-  "voiceErrorSpeechTimeout": "没有听到声音，请再说一次",
-  "voiceErrorNoMatch": "没有听清，再说一次",
-  "voiceErrorBusy": "系统识别正忙，请稍后再试",
-  "voiceErrorPermission": "需要麦克风权限才能语音输入",
-  "voiceErrorTooManyRequests": "语音识别请求太频繁，请稍后再试",
-  "voiceErrorDisconnected": "系统识别服务已断开",
-  "voiceErrorLanguageUnsupported": "系统识别不支持这种语言",
-  "voiceErrorLanguageUnavailable": "请先在语音服务中下载这种语言",
-  "voiceErrorSupportCheck": "语音服务不支持检查识别能力",
-  "voiceErrorDownloadEvents": "语音服务不支持查询模型下载进度",
-  "voiceErrorUnknown": "语音服务返回错误 {code}，请更换识别服务",
-  "@voiceErrorUnknown": {
-    "placeholders": {
-      "code": {
-        "type": "int"
-      }
-    }
-  },
-  "voiceSettingsFailed": "没能读取语音设置，请重试",
-  "voiceModeSection": "识别方式",
-  "voiceModelSection": "语音模型",
-  "voiceModelFooter": "下载后在手机上识别中文、英文、粤语、日语和韩语，录音不出手机。",
-  "voiceModelWaiting": "引擎启动后可以下载",
-  "voiceModelUnsupported": "当前引擎不支持语音模型",
-  "voiceModelAbsent": "未下载",
-  "voiceModelDownloading": "下载中",
-  "voiceModelPreparing": "正在校验和加载",
-  "voiceModelReady": "已就绪",
-  "voiceModelFailed": "下载失败",
-  "voiceModelBytes": "{done} / {total}",
-  "@voiceModelBytes": {
-    "placeholders": {
-      "done": {
-        "type": "String"
-      },
-      "total": {
-        "type": "String"
-      }
-    }
-  },
-  "voiceModelReadyNote": "已占用 {size}，可以离线使用",
-  "@voiceModelReadyNote": {
-    "placeholders": {
-      "size": {
-        "type": "String"
-      }
-    }
-  },
-  "voiceModelAbsentNote": "下载约 {size}",
-  "@voiceModelAbsentNote": {
-    "placeholders": {
-      "size": {
-        "type": "String"
-      }
-    }
-  },
-  "voiceModelWaitingNote": "下载会在引擎启动后开始",
-  "voiceModelFailNetwork": "网络连接失败",
-  "voiceModelFailTimeout": "下载长时间没有进展",
-  "voiceModelFailCertificate": "安全连接失败，请检查手机时间",
-  "voiceModelFailServer": "下载源暂时不可用",
-  "voiceModelFailIntegrity": "文件校验没有通过",
-  "voiceModelFailStorage": "存储空间不足，还需要约 {size}",
-  "@voiceModelFailStorage": {
-    "placeholders": {
-      "size": {
-        "type": "String"
-      }
-    }
-  },
-  "voiceModelFailEngine": "引擎没有响应",
-  "voiceModelFailUnknown": "下载没有完成",
-  "voiceModelDownload": "下载",
-  "voiceModelResume": "继续下载",
-  "voiceModelRedownload": "重新下载",
-  "voiceModelMeteredTitle": "用移动数据下载？",
-  "voiceModelMeteredBody": "语音模型约 {size}，会使用移动数据流量。",
-  "@voiceModelMeteredBody": {
-    "placeholders": {
-      "size": {
-        "type": "String"
-      }
-    }
-  },
-  "voiceModelDeleteTitle": "删除语音模型？",
-  "voiceModelDeleteBody": "删除后语音输入改用系统识别，需要时可以重新下载。",
-  "voiceModelDeleteFailed": "没能删除语音模型，请重试",
-  "voiceModelDeleteStopping": "下载还在停止，请稍后再删",
-  "voiceModelStartedToast": "语音模型开始下载 · 约 {size}",
-  "@voiceModelStartedToast": {
-    "placeholders": {
-      "size": {
-        "type": "String"
-      }
-    }
-  },
-  "voiceModelResumedToast": "继续下载语音模型 · 还剩约 {size}",
-  "@voiceModelResumedToast": {
-    "placeholders": {
-      "size": {
-        "type": "String"
-      }
-    }
-  },
-  "voiceModelReadyToast": "语音输入已就绪",
-  "voiceModelFailedToast": "语音模型下载失败：{reason}",
-  "@voiceModelFailedToast": {
-    "placeholders": {
-      "reason": {
-        "type": "String"
-      }
-    }
-  },
-  "voiceModelNoticeDownloading": "正在下载语音模型 {percent}%",
-  "@voiceModelNoticeDownloading": {
-    "placeholders": {
-      "percent": {
-        "type": "int"
-      }
-    }
-  },
-  "voiceModelNoticePreparing": "正在校验语音模型",
-  "voiceModelNoticeFailed": "语音模型下载失败，打开 App 重试",
-  "voiceModeDeepseek": "DeepSeek",
-  "voiceModeDeepseekHint": "用 DeepSeek 的语音识别，登录的账号或 API Key 付费",
-  "voiceModeCloud": "其他云端服务",
-  "voiceModeCloudHint": "OpenAI 兼容的语音转写接口，例如 Whisper、硅基流动",
-  "voiceCloudSection": "云端识别服务",
-  "voiceCloudFooter": "录音会发给这个服务识别。Key 只存在这台手机上。",
-  "voiceCloudBaseHelper": "填到 /v1 为止，App 会请求 …/audio/transcriptions",
-  "voiceCloudModelHelper": "例如 whisper-1、FunAudioLLM/SenseVoiceSmall",
-  "voiceScribeReadFailed": "没能读取语音设置，请重试。",
-  "voiceScribeSavedReadFailed": "已保存，刷新后可查看最新设置。",
-  "voiceScribeSaveUnconfirmed": "没能确认保存，请刷新或重试。",
-  "voiceScribeTitle": "语音设置",
-  "voiceScribePolishPrompt": "润色提示词",
-  "voiceScribeLanguage": "识别语言",
-  "voiceScribeRefresh": "刷新",
-  "voiceScribeHostChanged": "连接已变化，请重新打开。",
-  "voiceScribeUnsupported": "当前连接暂不支持语音设置。",
-  "voiceScribePluginDefault": "默认",
-  "voiceScribeBuiltInPrompt": "内置提示词",
-  "voiceScribeProviders": "识别服务",
-  "voiceScribeKeySet": "已设置密钥",
-  "voiceScribeNoKey": "未设置密钥",
-  "voiceScribeHotwords": "热词",
-  "voiceScribeHotwordRules": "{count} 条规则",
-  "@voiceScribeHotwordRules": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
   "wallpaperTitle": "壁纸",
   "wallpaperDefault": "默认",
   "wallpaperCustom": "自定义",

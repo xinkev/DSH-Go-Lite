@@ -94,24 +94,10 @@ class L10nZh extends L10n {
   String get accessFeatureBackgroundNeeds => '任务跑完通知你，需要通知和后台权限';
 
   @override
-  String get accessFeatureVoice => '语音输入';
-
-  @override
-  String get accessFeatureVoiceNeeds => '需要麦克风权限';
-
-  @override
   String get accessFeatureAlerts => '回复提醒';
 
   @override
   String get accessFeatureAlertsNeeds => '需要通知权限';
-
-  @override
-  String accessVoiceModel(int size) {
-    return '离线识别，需下载约 $size MB 语音模型';
-  }
-
-  @override
-  String get accessVoiceMetered => '当前是移动数据，下载会消耗流量';
 
   @override
   String get accessFilesRiskBody => 'AI 能读取和修改相册、下载、文档等手机文件。';
@@ -149,12 +135,6 @@ class L10nZh extends L10n {
 
   @override
   String get accessOpenFailed => '没能打开系统设置';
-
-  @override
-  String get accessMicTitle => '允许使用麦克风';
-
-  @override
-  String get accessMicWhy => '语音输入要用到';
 
   @override
   String get accessStorageTitle => '允许访问文件';
@@ -3542,12 +3522,6 @@ class L10nZh extends L10n {
   String get catalogCotTranslationSummary => '展开思考后点「翻译」';
 
   @override
-  String get catalogVoiceInput => '语音输入';
-
-  @override
-  String get catalogVoiceInputSummary => '输入框里的麦克风';
-
-  @override
   String get catalogCommunitySharingSection => '社区与分享';
 
   @override
@@ -3907,12 +3881,6 @@ class L10nZh extends L10n {
   String get chatGoToSettings => '去设置';
 
   @override
-  String get chatListeningEllipsis => '正在聆听…';
-
-  @override
-  String get chatTranscribingEllipsis => '正在转写…';
-
-  @override
   String get chatConnectToSend => '连接引擎后即可发送';
 
   @override
@@ -3923,12 +3891,6 @@ class L10nZh extends L10n {
 
   @override
   String get chatStopGenerating => '停止生成';
-
-  @override
-  String get chatVoiceInput => '语音输入';
-
-  @override
-  String get chatStopVoiceInput => '停止语音输入';
 
   @override
   String get chatGoal => '目标';
@@ -4143,48 +4105,6 @@ class L10nZh extends L10n {
 
   @override
   String get chatChartClosed => '图表已关闭';
-
-  @override
-  String get chatVoiceMicrophoneFailed => '没能打开麦克风';
-
-  @override
-  String get chatVoicePermissionOff => '麦克风权限已关闭';
-
-  @override
-  String get chatVoicePermissionNeeded => '需要麦克风权限才能语音输入';
-
-  @override
-  String get chatVoiceUnavailable => '这台手机没有可用的语音识别';
-
-  @override
-  String get chatVoiceNotHeard => '没有听清，再说一次';
-
-  @override
-  String get chatVoiceTranscriptionFailed => '没能转写这段语音';
-
-  @override
-  String get chatVoiceNetworkFailed => '网络不太好，没能识别';
-
-  @override
-  String get chatVoiceLanguageUnsupported => '暂不支持这种语言';
-
-  @override
-  String get chatVoiceMicrophoneBusy => '麦克风正被占用';
-
-  @override
-  String get chatVoiceBusy => '语音识别正忙，稍后再试';
-
-  @override
-  String get chatVoiceRecognitionFailed => '语音识别出错了';
-
-  @override
-  String get chatListening => '正在聆听';
-
-  @override
-  String get chatTranscribing => '正在转写';
-
-  @override
-  String get chatCancelVoiceInput => '取消语音输入';
 
   @override
   String get chatViewTurnTrace => '查看本轮轨迹';
@@ -5231,9 +5151,6 @@ class L10nZh extends L10n {
   String get companionStatusIdle => '在发呆';
 
   @override
-  String get companionStatusListening => '在听你说';
-
-  @override
   String get companionStatusThinking => '在想';
 
   @override
@@ -5244,9 +5161,6 @@ class L10nZh extends L10n {
 
   @override
   String get companionStatusAway => '不在';
-
-  @override
-  String get companionListening => '在听…';
 
   @override
   String get companionTouchHint => '摸摸她的头试试';
@@ -5497,18 +5411,6 @@ class L10nZh extends L10n {
   String get companionSignalStateHint => '这台主机上别的对话跑完或出错时，她心里有数';
 
   @override
-  String get companionSignalSpeech => '提一句';
-
-  @override
-  String get companionSignalSpeechHint => '挑你安静的时候说一句';
-
-  @override
-  String get companionSignalVoice => '用声音说出来';
-
-  @override
-  String get companionSignalVoiceHint => '她的声音开着时，把这句读出来';
-
-  @override
   String get companionSignalNight => '深夜提醒你休息';
 
   @override
@@ -5552,123 +5454,7 @@ class L10nZh extends L10n {
   String get companionRecallStopped => '自动想起记忆停了（她记得的事有改动），换成了一段新对话。想要的话可以在菜单里再打开。';
 
   @override
-  String get companionMenuVoice => '她的声音';
-
-  @override
-  String get companionMenuVoiceHint => '用手机自带的语音读出她说的话';
-
-  @override
-  String get companionVoiceHello => '你好呀，这是我的声音。喜欢的话就留着吧。';
-
-  @override
-  String get companionVoiceUnavailable => '这台手机没有能用的中文语音。可以在系统设置的「文字转语音」里装一个。';
-
-  @override
   String get companionWidgetWaiting => '在小屋里等你';
-
-  @override
-  String get companionVoiceOn => '让她出声';
-
-  @override
-  String get companionVoiceOffHint => '打开时她会先用选好的声音打个招呼。';
-
-  @override
-  String get companionVoiceOff => '关';
-
-  @override
-  String get companionVoiceSource => '声音来源';
-
-  @override
-  String get companionVoiceSystem => '手机自带';
-
-  @override
-  String get companionVoiceSystemHint => '系统的文字转语音，不联网也能用';
-
-  @override
-  String get companionVoiceOpenai => 'OpenAI 兼容接口';
-
-  @override
-  String get companionVoiceOpenaiHint => 'OpenAI、硅基流动，以及大多数自建的 GPT-SoVITS、CosyVoice、edge-tts 服务';
-
-  @override
-  String get companionVoiceCustom => '自定义 HTTP';
-
-  @override
-  String get companionVoiceCustomHint => '别的接口：自己填请求和返回的格式';
-
-  @override
-  String get companionVoiceApi => '接口';
-
-  @override
-  String get companionVoiceBase => '地址';
-
-  @override
-  String get companionVoiceBaseHelper => '填到 /v1 为止，App 会接上 /audio/speech';
-
-  @override
-  String get companionVoiceKeyHelper => '存在这台手机的安全存储里';
-
-  @override
-  String get companionVoiceModel => '模型';
-
-  @override
-  String get companionVoiceVoice => '音色';
-
-  @override
-  String get companionVoiceVoiceHelper => '服务给的音色名，比如 alloy，或你自建服务里的角色名';
-
-  @override
-  String get companionVoiceRequest => '请求';
-
-  @override
-  String get companionVoiceUrl => '请求地址';
-
-  @override
-  String get companionVoiceUrlHelper => '地址里也可以用 {text}';
-
-  @override
-  String get companionVoiceMethod => '方法';
-
-  @override
-  String get companionVoiceHeaders => '请求头';
-
-  @override
-  String get companionVoiceHeadersHelper => '每行一个；会存进安全存储';
-
-  @override
-  String get companionVoiceBody => '请求体';
-
-  @override
-  String get companionVoiceBodyHelper => '{text} 会换成她要说的话';
-
-  @override
-  String get companionVoiceField => '音频字段';
-
-  @override
-  String get companionVoiceFieldHelper => '返回 JSON 时，音频在哪个字段（base64 或链接），比如 data.audio；直接返回音频就留空';
-
-  @override
-  String get companionVoicePrivacy => '她要说的话会发给你填的这个服务。';
-
-  @override
-  String get companionVoicePreview => '试听';
-
-  @override
-  String get companionVoicePreviewing => '正在请求…';
-
-  @override
-  String get companionVoicePreviewOk => '能用，听到了吗？';
-
-  @override
-  String companionVoicePreviewFailed(String reason) {
-    return '没成功：$reason';
-  }
-
-  @override
-  String get companionVoiceNotSetUp => '先把上面的地址填好。';
-
-  @override
-  String get companionVoiceFallback => '外接的声音这次没连上，先用了手机自带的声音';
 
   @override
   String get companionGreetFirstNameless => '你好呀，以后我就住在这里了，请多指教。';
@@ -5679,42 +5465,10 @@ class L10nZh extends L10n {
   }
 
   @override
-  String get companionVoicePreset => '常用服务';
-
-  @override
-  String get companionVoicePresetHint => '小米 MiMo、OpenAI、硅基流动、阿里云百炼：填个 Key 就能用';
-
-  @override
-  String get companionVoiceService => '服务';
-
-  @override
-  String companionVoiceKeyWhere(String site) {
-    return '在 $site 申请；存在这台手机的安全存储里';
-  }
-
-  @override
-  String get companionVoiceVoiceCustomHelper => '点一个，或者直接填服务给的音色 ID';
-
-  @override
-  String get companionVoiceStyle => '说话风格';
-
-  @override
-  String get companionVoiceStyleHelper => '描述她说话的语气，服务会照着读；留空用默认的温柔少女音';
-
-  @override
-  String get companionVoiceFemale => '女声';
-
-  @override
-  String get companionVoiceMale => '男声';
-
-  @override
   String get companionClonePreset => '预置音色';
 
   @override
   String get companionCloneMine => '克隆声音';
-
-  @override
-  String get companionVoicePresetVoice => '预置音色';
 
   @override
   String get companionCloneRecording => '录音';
@@ -8723,9 +8477,6 @@ class L10nZh extends L10n {
   String get harmonyPluginRefusedHint => '可以开关随包插件，或连接电脑管理插件';
 
   @override
-  String get harmonyVoiceLocalLine => '鸿蒙本机没有语音模型';
-
-  @override
   String get harmonyPasswordStorageHelp => '只保存在这台手机上，由系统密钥库加密';
 
   @override
@@ -8733,18 +8484,6 @@ class L10nZh extends L10n {
 
   @override
   String get harmonyUsageNotSent => '鸿蒙版暂不发送使用统计';
-
-  @override
-  String get harmonyVoiceSystemHint => '使用系统的语音识别';
-
-  @override
-  String get harmonyVoiceSystemHintChinese => '使用系统的语音识别，只认中文';
-
-  @override
-  String get harmonyVoiceAutoHint => '有 DeepSeek 账号或 API Key 时用 DeepSeek，否则用系统识别';
-
-  @override
-  String get harmonyVoiceSystemUnavailable => '系统语音识别不可用';
 
   @override
   String get harmonyNetworkRelayOnly => '当前版本走 Relay 中继，全程端到端加密。';
@@ -8766,9 +8505,6 @@ class L10nZh extends L10n {
 
   @override
   String get harmonyKwPets => '宠物,小鲸,桌宠,鲸鱼';
-
-  @override
-  String get harmonyKwVoice => '语音识别,麦克风,听写,说话,语音';
 
   @override
   String get harmonyBackgroundSubtitleLong => '应用离开屏幕后，正在跑的对话会尽量继续';
@@ -9411,12 +9147,6 @@ class L10nZh extends L10n {
   String get iosNotificationSettingsFailed => '没能打开系统设置。到「设置 → DSH Go → 通知」里开启';
 
   @override
-  String get iosVoiceSystemHint => '使用系统的语音识别';
-
-  @override
-  String get iosVoiceAllowSystem => '请在系统设置里允许语音识别';
-
-  @override
   String get iosPluginsPermissionLocalThirdParty => '插件以 DSH 的权限运行：能读写文件、执行命令、读取 API Key，不受工作区沙箱限制。由第三方提供，DSH 官方未审核。';
 
   @override
@@ -9653,13 +9383,6 @@ class L10nZh extends L10n {
 
   @override
   String get iosPhoneLinkErrorTunnel => '连不上本机服务。先确认用于本机连接的 LocalDevVPN 已接通、开发者模式已打开，再检查连接。';
-
-  @override
-  String get iosSpeechCallEndNoRecognizer => '语音通话需要能识别录音的方式：登录 DeepSeek 账号、填写 API Key，或配置其他可用的云端识别。iOS 暂不提供本地语音模型下载。';
-
-  @override
-  String get iosSpeechCallEndNoRecognizerSignedIn =>
-      '当前连接不能用已登录账号识别通话录音（例如经 DSH Remote 中继）；请填写 DeepSeek API Key 或配置其他可用的云端识别。iOS 暂不提供本地语音模型下载。';
 
   @override
   String get iosPhoneLinkErrorPairingRejected => '手机不认这份配对凭据。重新生成一份再导入。';
@@ -11088,21 +10811,6 @@ class L10nZh extends L10n {
 
   @override
   String get petActionBusy => '这个对话正在忙，请选择「新对话」';
-
-  @override
-  String get petActionVoiceMissing => '先到 App 下载离线语音模型';
-
-  @override
-  String get petActionVoiceTitle => '语音问一句';
-
-  @override
-  String get petActionVoiceReturn => '返回桌宠';
-
-  @override
-  String get petActionVoiceStop => '结束录音';
-
-  @override
-  String get petActionVoiceStart => '开始录音';
 
   @override
   String get phoneDiagnosticsCollecting => '正在收集…';
@@ -17210,12 +16918,6 @@ class L10nZh extends L10n {
   String get searchKwPerformance => '省电,流畅,卡顿,发热,轻量,完整';
 
   @override
-  String get searchKwVoice => '语音识别,麦克风,听写,说话,语音,朗读,语音通话,打电话,TTS,声音';
-
-  @override
-  String get searchKwVoiceReading => '朗读,朗读的声音,TTS,音色,海星,暗潮,声音';
-
-  @override
   String get searchKwNotifications => '提醒,推送,横幅,消息,铃声';
 
   @override
@@ -18721,338 +18423,7 @@ class L10nZh extends L10n {
   }
 
   @override
-  String get speechReadAloud => '朗读';
-
-  @override
-  String get speechReadAloudStop => '停止朗读';
-
-  @override
-  String get speechReadSection => '朗读';
-
-  @override
-  String get speechReadFooter => '回复下方的朗读键、伙伴小屋和语音通话都用这个声音。';
-
-  @override
-  String get speechVoiceTitle => '朗读的声音';
-
-  @override
-  String get speechVoiceHello => '你好，这是朗读的声音。';
-
-  @override
-  String get speechVoiceDeepseek => 'DeepSeek';
-
-  @override
-  String get speechVoiceDeepseekHint => '登录的 DeepSeek 账号付费；没登录，或账号不能用于语音时，用设置里的 API Key。不用另外配置';
-
-  @override
-  String get speechVoiceDeepseekFooter => '按朗读的字数计费，价格见 DeepSeek 开放平台。读出前会去掉代码块、表格和链接地址。';
-
-  @override
-  String get speechVoiceStella => '海星（女声）';
-
-  @override
-  String get speechVoiceTide => '暗潮（男声）';
-
-  @override
-  String get speechVoiceStellaShort => '海星';
-
-  @override
-  String get speechVoiceTideShort => '暗潮';
-
-  @override
-  String get speechVoiceFollow => '跟朗读一样';
-
-  @override
-  String get speechVoiceFollowHint => '用设置 › 语音里朗读的声音';
-
-  @override
-  String get speechNotSetUp => '朗读的声音还没设置好，去设置 › 语音看看';
-
-  @override
-  String get speechNoCredential => '要先登录 DeepSeek 账号，或在设置里填 API Key';
-
-  @override
-  String get speechAccountUnusable =>
-      '已登录的账号在这里付不了 DeepSeek 语音：当前连接的 DSH 版本较旧（更新后就行），或正经 DSH Remote 中继连接。在设置里填 DeepSeek API Key 就能用';
-
-  @override
-  String get speechSignIn => 'DeepSeek 账号用不了语音（可能登录过期，或语音只认 API Key）。重新登录，或在设置里填上 API Key';
-
-  @override
-  String get speechUnauthorized => 'DeepSeek API Key 无效，请在设置里检查';
-
-  @override
-  String get speechBalance => 'DeepSeek 余额不足';
-
-  @override
-  String get speechRateLimited => '请求太频繁，稍后再试';
-
-  @override
-  String get speechNothingToRead => '这条回复没有可以朗读的文字';
-
-  @override
-  String get speechNotHeard => '没听清，再说一次';
-
-  @override
-  String get speechTooLong => '录音太长了，分几段说吧';
-
-  @override
-  String get speechBusy => '语音服务正忙，稍后再试';
-
-  @override
-  String get speechNetwork => '连不上语音服务，请检查网络';
-
-  @override
-  String get speechReadFailed => '朗读失败';
-
-  @override
-  String get speechListenFailed => '识别失败';
-
-  @override
-  String get speechCloudNotice => '语音会发给 DeepSeek 识别。想在手机上识别，可以换成语音模型。';
-
-  @override
-  String get speechCloudNotSetUp => '还没设置云端识别服务';
-
-  @override
   String get speechCallTile => '语音通话';
-
-  @override
-  String get speechCallSection => '语音通话';
-
-  @override
-  String get speechCallFooter => '通话时说完一句停一下，就会发出去；回答边写边读。';
-
-  @override
-  String get speechCallBargeIn => '插话打断';
-
-  @override
-  String get speechCallBargeInHint => 'AI 说话时你一开口，它先轻下来；「嗯」「对」它接着说，说别的它就停下听你';
-
-  @override
-  String get speechCallSpoken => '口语回答';
-
-  @override
-  String get speechCallSpokenHint => '通话的第一条消息会请 AI 简短、口语化地回答';
-
-  @override
-  String get speechCallSpeaker => '默认免提';
-
-  @override
-  String get speechCallSpeakerHint => '接上耳机时总用耳机';
-
-  @override
-  String get speechCallHint => '（这是语音通话，我说的话由语音识别转成文字。请用简短、口语化的中文回答，不要用 Markdown、列表、表格和代码块。）';
-
-  @override
-  String speechCallCutNote(String heard) {
-    return '（你说到「$heard」时我打断了你，后面的我没听到。）';
-  }
-
-  @override
-  String get speechCallCutEarly => '（你刚开口我就打断了你，这条回答我没听到。）';
-
-  @override
-  String get speechCallCue => '思考提示音';
-
-  @override
-  String get speechCallCueHint => '回答一时没出声时，轻响一声表示还在想';
-
-  @override
-  String get speechLiveSection => '实时字幕';
-
-  @override
-  String get speechLiveName => '流式识别模型';
-
-  @override
-  String get speechLiveSystemName => '系统识别（普通话）';
-
-  @override
-  String get speechLiveSystemReadyNote => '由鸿蒙系统提供，不用下载模型，通话时自动使用';
-
-  @override
-  String get speechLiveSystemBusy => '使用中';
-
-  @override
-  String get speechLiveSystemBusyNote => '语音输入或另一项识别正在用它，用完后点重试';
-
-  @override
-  String speechLiveSystemFailedNote(String reason) {
-    return '这台手机现在用不了系统识别：$reason';
-  }
-
-  @override
-  String get speechLiveSystemFooter => '字幕和插话判断由鸿蒙系统识别在手机上完成；发给 AI 的文字仍由上面选的识别方式给出，选了云端识别录音就会上传。';
-
-  @override
-  String speechLiveAbsentNote(String mb) {
-    return '下载后，通话时一边说一边出字，插话也停得更快。约 $mb，在手机上运行';
-  }
-
-  @override
-  String speechLiveReadyNote(String mb) {
-    return '已占用 $mb，通话时自动使用';
-  }
-
-  @override
-  String get speechLiveBlocked => '已停用';
-
-  @override
-  String get speechLiveBlockedNote => '在这台手机上运行时出过问题，实时字幕已停用，通话照常。删除后重新下载可以再试。';
-
-  @override
-  String get speechLiveFooter => '字幕和插话判断在手机上完成；发给 AI 的文字仍由上面选的识别方式给出，选了云端识别录音就会上传。';
-
-  @override
-  String get speechLiveDeleteTitle => '删除流式识别模型？';
-
-  @override
-  String get speechLiveDeleteBody => '删除后通话不再显示实时字幕，随时可以重新下载。';
-
-  @override
-  String get speechCallStarting => '正在接通';
-
-  @override
-  String get speechCallListening => '在听';
-
-  @override
-  String get speechCallHearing => '你在说';
-
-  @override
-  String get speechCallThinking => '想一想';
-
-  @override
-  String get speechCallSpeaking => '正在说，轻点光球可以跳过';
-
-  @override
-  String get speechCallMuted => '已静音';
-
-  @override
-  String get speechCallEnded => '通话已结束';
-
-  @override
-  String get speechCallEndPermission => '没有麦克风权限';
-
-  @override
-  String get speechCallEndMicrophone => '麦克风被占用或打不开';
-
-  @override
-  String get speechCallEndNoRecognizerSignedIn =>
-      '通话要能识别录音。已登录的账号在这里付不了 DeepSeek 语音（当前连接的 DSH 版本较旧，或经 DSH Remote 中继）：在设置里填 DeepSeek API Key，或在设置 › 语音里下载语音模型';
-
-  @override
-  String get speechCallEndNoRecognizer => '通话需要能识别录音的方式：登录 DeepSeek 账号、填 API Key，或下载语音模型';
-
-  @override
-  String get speechCallEndBackground => '切到后台时通话会结束';
-
-  @override
-  String get speechCallEndFailed => '录音出错，通话已结束';
-
-  @override
-  String get speechCallSendFailed => '没发出去，再说一次';
-
-  @override
-  String get speechCallSkipHint => '跳过这段回答';
-
-  @override
-  String get speechCallTranscript => '字幕';
-
-  @override
-  String get speechCallTranscriptHint => '这次通话的全部字幕';
-
-  @override
-  String get speechCallTranscriptEmpty => '还没开口。你们说的话会一句句记在这里。';
-
-  @override
-  String get speechCallTranscriptCut => '你在这里插话';
-
-  @override
-  String get speechCallMute => '静音';
-
-  @override
-  String get speechCallUnmute => '取消静音';
-
-  @override
-  String get speechCallHangUp => '挂断';
-
-  @override
-  String get speechCallSpeakerOn => '免提';
-
-  @override
-  String get speechCallEarpiece => '听筒';
-
-  @override
-  String get speechBackdropTitle => '通话背景';
-
-  @override
-  String get speechCallSettings => '通话设置';
-
-  @override
-  String get speechCallPause => '停顿多久算说完';
-
-  @override
-  String get speechCallPauseQuick => '快';
-
-  @override
-  String get speechCallPauseNormal => '适中';
-
-  @override
-  String get speechCallPausePatient => '耐心';
-
-  @override
-  String get speechCallPauseHint => '说话爱停顿、常被她抢话，就选「耐心」；嫌她接得慢，选「快」。';
-
-  @override
-  String get speechCallSpeechSection => '声音和识别';
-
-  @override
-  String get speechCallVoice => '她的声音';
-
-  @override
-  String get speechCallSpeechHint => '改了从下一句开始生效。';
-
-  @override
-  String get speechBackdropSea => '深海';
-
-  @override
-  String get speechBackdropImage => '我的图片';
-
-  @override
-  String get speechBackdropImagePick => '选一张图';
-
-  @override
-  String get speechBackdropCompanion => '伙伴';
-
-  @override
-  String get speechBackdropHint => '图片会虚化、压暗，字幕看得清。选伙伴时，她会跟着声音说话。';
-
-  @override
-  String get speechBackdropHintChange => '再点一次「我的图片」可以换一张。选伙伴时，她会跟着声音说话。';
-
-  @override
-  String get speechBackdropNoCompanion => '先在伙伴小屋里请她住进来，才能把她放进通话里。';
-
-  @override
-  String get speechBackdropReplace => '换一张图';
-
-  @override
-  String get speechBackdropPickFailed => '这张图用不了，换一张试试';
-
-  @override
-  String get speechCallVisual => '光效';
-
-  @override
-  String get speechCallVisualRing => '光环';
-
-  @override
-  String get speechCallVisualMono => '细线';
-
-  @override
-  String get speechCallVisualGlass => '光球';
-
-  @override
-  String get speechInsecure => '这个云端服务的地址不是 https，Key 不能这样发出去';
 
   @override
   String starPromptTitle(int hours) {
@@ -22964,11 +22335,6 @@ class L10nZh extends L10n {
   String get tavernGameHere => '这里有一个小游戏，现在还不能在这里玩';
 
   @override
-  String tavernCanvasReplied(String name) {
-    return '$name回复了';
-  }
-
-  @override
   String get tavernMvuIssues => '这张卡的变量更新有问题';
 
   @override
@@ -23099,9 +22465,6 @@ class L10nZh extends L10n {
   @override
   String get tavernCanvasSubtitle =>
       '整段对话放进一张网页，按 SillyTavern 的结构排，卡写给 ST 的样式能跨消息生效。卡里的脚本会运行，不想让它跑就打开「网页里不运行卡的脚本」。视觉小说不用它。';
-
-  @override
-  String get tavernCanvasReloaded => '画面重新加载了';
 
   @override
   String get tavernLowPower => '省电渲染';
@@ -26116,298 +25479,6 @@ class L10nZh extends L10n {
 
   @override
   String get viewUiDialectNote => '在网页版查看';
-
-  @override
-  String get voiceSettingsTitle => '语音';
-
-  @override
-  String get voiceModeAuto => '自动';
-
-  @override
-  String get voiceModeSystem => '系统';
-
-  @override
-  String get voiceModeEngine => '语音模型';
-
-  @override
-  String get voiceModeAutoHint => '有 DeepSeek 账号或 API Key 时用 DeepSeek，否则用语音模型或系统识别';
-
-  @override
-  String get voiceModeSystemHint => '使用手机设置中的识别服务';
-
-  @override
-  String get voiceModeEngineHint => '用引擎里的语音模型识别';
-
-  @override
-  String get voiceFallbackStarted => '已改用语音模型，请再说一次';
-
-  @override
-  String get voiceChooseSystem => '请在系统设置中选择语音识别服务';
-
-  @override
-  String get voiceConfigureEngine => '请先在语音设置里下载语音模型';
-
-  @override
-  String get voiceConfigureEither => '系统识别用不了，可以在语音设置里下载语音模型';
-
-  @override
-  String get voiceErrorNetworkTimeout => '语音识别连接超时，请检查网络';
-
-  @override
-  String get voiceErrorNetwork => '语音识别网络连接失败';
-
-  @override
-  String get voiceErrorAudio => '语音录音失败，请检查麦克风';
-
-  @override
-  String get voiceErrorServer => '系统识别服务出错，请稍后再试';
-
-  @override
-  String get voiceErrorClient => '无法启动系统识别，请检查语音服务';
-
-  @override
-  String get voiceErrorSpeechTimeout => '没有听到声音，请再说一次';
-
-  @override
-  String get voiceErrorNoMatch => '没有听清，再说一次';
-
-  @override
-  String get voiceErrorBusy => '系统识别正忙，请稍后再试';
-
-  @override
-  String get voiceErrorPermission => '需要麦克风权限才能语音输入';
-
-  @override
-  String get voiceErrorTooManyRequests => '语音识别请求太频繁，请稍后再试';
-
-  @override
-  String get voiceErrorDisconnected => '系统识别服务已断开';
-
-  @override
-  String get voiceErrorLanguageUnsupported => '系统识别不支持这种语言';
-
-  @override
-  String get voiceErrorLanguageUnavailable => '请先在语音服务中下载这种语言';
-
-  @override
-  String get voiceErrorSupportCheck => '语音服务不支持检查识别能力';
-
-  @override
-  String get voiceErrorDownloadEvents => '语音服务不支持查询模型下载进度';
-
-  @override
-  String voiceErrorUnknown(int code) {
-    return '语音服务返回错误 $code，请更换识别服务';
-  }
-
-  @override
-  String get voiceSettingsFailed => '没能读取语音设置，请重试';
-
-  @override
-  String get voiceModeSection => '识别方式';
-
-  @override
-  String get voiceModelSection => '语音模型';
-
-  @override
-  String get voiceModelFooter => '下载后在手机上识别中文、英文、粤语、日语和韩语，录音不出手机。';
-
-  @override
-  String get voiceModelWaiting => '引擎启动后可以下载';
-
-  @override
-  String get voiceModelUnsupported => '当前引擎不支持语音模型';
-
-  @override
-  String get voiceModelAbsent => '未下载';
-
-  @override
-  String get voiceModelDownloading => '下载中';
-
-  @override
-  String get voiceModelPreparing => '正在校验和加载';
-
-  @override
-  String get voiceModelReady => '已就绪';
-
-  @override
-  String get voiceModelFailed => '下载失败';
-
-  @override
-  String voiceModelBytes(String done, String total) {
-    return '$done / $total';
-  }
-
-  @override
-  String voiceModelReadyNote(String size) {
-    return '已占用 $size，可以离线使用';
-  }
-
-  @override
-  String voiceModelAbsentNote(String size) {
-    return '下载约 $size';
-  }
-
-  @override
-  String get voiceModelWaitingNote => '下载会在引擎启动后开始';
-
-  @override
-  String get voiceModelFailNetwork => '网络连接失败';
-
-  @override
-  String get voiceModelFailTimeout => '下载长时间没有进展';
-
-  @override
-  String get voiceModelFailCertificate => '安全连接失败，请检查手机时间';
-
-  @override
-  String get voiceModelFailServer => '下载源暂时不可用';
-
-  @override
-  String get voiceModelFailIntegrity => '文件校验没有通过';
-
-  @override
-  String voiceModelFailStorage(String size) {
-    return '存储空间不足，还需要约 $size';
-  }
-
-  @override
-  String get voiceModelFailEngine => '引擎没有响应';
-
-  @override
-  String get voiceModelFailUnknown => '下载没有完成';
-
-  @override
-  String get voiceModelDownload => '下载';
-
-  @override
-  String get voiceModelResume => '继续下载';
-
-  @override
-  String get voiceModelRedownload => '重新下载';
-
-  @override
-  String get voiceModelMeteredTitle => '用移动数据下载？';
-
-  @override
-  String voiceModelMeteredBody(String size) {
-    return '语音模型约 $size，会使用移动数据流量。';
-  }
-
-  @override
-  String get voiceModelDeleteTitle => '删除语音模型？';
-
-  @override
-  String get voiceModelDeleteBody => '删除后语音输入改用系统识别，需要时可以重新下载。';
-
-  @override
-  String get voiceModelDeleteFailed => '没能删除语音模型，请重试';
-
-  @override
-  String get voiceModelDeleteStopping => '下载还在停止，请稍后再删';
-
-  @override
-  String voiceModelStartedToast(String size) {
-    return '语音模型开始下载 · 约 $size';
-  }
-
-  @override
-  String voiceModelResumedToast(String size) {
-    return '继续下载语音模型 · 还剩约 $size';
-  }
-
-  @override
-  String get voiceModelReadyToast => '语音输入已就绪';
-
-  @override
-  String voiceModelFailedToast(String reason) {
-    return '语音模型下载失败：$reason';
-  }
-
-  @override
-  String voiceModelNoticeDownloading(int percent) {
-    return '正在下载语音模型 $percent%';
-  }
-
-  @override
-  String get voiceModelNoticePreparing => '正在校验语音模型';
-
-  @override
-  String get voiceModelNoticeFailed => '语音模型下载失败，打开 App 重试';
-
-  @override
-  String get voiceModeDeepseek => 'DeepSeek';
-
-  @override
-  String get voiceModeDeepseekHint => '用 DeepSeek 的语音识别，登录的账号或 API Key 付费';
-
-  @override
-  String get voiceModeCloud => '其他云端服务';
-
-  @override
-  String get voiceModeCloudHint => 'OpenAI 兼容的语音转写接口，例如 Whisper、硅基流动';
-
-  @override
-  String get voiceCloudSection => '云端识别服务';
-
-  @override
-  String get voiceCloudFooter => '录音会发给这个服务识别。Key 只存在这台手机上。';
-
-  @override
-  String get voiceCloudBaseHelper => '填到 /v1 为止，App 会请求 …/audio/transcriptions';
-
-  @override
-  String get voiceCloudModelHelper => '例如 whisper-1、FunAudioLLM/SenseVoiceSmall';
-
-  @override
-  String get voiceScribeReadFailed => '没能读取语音设置，请重试。';
-
-  @override
-  String get voiceScribeSavedReadFailed => '已保存，刷新后可查看最新设置。';
-
-  @override
-  String get voiceScribeSaveUnconfirmed => '没能确认保存，请刷新或重试。';
-
-  @override
-  String get voiceScribeTitle => '语音设置';
-
-  @override
-  String get voiceScribePolishPrompt => '润色提示词';
-
-  @override
-  String get voiceScribeLanguage => '识别语言';
-
-  @override
-  String get voiceScribeRefresh => '刷新';
-
-  @override
-  String get voiceScribeHostChanged => '连接已变化，请重新打开。';
-
-  @override
-  String get voiceScribeUnsupported => '当前连接暂不支持语音设置。';
-
-  @override
-  String get voiceScribePluginDefault => '默认';
-
-  @override
-  String get voiceScribeBuiltInPrompt => '内置提示词';
-
-  @override
-  String get voiceScribeProviders => '识别服务';
-
-  @override
-  String get voiceScribeKeySet => '已设置密钥';
-
-  @override
-  String get voiceScribeNoKey => '未设置密钥';
-
-  @override
-  String get voiceScribeHotwords => '热词';
-
-  @override
-  String voiceScribeHotwordRules(int count) {
-    return '$count 条规则';
-  }
 
   @override
   String get wallpaperTitle => '壁纸';

@@ -96,24 +96,10 @@ class L10nEn extends L10n {
   String get accessFeatureBackgroundNeeds => 'Tells you when tasks finish; needs notifications and background access';
 
   @override
-  String get accessFeatureVoice => 'Voice input';
-
-  @override
-  String get accessFeatureVoiceNeeds => 'Needs the microphone';
-
-  @override
   String get accessFeatureAlerts => 'Reply alerts';
 
   @override
   String get accessFeatureAlertsNeeds => 'Needs notifications';
-
-  @override
-  String accessVoiceModel(int size) {
-    return 'Works offline; downloads a voice model of about $size MB';
-  }
-
-  @override
-  String get accessVoiceMetered => 'You\'re on mobile data; the download will use it';
 
   @override
   String get accessFilesRiskBody => 'AI can read and change your photos, downloads and documents.';
@@ -151,12 +137,6 @@ class L10nEn extends L10n {
 
   @override
   String get accessOpenFailed => 'Couldn\'t open system settings';
-
-  @override
-  String get accessMicTitle => 'Allow the microphone';
-
-  @override
-  String get accessMicWhy => 'For voice input';
 
   @override
   String get accessStorageTitle => 'Allow file access';
@@ -3728,12 +3708,6 @@ class L10nEn extends L10n {
   String get catalogCotTranslationSummary => 'Expand thinking, then tap “Translate”';
 
   @override
-  String get catalogVoiceInput => 'Voice input';
-
-  @override
-  String get catalogVoiceInputSummary => 'Microphone in the composer';
-
-  @override
   String get catalogCommunitySharingSection => 'Community and sharing';
 
   @override
@@ -4125,12 +4099,6 @@ class L10nEn extends L10n {
   String get chatGoToSettings => 'Open settings';
 
   @override
-  String get chatListeningEllipsis => 'Listening…';
-
-  @override
-  String get chatTranscribingEllipsis => 'Transcribing…';
-
-  @override
   String get chatConnectToSend => 'Connect to the engine to send';
 
   @override
@@ -4141,12 +4109,6 @@ class L10nEn extends L10n {
 
   @override
   String get chatStopGenerating => 'Stop generating';
-
-  @override
-  String get chatVoiceInput => 'Voice input';
-
-  @override
-  String get chatStopVoiceInput => 'Stop voice input';
 
   @override
   String get chatGoal => 'Goal';
@@ -4372,48 +4334,6 @@ class L10nEn extends L10n {
 
   @override
   String get chatChartClosed => 'Chart closed';
-
-  @override
-  String get chatVoiceMicrophoneFailed => 'Couldn’t open microphone';
-
-  @override
-  String get chatVoicePermissionOff => 'Microphone access is off';
-
-  @override
-  String get chatVoicePermissionNeeded => 'Voice input needs microphone access';
-
-  @override
-  String get chatVoiceUnavailable => 'Speech recognition isn’t available on this phone';
-
-  @override
-  String get chatVoiceNotHeard => 'Didn’t catch that. Try again.';
-
-  @override
-  String get chatVoiceTranscriptionFailed => 'Couldn’t transcribe this recording';
-
-  @override
-  String get chatVoiceNetworkFailed => 'Couldn’t transcribe. Check your connection.';
-
-  @override
-  String get chatVoiceLanguageUnsupported => 'This language isn’t supported yet';
-
-  @override
-  String get chatVoiceMicrophoneBusy => 'Microphone is in use';
-
-  @override
-  String get chatVoiceBusy => 'Speech recognition is busy. Try again later.';
-
-  @override
-  String get chatVoiceRecognitionFailed => 'Speech recognition failed';
-
-  @override
-  String get chatListening => 'Listening';
-
-  @override
-  String get chatTranscribing => 'Transcribing';
-
-  @override
-  String get chatCancelVoiceInput => 'Cancel voice input';
 
   @override
   String get chatViewTurnTrace => 'View turn trajectory';
@@ -5566,9 +5486,6 @@ class L10nEn extends L10n {
   String get companionStatusIdle => 'Daydreaming';
 
   @override
-  String get companionStatusListening => 'Listening';
-
-  @override
   String get companionStatusThinking => 'Thinking';
 
   @override
@@ -5579,9 +5496,6 @@ class L10nEn extends L10n {
 
   @override
   String get companionStatusAway => 'Away';
-
-  @override
-  String get companionListening => 'Listening…';
 
   @override
   String get companionTouchHint => 'Try patting her head';
@@ -5840,18 +5754,6 @@ class L10nEn extends L10n {
   String get companionSignalStateHint => 'She notices when another conversation on this host finishes or fails';
 
   @override
-  String get companionSignalSpeech => 'Mention it';
-
-  @override
-  String get companionSignalSpeechHint => 'She says a short line while you\'re quiet';
-
-  @override
-  String get companionSignalVoice => 'Say it out loud';
-
-  @override
-  String get companionSignalVoiceHint => 'Reads the line aloud when her voice is on';
-
-  @override
   String get companionSignalNight => 'Late-night reminder to rest';
 
   @override
@@ -5896,126 +5798,7 @@ class L10nEn extends L10n {
       'Automatic recall stopped (what she remembers changed), so a new conversation began. You can turn it on again from the menu.';
 
   @override
-  String get companionMenuVoice => 'Her voice';
-
-  @override
-  String get companionMenuVoiceHint => 'Reads her words aloud with the phone\'s own voice';
-
-  @override
-  String get companionVoiceHello => 'Hi, this is my voice. Keep it on if you like it.';
-
-  @override
-  String get companionVoiceUnavailable =>
-      'This phone has no Chinese voice to use. You can add one under Text-to-speech in system settings.';
-
-  @override
   String get companionWidgetWaiting => 'Waiting for you in the room';
-
-  @override
-  String get companionVoiceOn => 'Let her speak';
-
-  @override
-  String get companionVoiceOffHint => 'When you turn it on, she says hello in the chosen voice first.';
-
-  @override
-  String get companionVoiceOff => 'Off';
-
-  @override
-  String get companionVoiceSource => 'Voice';
-
-  @override
-  String get companionVoiceSystem => 'The phone\'s own';
-
-  @override
-  String get companionVoiceSystemHint => 'System text-to-speech, works offline';
-
-  @override
-  String get companionVoiceOpenai => 'OpenAI-compatible API';
-
-  @override
-  String get companionVoiceOpenaiHint =>
-      'OpenAI, SiliconFlow, and most self-hosted GPT-SoVITS, CosyVoice or edge-tts servers';
-
-  @override
-  String get companionVoiceCustom => 'Custom HTTP';
-
-  @override
-  String get companionVoiceCustomHint => 'Anything else: describe the request and the reply';
-
-  @override
-  String get companionVoiceApi => 'API';
-
-  @override
-  String get companionVoiceBase => 'Address';
-
-  @override
-  String get companionVoiceBaseHelper => 'Up to /v1; the app adds /audio/speech';
-
-  @override
-  String get companionVoiceKeyHelper => 'Kept in this phone\'s secure storage';
-
-  @override
-  String get companionVoiceModel => 'Model';
-
-  @override
-  String get companionVoiceVoice => 'Voice';
-
-  @override
-  String get companionVoiceVoiceHelper => 'The service\'s voice name, like alloy, or a speaker on your own server';
-
-  @override
-  String get companionVoiceRequest => 'Request';
-
-  @override
-  String get companionVoiceUrl => 'Request URL';
-
-  @override
-  String get companionVoiceUrlHelper => '{text} works in the URL too';
-
-  @override
-  String get companionVoiceMethod => 'Method';
-
-  @override
-  String get companionVoiceHeaders => 'Headers';
-
-  @override
-  String get companionVoiceHeadersHelper => 'One per line; kept in secure storage';
-
-  @override
-  String get companionVoiceBody => 'Body';
-
-  @override
-  String get companionVoiceBodyHelper => '{text} becomes what she says';
-
-  @override
-  String get companionVoiceField => 'Audio field';
-
-  @override
-  String get companionVoiceFieldHelper =>
-      'If the reply is JSON: where the audio is (base64 or a link), like data.audio. Leave empty when it returns audio';
-
-  @override
-  String get companionVoicePrivacy => 'What she says is sent to the service you enter.';
-
-  @override
-  String get companionVoicePreview => 'Preview';
-
-  @override
-  String get companionVoicePreviewing => 'Requesting…';
-
-  @override
-  String get companionVoicePreviewOk => 'It works. Did you hear her?';
-
-  @override
-  String companionVoicePreviewFailed(String reason) {
-    return 'Didn\'t work: $reason';
-  }
-
-  @override
-  String get companionVoiceNotSetUp => 'Fill in the address above first.';
-
-  @override
-  String get companionVoiceFallback => 'Couldn\'t reach her voice service, so the phone\'s own voice stood in';
 
   @override
   String get companionGreetFirstNameless => 'Hi, I live here now. Nice to meet you.';
@@ -6026,43 +5809,10 @@ class L10nEn extends L10n {
   }
 
   @override
-  String get companionVoicePreset => 'Popular services';
-
-  @override
-  String get companionVoicePresetHint => 'Xiaomi MiMo, OpenAI, SiliconFlow, Alibaba Model Studio: just add a key';
-
-  @override
-  String get companionVoiceService => 'Service';
-
-  @override
-  String companionVoiceKeyWhere(String site) {
-    return 'Get one at $site; kept in this phone\'s secure storage';
-  }
-
-  @override
-  String get companionVoiceVoiceCustomHelper => 'Pick one, or type a voice ID the service gave you';
-
-  @override
-  String get companionVoiceStyle => 'Speaking style';
-
-  @override
-  String get companionVoiceStyleHelper =>
-      'Describe her tone and the service reads in it; leave empty for the default gentle girl\'s voice';
-
-  @override
-  String get companionVoiceFemale => 'female';
-
-  @override
-  String get companionVoiceMale => 'male';
-
-  @override
   String get companionClonePreset => 'Preset voices';
 
   @override
   String get companionCloneMine => 'Clone a voice';
-
-  @override
-  String get companionVoicePresetVoice => 'Preset voice';
 
   @override
   String get companionCloneRecording => 'Recording';
@@ -9210,9 +8960,6 @@ class L10nEn extends L10n {
       'You can turn bundled plugins on or off, or connect a computer to manage plugins';
 
   @override
-  String get harmonyVoiceLocalLine => 'On-device HarmonyOS has no voice model';
-
-  @override
   String get harmonyPasswordStorageHelp => 'Saved only on this phone, encrypted by the system keystore';
 
   @override
@@ -9221,19 +8968,6 @@ class L10nEn extends L10n {
 
   @override
   String get harmonyUsageNotSent => 'Usage statistics aren\'t sent on HarmonyOS for now';
-
-  @override
-  String get harmonyVoiceSystemHint => 'Uses the system\'s speech recognition';
-
-  @override
-  String get harmonyVoiceSystemHintChinese => 'Uses the system\'s speech recognition, Chinese only';
-
-  @override
-  String get harmonyVoiceAutoHint =>
-      'Uses DeepSeek when you\'re signed in or have an API key, otherwise the system\'s speech recognition';
-
-  @override
-  String get harmonyVoiceSystemUnavailable => 'The system\'s speech recognition isn\'t available';
 
   @override
   String get harmonyNetworkRelayOnly => 'This version goes through the relay, end-to-end encrypted the whole way.';
@@ -9255,9 +8989,6 @@ class L10nEn extends L10n {
 
   @override
   String get harmonyKwPets => 'pet,pets,companion,whale';
-
-  @override
-  String get harmonyKwVoice => 'speech recognition,dictation,microphone,mic,voice';
 
   @override
   String get harmonyBackgroundSubtitleLong =>
@@ -9945,12 +9676,6 @@ class L10nEn extends L10n {
       'Couldn’t open system settings. Turn on notifications in Settings → DSH Go → Notifications.';
 
   @override
-  String get iosVoiceSystemHint => 'Use the system’s speech recognition';
-
-  @override
-  String get iosVoiceAllowSystem => 'Allow speech recognition in Settings';
-
-  @override
   String get iosPluginsPermissionLocalThirdParty =>
       'Plugins run with DSH’s permissions: they can read and write files, run commands, and read API keys. They aren’t restricted by the workspace sandbox. Provided by a third party and not reviewed by DSH.';
 
@@ -10202,14 +9927,6 @@ class L10nEn extends L10n {
   @override
   String get iosPhoneLinkErrorTunnel =>
       'Can\'t reach this phone\'s services. First check that LocalDevVPN is connected and Developer Mode is on, then check the connection again.';
-
-  @override
-  String get iosSpeechCallEndNoRecognizer =>
-      'Voice calls need a way to recognize recordings: sign in to DeepSeek, add an API key, or configure another available cloud recognizer. The local voice model is not available on iOS yet.';
-
-  @override
-  String get iosSpeechCallEndNoRecognizerSignedIn =>
-      'This connection can\'t use your signed-in account to recognize call recordings (for example, through DSH Remote). Add a DeepSeek API key or configure another available cloud recognizer. The local voice model is not available on iOS yet.';
 
   @override
   String get iosPhoneLinkErrorPairingRejected =>
@@ -11684,21 +11401,6 @@ class L10nEn extends L10n {
 
   @override
   String get petActionBusy => 'This chat is busy. Choose New chat.';
-
-  @override
-  String get petActionVoiceMissing => 'Download the offline voice model in the app first.';
-
-  @override
-  String get petActionVoiceTitle => 'Voice for Quick ask';
-
-  @override
-  String get petActionVoiceReturn => 'Back to pet';
-
-  @override
-  String get petActionVoiceStop => 'Finish recording';
-
-  @override
-  String get petActionVoiceStart => 'Record';
 
   @override
   String get phoneDiagnosticsCollecting => 'Collecting…';
@@ -18132,12 +17834,6 @@ class L10nEn extends L10n {
   String get searchKwPerformance => 'battery,smooth,lag,lite,full,speed';
 
   @override
-  String get searchKwVoice => 'speech recognition,dictation,microphone,mic,voice,read aloud,voice call,call,TTS,speech';
-
-  @override
-  String get searchKwVoiceReading => 'read aloud,reading voice,TTS,voice,Stella,Tide,speech';
-
-  @override
   String get searchKwNotifications => 'alerts,push,banner,sound';
 
   @override
@@ -19775,351 +19471,7 @@ class L10nEn extends L10n {
   }
 
   @override
-  String get speechReadAloud => 'Read aloud';
-
-  @override
-  String get speechReadAloudStop => 'Stop reading';
-
-  @override
-  String get speechReadSection => 'Read aloud';
-
-  @override
-  String get speechReadFooter => 'Used by the read-aloud key under replies, the companion room and voice calls.';
-
-  @override
-  String get speechVoiceTitle => 'Reading voice';
-
-  @override
-  String get speechVoiceHello => 'Hello, this is the reading voice.';
-
-  @override
-  String get speechVoiceDeepseek => 'DeepSeek';
-
-  @override
-  String get speechVoiceDeepseekHint =>
-      'Paid by your signed-in DeepSeek account; the API key in Settings when signed out or when the account can\'t pay for speech. Nothing to set up';
-
-  @override
-  String get speechVoiceDeepseekFooter =>
-      'Billed by the number of characters read; see the DeepSeek platform for prices. Code blocks, tables and link addresses are left out.';
-
-  @override
-  String get speechVoiceStella => 'Stella (female)';
-
-  @override
-  String get speechVoiceTide => 'Tide (male)';
-
-  @override
-  String get speechVoiceStellaShort => 'Stella';
-
-  @override
-  String get speechVoiceTideShort => 'Tide';
-
-  @override
-  String get speechVoiceFollow => 'Same as read aloud';
-
-  @override
-  String get speechVoiceFollowHint => 'The reading voice in Settings › Voice';
-
-  @override
-  String get speechNotSetUp => 'The reading voice isn\'t set up yet. See Settings › Voice';
-
-  @override
-  String get speechNoCredential => 'Sign in to DeepSeek or add an API key in Settings first';
-
-  @override
-  String get speechAccountUnusable =>
-      'Your signed-in account can\'t pay for DeepSeek speech here: the DSH you\'re connected to is older (updating fixes it), or you\'re going through DSH Remote. Add a DeepSeek API key in Settings to use it';
-
-  @override
-  String get speechSignIn =>
-      'Your DeepSeek account can\'t pay for speech (sign-in expired, or speech takes only an API key). Sign in again, or add an API key in Settings';
-
-  @override
-  String get speechUnauthorized => 'The DeepSeek API key was refused. Check it in Settings';
-
-  @override
-  String get speechBalance => 'Not enough DeepSeek balance';
-
-  @override
-  String get speechRateLimited => 'Too many requests. Try again shortly';
-
-  @override
-  String get speechNothingToRead => 'This reply has no text to read';
-
-  @override
-  String get speechNotHeard => 'Didn\'t catch that. Say it again';
-
-  @override
-  String get speechTooLong => 'That recording is too long. Try shorter parts';
-
-  @override
-  String get speechBusy => 'The speech service is busy. Try again shortly';
-
-  @override
-  String get speechNetwork => 'Can\'t reach the speech service. Check the network';
-
-  @override
-  String get speechReadFailed => 'Couldn\'t read it aloud';
-
-  @override
-  String get speechListenFailed => 'Couldn\'t recognize it';
-
-  @override
-  String get speechCloudNotice =>
-      'Your voice is sent to DeepSeek to be recognized. To recognize on the phone, switch to the voice model.';
-
-  @override
-  String get speechCloudNotSetUp => 'No cloud recognition service is set up';
-
-  @override
   String get speechCallTile => 'Voice call';
-
-  @override
-  String get speechCallSection => 'Voice calls';
-
-  @override
-  String get speechCallFooter =>
-      'In a call, pause after you speak and it is sent; the answer is read while it is written.';
-
-  @override
-  String get speechCallBargeIn => 'Interrupt by speaking';
-
-  @override
-  String get speechCallBargeInHint =>
-      'When you speak over the AI it goes quiet; a “yeah” lets it go on, anything else stops it';
-
-  @override
-  String get speechCallSpoken => 'Spoken answers';
-
-  @override
-  String get speechCallSpokenHint => 'The call\'s first message asks for short, conversational answers';
-
-  @override
-  String get speechCallSpeaker => 'Speakerphone by default';
-
-  @override
-  String get speechCallSpeakerHint => 'Headphones always win when connected';
-
-  @override
-  String get speechCallHint =>
-      '(This is a voice call; what I say comes through speech recognition. Please answer briefly and conversationally, without Markdown, lists, tables or code blocks.)';
-
-  @override
-  String speechCallCutNote(String heard) {
-    return '(I cut you off at “$heard”; I didn\'t hear the rest.)';
-  }
-
-  @override
-  String get speechCallCutEarly => '(I cut you off before you said anything; I didn\'t hear that answer.)';
-
-  @override
-  String get speechCallCue => 'Thinking sound';
-
-  @override
-  String get speechCallCueHint => 'A soft chime when an answer is slow to start';
-
-  @override
-  String get speechLiveSection => 'Live captions';
-
-  @override
-  String get speechLiveName => 'Streaming recognizer';
-
-  @override
-  String get speechLiveSystemName => 'System recognizer (Mandarin)';
-
-  @override
-  String get speechLiveSystemReadyNote => 'Provided by HarmonyOS, no model to download; calls use it automatically';
-
-  @override
-  String get speechLiveSystemBusy => 'In use';
-
-  @override
-  String get speechLiveSystemBusyNote => 'Voice input or another recognition is using it; tap Retry when it is done';
-
-  @override
-  String speechLiveSystemFailedNote(String reason) {
-    return 'System recognition isn\'t available on this phone now: $reason';
-  }
-
-  @override
-  String get speechLiveSystemFooter =>
-      'Captions and barge-in detection run on the phone through the HarmonyOS recognizer; the text sent to the AI still comes from the recognition chosen above, and a cloud choice uploads the recording.';
-
-  @override
-  String speechLiveAbsentNote(String mb) {
-    return 'Download it and calls show your words as you speak, and stop sooner when you cut in. About $mb; it runs on the phone';
-  }
-
-  @override
-  String speechLiveReadyNote(String mb) {
-    return 'Using $mb. Calls use it automatically';
-  }
-
-  @override
-  String get speechLiveBlocked => 'Off';
-
-  @override
-  String get speechLiveBlockedNote =>
-      'It crashed on this phone, so live captions are off; calls work as before. Delete it and download again to try once more.';
-
-  @override
-  String get speechLiveFooter =>
-      'Captions and cut-ins run on the phone; the text sent to the AI still comes from the recognition chosen above, and cloud recognition uploads the recording.';
-
-  @override
-  String get speechLiveDeleteTitle => 'Delete the streaming recognizer?';
-
-  @override
-  String get speechLiveDeleteBody => 'Calls will stop showing live captions. You can download it again any time.';
-
-  @override
-  String get speechCallStarting => 'Connecting';
-
-  @override
-  String get speechCallListening => 'Listening';
-
-  @override
-  String get speechCallHearing => 'You\'re speaking';
-
-  @override
-  String get speechCallThinking => 'Thinking';
-
-  @override
-  String get speechCallSpeaking => 'Speaking. Tap the light to skip';
-
-  @override
-  String get speechCallMuted => 'Muted';
-
-  @override
-  String get speechCallEnded => 'Call ended';
-
-  @override
-  String get speechCallEndPermission => 'No microphone permission';
-
-  @override
-  String get speechCallEndMicrophone => 'The microphone is busy or can\'t be opened';
-
-  @override
-  String get speechCallEndNoRecognizerSignedIn =>
-      'A call needs a way to recognize speech. Your signed-in account can\'t pay for DeepSeek speech here (the DSH you\'re connected to is older, or you\'re going through DSH Remote): add a DeepSeek API key in Settings, or download the voice model in Settings › Voice';
-
-  @override
-  String get speechCallEndNoRecognizer =>
-      'A call needs a recognizer that takes recordings: sign in to DeepSeek, add an API key, or download the voice model';
-
-  @override
-  String get speechCallEndBackground => 'Calls end when the app goes to the background';
-
-  @override
-  String get speechCallEndFailed => 'Recording failed; the call has ended';
-
-  @override
-  String get speechCallSendFailed => 'That didn\'t go through. Say it again';
-
-  @override
-  String get speechCallSkipHint => 'Skip this answer';
-
-  @override
-  String get speechCallTranscript => 'Captions';
-
-  @override
-  String get speechCallTranscriptHint => 'Everything said on this call';
-
-  @override
-  String get speechCallTranscriptEmpty => 'Nothing said yet. What you both say is written down here, line by line.';
-
-  @override
-  String get speechCallTranscriptCut => 'You cut in here';
-
-  @override
-  String get speechCallMute => 'Mute';
-
-  @override
-  String get speechCallUnmute => 'Unmute';
-
-  @override
-  String get speechCallHangUp => 'Hang up';
-
-  @override
-  String get speechCallSpeakerOn => 'Speaker';
-
-  @override
-  String get speechCallEarpiece => 'Earpiece';
-
-  @override
-  String get speechBackdropTitle => 'Call background';
-
-  @override
-  String get speechCallSettings => 'Call settings';
-
-  @override
-  String get speechCallPause => 'Pause before she answers';
-
-  @override
-  String get speechCallPauseQuick => 'Short';
-
-  @override
-  String get speechCallPauseNormal => 'Medium';
-
-  @override
-  String get speechCallPausePatient => 'Long';
-
-  @override
-  String get speechCallPauseHint => 'Pick Long if she cuts in while you pause; Short if she feels slow to answer.';
-
-  @override
-  String get speechCallSpeechSection => 'Voice and recognition';
-
-  @override
-  String get speechCallVoice => 'Her voice';
-
-  @override
-  String get speechCallSpeechHint => 'Changes apply from the next sentence.';
-
-  @override
-  String get speechBackdropSea => 'Deep sea';
-
-  @override
-  String get speechBackdropImage => 'My picture';
-
-  @override
-  String get speechBackdropImagePick => 'Pick a picture';
-
-  @override
-  String get speechBackdropCompanion => 'Companion';
-
-  @override
-  String get speechBackdropHint =>
-      'Pictures are softened and darkened so captions stay readable. With your companion, she speaks along with the voice.';
-
-  @override
-  String get speechBackdropHintChange =>
-      'Tap My picture again to change it. With your companion, she speaks along with the voice.';
-
-  @override
-  String get speechBackdropNoCompanion => 'Set her up in the companion room first to bring her into calls.';
-
-  @override
-  String get speechBackdropReplace => 'Change picture';
-
-  @override
-  String get speechBackdropPickFailed => 'That picture can\'t be used. Try another';
-
-  @override
-  String get speechCallVisual => 'Light';
-
-  @override
-  String get speechCallVisualRing => 'Ring';
-
-  @override
-  String get speechCallVisualMono => 'Line';
-
-  @override
-  String get speechCallVisualGlass => 'Orb';
-
-  @override
-  String get speechInsecure => 'That service\'s address isn\'t https; the key can\'t be sent that way';
 
   @override
   String starPromptTitle(int hours) {
@@ -24237,11 +23589,6 @@ class L10nEn extends L10n {
   String get tavernGameHere => 'A mini-game goes here; it can\'t be played here yet';
 
   @override
-  String tavernCanvasReplied(String name) {
-    return '$name replied';
-  }
-
-  @override
   String get tavernMvuIssues => 'This card\'s variables hit a problem';
 
   @override
@@ -24380,9 +23727,6 @@ class L10nEn extends L10n {
   @override
   String get tavernCanvasSubtitle =>
       'The whole chat in one web page laid out as SillyTavern does, so a card\'s ST styles reach across messages. Card scripts run here; turn on \"No card scripts in those pages\" to stop them. Not for visual novel.';
-
-  @override
-  String get tavernCanvasReloaded => 'The page reloaded';
 
   @override
   String get tavernLowPower => 'Power-saving pages';
@@ -27548,302 +26892,6 @@ class L10nEn extends L10n {
 
   @override
   String get viewUiDialectNote => 'Shown in DSH Web';
-
-  @override
-  String get voiceSettingsTitle => 'Voice';
-
-  @override
-  String get voiceModeAuto => 'Automatic';
-
-  @override
-  String get voiceModeSystem => 'System';
-
-  @override
-  String get voiceModeEngine => 'Voice model';
-
-  @override
-  String get voiceModeAutoHint =>
-      'Uses DeepSeek when you’re signed in or have an API key, otherwise the voice model or the phone’s service';
-
-  @override
-  String get voiceModeSystemHint => 'Use the recognition service selected on this phone';
-
-  @override
-  String get voiceModeEngineHint => 'Recognizes speech with the engine’s voice model';
-
-  @override
-  String get voiceFallbackStarted => 'Switched to the voice model. Please speak again.';
-
-  @override
-  String get voiceChooseSystem => 'Select a speech recognition service in system settings';
-
-  @override
-  String get voiceConfigureEngine => 'Download the voice model in voice settings first';
-
-  @override
-  String get voiceConfigureEither => 'The phone’s service isn’t available. Download the voice model in voice settings.';
-
-  @override
-  String get voiceErrorNetworkTimeout => 'Speech recognition timed out. Check your connection.';
-
-  @override
-  String get voiceErrorNetwork => 'Speech recognition could not connect to the network';
-
-  @override
-  String get voiceErrorAudio => 'Audio recording failed. Check the microphone.';
-
-  @override
-  String get voiceErrorServer => 'The system speech service failed. Try again later.';
-
-  @override
-  String get voiceErrorClient => 'Could not start system recognition. Check the speech service.';
-
-  @override
-  String get voiceErrorSpeechTimeout => 'No speech was detected. Please speak again.';
-
-  @override
-  String get voiceErrorNoMatch => 'Didn’t catch that. Try again.';
-
-  @override
-  String get voiceErrorBusy => 'The system speech service is busy. Try again later.';
-
-  @override
-  String get voiceErrorPermission => 'Voice input needs microphone access';
-
-  @override
-  String get voiceErrorTooManyRequests => 'Too many speech requests. Try again later.';
-
-  @override
-  String get voiceErrorDisconnected => 'The system speech service disconnected';
-
-  @override
-  String get voiceErrorLanguageUnsupported => 'System recognition does not support this language';
-
-  @override
-  String get voiceErrorLanguageUnavailable => 'Download this language in the speech service first';
-
-  @override
-  String get voiceErrorSupportCheck => 'The speech service cannot check recognition support';
-
-  @override
-  String get voiceErrorDownloadEvents => 'The speech service cannot report model download progress';
-
-  @override
-  String voiceErrorUnknown(int code) {
-    return 'Speech service error $code. Try another recognition service.';
-  }
-
-  @override
-  String get voiceSettingsFailed => 'Couldn’t read speech settings. Try again.';
-
-  @override
-  String get voiceModeSection => 'Recognition';
-
-  @override
-  String get voiceModelSection => 'Voice model';
-
-  @override
-  String get voiceModelFooter =>
-      'Once downloaded, Chinese, English, Cantonese, Japanese and Korean are recognized on the phone; recordings stay on it.';
-
-  @override
-  String get voiceModelWaiting => 'Available once the engine is running';
-
-  @override
-  String get voiceModelUnsupported => 'This engine has no voice model';
-
-  @override
-  String get voiceModelAbsent => 'Not downloaded';
-
-  @override
-  String get voiceModelDownloading => 'Downloading';
-
-  @override
-  String get voiceModelPreparing => 'Checking and loading';
-
-  @override
-  String get voiceModelReady => 'Ready';
-
-  @override
-  String get voiceModelFailed => 'Download failed';
-
-  @override
-  String voiceModelBytes(String done, String total) {
-    return '$done of $total';
-  }
-
-  @override
-  String voiceModelReadyNote(String size) {
-    return 'Uses $size; works offline';
-  }
-
-  @override
-  String voiceModelAbsentNote(String size) {
-    return 'About $size to download';
-  }
-
-  @override
-  String get voiceModelWaitingNote => 'The download starts once the engine is running';
-
-  @override
-  String get voiceModelFailNetwork => 'Couldn’t reach the download source';
-
-  @override
-  String get voiceModelFailTimeout => 'The download stopped making progress';
-
-  @override
-  String get voiceModelFailCertificate => 'Secure connection failed; check the phone’s date';
-
-  @override
-  String get voiceModelFailServer => 'The download source is unavailable for now';
-
-  @override
-  String get voiceModelFailIntegrity => 'The files didn’t pass verification';
-
-  @override
-  String voiceModelFailStorage(String size) {
-    return 'Not enough storage; about $size more is needed';
-  }
-
-  @override
-  String get voiceModelFailEngine => 'The engine didn’t respond';
-
-  @override
-  String get voiceModelFailUnknown => 'The download didn’t finish';
-
-  @override
-  String get voiceModelDownload => 'Download';
-
-  @override
-  String get voiceModelResume => 'Resume';
-
-  @override
-  String get voiceModelRedownload => 'Re-download';
-
-  @override
-  String get voiceModelMeteredTitle => 'Download over mobile data?';
-
-  @override
-  String voiceModelMeteredBody(String size) {
-    return 'The voice model is about $size and will use mobile data.';
-  }
-
-  @override
-  String get voiceModelDeleteTitle => 'Delete the voice model?';
-
-  @override
-  String get voiceModelDeleteBody =>
-      'Voice input will use the phone’s service. You can download the model again any time.';
-
-  @override
-  String get voiceModelDeleteFailed => 'Couldn’t delete the voice model. Try again.';
-
-  @override
-  String get voiceModelDeleteStopping => 'The download is still stopping. Delete again in a moment.';
-
-  @override
-  String voiceModelStartedToast(String size) {
-    return 'Downloading the voice model · about $size';
-  }
-
-  @override
-  String voiceModelResumedToast(String size) {
-    return 'Resuming the voice model · about $size left';
-  }
-
-  @override
-  String get voiceModelReadyToast => 'Voice input is ready';
-
-  @override
-  String voiceModelFailedToast(String reason) {
-    return 'Voice model download failed: $reason';
-  }
-
-  @override
-  String voiceModelNoticeDownloading(int percent) {
-    return 'Downloading the voice model $percent%';
-  }
-
-  @override
-  String get voiceModelNoticePreparing => 'Checking the voice model';
-
-  @override
-  String get voiceModelNoticeFailed => 'Voice model download failed. Open the app to retry.';
-
-  @override
-  String get voiceModeDeepseek => 'DeepSeek';
-
-  @override
-  String get voiceModeDeepseekHint => 'DeepSeek’s recognizer, paid by your signed-in account or API key';
-
-  @override
-  String get voiceModeCloud => 'Another cloud service';
-
-  @override
-  String get voiceModeCloudHint => 'An OpenAI-compatible transcription API, such as Whisper or SiliconFlow';
-
-  @override
-  String get voiceCloudSection => 'Cloud recognition service';
-
-  @override
-  String get voiceCloudFooter => 'Recordings are sent to this service. The key stays on this phone.';
-
-  @override
-  String get voiceCloudBaseHelper => 'Up to /v1; the app calls …/audio/transcriptions';
-
-  @override
-  String get voiceCloudModelHelper => 'For example whisper-1 or FunAudioLLM/SenseVoiceSmall';
-
-  @override
-  String get voiceScribeReadFailed => 'Could not read voice settings. Retry.';
-
-  @override
-  String get voiceScribeSavedReadFailed => 'Saved. Refresh to see the latest settings.';
-
-  @override
-  String get voiceScribeSaveUnconfirmed => 'Couldn’t confirm the save. Refresh or retry.';
-
-  @override
-  String get voiceScribeTitle => 'Voice settings';
-
-  @override
-  String get voiceScribePolishPrompt => 'Polish prompt';
-
-  @override
-  String get voiceScribeLanguage => 'Recognition language';
-
-  @override
-  String get voiceScribeRefresh => 'Refresh';
-
-  @override
-  String get voiceScribeHostChanged => 'The connection changed. Reopen to continue.';
-
-  @override
-  String get voiceScribeUnsupported => 'Voice settings aren’t available on this connection.';
-
-  @override
-  String get voiceScribePluginDefault => 'Default';
-
-  @override
-  String get voiceScribeBuiltInPrompt => 'Built-in prompt';
-
-  @override
-  String get voiceScribeProviders => 'Recognition services';
-
-  @override
-  String get voiceScribeKeySet => 'Key set';
-
-  @override
-  String get voiceScribeNoKey => 'No key';
-
-  @override
-  String get voiceScribeHotwords => 'Hotwords';
-
-  @override
-  String voiceScribeHotwordRules(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count rules', one: '1 rule');
-    return '$_temp0';
-  }
 
   @override
   String get wallpaperTitle => 'Wallpaper';

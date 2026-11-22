@@ -12,19 +12,8 @@
   "accessFeaturePhoneNeeds": "Needs accessibility and notifications",
   "accessFeatureBackground": "Keep running in background",
   "accessFeatureBackgroundNeeds": "Tells you when tasks finish; needs notifications and background access",
-  "accessFeatureVoice": "Voice input",
-  "accessFeatureVoiceNeeds": "Needs the microphone",
   "accessFeatureAlerts": "Reply alerts",
   "accessFeatureAlertsNeeds": "Needs notifications",
-  "accessVoiceModel": "Works offline; downloads a voice model of about {size} MB",
-  "@accessVoiceModel": {
-    "placeholders": {
-      "size": {
-        "type": "int"
-      }
-    }
-  },
-  "accessVoiceMetered": "You're on mobile data; the download will use it",
   "accessFilesRiskBody": "AI can read and change your photos, downloads and documents.",
   "accessStepCount": "{index} / {total}",
   "@accessStepCount": {
@@ -53,8 +42,6 @@
     }
   },
   "accessOpenFailed": "Couldn't open system settings",
-  "accessMicTitle": "Allow the microphone",
-  "accessMicWhy": "For voice input",
   "accessStorageTitle": "Allow file access",
   "accessStorageWhy": "Lets AI read and write photos, downloads and documents",
   "accessNotifyTitle": "Allow notifications",

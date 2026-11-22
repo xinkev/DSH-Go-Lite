@@ -129,14 +129,41 @@
   "tavernPresetExport": "Export preset",
   "tavernPresetDelete": "Delete preset",
   "tavernPresetDeleteTitle": "Delete the preset “{name}”?",
-  "@tavernPresetDeleteTitle": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernPresetDeleteTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernPresetDeleteMessage": "Chats that use it switch to the default preset. It can't be brought back.",
   "tavernPresetImported": "Imported “{name}”",
-  "@tavernPresetImported": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernPresetImported": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernPresetImportedWithIssues": "Imported “{name}”, with {count} notes",
-  "@tavernPresetImportedWithIssues": {"placeholders": {"name": {"type": "String"}, "count": {"type": "int"}}},
+  "@tavernPresetImportedWithIssues": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernPresetImportFailed": "Couldn't import: {reason}",
-  "@tavernPresetImportFailed": {"placeholders": {"reason": {"type": "String"}}},
+  "@tavernPresetImportFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
   "tavernPresetNotText": "This file isn't text",
   "tavernPresetsEmptyMessage": "Presets exported from SillyTavern as JSON, and dsh-preset-enhance share packages, can be imported.",
   "tavernPresetEnvelope": "Share package",
@@ -150,9 +177,21 @@
   "tavernRegexExport": "Export regex",
   "tavernRegexDelete": "Delete regex",
   "tavernRegexDeleteTitle": "Delete the regex “{name}”?",
-  "@tavernRegexDeleteTitle": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernRegexDeleteTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernRegexImported": "Imported {count} regex scripts",
-  "@tavernRegexImported": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernRegexImported": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernRegexIncompatible": "Can't run here; skipped",
   "tavernRegexEmpty": "No global regex yet",
   "tavernRegexEmptyMessage": "Regex JSON exported from SillyTavern, one script or a list, can be imported.",
@@ -166,15 +205,42 @@
   "tavernLorebookExport": "Export lorebook",
   "tavernLorebookDelete": "Delete lorebook",
   "tavernLorebookDeleteTitle": "Delete the lorebook “{name}”?",
-  "@tavernLorebookDeleteTitle": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernLorebookDeleteTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernLorebookDeleteMessage": "Wherever it is bound, it is skipped. It can't be brought back.",
   "tavernLorebookImported": "Imported “{name}”, {count} entries",
-  "@tavernLorebookImported": {"placeholders": {"name": {"type": "String"}, "count": {"type": "int"}}},
+  "@tavernLorebookImported": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernLorebooksEmpty": "No standalone lorebooks yet",
   "tavernLorebooksEmptyMessage": "Lorebook JSON exported from SillyTavern can be imported.",
   "tavernLorebookCount": "{count}",
-  "@tavernLorebookCount": {"placeholders": {"count": {"type": "int"}}},
-  "@tavernRegexCount": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernLorebookCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@tavernRegexCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernPresetEdit": "Edit preset",
   "tavernPresetParams": "Numbers",
   "tavernPresetPrompts": "Prompts, in the order they're sent",
@@ -185,7 +251,13 @@
   "tavernVerdictPartial": "Partly works",
   "tavernVerdictPreserve": "Kept, not run",
   "tavernReportChecked": "Checked {time}",
-  "@tavernReportChecked": {"placeholders": {"time": {"type": "String"}}},
+  "@tavernReportChecked": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
   "tavernReportStale": "Changed since this check",
   "tavernReportRecheck": "Check again",
   "tavernReportNone": "Not checked yet",
@@ -200,9 +272,21 @@
   "tavernPresetForChat": "This chat's preset",
   "tavernPresetFollow": "Default",
   "tavernPresetFollowDefault": "Default ({name})",
-  "@tavernPresetFollowDefault": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernPresetFollowDefault": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernPresetPickerEmpty": "Import presets in Library › Presets to give this chat another.",
-  "@tavernPresetCount": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernPresetCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernSectionShelf": "Shelf",
   "tavernSectionChats": "Chats",
   "tavernSectionLibrary": "Library",
@@ -675,9 +759,21 @@
   "tavernLorebooksBoundPersona": "Used in every chat where you're this persona",
   "tavernLorebookForChat": "Lorebooks for this chat",
   "tavernLorebookForCharacter": "Lorebooks for {name}",
-  "@tavernLorebookForCharacter": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernLorebookForCharacter": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernLorebookForPersona": "Lorebooks as {name}",
-  "@tavernLorebookForPersona": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernLorebookForPersona": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernLorebookChatNote": "This chat only. Global ones are on in every chat.",
   "tavernLorebookCharacterNote": "Every chat with this character uses these, along with the card's own lorebook.",
   "tavernLorebookPersonaNote": "Every chat where you're this persona uses these.",
@@ -699,33 +795,104 @@
   "tavernPrefillNote": "In Thinking it applies only with thinking on; otherwise it goes in the reply. Continuing a reply doesn't use it.",
   "tavernPresetPromptEmpty": "Empty",
   "tavernThinkingSeconds": "{seconds}s",
-  "@tavernThinkingSeconds": {"placeholders": {"seconds": {"type": "int"}}},
+  "@tavernThinkingSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
   "tavernDeletedCount": "{count, plural, =1{Deleted 1 message} other{Deleted {count} messages}}",
-  "@tavernDeletedCount": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernDeletedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernDeleteFromUndoable": "From this one to the latest, with their alternatives and branches. You can undo for a few seconds after.",
   "tavernUndoFailed": "Couldn't undo",
   "tavernShowUsage": "Show usage and cost under each reply",
   "tavernShowUsageSubtitle": "Input and output tokens as the model reports them; for DeepSeek models, a cost at their list prices, peak and off-peak hours apart",
   "tavernUsageLine": "In {input} · out {output}",
-  "@tavernUsageLine": {"placeholders": {"input": {"type": "int", "format": "decimalPattern"}, "output": {"type": "int", "format": "decimalPattern"}}},
+  "@tavernUsageLine": {
+    "placeholders": {
+      "input": {
+        "type": "int",
+        "format": "decimalPattern"
+      },
+      "output": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
   "tavernUsageLineCached": "In {input} ({cached} cached) · out {output}",
-  "@tavernUsageLineCached": {"placeholders": {"input": {"type": "int", "format": "decimalPattern"}, "cached": {"type": "int", "format": "decimalPattern"}, "output": {"type": "int", "format": "decimalPattern"}}},
-  "tavernUsageCost": "about\u00a0{usd}",
-  "@tavernUsageCost": {"placeholders": {"usd": {"type": "String"}}},
-  "tavernUsageCostUnder": "under\u00a0{usd}",
-  "@tavernUsageCostUnder": {"placeholders": {"usd": {"type": "String"}}},
+  "@tavernUsageLineCached": {
+    "placeholders": {
+      "input": {
+        "type": "int",
+        "format": "decimalPattern"
+      },
+      "cached": {
+        "type": "int",
+        "format": "decimalPattern"
+      },
+      "output": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "tavernUsageCost": "about {usd}",
+  "@tavernUsageCost": {
+    "placeholders": {
+      "usd": {
+        "type": "String"
+      }
+    }
+  },
+  "tavernUsageCostUnder": "under {usd}",
+  "@tavernUsageCostUnder": {
+    "placeholders": {
+      "usd": {
+        "type": "String"
+      }
+    }
+  },
   "tavernCostAlert": "Per-turn cost reminder",
   "tavernCostAlertSubtitle": "When a turn costs more than this at DeepSeek's list prices, say so over the composer; other models aren't estimated",
   "tavernCostAlertOff": "Off",
   "tavernCostAlertNotice": "This turn cost {cost}, over your reminder line of {line}",
-  "@tavernCostAlertNotice": {"placeholders": {"cost": {"type": "String"}, "line": {"type": "String"}}},
+  "@tavernCostAlertNotice": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "line": {
+        "type": "String"
+      }
+    }
+  },
   "tavernSearchChat": "Search this chat",
   "tavernSearchChatHint": "A line, a word",
   "tavernSearchChatIdle": "Searches every branch of this chat, hidden messages too, but not the thinking. Tap a hit to read it whole.",
   "tavernSearchChatNone": "Nothing found for “{query}”",
-  "@tavernSearchChatNone": {"placeholders": {"query": {"type": "String"}}},
+  "@tavernSearchChatNone": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
   "tavernSearchChatFound": "{count, plural, =1{1 found} other{{count} found, newest first}}",
-  "@tavernSearchChatFound": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernSearchChatFound": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernDeleteOne": "Delete just this one",
   "tavernDeleteOneTitle": "Delete just this message?",
   "tavernDeleteOneMessage": "The messages after it stay, joined to the one before it. This can't be undone.",
@@ -749,7 +916,13 @@
   "tavernLorebookFieldOrderHelp": "Higher numbers come first, and go in first.",
   "tavernLorebookEntryDelete": "Delete this entry",
   "tavernLorebookEntryDeleteTitle": "Delete the entry “{name}”?",
-  "@tavernLorebookEntryDeleteTitle": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernLorebookEntryDeleteTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernLorebookEntryDeleteMessage": "It goes from the card for good.",
   "tavernNarrator": "Narrator",
   "tavernSendOptions": "Other ways to send",
@@ -763,9 +936,24 @@
   "tavernBackupSubtitle": "Cards, chats, presets, lorebooks, personas and settings, in one zip",
   "tavernBackingUp": "Backing up…",
   "tavernBackedUp": "Backed up: {count} files, {size}",
-  "@tavernBackedUp": {"placeholders": {"count": {"type": "int"}, "size": {"type": "String"}}},
+  "@tavernBackedUp": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "tavernBackupFailed": "Couldn't back up: {error}",
-  "@tavernBackupFailed": {"placeholders": {"error": {"type": "String"}}},
+  "@tavernBackupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "tavernRestore": "Restore from a backup",
   "tavernRestoreSubtitle": "Replace this tavern with a backup",
   "tavernRestoreTitle": "Replace this tavern with this backup?",
@@ -773,38 +961,92 @@
   "tavernRestoreAction": "Restore",
   "tavernRestoring": "Restoring…",
   "tavernRestored": "Restored: {count} files",
-  "@tavernRestored": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernRestored": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernRestoreFailed": "Couldn't restore; nothing here changed: {error}",
-  "@tavernRestoreFailed": {"placeholders": {"error": {"type": "String"}}},
+  "@tavernRestoreFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "tavernLoreTest": "Try it",
   "tavernLoreTestTitle": "Try the lorebook",
   "tavernLoreTestInput": "Say something",
   "tavernLoreTestHint": "A line you'd expect to bring an entry in",
   "tavernLoreTestNote": "Only this line, plus the always-on entries; earlier messages, sticky and cooldown don't count. No model is called.",
   "tavernLoreTestHits": "Goes into the prompt ({count})",
-  "@tavernLoreTestHits": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernLoreTestHits": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernLoreTestNone": "This line brings in no entry.",
   "tavernLoreTestOverflow": "Over the lorebook budget; the later entries were left out.",
   "tavernLoreTestFailed": "Couldn't try it: {error}",
-  "@tavernLoreTestFailed": {"placeholders": {"error": {"type": "String"}}},
+  "@tavernLoreTestFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "tavernLoreReasonKeys": "Keyword {keys}",
-  "@tavernLoreReasonKeys": {"placeholders": {"keys": {"type": "String"}}},
+  "@tavernLoreReasonKeys": {
+    "placeholders": {
+      "keys": {
+        "type": "String"
+      }
+    }
+  },
   "tavernLoreReasonSticky": "Sticky, still on",
   "tavernLoreReasonDecorator": "Decorator",
   "tavernLoreAtDepth": "At depth {depth}",
-  "@tavernLoreAtDepth": {"placeholders": {"depth": {"type": "int"}}},
+  "@tavernLoreAtDepth": {
+    "placeholders": {
+      "depth": {
+        "type": "int"
+      }
+    }
+  },
   "tavernLoreNearNote": "By the author's note",
   "tavernLoreNearExamples": "By the example dialogue",
   "tavernLoreOutlet": "Outlet",
   "tavernLoreOrder": "Order {order}",
-  "@tavernLoreOrder": {"placeholders": {"order": {"type": "String"}}},
+  "@tavernLoreOrder": {
+    "placeholders": {
+      "order": {
+        "type": "String"
+      }
+    }
+  },
   "tavernBranches": "Branches",
   "tavernBranchesNote": "Each row is a stretch with no fork. An indented row is another way out of the end of the row above. Tap a row to switch to it or name it; one the story is not on can also be deleted.",
   "tavernBranchesEmpty": "No messages in this chat yet.",
   "tavernBranchCount": "{count} messages",
-  "@tavernBranchCount": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernBranchCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernBranchUntil": "to “{text}”",
-  "@tavernBranchUntil": {"placeholders": {"text": {"type": "String"}}},
+  "@tavernBranchUntil": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
   "tavernBranchCurrent": "Current",
   "tavernBranchSwitch": "Switch to this branch",
   "tavernBranchSwitchSubtitle": "Carries on where it last left off",
@@ -814,7 +1056,13 @@
   "tavernBranchNameCaption": "Only for you, to find it again; leave empty to remove it.",
   "tavernBranchSwitched": "Switched to this branch",
   "tavernBranchFailed": "Couldn't do that: {error}",
-  "@tavernBranchFailed": {"placeholders": {"error": {"type": "String"}}},
+  "@tavernBranchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "tavernCardTheme": "Use the card's own look",
   "tavernCardThemeSubtitle": "The accent, name colours, layout and background a card sets; off, this page decides",
   "tavernShelfSort": "Sort",
@@ -834,21 +1082,51 @@
   "tavernNovelIndentSubtitle": "Each paragraph opens two characters in, as in a book",
   "tavernShelfSelect": "Select",
   "tavernShelfPicked": "{count} selected",
-  "@tavernShelfPicked": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernShelfPicked": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernShelfExport": "Export the selected cards",
   "tavernDeleteCharactersTitle": "Delete these {count} characters?",
-  "@tavernDeleteCharactersTitle": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernDeleteCharactersTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernQuickRepliesAll": "All",
   "tavernQuickRepliesManage": "Manage quick replies",
   "tavernSpeakNext": "Let {name} go on",
-  "@tavernSpeakNext": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernSpeakNext": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernSettingsConnection": "Model & connection",
   "tavernDefaultPreset": "Default preset",
   "tavernDefaultPresetPick": "The preset new chats use",
   "tavernGenerationInPreset": "Change {name}'s settings",
-  "@tavernGenerationInPreset": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernGenerationInPreset": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernGenerationPresetNote": "New chats use {name}: change context, reply length and temperature in that preset. A chat with a preset of its own keeps to it.",
-  "@tavernGenerationPresetNote": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernGenerationPresetNote": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernStorage": "Storage",
   "tavernStorageCounting": "Counting…",
   "tavernStorageCharacters": "Character cards",
@@ -858,18 +1136,63 @@
   "tavernStorageNote": "All of it lives on this device only; before you change phones or uninstall, back up the whole tavern.",
   "tavernDefaultPresetEmpty": "Import presets in Library › Presets to pick another.",
   "tavernQuickRepliesAdded": "{count, plural, =1{Added 1 quick reply} other{Added {count} quick replies}}",
-  "@tavernQuickRepliesAdded": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernQuickRepliesAdded": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernQuickRepliesAddedSkipped": "Added {count} quick replies; {skipped} were ST slash commands and left out",
-  "@tavernQuickRepliesAddedSkipped": {"placeholders": {"count": {"type": "int"}, "skipped": {"type": "int"}}},
+  "@tavernQuickRepliesAddedSkipped": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "skipped": {
+        "type": "int"
+      }
+    }
+  },
   "tavernImportChatNoName": "This chat doesn't say whose it is; import it from the character's page",
   "tavernImportChatNoCharacter": "No single “{name}” on the shelf; import this chat from the character's page",
-  "@tavernImportChatNoCharacter": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernImportChatNoCharacter": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernImportedChatsTo": "{count, plural, =1{Imported 1 chat to “{name}”} other{Imported {count} chats to “{name}”}}",
-  "@tavernImportedChatsTo": {"placeholders": {"count": {"type": "int"}, "name": {"type": "String"}}},
+  "@tavernImportedChatsTo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernImportUnknown": "Can't tell what {name} is",
-  "@tavernImportUnknown": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernImportUnknown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernImportFileFailed": "Couldn't import {name}: {reason}",
-  "@tavernImportFileFailed": {"placeholders": {"name": {"type": "String"}, "reason": {"type": "String"}}},
+  "@tavernImportFileFailed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
   "tavernIslands": "Web pages in messages",
   "tavernIslandsSubtitle": "HTML and styles a card writes in its messages (status bars, panels) show in a web page of their own; off, as text",
   "tavernSettingsSafety": "Safety",
@@ -879,14 +1202,38 @@
   "tavernIslandOfflineSubtitle": "Only pictures and fonts inside the card; nothing is loaded from the internet",
   "tavernSessionUsage": "This chat's usage",
   "tavernSessionUsageNote": "{count, plural, =1{1 reply on this branch} other{{count} replies on this branch}}, added up; replaced alternatives not counted",
-  "@tavernSessionUsageNote": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernSessionUsageNote": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernSessionUsageNone": "The model hasn't reported any usage yet",
   "tavernSessionUsageCost": "About {usd} at DeepSeek's list prices, peak and off-peak hours apart; China's public holidays are off-peak all day, so those days come out a little high here",
-  "@tavernSessionUsageCost": {"placeholders": {"usd": {"type": "String"}}},
+  "@tavernSessionUsageCost": {
+    "placeholders": {
+      "usd": {
+        "type": "String"
+      }
+    }
+  },
   "tavernStageCost": "About {usd} at DeepSeek's list prices",
-  "@tavernStageCost": {"placeholders": {"usd": {"type": "String"}}},
+  "@tavernStageCost": {
+    "placeholders": {
+      "usd": {
+        "type": "String"
+      }
+    }
+  },
   "tavernSessionUsageUnpriced": "{count, plural, =1{1 reply used a model not on the price list and isn't in the cost} other{{count} replies used a model not on the price list and aren't in the cost}}",
-  "@tavernSessionUsageUnpriced": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernSessionUsageUnpriced": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernComposerNoKey": "Add a key to begin",
   "tavernWriteOwn": "Write your own character",
   "tavernWriteOwnSubtitle": "Start from a blank card",
@@ -904,7 +1251,16 @@
   "tavernUsageStatsSubtitle": "How many tokens each chat has taken, and about what it cost",
   "tavernUsageAllNote": "Replies on every chat's current line, added up; replaced alternatives aren't counted",
   "tavernUsageChatReplies": "{count} replies · {completion} out",
-  "@tavernUsageChatReplies": {"placeholders": {"count": {"type": "int"}, "completion": {"type": "String"}}},
+  "@tavernUsageChatReplies": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "completion": {
+        "type": "String"
+      }
+    }
+  },
   "tavernSlashNoReply": "There's no reply to do that to yet",
   "tavernRegexTest": "Try it",
   "tavernRegexTestFind": "Find",
@@ -915,9 +1271,21 @@
   "tavernRegexTestMacros": "Macros like {{char}} are not filled in here; they are taken as written.",
   "tavernRegexTestNone": "No match; the text stays as it is",
   "tavernRegexTestResult": "After ({count} replaced)",
-  "@tavernRegexTestResult": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernRegexTestResult": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernRegexTestFailed": "Could not try it: {reason}",
-  "@tavernRegexTestFailed": {"placeholders": {"reason": {"type": "String"}}},
+  "@tavernRegexTestFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
   "tavernStateNote": "As of the current message. Tap one to see or change it; changes go back with this message.",
   "tavernStatePreview": "Nothing saved yet; these are the starting values.",
   "tavernStateChanged": "changed",
@@ -930,7 +1298,13 @@
   "tavernStateEditSaved": "Changed",
   "tavernStateEditSame": "It was already that",
   "tavernStateEditRefused": "Not changed: {reason}",
-  "@tavernStateEditRefused": {"placeholders": {"reason": {"type": "String"}}},
+  "@tavernStateEditRefused": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
   "tavernDirectorAuto": "Director runs on its own",
   "tavernDirectorAutoNote": "This chat only. Every few turns the model is asked once more, which uses a little more.",
   "tavernDirectorRun": "Ask the director now",
@@ -941,14 +1315,32 @@
   "tavernDirectorNotes": "The director's notes",
   "tavernDirectorStale": "Thought out for an earlier moment; kept to read.",
   "tavernDirectorFailed": "The last try did not work: {reason}",
-  "@tavernDirectorFailed": {"placeholders": {"reason": {"type": "String"}}},
+  "@tavernDirectorFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
   "tavernDirectorRunFailed": "Could not do that: {reason}",
-  "@tavernDirectorRunFailed": {"placeholders": {"reason": {"type": "String"}}},
+  "@tavernDirectorRunFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
   "tavernBranchHere": "Branch from here",
   "tavernBranchedHere": "Back to this message; what came after is kept in Branches",
   "tavernBranchHereFailed": "Could not go back to this message",
   "tavernStateItems": "{count} items",
-  "@tavernStateItems": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernStateItems": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernStateSearch": "Search the values",
   "tavernStateNoMatch": "Nothing matches",
   "tavernRuns": "Background log",
@@ -967,17 +1359,41 @@
   "tavernRunNotKept": "Not kept",
   "tavernRunGone": "Its message is gone",
   "tavernRunMore": "and {count} more",
-  "@tavernRunMore": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernRunMore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernInspectCache": "Cache",
   "tavernInspectCacheKept": "Same start as the last turn",
   "tavernInspectCacheBroken": "Changed from part {index}",
-  "@tavernInspectCacheBroken": {"placeholders": {"index": {"type": "int"}}},
+  "@tavernInspectCacheBroken": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
   "tavernInspectCacheMiss": "This part and about {tokens} tokens after it miss the cache; the parts before match the last turn. Usually a lorebook entry near the top changed this turn.",
-  "@tavernInspectCacheMiss": {"placeholders": {"tokens": {"type": "int"}}},
+  "@tavernInspectCacheMiss": {
+    "placeholders": {
+      "tokens": {
+        "type": "int"
+      }
+    }
+  },
   "tavernInspectCacheBreak": "The cache breaks here",
   "tavernPaletteSt": "ST",
   "tavernStTheme": "ST theme: {name}",
-  "@tavernStTheme": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernStTheme": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernStThemeNote": "With 「ST」 as the colours, quotes and *actions* take its colours; one too faint to read here is adjusted until it reads.",
   "tavernStThemeImport": "Import an ST theme",
   "tavernStThemeImportNote": "Takes the quote and italics colours, and its custom CSS, from a theme file exported from SillyTavern.",
@@ -985,9 +1401,21 @@
   "tavernStThemeCssSubtitle": "With 「ST」 as the colours, it goes into the whole-story canvas and overrides the default look, as in ST. Turn it off if the page comes apart; the colours stay.",
   "tavernStThemeRemove": "Remove",
   "tavernStThemeImported": "Now using the colours of the ST theme “{name}”",
-  "@tavernStThemeImported": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernStThemeImported": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernStThemeNoColors": "“{name}” has no quote or italics colour or custom CSS to use",
-  "@tavernStThemeNoColors": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernStThemeNoColors": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernPromptContent": "Content",
   "tavernPromptRole": "Spoken as",
   "tavernPromptRoleSystem": "System",
@@ -998,10 +1426,22 @@
   "tavernPromptInChat": "In chat",
   "tavernPromptDepth": "Depth",
   "tavernPromptDepthNote": "Goes into the chat history, {depth} messages up from the end (0 is the very end), as ST's In-Chat does.",
-  "@tavernPromptDepthNote": {"placeholders": {"depth": {"type": "int"}}},
+  "@tavernPromptDepthNote": {
+    "placeholders": {
+      "depth": {
+        "type": "int"
+      }
+    }
+  },
   "tavernPromptRelativeNote": "Sent where the preset's order puts it, as ST's Relative does.",
   "tavernPromptPlace": "In chat · depth {depth}",
-  "@tavernPromptPlace": {"placeholders": {"depth": {"type": "int"}}},
+  "@tavernPromptPlace": {
+    "placeholders": {
+      "depth": {
+        "type": "int"
+      }
+    }
+  },
   "tavernPromptOrder": "Order at this depth",
   "tavernPromptOrderNote": "When several sit at one depth, the smaller number comes first (100 by default).",
   "tavernPromptForbid": "Keep the card from replacing it",
@@ -1031,25 +1471,47 @@
   "tavernBranchDelete": "Delete this branch",
   "tavernBranchDeleteTitle": "Delete this branch?",
   "tavernBranchDeleteMessage": "Its {count} messages, and every branch that grew from it, will go; you can take it back for a few seconds. The way the story is on now is not touched.",
-  "@tavernBranchDeleteMessage": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernBranchDeleteMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernLetterFrom": "A letter from {from}",
-  "@tavernLetterFrom": {"placeholders": {"from": {"type": "String"}}},
+  "@tavernLetterFrom": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      }
+    }
+  },
   "tavernLetter": "A letter",
   "tavernComponentMore": "Show all",
   "tavernComponentLess": "Show less",
   "tavernItemTaken": "Got",
   "tavernClue": "Clue",
   "tavernPhoneFrom": "Message from {from}",
-  "@tavernPhoneFrom": {"placeholders": {"from": {"type": "String"}}},
+  "@tavernPhoneFrom": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      }
+    }
+  },
   "tavernPhoneMessage": "A message",
   "tavernRollCheck": "Check: {skill}",
-  "@tavernRollCheck": {"placeholders": {"skill": {"type": "String"}}},
+  "@tavernRollCheck": {
+    "placeholders": {
+      "skill": {
+        "type": "String"
+      }
+    }
+  },
   "tavernRoll": "Roll",
   "tavernRollSuccess": "Success",
   "tavernRollFailure": "Failure",
   "tavernGameHere": "A mini-game goes here; it can't be played here yet",
-  "tavernCanvasReplied": "{name} replied",
-  "@tavernCanvasReplied": {"placeholders": {"name": {"type": "String"}}},
   "tavernMvuIssues": "This card's variables hit a problem",
   "tavernMvuUnfinished": "This message's variables were not fully updated; its text is kept",
   "tavernRegexEdit": "Edit rule",
@@ -1086,7 +1548,13 @@
   "tavernRegexDepthAny": "Any",
   "tavernCanvas": "Whole-page canvas (trial)",
   "tavernCardScriptsHint": "{count, plural, =1{1 card script needs Whole-page canvas} other{{count} card scripts need Whole-page canvas}}",
-  "@tavernCardScriptsHint": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernCardScriptsHint": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernCardScriptsHintAction": "Turn on",
   "tavernRender": "How it shows",
   "tavernRenderSubtitle": "Only this character's own chats. Status bars and styling need pages or the canvas; scripts run only on the canvas",
@@ -1094,13 +1562,24 @@
   "tavernRenderIslands": "Pages",
   "tavernRenderCanvas": "Canvas",
   "tavernCanvasSubtitle": "The whole chat in one web page laid out as SillyTavern does, so a card's ST styles reach across messages. Card scripts run here; turn on \"No card scripts in those pages\" to stop them. Not for visual novel.",
-  "tavernCanvasReloaded": "The page reloaded",
   "tavernLowPower": "Power-saving pages",
   "tavernLowPowerSubtitle": "No blur or looping animations in cards' web pages, so the phone runs smoother",
   "tavernGroupSpeaking": "{name} is speaking",
-  "@tavernGroupSpeaking": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernGroupSpeaking": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernGroupThen": "then {names}",
-  "@tavernGroupThen": {"placeholders": {"names": {"type": "String"}}},
+  "@tavernGroupThen": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
   "tavernGroupNoSpeakers": "No one took this turn. Tap a name above to have them speak.",
   "tavernGroupSpeakNext": "Let them go on",
   "tavernGroupNew": "New group chat",
@@ -1121,18 +1600,42 @@
   "tavernGroupDirectorNote": "The director picks who speaks next, as the story goes.",
   "tavernGroupPickTwo": "Pick at least two",
   "tavernGroupCreate": "Create ({count})",
-  "@tavernGroupCreate": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernGroupCreate": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernGroupCreateFailed": "Couldn't create the group: {reason}",
-  "@tavernGroupCreateFailed": {"placeholders": {"reason": {"type": "String"}}},
+  "@tavernGroupCreateFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
   "tavernGroupTag": "Group",
   "tavernGroupMemberCount": "{count} members",
-  "@tavernGroupMemberCount": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernGroupMemberCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernGroupSettings": "Group settings",
   "tavernGroupMaxSpeakers": "Most per turn",
   "tavernGroupSelfResponses": "May answer themselves",
   "tavernGroupSelfResponsesNote": "Whoever spoke last may speak again this turn.",
   "tavernGroupHostNote": "Hosted by {name}: the story's shared state lives on that card.",
-  "@tavernGroupHostNote": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernGroupHostNote": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernGroupMuted": "Muted",
   "tavernGroupMutedNote": "Won't speak on their own; still speaks when named.",
   "tavernGroupTalkativeness": "Talkativeness",
@@ -1157,29 +1660,77 @@
   "tavernGroupErrorHostInUse": "This character hosts a group chat; delete that chat first",
   "tavernGroupErrorInvalidTitle": "A group chat's name can't be blank",
   "tavernToolRollUnsettled": "🎲 {dice}: result not confirmed yet",
-  "@tavernToolRollUnsettled": {"placeholders": {"dice": {"type": "String"}}},
+  "@tavernToolRollUnsettled": {
+    "placeholders": {
+      "dice": {
+        "type": "String"
+      }
+    }
+  },
   "tavernToolRollNotDone": "🎲 {dice}: not rolled",
-  "@tavernToolRollNotDone": {"placeholders": {"dice": {"type": "String"}}},
+  "@tavernToolRollNotDone": {
+    "placeholders": {
+      "dice": {
+        "type": "String"
+      }
+    }
+  },
   "tavernToolRollPass": "target {target}, passed",
-  "@tavernToolRollPass": {"placeholders": {"target": {"type": "int"}}},
+  "@tavernToolRollPass": {
+    "placeholders": {
+      "target": {
+        "type": "int"
+      }
+    }
+  },
   "tavernToolRollFail": "target {target}, missed",
-  "@tavernToolRollFail": {"placeholders": {"target": {"type": "int"}}},
+  "@tavernToolRollFail": {
+    "placeholders": {
+      "target": {
+        "type": "int"
+      }
+    }
+  },
   "tavernToolMemory": "Wants to remember: \"{text}\"",
-  "@tavernToolMemory": {"placeholders": {"text": {"type": "String"}}},
+  "@tavernToolMemory": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
   "tavernToolMemoryAccept": "Remember",
   "tavernToolMemoryReject": "No",
   "tavernToolMemoryStaged": "Decided once this turn is written",
   "tavernToolMemoryIneligible": "Can't be decided now: {reason}",
-  "@tavernToolMemoryIneligible": {"placeholders": {"reason": {"type": "String"}}},
+  "@tavernToolMemoryIneligible": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
   "tavernToolMemoryAccepted": "Remembered",
   "tavernToolMemoryAuto": "Remembered by the automatic setting",
   "tavernToolMemoryRejected": "Not remembered",
   "tavernToolMemoryInactive": "This turn didn't finish normally; not remembered",
   "tavernToolMemoryWaiting": "Your last decision hasn't gone through yet",
   "tavernToolMemoryNotApplied": "Not remembered: {reason}",
-  "@tavernToolMemoryNotApplied": {"placeholders": {"reason": {"type": "String"}}},
+  "@tavernToolMemoryNotApplied": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
   "tavernToolMemoryFailed": "Didn't go through: {detail}",
-  "@tavernToolMemoryFailed": {"placeholders": {"detail": {"type": "String"}}},
+  "@tavernToolMemoryFailed": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
   "tavernToolReasonRevision": "it has changed; refresh and decide again",
   "tavernToolReasonResolved": "already decided",
   "tavernToolReasonContext": "the chat has changed",
@@ -1199,32 +1750,98 @@
   "tavernToolPolicyDiagnostics": "Part of this setting couldn't be read; the tool it belongs to is off for now",
   "tavernToolPolicyNote": "Replies only use these with DeepSeek and thinking off; a change applies from the next turn, and a character card can turn them off",
   "tavernToolPolicyFailed": "Didn't change: {detail}",
-  "@tavernToolPolicyFailed": {"placeholders": {"detail": {"type": "String"}}},
+  "@tavernToolPolicyFailed": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
   "tavernChatTools": "Tools in this chat",
   "tavernChatToolFollow": "As set",
   "tavernChatToolOn": "On",
   "tavernChatToolOff": "Off",
   "tavernChatToolNow": "In this chat: dice {roll}, memories {remember}",
-  "@tavernChatToolNow": {"placeholders": {"roll": {"type": "String"}, "remember": {"type": "String"}}},
+  "@tavernChatToolNow": {
+    "placeholders": {
+      "roll": {
+        "type": "String"
+      },
+      "remember": {
+        "type": "String"
+      }
+    }
+  },
   "tavernChatToolHeld": "What tavern settings turned off stays off, even if on here",
   "tavernInspectRequests": "{count} requests",
-  "@tavernInspectRequests": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernInspectRequests": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernInspectUsageTotals": "In {prompt} (cached {hit}) · out {completion}",
-  "@tavernInspectUsageTotals": {"placeholders": {"prompt": {"type": "String"}, "hit": {"type": "String"}, "completion": {"type": "String"}}},
+  "@tavernInspectUsageTotals": {
+    "placeholders": {
+      "prompt": {
+        "type": "String"
+      },
+      "hit": {
+        "type": "String"
+      },
+      "completion": {
+        "type": "String"
+      }
+    }
+  },
   "tavernReqUsagePrompt": "In",
   "tavernReqUsageCache": "Cached",
   "tavernReqUsageCompletion": "Out",
   "tavernReqUsageLine": "{field}: {parts}",
-  "@tavernReqUsageLine": {"placeholders": {"field": {"type": "String"}, "parts": {"type": "String"}}},
+  "@tavernReqUsageLine": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      },
+      "parts": {
+        "type": "String"
+      }
+    }
+  },
   "tavernReqUsageJoin": ", ",
   "tavernReqUsageKnown": "{known} known",
-  "@tavernReqUsageKnown": {"placeholders": {"known": {"type": "String"}}},
+  "@tavernReqUsageKnown": {
+    "placeholders": {
+      "known": {
+        "type": "String"
+      }
+    }
+  },
   "tavernReqUsageUnknown": "{count} not known",
-  "@tavernReqUsageUnknown": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernReqUsageUnknown": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernReqUsageMissing": "{count} not reported",
-  "@tavernReqUsageMissing": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernReqUsageMissing": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernReqUsageInvalid": "{count} reported wrongly",
-  "@tavernReqUsageInvalid": {"placeholders": {"count": {"type": "int"}}},
+  "@tavernReqUsageInvalid": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "tavernToolFailBudget": "This turn has used up its tool requests and stops here; dice already rolled still count",
   "tavernToolFailBatch": "The model asked for too many tools at once; that batch was not run",
   "tavernToolFailProtocol": "The model's tool call was malformed and was not run",
@@ -1233,7 +1850,13 @@
   "tavernToolFailAnchor": "The chat changed during this turn, so it did not go on",
   "tavernToolFail": "Something went wrong with a tool",
   "tavernToolFailDetail": "Something went wrong with a tool: {detail}",
-  "@tavernToolFailDetail": {"placeholders": {"detail": {"type": "String"}}},
+  "@tavernToolFailDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
   "tavernDiceUnsettled": "The result is not confirmed yet; check again",
   "tavernDicePending": "Your last roll isn't confirmed yet",
   "tavernDiceRecheck": "Check again",
@@ -1241,10 +1864,28 @@
   "tavernDiceBusy": "Busy right now; roll once this turn is written",
   "tavernDiceOff": "Dice are turned off in tavern settings",
   "tavernDiceFailed": "Didn't roll: {detail}",
-  "@tavernDiceFailed": {"placeholders": {"detail": {"type": "String"}}},
+  "@tavernDiceFailed": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
   "tavernDiceNotSaved": "Didn't go through: {detail}",
-  "@tavernDiceNotSaved": {"placeholders": {"detail": {"type": "String"}}},
-  "@tavernGroupSaveFailed": {"placeholders": {"reason": {"type": "String"}}},
+  "@tavernDiceNotSaved": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@tavernGroupSaveFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
   "tavernChannel": "Channel",
   "tavernChannelDeepSeek": "DeepSeek",
   "tavernChannelDeepSeekNote": "Uses the app's DeepSeek key",
@@ -1259,7 +1900,13 @@
   "tavernChannelFetchModels": "Fetch list",
   "tavernChannelFetching": "Fetching…",
   "tavernChannelFetchFailed": "Couldn't get the model list ({detail}). You can type the model name.",
-  "@tavernChannelFetchFailed": {"placeholders": {"detail": {"type": "String"}}},
+  "@tavernChannelFetchFailed": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
   "tavernChannelNoModels": "This service lists no models. Type the model name.",
   "tavernChannelModelHint": "The model name your provider gives",
   "tavernChannelModelMissing": "Enter a model name",
@@ -1269,16 +1916,40 @@
   "tavernChannelDeepSeekApiNote": "Uses DeepSeek's continuation and the Thinking switch. Turn on only for DeepSeek itself or a relay that forwards it as is.",
   "tavernChannelDelete": "Delete channel",
   "tavernChannelDeleteTitle": "Delete “{name}”?",
-  "@tavernChannelDeleteTitle": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernChannelDeleteTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernChannelDeleteMessage": "Its key is deleted too. If it's in use, DeepSeek takes over.",
   "tavernChannelCopyFromApp": "Copy from the app's channels",
   "tavernModelName": "Model name",
   "tavernNumberCustom": "Custom",
   "tavernNumberType": "Enter a number",
   "tavernNumberRange": "Enter a number from {min} to {max}",
-  "@tavernNumberRange": {"placeholders": {"min": {"type": "String"}, "max": {"type": "String"}}},
+  "@tavernNumberRange": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
   "tavernNumberRangeWhole": "Enter a whole number from {min} to {max}",
-  "@tavernNumberRangeWhole": {"placeholders": {"min": {"type": "String"}, "max": {"type": "String"}}},
+  "@tavernNumberRangeWhole": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
   "tavernTopP": "Top P",
   "tavernPresencePenalty": "Presence penalty",
   "tavernFrequencyPenalty": "Frequency penalty",
@@ -1302,17 +1973,35 @@
   "tavernDraftNew": "New draft",
   "tavernDraftFromFile": "Draft from a file",
   "tavernDraftSeedUnsupported": "{name} isn't a card or a lorebook",
-  "@tavernDraftSeedUnsupported": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernDraftSeedUnsupported": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernDraft": "Draft",
   "tavernDraftSubtitle": "Nothing here is in the real one yet",
   "tavernDraftGone": "This draft is gone",
   "tavernDraftKindCharacter": "Card",
   "tavernDraftKindPreset": "Preset",
   "tavernDraftNewSource": "{name} (not saved yet)",
-  "@tavernDraftNewSource": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernDraftNewSource": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernDraftGreetings": "Other greetings",
   "tavernDraftEntry": "Entry {n}",
-  "@tavernDraftEntry": {"placeholders": {"n": {"type": "int"}}},
+  "@tavernDraftEntry": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "tavernDraftNoChanges": "No changes yet",
   "tavernDraftNoChangesHint": "Tell the AI below what to change",
   "tavernDraftBefore": "Was",
@@ -1321,24 +2010,60 @@
   "tavernDraftRemoved": "Removed",
   "tavernDraftAppliedChange": "Applied",
   "tavernDraftDependsOn": "Goes with {n} earlier change(s)",
-  "@tavernDraftDependsOn": {"placeholders": {"n": {"type": "int"}}},
+  "@tavernDraftDependsOn": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "tavernDraftRemoveChange": "Take this out of the draft",
   "tavernDraftApply": "Apply {n}",
-  "@tavernDraftApply": {"placeholders": {"n": {"type": "int"}}},
+  "@tavernDraftApply": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "tavernDraftSaveNew": "Save as new",
   "tavernDraftSavedNew": "Saved as new",
   "tavernDraftChecked": "Checked: nothing found",
   "tavernDraftCannotApply": "Regex and preset drafts can be previewed, not applied yet",
   "tavernDraftApplied": "Applied to {name}",
-  "@tavernDraftApplied": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernDraftApplied": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernDraftNoChange": "Same as now: nothing to change",
   "tavernDraftNotApplied": "Not applied: {reason}",
-  "@tavernDraftNotApplied": {"placeholders": {"reason": {"type": "String"}}},
+  "@tavernDraftNotApplied": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
   "tavernDraftUnconfirmed": "The write isn't confirmed yet. Don't repeat it; check the history in a while.",
   "tavernDraftApplyUnknown": "No answer ({reason}); tapping again continues the same one",
-  "@tavernDraftApplyUnknown": {"placeholders": {"reason": {"type": "String"}}},
+  "@tavernDraftApplyUnknown": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
   "tavernDraftBehind": "{name} changed after this draft began (maybe just now, by applying). Continue from it and look the changes over again.",
-  "@tavernDraftBehind": {"placeholders": {"name": {"type": "String"}}},
+  "@tavernDraftBehind": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tavernDraftCatchUp": "Continue from now",
   "tavernDraftChangedMeanwhile": "The draft just changed; reloaded",
   "tavernDraftPending": "The last write isn't confirmed; it can't be applied again yet",
@@ -1358,19 +2083,46 @@
   "tavernDraftAiInterrupted": "Interrupted (the app closed)",
   "tavernDraftEarlier": "Asked before",
   "tavernDraftRunReceipts": "{changes} edit(s) · {requests} request(s)",
-  "@tavernDraftRunReceipts": {"placeholders": {"changes": {"type": "int"}, "requests": {"type": "int"}}},
+  "@tavernDraftRunReceipts": {
+    "placeholders": {
+      "changes": {
+        "type": "int"
+      },
+      "requests": {
+        "type": "int"
+      }
+    }
+  },
   "tavernDraftHistory": "Versions",
   "tavernDraftHistoryEmpty": "No versions recorded yet",
   "tavernDraftHistoryNote": "Going back saves it as a new version; later ones stay. Pictures and chats aren't touched.",
   "tavernDraftVersion": "Version {n}",
-  "@tavernDraftVersion": {"placeholders": {"n": {"type": "int"}}},
+  "@tavernDraftVersion": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "tavernDraftVersionCurrent": "Current",
   "tavernDraftRestore": "Go back to it",
   "tavernDraftRestoreTitle": "Go back to version {n}?",
-  "@tavernDraftRestoreTitle": {"placeholders": {"n": {"type": "int"}}},
+  "@tavernDraftRestoreTitle": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "tavernDraftRestoreBody": "It is saved as a new version.",
   "tavernDraftRestored": "Back to version {n}",
-  "@tavernDraftRestored": {"placeholders": {"n": {"type": "int"}}},
+  "@tavernDraftRestored": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "tavernDraftRestoreMoved": "It changed meanwhile; try again",
   "tavernDraftPrompt": "Prompt with the draft",
   "tavernDraftPromptSubtitle": "What the next turn would send with the ticked changes; nothing is sent",
@@ -1383,12 +2135,27 @@
   "tavernDraftPromptUnsupported": "Part of this card can't be put together faithfully in a preview",
   "tavernDraftPromptNote": "The card's scripts don't run in a preview.",
   "tavernDraftUsagePartial": "Reported: in {prompt} · out {completion} (some requests reported nothing)",
-  "@tavernDraftUsagePartial": {"placeholders": {"prompt": {"type": "String"}, "completion": {"type": "String"}}},
+  "@tavernDraftUsagePartial": {
+    "placeholders": {
+      "prompt": {
+        "type": "String"
+      },
+      "completion": {
+        "type": "String"
+      }
+    }
+  },
   "tavernDraftTrial": "Try it",
   "tavernDraftTrialSubtitle": "A few lines with the draft in a chat of its own; real chats aren't touched",
   "tavernDraftTrialNote": "The model is really asked and billed as used; four lines at most.",
   "tavernDraftTrialLine": "Line {n}",
-  "@tavernDraftTrialLine": {"placeholders": {"n": {"type": "int"}}},
+  "@tavernDraftTrialLine": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "tavernDraftTrialMore": "Add a line",
   "tavernDraftTrialPlay": "Start",
   "tavernDraftTrialRunning": "Playing…",

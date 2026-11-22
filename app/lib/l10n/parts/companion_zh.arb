@@ -95,12 +95,10 @@
   "companionShake2": "头好晕……水都晃起来了。",
   "companionShake3": "再摇我要吐泡泡了！",
   "companionStatusIdle": "在发呆",
-  "companionStatusListening": "在听你说",
   "companionStatusThinking": "在想",
   "companionStatusSpeaking": "在说话",
   "companionStatusSleeping": "睡着了",
   "companionStatusAway": "不在",
-  "companionListening": "在听…",
   "companionTouchHint": "摸摸她的头试试",
   "companionArriving": "她正在游过来…",
   "companionPrivacyLine": "素材只存在这台手机上，聊天走当前主机。",
@@ -190,10 +188,6 @@
   "companionSignalsHint": "这些只在小屋里说给你听，不会发给模型。说多说少跟着「她多主动」，和邀请共用次数，深夜不说；选「安静」她也不说。",
   "companionSignalState": "留意别的对话",
   "companionSignalStateHint": "这台主机上别的对话跑完或出错时，她心里有数",
-  "companionSignalSpeech": "提一句",
-  "companionSignalSpeechHint": "挑你安静的时候说一句",
-  "companionSignalVoice": "用声音说出来",
-  "companionSignalVoiceHint": "她的声音开着时，把这句读出来",
   "companionSignalNight": "深夜提醒你休息",
   "companionSignalNightHint": "深夜在小屋里待了一阵，她轻轻提醒一次",
   "companionSignalLateUse": "这么晚了还陪着我……要不要早点歇一会儿？",
@@ -208,52 +202,7 @@
   "companionRecallOff": "自动想起记忆关了，下一句会开始一段新对话",
   "companionRecallOffFailed": "自动想起记忆没关掉，再试一次吧",
   "companionRecallStopped": "自动想起记忆停了（她记得的事有改动），换成了一段新对话。想要的话可以在菜单里再打开。",
-  "companionMenuVoice": "她的声音",
-  "companionMenuVoiceHint": "用手机自带的语音读出她说的话",
-  "companionVoiceHello": "你好呀，这是我的声音。喜欢的话就留着吧。",
-  "companionVoiceUnavailable": "这台手机没有能用的中文语音。可以在系统设置的「文字转语音」里装一个。",
   "companionWidgetWaiting": "在小屋里等你",
-  "companionVoiceOn": "让她出声",
-  "companionVoiceOffHint": "打开时她会先用选好的声音打个招呼。",
-  "companionVoiceOff": "关",
-  "companionVoiceSource": "声音来源",
-  "companionVoiceSystem": "手机自带",
-  "companionVoiceSystemHint": "系统的文字转语音，不联网也能用",
-  "companionVoiceOpenai": "OpenAI 兼容接口",
-  "companionVoiceOpenaiHint": "OpenAI、硅基流动，以及大多数自建的 GPT-SoVITS、CosyVoice、edge-tts 服务",
-  "companionVoiceCustom": "自定义 HTTP",
-  "companionVoiceCustomHint": "别的接口：自己填请求和返回的格式",
-  "companionVoiceApi": "接口",
-  "companionVoiceBase": "地址",
-  "companionVoiceBaseHelper": "填到 /v1 为止，App 会接上 /audio/speech",
-  "companionVoiceKeyHelper": "存在这台手机的安全存储里",
-  "companionVoiceModel": "模型",
-  "companionVoiceVoice": "音色",
-  "companionVoiceVoiceHelper": "服务给的音色名，比如 alloy，或你自建服务里的角色名",
-  "companionVoiceRequest": "请求",
-  "companionVoiceUrl": "请求地址",
-  "companionVoiceUrlHelper": "地址里也可以用 {text}",
-  "companionVoiceMethod": "方法",
-  "companionVoiceHeaders": "请求头",
-  "companionVoiceHeadersHelper": "每行一个；会存进安全存储",
-  "companionVoiceBody": "请求体",
-  "companionVoiceBodyHelper": "{text} 会换成她要说的话",
-  "companionVoiceField": "音频字段",
-  "companionVoiceFieldHelper": "返回 JSON 时，音频在哪个字段（base64 或链接），比如 data.audio；直接返回音频就留空",
-  "companionVoicePrivacy": "她要说的话会发给你填的这个服务。",
-  "companionVoicePreview": "试听",
-  "companionVoicePreviewing": "正在请求…",
-  "companionVoicePreviewOk": "能用，听到了吗？",
-  "companionVoicePreviewFailed": "没成功：{reason}",
-  "@companionVoicePreviewFailed": {
-    "placeholders": {
-      "reason": {
-        "type": "String"
-      }
-    }
-  },
-  "companionVoiceNotSetUp": "先把上面的地址填好。",
-  "companionVoiceFallback": "外接的声音这次没连上，先用了手机自带的声音",
   "companionGreetFirstNameless": "你好呀，以后我就住在这里了，请多指教。",
   "companionRenamed": "「{name}」……好，以后我就叫这个名字啦。",
   "@companionRenamed": {
@@ -263,25 +212,8 @@
       }
     }
   },
-  "companionVoicePreset": "常用服务",
-  "companionVoicePresetHint": "小米 MiMo、OpenAI、硅基流动、阿里云百炼：填个 Key 就能用",
-  "companionVoiceService": "服务",
-  "companionVoiceKeyWhere": "在 {site} 申请；存在这台手机的安全存储里",
-  "@companionVoiceKeyWhere": {
-    "placeholders": {
-      "site": {
-        "type": "String"
-      }
-    }
-  },
-  "companionVoiceVoiceCustomHelper": "点一个，或者直接填服务给的音色 ID",
-  "companionVoiceStyle": "说话风格",
-  "companionVoiceStyleHelper": "描述她说话的语气，服务会照着读；留空用默认的温柔少女音",
-  "companionVoiceFemale": "女声",
-  "companionVoiceMale": "男声",
   "companionClonePreset": "预置音色",
   "companionCloneMine": "克隆声音",
-  "companionVoicePresetVoice": "预置音色",
   "companionCloneRecording": "录音",
   "companionCloneHelper": "5–30 秒、只有一个人在说话、没有背景音的 mp3 或 wav，最大 7 MB。请只用你自己的声音，或本人同意过的声音。她说的每句话都会带上这段录音发给小米。",
   "companionCloneNone": "还没有录音",
@@ -324,7 +256,16 @@
   "companionMovesTry": "试一下",
   "companionPackLegacyModel": "这是 Cubism 2 的旧模型（.moc 和 model.json），手机上的运行库只认 Cubism 3 以后的 .moc3。用 Cubism Editor 打开后导出成 moc3 再导入就行。",
   "companionFailedMocVersion": "这个模型是用更新版本的 Cubism 导出的（moc 版本 {version}），手机上的运行库最高只认到 {latest}。在 Cubism Editor 里导出成旧一点的版本再导入就行。",
-  "@companionFailedMocVersion": {"placeholders": {"version": {"type": "String"}, "latest": {"type": "String"}}},
+  "@companionFailedMocVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "latest": {
+        "type": "String"
+      }
+    }
+  },
   "companionMenuAdapt": "适配这个模型",
   "companionAdaptHint": "用你配好的模型（你的 Key，按次计费）看一遍这个角色，把转头、眨眼、表情和摸哪里对上。会发出去的：模型名、参数名单、表情动作和部件的名字、你下面写的话和现在的适配表；模型文件和贴图不发。",
   "companionAdaptOffer": "这个模型要适配一下：用你配好的模型看一遍它的参数名单和表情动作的名字（不发模型文件），会用你的 Key 调用一次。以后的新模型就自动来，菜单里能关。",
@@ -338,11 +279,23 @@
   "companionAdaptStart": "让我适应一下这个新身体……",
   "companionAdaptDone": "好啦，这个身体我会用了。",
   "companionAdaptDoneNote": "好啦，这个身体我会用了。{note}",
-  "@companionAdaptDoneNote": {"placeholders": {"note": {"type": "String"}}},
+  "@companionAdaptDoneNote": {
+    "placeholders": {
+      "note": {
+        "type": "String"
+      }
+    }
+  },
   "companionAdaptUndone": "好，换回原来的样子了。",
   "companionAdaptNoKey": "要用你的模型帮我适配，先在设置里填上 API Key。",
   "companionAdaptFailed": "这次没适应好（{reason}），可以在菜单的「适配这个模型」里再试一次。",
-  "@companionAdaptFailed": {"placeholders": {"reason": {"type": "String"}}},
+  "@companionAdaptFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
   "companionAdaptUnreadable": "模型的回答看不懂",
   "companionAdaptEmpty": "模型没找到能用的对应",
   "companionAdaptNetwork": "网络不通"

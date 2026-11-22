@@ -91,7 +91,7 @@ class UserBubble extends StatelessWidget {
       case MessageAction.quote:
         // The message's own words: an earlier quote it opened with stays out.
         onQuote?.call(splitQuote(_shown).body);
-      case MessageAction.share || MessageAction.readAloud || MessageAction.regenerate || MessageAction.branch:
+      case MessageAction.share || MessageAction.regenerate || MessageAction.branch:
         break;
     }
   }

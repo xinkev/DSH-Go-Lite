@@ -312,15 +312,6 @@ final featureSections = <FeatureSection>[
       icon: AppIcons.translate,
       action: (context, ref, _) => _bundleSheet(context, ref, cotTranslationBundle),
     ),
-    FeatureItem.localized(
-      id: 'voice-input',
-      title: (l10n) => l10n.catalogVoiceInput,
-      summary: (l10n) => l10n.catalogVoiceInputSummary,
-      icon: AppIcons.voice,
-      action: _backToChat,
-      // l10n:keep DSH Web plugin title aliases used for deep-link matching
-      web: const DshWebTarget(pluginItem: ['语音输入', 'Voice input']),
-    ),
   ]),
   FeatureSection.localized((l10n) => l10n.catalogCommunitySharingSection, [
     FeatureItem.localized(

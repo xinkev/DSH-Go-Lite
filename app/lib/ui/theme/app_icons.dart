@@ -379,7 +379,6 @@ abstract final class AppIcons {
   static const companionVoice = DshGlyphs.musicNote;
 
   /// 朗读: a reply read aloud (speech/read_aloud.dart); also the loudspeaker during a call.
-  static const readAloud = DshGlyphs.speakerHigh;
 
   /// 语音通话: start a call with the conversation (speech/call/).
   static const call = DshGlyphs.phone;

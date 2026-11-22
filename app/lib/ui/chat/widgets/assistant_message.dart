@@ -251,7 +251,6 @@ class _AssistantMessageState extends State<AssistantMessage> {
         MessageAction.selectText,
         if (onQuote != null) MessageAction.quote,
         MessageAction.share,
-        MessageAction.readAloud,
         if (onRegenerate != null && !widget.regenerating) MessageAction.regenerate,
         if (onBranch != null && !widget.branching) MessageAction.branch,
       ],
@@ -266,7 +265,6 @@ class _AssistantMessageState extends State<AssistantMessage> {
         onQuote?.call(text);
       case MessageAction.share:
         await shareReply(context, widget.item);
-      case MessageAction.readAloud:
       case MessageAction.regenerate:
         onRegenerate?.call();
       case MessageAction.branch:

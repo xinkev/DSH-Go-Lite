@@ -12,19 +12,8 @@
   "accessFeaturePhoneNeeds": "需要无障碍和通知权限",
   "accessFeatureBackground": "后台持续运行",
   "accessFeatureBackgroundNeeds": "任务跑完通知你，需要通知和后台权限",
-  "accessFeatureVoice": "语音输入",
-  "accessFeatureVoiceNeeds": "需要麦克风权限",
   "accessFeatureAlerts": "回复提醒",
   "accessFeatureAlertsNeeds": "需要通知权限",
-  "accessVoiceModel": "离线识别，需下载约 {size} MB 语音模型",
-  "@accessVoiceModel": {
-    "placeholders": {
-      "size": {
-        "type": "int"
-      }
-    }
-  },
-  "accessVoiceMetered": "当前是移动数据，下载会消耗流量",
   "accessFilesRiskBody": "AI 能读取和修改相册、下载、文档等手机文件。",
   "accessStepCount": "{index} / {total}",
   "@accessStepCount": {
@@ -53,8 +42,6 @@
     }
   },
   "accessOpenFailed": "没能打开系统设置",
-  "accessMicTitle": "允许使用麦克风",
-  "accessMicWhy": "语音输入要用到",
   "accessStorageTitle": "允许访问文件",
   "accessStorageWhy": "让 AI 读写相册、下载和文档",
   "accessNotifyTitle": "允许通知",

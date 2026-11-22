@@ -58,14 +58,6 @@ class _MessageSelectionState extends State<MessageSelection> {
             },
           ),
         ?item(ContextMenuButtonType.share),
-        if (some)
-          ContextMenuButtonItem(
-            label: MessageAction.readAloud.label,
-            onPressed: () {
-              region.hideToolbar();
-              // Its own id: another passage starts over, the same one stops.
-            },
-          ),
         // Before 全选: a narrow toolbar folds its last items away, and 「更多」
         // is the way to the message's menu.
         if (onMore != null)
