@@ -15,7 +15,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
-import '../../pets/pet_signals.dart' show petHeadroomProvider;
 import '../../state/agents_state.dart' show hostSessionsProvider, selectConversation;
 import '../../state/app_notes.dart';
 import '../../state/artifacts.dart';
@@ -948,10 +947,7 @@ class _ChatListState extends ConsumerState<ChatList> with SingleTickerProviderSt
     }
 
     // Images in replies read this conversation's workspace.
-    final headroom = ref.watch(petHeadroomProvider);
-    ref.listen(petHeadroomProvider, (_, _) {
-      if (_pinned) _follow();
-    });
+    const headroom = 0.0;
     // Back in the app to read a result (a finished phone task): the newest line.
     ref.listen(chatRevealProvider, (_, reveal) {
       if (reveal?.sessionId == widget.sessionId) jumpToBottom();

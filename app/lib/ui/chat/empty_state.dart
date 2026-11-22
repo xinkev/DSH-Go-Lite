@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
-import '../../pets/pet_signals.dart' show petTakesWhaleProvider;
 import '../common/expand_reveal.dart';
 import '../common/fade_in.dart';
 import '../theme/app_icons.dart';
@@ -270,7 +269,7 @@ class ChatEmptyState extends StatelessWidget {
               enter(
                 Consumer(
                   builder: (context, ref, child) => AnimatedOpacity(
-                    opacity: ref.watch(petTakesWhaleProvider) ? 0 : 1,
+                    opacity: 1,
                     duration: AppMotion.of(context, AppMotion.standard),
                     curve: AppMotion.std,
                     child: child,
