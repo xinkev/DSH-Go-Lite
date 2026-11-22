@@ -1692,8 +1692,6 @@ def main():
                 'androidBeforeFlutter': {path[len('app/android/'):]: value for path, value in g.original.items() if path.startswith('app/android/')}}
     g.internal('flutter-resolver-record', retain_resolver, needs=('flutter-input-identity',))
     g.run('dart-bridge-inventory', lambda: g.py('tooling/ohos/audit-dart-bridges.py', '--source', s, '--fork-roots', p('fork_roots'), '--report', o / 'dart-bridge-inventory.json', '--require-group1'), needs=('tools',))
-    for target in ['candidate', 'ohos']:
-        g.run('native-protocol-' + ('android' if target == 'candidate' else 'ohos'), lambda t=target: ['bash', s / 'runtime/tests/run-native-tests.sh', o / ('targets/' + t + '-prefix'), '--port', free_port()], needs=('android-targets', 'native-static-resources'), timeout=300, tests=['runtime/tests/native-bridge.mjs', 'runtime/tests/native-capabilities-live.mjs'], scope='Original full native protocol suite against the selected installed target on Linux')
     # The shared suites, whole, on each selected tree. The groups around here pick
     # the files they need and would miss the rest of runtime/tests.
     shared = sorted('runtime/tests/' + f.name for f in (s / 'runtime/tests').glob('*.test.mjs'))

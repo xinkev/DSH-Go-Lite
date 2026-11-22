@@ -212,7 +212,7 @@ Android/iOS 后台执行的机制、系统回收恢复和三方方案取舍见 [
 `SafetyGate`（最终审批门）→ 执行器：`a11y/`（无障碍读屏与操作、OCR、浮层、受保护页面）、
 `background/`（不打扰模式特权虚拟屏/Shizuku/ADB）、`shell/`（Android shell 会话）。
 技能录放在 `phone/skills/`；自检在 `phone/selfcheck/`。
-手机工具与提示词由 Kotlin 侧注入：`PhoneGuest.kt` 启动时往 rootfs 写 `/opt/dsh-app/phone/{relay.cjs,phone.patch.yml}`，用 `--patch` 挂上 `@deepseek-ai/dsh-mcp-client`（serverName=phone）；`PhoneToolCatalog.kt` 定义固定工具集；`GuestSetup.kt` 把 `PhoneGuest.AGENTS_SECTION` 写进 `$DSH_HOME/AGENTS.md`。`dsh-go-bridge/lib/native/` 只实现原生插件协议（contributions/views/stream/invoke），与手机工具无关。
+手机工具与提示词由 Kotlin 侧注入：`PhoneGuest.kt` 启动时往 rootfs 写 `/opt/dsh-app/phone/{relay.cjs,phone.patch.yml}`，用 `--patch` 挂上 `@deepseek-ai/dsh-mcp-client`（serverName=phone）；`PhoneToolCatalog.kt` 定义固定工具集；`GuestSetup.kt` 把 `PhoneGuest.AGENTS_SECTION` 写进 `$DSH_HOME/AGENTS.md`。手机工具与插件协议无关。
 
 ### 3.4 其余原生块
 
@@ -476,7 +476,7 @@ DSH npm 前缀（runtime/locks）→ rtbuild 按 series 应用目标平台的补
 |---|---|
 | Flutter 应用 | `(cd app && flutter pub get && flutter analyze && flutter test)` |
 | Dart 包 | `(cd packages/dsh_client && dart pub get && dart analyze && dart test)`；dsh_remote / dsh_tavern 同理 |
-| 桥/补丁 | `node --test runtime/tests/*.test.mjs`；`python3 -I runtime/tests/test_patch_dsh.py`；`bash runtime/tests/run-guard-tests.sh "$DSH_PREFIX"`、`bash runtime/tests/run-native-tests.sh "$DSH_PREFIX"` |
+| 桥/补丁 | `node --test runtime/tests/*.test.mjs`；`python3 -I runtime/tests/test_patch_dsh.py`；`bash runtime/tests/run-guard-tests.sh "$DSH_PREFIX"` |
 | 生成链（改 SDK/bridge/schema 后按序） | `gen-types → sync-bridge → sync-messages → gen-parity → sync-skill` |
 | 文案 / 指南 / 教学技能 | `l10n_merge.py --check`、`guide_sync.py --check`、`sync-skill.mjs --check` |
 | Android JVM | `(cd app/android && gradle :app:testArm64DebugUnitTest)`（需 JDK17） |

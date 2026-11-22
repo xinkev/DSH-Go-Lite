@@ -40,5 +40,5 @@ test("the npm package holds everything its entry points import", () => {
     queue.push(...localImports(file));
   }
   // The walk must have followed the graph, or it would pass with nothing to check.
-  assert.ok(seen.has("lib/session-deletion.js") && seen.has("lib/native/core.js"));
+  assert.ok(seen.has("lib/session-deletion.js") && seen.has("lib/plugin-config.js"));
 });

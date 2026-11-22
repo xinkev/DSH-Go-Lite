@@ -85,4 +85,4 @@ contributions 的 HTTP 成功体必须显式携带 `v`；缺少或不合法的�
 
 协商入口不缓存结果。调用方若缓存协商对象，必须按当前 Host/mux generation 管理失效；不得永久缓存 null，也不得把旧代次的声明用于新连接。
 
-`bridge-http-errors.test.mjs` 使用 loopback HTTP 与模拟 Cordis/Connection，验证能力列表、GET/HEAD 元数据一致、HEAD 无正文、动态权限接口独立以及401/403/503入口。`route-guard.mjs`、`native-bridge.mjs` 覆盖实际 Host 路由契约。Dart fake Host 覆盖旧桥、空能力列表、未知能力、资源404、协商失败、主版本检查和成功读取的请求次数。
+`bridge-http-errors.test.mjs` 使用 loopback HTTP 与模拟 Cordis/Connection，验证能力列表、GET/HEAD 元数据一致、HEAD 无正文、动态权限接口独立以及401/403/503入口。`route-guard.mjs` 覆盖实际 Host 路由契约。Dart fake Host 覆盖旧桥、空能力列表、未知能力、资源404、协商失败、主版本检查和成功读取的请求次数。

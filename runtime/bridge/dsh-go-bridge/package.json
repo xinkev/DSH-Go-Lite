@@ -1,7 +1,7 @@
 {
   "name": "dsh-go-bridge",
   "version": "0.4.0",
-  "description": "dsh-go host bridge: plugin inventory for the dsh-go app, the native plugin protocol v1 (dshGo service, contributions, views, stream, invoke; v1.2 capabilities: media, micro, capability events), and a route guard on hosts whose webserver is not patched.",
+  "description": "dsh-go host bridge: plugin inventory for the dsh-go app, the companion and session-deletion routes, and a route guard on hosts whose webserver is not patched.",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -19,7 +19,6 @@
     "lib/config-source.js",
     "lib/client.js",
     "lib/companion/*.js",
-    "lib/native/*.js",
     "cordis.patch.yml",
     "PRESET-NOTICE.txt"
   ],

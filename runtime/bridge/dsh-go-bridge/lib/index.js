@@ -6,10 +6,6 @@
 //   POST /dsh-go/v1/occupancy   the browser half reports the live slot composition of its page
 //   GET  /dsh-go/v1/capabilities protocol major and implemented route families (not permissions)
 //
-//   /dsh-go/v1/{contributions,views,invoke,assets} + WS /dsh-go/v1/stream
-//                               native plugin protocol v1 (docs/design/native-plugins-protocol.md),
-//                               backed by the `dshGo` service plugins get with ctx.inject(['dshGo'])
-//
 // All routes require what /api requires (Connection's Host/Origin fence plus the browser cookie
 // or an API credential), checked here as well as by the patched webserver. On a host whose
 // webserver lacks the dsh-app route guard (a remote host that installed this package) it wraps
@@ -31,9 +27,6 @@ import { createCompanionStore } from "./companion/store.js";
 import { createRecallCoordinator } from "./companion/recall.js";
 import { createRecallContexts } from "./companion/recall-context.js";
 import { createCompanionSignals } from "./companion/signals.js";
-import { NativeCore } from "./native/core.js";
-import { effectiveLimits } from "./native/limits.js";
-import { STREAM_PATH, createNativeRoutes } from "./native/routes.js";
 
 export const name = "dsh-go-bridge";
 
@@ -43,7 +36,7 @@ const CANARY = "/dsh-go-guard-canary";
 const GUARD_PROBE_TTL_MS = 10000;
 const VERSION = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")).version;
 const CAPABILITIES = [
-  "inventory", "occupancy", "native-ui", "native-stream", "native-media", "native-files",
+  "inventory", "occupancy",
   "plugin-config", "session-deletion", "companion", "companion-prompt-context", "companion-recall", "companion-signals",
 ];
 const ORIGINAL = Symbol.for("cordis.original");
@@ -275,10 +268,6 @@ export function apply(ctx, config) {
     }
   };
 
-  // Native plugin protocol: the service exists whenever the bridge runs (no cost without plugins).
-  const native = new NativeCore(ctx, effectiveLimits(options.native), VERSION);
-  ctx.effect(() => () => native.dispose(), "dsh-go-bridge: native core");
-  ctx.provide("dshGo", native.service);
   let companionRecall;
   const companionPrompt = createCompanionPromptContext({
     isCurrent: agent => ctx.get('agents')?.get(agent.id) === agent &&
@@ -318,9 +307,8 @@ export function apply(ctx, config) {
     companionRecall.dispose();
     companionContexts.dispose();
   }, "dsh-go-bridge: companion recall");
-  ctx.on("internal/plugin", () => native.markDirty());
   let pluginConfig;
-  ctx.on("internal/status", (fiber) => { native.markDirty(); pluginConfig?.statusChanged(fiber); });
+  ctx.on("internal/status", (fiber) => { pluginConfig?.statusChanged(fiber); });
 
   ctx.inject(["webServer"], (webCtx) => {
     webCtx.effect(() => webCtx.webServer.tapIndex(injectPromiseWithResolvers),
@@ -392,23 +380,9 @@ export function apply(ctx, config) {
       };
     };
 
-    const nativeRoutes = createNativeRoutes(native);
     pluginConfig = createPluginConfig(webCtx, { readBody, send });
     const sessionDeletion = createSessionDeletion(webCtx, { readBody, send });
     const companionRoutes = createCompanionRoutes({ send, store: companionStore, recall: companionRecall, signals: companionSignals, ctx: webCtx, promptContext: companionPrompt });
-    webCtx.effect(() => () => nativeRoutes.dispose(), "dsh-go-bridge: native routes");
-    webCtx.effect(() => webCtx.webServer.registerUpgrade({
-      path: STREAM_PATH,
-      handler: (req, socket, head) => {
-        const rejection = rejectionOf(webCtx, req);
-        if (rejection !== undefined) {
-          socket.end(`HTTP/1.1 ${rejection} ${STATUS_CODES[rejection]}\r\nConnection: close\r\nContent-Length: 0\r\n\r\n`);
-          return;
-        }
-        nativeRoutes.upgrade(req, socket, head);
-      },
-    }), "dsh-go-bridge: native stream");
-
     const handler = async (req, res) => {
       const rejection = rejectionOf(webCtx, req);
       if (rejection !== undefined) return send(res, rejection, rejection === 503 && (sessionDeletionUnavailable(req) || pluginConfigUnavailable(req)) || STATUS_CODES[rejection]);
@@ -417,7 +391,6 @@ export function apply(ctx, config) {
       if (await sessionDeletion.handle(req, res, path)) return;
       if (await pluginConfig.handle(req, res, path)) return;
       if (await companionRoutes.handle(req, res, path)) return;
-      if (path.startsWith(`${PREFIX}/v1/`) && await nativeRoutes.handle(req, res, path, url)) return;
       if (path === `${PREFIX}/v1/capabilities`) {
         if (req.method !== "GET" && req.method !== "HEAD") return send(res, 405, { error: { code: "method-not-allowed", message: "method not allowed" } });
         return send(res, 200, { v: 1, bridge: VERSION, capabilities: CAPABILITIES });

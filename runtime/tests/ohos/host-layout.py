@@ -242,7 +242,7 @@ def main():
     run('actual-round', command)
     report = json.loads((out / 'round/report.json').read_text())
     assert report['status'] == 'PASS' and report['approvals'] == 2 and report['loader']['observedRoute'] == 'native-addon'
-    assert report['routes']['status'] == 'PASS_HOST_BRIDGE_ROUTE_CONTRACT' and report['routes']['requiredTemplates'] == 15
+    assert report['routes']['status'] == 'PASS_HOST_BRIDGE_ROUTE_CONTRACT' and report['routes']['templatesExercised'] >= 10
     assert report['routes']['attachments']['status'] == 'PASS_OH_FULL_REFERENCE_CONTRACT'
     assert len(report['routes']['attachments']['cases']) == 7
     assert all(row['passed'] for row in report['routes']['attachments']['cases'])

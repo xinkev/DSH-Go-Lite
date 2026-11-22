@@ -4,9 +4,7 @@
 # `/usr/bin/env -i` on) exactly as the app would, then checks: pnpm and its registry plus a
 # real `dsh plugin` add/remove, token line, auth exchange, static health URL, graceful SIGTERM
 # via the pid file, an offline start, and the route guard patch plus dsh-go-bridge
-# (runtime/tests/route-guard.mjs against every registered route), and the native plugin protocol
-# end to end (runtime/tests/native-bridge.mjs --shipped) and its v1.2 capabilities
-# (runtime/tests/native-capabilities-live.mjs). bwrap has real hard links, so
+# (runtime/tests/route-guard.mjs against every registered route). bwrap has real hard links, so
 # pnpm under proot's --link2symlink is not covered here.
 #
 #   runtime/test-host.sh [port]                  # RUNTIME_OUT=/path tests a staged build
@@ -205,66 +203,6 @@ fi
 pid="$(cat "$ROOT/tmp/dsh-web.pid" 2>/dev/null || true)"
 [[ -n "$pid" ]] && kill -TERM "$pid" 2>/dev/null || kill -TERM "$BG" 2>/dev/null || true
 wait "$BG" 2>/dev/null || true
-
-echo "== native plugins end to end (port $((PORT + 2)))"
-# The shipped bridge (overlay, default timers) plus the test-only plugins of runtime/tests/fixtures,
-# driven by runtime/tests/native-bridge.mjs --shipped with the rootfs's own node. Offline-safe.
-rm -rf "$ROOT/tmp/native-test"; mkdir -p "$ROOT/tmp/native-test"
-cp -r "$HERE/tests/fixtures" "$HERE/tests/native-bridge.mjs" "$ROOT/tmp/native-test/"
-printf -- '- insert:\n    - id: fx-usage\n      name: /tmp/native-test/fixtures/native-usage/index.js\n    - id: fx-quick\n      name: /tmp/native-test/fixtures/native-quick/index.js\n    - id: fx-static\n      name: /tmp/native-test/fixtures/native-static/index.js\n' > "$ROOT/tmp/native-test/fixtures.patch.yml"
-NPORT=$((PORT + 2))
-NATIVE_GUEST=("${GUEST[@]}")
-NATIVE_GUEST[-1]="${NATIVE_GUEST[-1]/--port $PORT/--port $NPORT}"
-NATIVE_GUEST[-1]="${NATIVE_GUEST[-1]/dsh-web.patch.yml/dsh-web.patch.yml --patch /tmp/native-test/fixtures.patch.yml}"
-LOG4="$HERE/.work/$ABI/dsh-web-native.log"
-run --share-net -- "${NATIVE_GUEST[@]}" > "$LOG4" 2>&1 &
-BG=$!
-token=""; for _ in $(seq 1 240); do
-  token="$(sed -n 's#^dsh web: http://127\.0\.0\.1:[0-9]*/?token=\([A-Za-z0-9_-]*\).*#\1#p' "$LOG4" | head -1)"
-  [[ -n "$token" ]] && break; kill -0 "$BG" 2>/dev/null || break; sleep 0.5
-done
-if [[ -n "$token" ]]; then
-  run --share-net --setenv DSH_GO_BRIDGE_LIB /opt/dsh-go/dsh-go-bridge/lib/native -- \
-    /opt/node/bin/node /tmp/native-test/native-bridge.mjs "http://127.0.0.1:$NPORT" "$token" --shipped \
-    && pass "native plugin protocol: contributions, views, stream, invoke, deferred results, guard, degrade, reload" \
-    || fail "native plugin protocol checks (see above)"
-else
-  fail "dsh web with the native fixtures did not start"; tail -20 "$LOG4"
-fi
-pid="$(cat "$ROOT/tmp/dsh-web.pid" 2>/dev/null || true)"
-[[ -n "$pid" ]] && kill -TERM "$pid" 2>/dev/null || kill -TERM "$BG" 2>/dev/null || true
-wait "$BG" 2>/dev/null || true
-rm -rf "$ROOT/tmp/native-test"
-
-echo "== native plugins v1.2 end to end (port $((PORT + 3)))"
-# The shipped bridge plus the v1.2 test plugin (runtime/tests/fixtures/native-voice): media, micro,
-# capability events, leases (runtime/tests/native-capabilities-live.mjs). Offline-safe.
-rm -rf "$ROOT/tmp/native-test"; mkdir -p "$ROOT/tmp/native-test"
-cp -r "$HERE/tests/fixtures" "$HERE/tests/native-capabilities-live.mjs" "$ROOT/tmp/native-test/"
-printf -- '- insert:\n    - id: fx-voice\n      name: /tmp/native-test/fixtures/native-voice/index.js\n' > "$ROOT/tmp/native-test/voice.patch.yml"
-VPORT=$((PORT + 3))
-VOICE_GUEST=("${GUEST[@]}")
-VOICE_GUEST[-1]="${VOICE_GUEST[-1]/--port $PORT/--port $VPORT}"
-VOICE_GUEST[-1]="${VOICE_GUEST[-1]/dsh-web.patch.yml/dsh-web.patch.yml --patch /tmp/native-test/voice.patch.yml}"
-LOG5="$HERE/.work/$ABI/dsh-web-native-v12.log"
-run --share-net -- "${VOICE_GUEST[@]}" > "$LOG5" 2>&1 &
-BG=$!
-token=""; for _ in $(seq 1 240); do
-  token="$(sed -n 's#^dsh web: http://127\.0\.0\.1:[0-9]*/?token=\([A-Za-z0-9_-]*\).*#\1#p' "$LOG5" | head -1)"
-  [[ -n "$token" ]] && break; kill -0 "$BG" 2>/dev/null || break; sleep 0.5
-done
-if [[ -n "$token" ]]; then
-  run --share-net --setenv DSH_GO_BRIDGE_LIB /opt/dsh-go/dsh-go-bridge/lib/native -- \
-    /opt/node/bin/node /tmp/native-test/native-capabilities-live.mjs "http://127.0.0.1:$VPORT" "$token" \
-    && pass "native plugins v1.2: declarations, negotiation, media, micro, capability events, leases" \
-    || fail "native plugins v1.2 checks (see above)"
-else
-  fail "dsh web with the v1.2 fixture did not start"; tail -20 "$LOG5"
-fi
-pid="$(cat "$ROOT/tmp/dsh-web.pid" 2>/dev/null || true)"
-[[ -n "$pid" ]] && kill -TERM "$pid" 2>/dev/null || kill -TERM "$BG" 2>/dev/null || true
-wait "$BG" 2>/dev/null || true
-rm -rf "$ROOT/tmp/native-test"
 
 echo "== dsh home after runs"; ls -A "$ROOT/root/.dsh" | head -20
 echo "== direct glibc launch (Linux source build; Android permission/lifecycle still needs a device)"

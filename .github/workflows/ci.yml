@@ -374,10 +374,9 @@ jobs:
           for plugin in examples/plugins/dsh-go-example-*/; do
             (cd "$plugin" && npm test && npm run check)
           done
-      - name: Route guard and native bridge against a real host
+      - name: Route guard against a real host
         run: |
           bash runtime/tests/run-guard-tests.sh "$DSH_PREFIX"
-          bash runtime/tests/run-native-tests.sh "$DSH_PREFIX"
 
   android:
     name: Android JVM

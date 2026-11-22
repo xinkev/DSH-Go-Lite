@@ -1,4 +1,4 @@
-"""Private, declared configuration bundle and absolute-path native fixture."""
+"""Private declared configuration bundle and fixed PNG attachment fixture."""
 import hashlib
 import json
 from pathlib import Path
@@ -9,13 +9,7 @@ def prepare_bridge_fixture(runtime, dsh, out):
     private = out / 'bridge-fixtures'
     private.mkdir(exist_ok=False)
     schema = (runtime / 'node_modules/@deepseek-ai/schemastery/lib/index.mjs').as_uri()
-    native = private / 'native'
-    native.mkdir()
-    (native / 'index.mjs').write_text((here / 'host-bridge-fixture/native.mjs').read_text().replace('__SCHEMA_MODULE__', schema))
-    (native / 'package.json').write_bytes((here / 'host-bridge-fixture/package.json').read_bytes())
-    (native / 'assets').mkdir()
-    asset = native / 'assets/proof.png'
-    asset.write_bytes((here / 'host-bridge-fixture/proof.png').read_bytes())
+    asset = here / 'host-bridge-fixture/proof.png'
 
     # Pre-existing private durable objects, not an OH image upload/codec success.
     image = asset.read_bytes()
@@ -82,7 +76,7 @@ def prepare_bridge_fixture(runtime, dsh, out):
                      '# a top-level YAML array of loader patch entries (id-targeted config\n'
                      '# overrides, disables, and insert lists; `!!js` expressions allowed).\n[]')
     assert not patch.exists() or patch.read_text().strip() in ['', '[]', default_empty], 'Never overwrite a nonempty profile'
-    save(patch, [{'insert': [{'id': 'add12-owned-fixture', 'name': str(native / 'index.mjs')}]}])
+    save(patch, [])
     # This fixture never inserts the bridge. Only the production Host profile may do so.
     modules = profile / 'node_modules'
     modules.mkdir(exist_ok=True)
@@ -98,6 +92,5 @@ def prepare_bridge_fixture(runtime, dsh, out):
                                     'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
     save(out / 'bridge-fixture-input.json', files)
     save(out / 'attachment-fixture-input.json', attachments)
-    return {'pkg': 'dsh-go-fixture-host-bridge', 'entryId': 'add12-owned-config',
-            'nativeEntryId': 'add12-owned-fixture', 'attachments': attachments,
-            'assetSHA256': hashlib.sha256(asset.read_bytes()).hexdigest(), 'assetBytes': len(image)}
+    return {'entryId': 'add12-owned-config', 'attachments': attachments,
+            'assetSHA256': hashlib.sha256(image).hexdigest(), 'assetBytes': len(image)}

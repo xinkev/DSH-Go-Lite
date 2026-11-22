@@ -80,7 +80,6 @@ Node/npm、两锁及安装参数来自 `composition.json`（包含omit-optional�
 | deletion/schedule/upload | 本次compose生成的core/route、目录同步负控，以及独立实际prefix消费者。 |
 | ArkTS通道 | 原files/media/PDF/voice/HMS-share、links/connectivity/notify/runtime/archive/managed-skill、secrets/attachments、clipboard、WebView及静态Dart桥接审计。718新增islands通道必须使用本轮prepare-forks的真实prepared fork；框架补丁器与installed-path合同单独必跑。embedding-member-identity逐个验证固定原HAR生成包的路径/类型/mode/内容，合法gzip编码差异不失败；错误源HAR仍硬拒。Linux API doubles仍是doubles。 |
 | Dart/Flutter | diagnostics/performance真实Dart消费者；secrets/attachments、原预算/owner/callback及share_hosted目录完整测试，相关数据层analyze。 |
-| native协议 | Android和OH选中prefix分别跑原完整run-native-tests；缺失dot.png和Host桥接proof.png由入口在私有树生成固定69B RGB PNG，逐项记录是否新生成和SHA，明确为新测试资源。 |
 | 普通SDK | 私有输入/缓存运行严格ArkTS，保留原诊断和build identity；HMS stubs恒标UNCOMPILED_HMS，不代表官方HMS编译/设备。 |
 
 `gate-coverage.json`仅列shell/Python内部间接调用的测试。两个明确排除项是旧f387 Android recipe历史比较与publication-fallback研究；本轮真实Android/当前publication门仍必需。gitfile oracle为本轮真实native录制，不冒称恢复历史记录；description前像按当前目标实际后续pin逐层逆向还原并逐层核hash。
