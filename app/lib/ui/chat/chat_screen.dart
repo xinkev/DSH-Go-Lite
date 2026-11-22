@@ -58,7 +58,6 @@ import '../features/session_export_page.dart';
 import '../onboarding/local_install.dart';
 import '../pets/pet_perch.dart';
 import '../pets/pet_stage.dart';
-import '../plugins/native/native_taps.dart' show NativeComposerHost, NativeComposerScope, runNativeAction;
 import '../safe_mode/engine_failure_card.dart';
 import '../safe_mode/safe_mode_banner.dart';
 import '../session/session_detail_page.dart';
@@ -174,7 +173,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
   final _input = MentionTextController();
 
   /// The composer as plugin controls and ui.json capsules see it.
-  late final _nativeHost = _ChatComposerHost(this);
 
   /// The `@` picker over [_input].
   late final _mentions = MentionPickerController(
@@ -2260,29 +2258,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
     return HeaderStatus(StatusTone.ok, label, spoken: spoken);
   }
 }
-
-/// The chat screen's composer, lent to plugin controls and capsules.
-class _ChatComposerHost implements NativeComposerHost {
-  _ChatComposerHost(this._state);
-
-  final _ChatScreenState _state;
-
-  @override
-  String? get sessionId => _state.ref.read(currentSessionProvider);
-
-  @override
-  Object get draftOwner => _state._draftScope;
-
-  @override
-  String get draft => _state._input.text;
-
-  @override
-  void insert(String text) => _state._insertText(text);
-
-  @override
-  BuildContext? get context => _state.mounted ? _state.context : null;
-}
-
 /// 低余额横幅的位置:没有要说的时候是零高。
 class _BalanceBannerSlot extends ConsumerWidget {
   const _BalanceBannerSlot();
