@@ -9,7 +9,6 @@ import '../../l10n/l10n.dart';
 import '../../plugins/native/native_state.dart';
 import '../../plugins/seams/seams.dart' show PluginSeat, SeatPlacement, Slots, seatPlanProvider;
 import '../../share_code/plugin_share.dart' show sharedPluginFromBundle;
-import '../../state/plugin_config/plugin_config_state.dart';
 import '../../links/plugin_links.dart' show marketPluginLink;
 import '../../state/plugins_state.dart';
 import '../../state/runtime_capabilities_state.dart';
@@ -21,7 +20,6 @@ import '../engine_settings/engine_settings_page.dart';
 import '../share_code/plugin_share_sheet.dart';
 import '../theme/app_icons.dart';
 import '../theme/theme.dart';
-import 'config/plugin_config_entries.dart';
 import 'market_widgets.dart';
 import 'plugin_actions.dart';
 import 'plugin_load_status.dart';
@@ -401,14 +399,11 @@ class BundleSheet extends ConsumerWidget {
     final summary = bundle.summary();
     final error = bundleErrorText(bundle);
     final canSwitch = bundle.readOnlyReason == null && (bundle.installed || bundle.optional) && !gone;
-    final configSource = ref.watch(pluginConfigProvider);
-    final config = configSource.value;
-    final configurable = bundleSettingsRows(bundle, config);
     // Every plugin with fields gets its native page; a third-party one
     // without any keeps its config seat (an island page, or DSH Web).
     final configSeat = PluginSeat(slot: Slots.bundleConfig, placement: SeatPlacement.row, package: bundle.name);
     final configSeated =
-        !bundle.official && !gone && configurable.isEmpty && !ref.watch(seatPlanProvider(configSeat.request)).isEmpty;
+        !bundle.official && !gone && !ref.watch(seatPlanProvider(configSeat.request)).isEmpty;
 
     // Local installs can't be shared; a market entry adds the picture card.
     final shareable = !gone && sharedPluginFromBundle(bundle) != null;
@@ -513,65 +508,6 @@ class BundleSheet extends ConsumerWidget {
                     style: theme.textTheme.bodySmall?.copyWith(color: colors.textTertiary, height: 1.6),
                   ),
                 ),
-              if (configSeated) ...[
-                // A third-party plugin's own config page in DSH Web: its
-                // schema form, its island page, or the way to DSH Web.
-                const SizedBox(height: 16),
-                ListPageCard(
-                  margin: EdgeInsets.zero,
-                  children: [
-                    // Unknown fields are not absent fields: wait for the first
-                    // catalog before offering an alternate settings route.
-                    if (configSource.isLoading && !configSource.hasValue)
-                      ListPageRow(icon: AppIcons.configure, title: l10n.commonSettings, meta: l10n.pluginsLoading)
-                    else
-                      configSeat,
-                  ],
-                ),
-              ] else if (configurable.isNotEmpty) ...[
-                const SizedBox(height: 16),
-                ListPageCard(
-                  margin: EdgeInsets.zero,
-                  children: [
-                    for (final row in configurable)
-                      // A plugin's form on a bridge R7 Host: named and marked
-                      // as everywhere else it is listed. A curated page, and
-                      // any Host that does not say who carries the entry
-                      // (no bridge, an older one): as before.
-                      if (!curatedNamespaces.contains(row.rowId) && pluginConfigNamedByBundle(config, row.rowId))
-                        ListPageRow(
-                          icon: AppIcons.configure,
-                          title: configurable.length == 1
-                              ? l10n.commonSettings
-                              : pluginConfigEntryName(row.rowId, bundles, state: config, l10n: l10n),
-                          subtitle: pluginConfigReadOnlyNote(config, row.rowId, l10n: l10n),
-                          chevron: true,
-                          onTap: () => unawaited(
-                            openSettingsPage(
-                              context,
-                              row.rowId,
-                              title: pluginConfigTitle(row.rowId, bundles, state: config, l10n: l10n),
-                            ),
-                          ),
-                        )
-                      else
-                        ListPageRow(
-                          icon: AppIcons.configure,
-                          title: configurable.length == 1
-                              ? l10n.commonSettings
-                              : row.meta?.title?.resolve() ?? row.rowId,
-                          chevron: true,
-                          onTap: () => unawaited(
-                            openSettingsPage(
-                              context,
-                              row.rowId,
-                              title: configurable.length == 1 ? bundle.title() : row.meta?.title?.resolve(),
-                            ),
-                          ),
-                        ),
-                  ],
-                ),
-              ],
               // Loader evidence, then native UI switches and diagnostics.
               if (!gone) PluginLoadStatus(bundle: bundle),
               if (job != null && job.isActive) ...[
@@ -684,12 +620,6 @@ class BundleSheet extends ConsumerWidget {
     );
   }
 }
-
-/// Rows of [bundle] with a settings page (a row id is its settings
-/// namespace), in bundle order. Empty while the bundle is off or the
-/// configuration is unknown.
-List<PluginBundleRow> bundleSettingsRows(PluginBundle bundle, PluginConfigState? config) =>
-    bundleConfigRows(bundle, config);
 
 /// The detail sheet's head: the big icon, the name (two lines at most), one
 /// quiet line, then the tags.

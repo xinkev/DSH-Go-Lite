@@ -393,7 +393,6 @@ void main() {
     await flush(tester);
     expect(find.text('翻译服务'), findsOneWidget);
     expect(find.text('思考过程机器翻译'), findsWidgets);
-    expect(bundleSettingsRows(bundle, null), isEmpty);
   });
 
   testWidgets('the inventory groups, searches, shows presets and details', (tester) async {
