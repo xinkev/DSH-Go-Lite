@@ -152,23 +152,17 @@ class SettingsController extends Notifier<AppSettings> {
   }
 
   Future<void> _load() async {
-    final prefs = await SharedPreferences.getInstance();
-    if (!ref.mounted) return;
-    await performanceReady(ref);
-    if (!ref.mounted) return;
-    String apiKey = '';
-    try {
-      apiKey = await _secure.read(key: _apiKeyKey) ?? '';
-    } catch (_) {
-      // Keystore unavailable or corrupted; the user can re-enter the key.
-    }
-    if (!ref.mounted) return;
-    var providerIds = const <String>{};
-    try {
-      providerIds = (await ref.read(providerKeyVaultProvider).readAll()).keys.toSet();
-    } catch (_) {
-      // Same: the providers still work, only the self-heal copy is gone.
-    }
+    // Each of these is a platform round trip (prefs, the performance snapshot,
+    // two Keystore reads); the splash waits for all of them, so run them at
+    // once and wait for the slowest instead of their sum.
+    final prefsReady = SharedPreferences.getInstance();
+    final performanceReadyFuture = performanceReady(ref);
+    final apiKeyReady = _readApiKey();
+    final providerIdsReady = _readProviderIds();
+    final prefs = await prefsReady;
+    await performanceReadyFuture;
+    final apiKey = await apiKeyReady;
+    final providerIds = await providerIdsReady;
     if (!ref.mounted) return;
     state = AppSettings(
       apiKey: apiKey,
@@ -190,6 +184,24 @@ class SettingsController extends Notifier<AppSettings> {
       customProviderIds: providerIds,
       loaded: true,
     );
+  }
+
+  Future<String> _readApiKey() async {
+    try {
+      return await _secure.read(key: _apiKeyKey) ?? '';
+    } catch (_) {
+      // Keystore unavailable or corrupted; the user can re-enter the key.
+      return '';
+    }
+  }
+
+  Future<Set<String>> _readProviderIds() async {
+    try {
+      return (await ref.read(providerKeyVaultProvider).readAll()).keys.toSet();
+    } catch (_) {
+      // Same: the providers still work, only the self-heal copy is gone.
+      return const {};
+    }
   }
 
   /// Takes the keys in again once the saved credentials were cleared
