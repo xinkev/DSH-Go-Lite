@@ -15,7 +15,6 @@ import 'package:dsh_client/dsh_client.dart';
 import '../l10n/l10n.dart';
 import 'guest_fs.dart';
 import 'namespace_labels.dart';
-import 'plugin_share.dart';
 import 'settings_sanitizer.dart';
 import 'share_models.dart';
 import 'share_net.dart';
@@ -115,12 +114,7 @@ class ProfileExportSource {
 
 int _jsonBytes(Object? value) => utf8.encode(jsonEncode(value)).length;
 
-String _pluginSubtitle(SharedPlugin p) => switch (p.source) {
-  PluginSourceKind.npm => 'npm · ${p.version}',
-  PluginSourceKind.github => 'GitHub · ${p.repository ?? p.name}',
-  PluginSourceKind.git => '${p.repository ?? 'Git'} · ${p.gitRef ?? ''}',
-  PluginSourceKind.official => appL10n.pluginsOfficialPlugin,
-};
+
 
 /// Reads everything [client] (and, for the on-device engine, [fs]) can share.
 Future<ProfileExportSource> loadProfileExport(
@@ -155,67 +149,6 @@ Future<ProfileExportSource> loadProfileExport(
     }
   } on DshException {
     // A carrier without settings access: nothing from this section.
-  }
-
-  // Plugins (and the presets they declare).
-  List<AgentPresetInfo> presetInfo = const [];
-  try {
-    presetInfo = await client.listAgentPresets();
-  } on DshException {
-    // Names fall back to ids.
-  }
-  try {
-    for (final bundle in await client.listBundles()) {
-      SharedPlugin? shared;
-      String? unavailable;
-      if (bundle.official) {
-        final on = bundle.installed || (bundle.optional && bundle.enabled);
-        if (!on) continue;
-        shared = SharedPlugin(
-          name: bundle.name,
-          source: PluginSourceKind.official,
-          title: bundle.title(),
-          summary: bundle.summary(),
-        );
-      } else if (bundle.installed) {
-        shared = sharedPluginFromBundle(bundle);
-        if (shared == null) unavailable = appL10n.pluginsLocalUnshareable;
-      } else {
-        continue; // Installation-provided infrastructure.
-      }
-      final declared = [
-        for (final row in bundle.rows)
-          if (row.moduleName == agentPresetModule && row.rowId.startsWith('preset-'))
-            row.rowId.substring('preset-'.length),
-      ];
-      final presetList = [
-        for (final id in declared)
-          SharedPreset(id: id, name: presetInfo.where((p) => p.id == id).firstOrNull?.name, bundle: bundle.name),
-      ];
-      final subtitle = [
-        if (shared != null) _pluginSubtitle(shared),
-        if (presetList.isNotEmpty)
-          appL10n.pluginsIncludesPresets(presetList.map((p) => p.displayName).join(appL10n.pluginsListSeparator)),
-      ].join(' · ');
-      if (shared != null) {
-        plugins[bundle.name] = shared;
-        if (presetList.isNotEmpty) presets[bundle.name] = presetList;
-      }
-      items.add(
-        ExportItem(
-          id: 'plugin:${bundle.name}',
-          section: ExportSection.plugins,
-          title: bundle.title(),
-          subtitle: unavailable ?? (subtitle.isEmpty ? null : subtitle),
-          bytes: shared == null
-              ? 0
-              : _jsonBytes(shared.toJson()) + _jsonBytes([for (final p in presetList) p.toJson()]),
-          unavailable: unavailable,
-        ),
-      );
-    }
-  } on DshException {
-    // No plugin list over this carrier.
   }
 
   // The on-device engine's files.
@@ -265,23 +198,6 @@ Future<ProfileExportSource> loadProfileExport(
   );
 }
 
-/// Adds npm integrity to [share]'s registry plugins (in parallel, within a
-/// few seconds; plugins the registry doesn't answer for stay as they are).
-Future<ProfileShare> withProfileNpmFacts(ShareNet net, ProfileShare share) async {
-  if (!share.plugins.any((p) => p.source == PluginSourceKind.npm)) return share;
-  final plugins = await Future.wait([for (final p in share.plugins) withNpmFacts(net, p)]);
-  return ProfileShare(
-    name: share.name,
-    created: share.created,
-    settings: share.settings,
-    plugins: plugins,
-    presets: share.presets,
-    skills: share.skills,
-    agentsMd: share.agentsMd,
-  );
-}
-
-/// `1.2 KB`, `860 B`.
 String formatShareBytes(int bytes) {
   if (bytes < 1000) return '$bytes B';
   final kb = bytes / 1024;

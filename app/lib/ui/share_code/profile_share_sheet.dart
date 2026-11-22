@@ -69,12 +69,7 @@ class _ProfileShareSheetState extends ConsumerState<ProfileShareSheet> {
   Future<void> _next(ProfileExportSource source, Set<String> selected) async {
     if (_building) return;
     setState(() => _building = true);
-    var share = source.build(selected);
-    try {
-      share = await withProfileNpmFacts(ref.read(shareNetProvider), share).timeout(const Duration(seconds: 5));
-    } catch (_) {
-      // Shared without integrity.
-    }
+    final share = source.build(selected);
     if (!mounted) return;
     setState(() => _building = false);
     SheetNavigator.of(context).push((_) => ProfileSharePreview(share: share));

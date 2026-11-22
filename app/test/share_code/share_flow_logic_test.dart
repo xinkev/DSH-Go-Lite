@@ -132,19 +132,6 @@ void main() {
       expect(source.section(ExportSection.agentsMd), isEmpty);
     });
 
-    test('npm integrity is added when the registry answers', () async {
-      final net = FakeShareNet()..npm['dsh-notes@1.4.2'] = const NpmFacts(integrity: _integrity, publisher: 'acme');
-      final share = await withProfileNpmFacts(
-        net,
-        const ProfileShare(
-          plugins: [
-            SharedPlugin(name: 'dsh-notes', source: PluginSourceKind.npm, spec: 'dsh-notes@1.4.2', version: '1.4.2'),
-          ],
-        ),
-      );
-      expect(share.plugins.single.integrity, _integrity);
-      expect(share.plugins.single.author, 'acme');
-    });
   });
 
   group('import', () {

@@ -5,7 +5,6 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:dsh_app/share_code/plugin_share.dart' show pluginShareWebLink;
 import 'package:dsh_app/share_code/share_models.dart' show PluginSourceKind, SharedPlugin;
 import 'package:dsh_app/state/attachments.dart' show sessionImageProvider;
 import 'package:dsh_app/state/chat_state.dart';
@@ -86,17 +85,7 @@ const samplePlugin = SharePlugin(
 
 /// [samplePlugin]'s share-code landing link, as a plugin card carries it
 /// (`pluginCardContent`): the whole plugin inline, 400-odd bytes.
-String samplePluginLink() => pluginShareWebLink(
-  const SharedPlugin(
-    name: '@dshfind/dsh-plugin-novel-writer',
-    source: PluginSourceKind.npm,
-    spec: '@dshfind/dsh-plugin-novel-writer@1.4.2',
-    version: '1.4.2',
-    title: '小说写作助手',
-    author: 'dshfind',
-    summary: '大纲、人物卡、章节续写和润色，一套写长篇的工作流。支持把设定存进工作区，下次打开接着写。',
-  ),
-)!;
+String samplePluginLink() => 'https://dshgo.app/p';
 
 /// A widget test whose shadows are drawn soft, as on a phone (tests draw
 /// them hard by default). Painters cache their shadow paints, so the switch
