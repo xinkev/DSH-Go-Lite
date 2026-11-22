@@ -14,9 +14,6 @@ import '../common/brief_notice.dart';
 import '../web/dsh_web_launcher.dart';
 import '../web/web_target.dart';
 
-/// The command that adds DS Bot to a `dsh web` profile on a computer.
-const dsBotInstallCommand = 'dsh plugin --profile web add ds-bot';
-
 /// Uses the existing authenticated DSH Web launcher. Tests replace only this edge.
 final dsBotWebOpenerProvider = Provider<void Function(BuildContext context, WidgetRef ref)>(
   (ref) =>
@@ -29,10 +26,6 @@ class DsBotInstallCard extends ConsumerWidget {
   final DsBotStatus status;
 
   bool get _update => status.availability == DsBotAvailability.outdated;
-
-  Future<void> _install(BuildContext context, WidgetRef ref) async {
-    // Plugin installs are retired: there is nothing to install.
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -61,43 +54,6 @@ class DsBotInstallCard extends ConsumerWidget {
               child: Text(l10n.commonRetry),
             )
         ],
-      ),
-    );
-  }
-}
-
-/// A monospace command with a copy key, as the plugin page shows it.
-class _CommandWell extends StatelessWidget {
-  const _CommandWell({required this.command});
-
-  final String command;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final dsh = DshColors.of(context);
-    return GlassSurface(
-      tier: GlassTier.card,
-      borderRadius: AppShape.radiusMd,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(14, 6, 6, 6),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              child: SelectableText(command, maxLines: 1, style: AppType.monoSmall(color: dsh.codeWellFg)),
-            ),
-            const SizedBox(width: 4),
-            IconButton(
-              tooltip: l10n.commonCopy,
-              icon: const Icon(AppIcons.copy, size: 18),
-              onPressed: () {
-                Clipboard.setData(ClipboardData(text: command));
-                showBriefNotice(context, l10n.commonCopied);
-              },
-            ),
-          ],
-        ),
       ),
     );
   }

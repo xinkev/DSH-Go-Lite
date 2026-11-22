@@ -38,7 +38,6 @@ export 'src/models.dart';
 export 'src/mux.dart';
 export 'src/phone_callback.dart';
 export 'src/phone_session.dart';
-export 'src/plugin_config_api.dart';
 export 'src/plugins_api.dart';
 export 'src/providers_api.dart';
 export 'src/references_api.dart';
