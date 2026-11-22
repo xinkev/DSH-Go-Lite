@@ -11,7 +11,6 @@ One page for "what a plugin can and cannot do". Details live in the other pages;
 | Commands, skills, settings forms and dsh-ui cards shown natively | no app code needed | [Native for free](native-for-free.md) |
 | A web UI, and a web island inside chat content (`shell.overlay`) | client entry + slot registration | [Web panels](web-panels.md) |
 | Picking files/images (NA v1.3, optional) | `capabilities: ["files"]` + `pickFile`/`pickImage` | [Picking files](files.md) |
-| Read-aloud, stop on speech, captions (v1.2, optional) | `media`/`micro`/`overlays` + `caps` | [Sound and captions](voice.md) |
 | Constrained views: v1/v2 components, two-way binding, bounded formulas | JSON views | [Components](components.md), [Inputs](inputs.md) |
 | Eight effects on tap | `effect` | [Actions and effects](actions.md) |
 

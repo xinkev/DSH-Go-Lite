@@ -53,7 +53,6 @@ Both sides must negotiate `files` in `hello` / `welcome`. Older apps omit it: ma
 
 ## v1.2: optional capabilities
 
-Sound, speech detection, the small caption channel and the floating caption ([Sound and captions](voice.md)) are optional capabilities within v1, negotiated rather than versioned:
 
 | Case | Result |
 |---|---|

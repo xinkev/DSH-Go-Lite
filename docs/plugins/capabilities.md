@@ -11,7 +11,6 @@
 | 命令、技能、设置表单、dsh-ui 卡直接原生显示 | 不写 App 代码 | [不写代码就原生显示](native-for-free.md) |
 | 网页界面、聊天内容区网页岛（`shell.overlay`） | 客户端入口 + slot 注册 | [网页面板](web-panels.md) |
 | 选择文件/图片（NA v1.3，可选） | `capabilities: ["files"]` + `pickFile`/`pickImage` | [选择文件](files.md) |
-| 朗读、开口即停、字幕（v1.2，可选） | `media`/`micro`/`overlays` + `caps` | [声音与字幕](voice.md) |
 | 受限视图：v1/v2 组件、双向绑定、有界公式 | JSON 视图 | [组件目录](components.md)、[输入与表单](inputs.md) |
 | 点按后的 8 种效果 | `effect` 声明 | [动作与效果](actions.md) |
 
