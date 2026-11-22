@@ -122,7 +122,7 @@ class _Plugins extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
-    final panes = ConversationPane.pluginsFor(ref, sessionId);
+    final panes = <ConversationPane>[];
     if (panes.isEmpty) {
       return Center(
         child: Padding(

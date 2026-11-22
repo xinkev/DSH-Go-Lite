@@ -11,7 +11,6 @@ import '../../plugins/native/native_icons.dart';
 import '../../plugins/native/native_model.dart';
 import '../../plugins/native/native_state.dart';
 import '../../plugins/seams/seat_planner.dart';
-import '../plugins/native/chat_plugins_sheet.dart';
 import '../plugins/native/native_panel.dart';
 import '../plugins/seats/session_plugins_tab.dart';
 import '../theme/app_icons.dart';
@@ -74,30 +73,5 @@ class ConversationPane {
 
   /// The web plugins, all in one: their chat-page parts share one island, and the pages of
   /// any plugin without such parts are a row away.
-  static final webPlugins = ConversationPane(
-    id: 'plugins',
-    icon: AppIcons.plugin,
-    label: () => appL10n.hubPlugins,
-    tab: SessionTab.plugins,
-    build: (id) => Builder(
-      builder: (context) => ChatWebPluginsPane(
-        sessionId: id,
-        onOtherPages: () => SessionDetailPage.open(context, id, tab: SessionTab.plugins),
-      ),
-    ),
-  );
 
-  /// The side panel's 插件, for [sessionId]: every plugin panel, wherever it asked to be,
-  /// each its own; then the web plugins.
-  static List<ConversationPane> pluginsFor(WidgetRef ref, String sessionId) {
-    final webParts = !ref.watch(chatWebPluginsProvider(sessionId)).isEmpty;
-    // The page's tab holds native panels too: those are listed on their own here.
-    final pages = ref.watch(sessionPluginPlanProvider(sessionId)).visible.any((item) => item.mode != SeatMode.native);
-    return [
-      // One that asked only for its detail page stays there.
-      for (final panel in ref.watch(nativePanelsProvider))
-        if (panel.placement.any((p) => p != DshGoPanel.pluginPage)) ofNative(panel),
-      if (webParts) webPlugins else if (pages) ofTab(SessionTab.plugins),
-    ];
-  }
 }
