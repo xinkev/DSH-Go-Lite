@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
 import '../../state/bots_state.dart';
-import '../../state/plugins_state.dart';
 import '../common/empty_view.dart';
 import '../theme/app_icons.dart';
 import '../theme/theme.dart';
@@ -38,16 +37,12 @@ class DsBotInstallCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
-    final host = ref.watch(pluginHostProvider);
-    final job = ref.watch(pluginInstallsProvider.select((jobs) => jobs[dsBotPackage]));
-    final busy = job?.isActive ?? false;
-    final canInstall = host?.canInstall ?? false;
     final title = _update ? l10n.botsMobileUnsupportedTitle : l10n.botsInstall;
     final message = _update ? l10n.botsMobileApiRequired : l10n.botsMobileApiMissing;
     return EmptyView(
       icon: AppIcons.bot,
       title: title,
-      message: busy ? job!.phaseLabel : message,
+      message: message,
       padding: const EdgeInsets.fromLTRB(32, 40, 32, 24),
       action: Column(
         mainAxisSize: MainAxisSize.min,
@@ -65,15 +60,6 @@ class DsBotInstallCard extends ConsumerWidget {
               onPressed: () => ref.read(dsBotProvider.notifier).retry(),
               child: Text(l10n.commonRetry),
             )
-          else if (canInstall)
-            FilledButton.tonal(
-              onPressed: busy ? null : () => _install(context, ref),
-              child: Text(busy ? l10n.botsInstalling : l10n.commonInstall),
-            )
-          else if (host?.installRefused ?? false)
-            Text(l10n.marketInstallRefused, textAlign: TextAlign.center)
-          else
-            const _CommandWell(command: dsBotInstallCommand),
         ],
       ),
     );
