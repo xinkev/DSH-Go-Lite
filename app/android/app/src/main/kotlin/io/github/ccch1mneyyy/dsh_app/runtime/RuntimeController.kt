@@ -575,10 +575,6 @@ class RuntimeController private constructor(private val app: Context) : DshProce
                 if (!safe && !authOverlay) {
                     log("[dsh-app] subscription sign-in overlay not written; ChatGPT / Claude sign-in is unavailable", "system")
                 }
-                val speechOverlay = !safe && SpeechGuest.writeFiles(installer.rootfs)
-                if (!safe && !speechOverlay) {
-                    log("[dsh-app] voice input overlay not written; the voice model keeps DSH's defaults", "system")
-                }
                 if (pendingPhoneStorage && !storage) log("[dsh-app] phone storage requested but permission not granted", "system")
                 val env = LinkedHashMap<String, String>()
                 env["TZ"] = java.util.TimeZone.getDefault().id
