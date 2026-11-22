@@ -11,7 +11,6 @@ import '../notify/answer_native_request.dart';
 import '../notify/notify_channel.dart';
 import '../phone/phone_channel.dart';
 import '../phone/phone_approval.dart';
-import '../pets/pet_signals.dart' show petHearAlert, petOnScreenProvider, petEventBusProvider;
 import 'app_info.dart';
 import 'android_features.dart';
 import 'bots_state.dart';
@@ -563,7 +562,7 @@ class ChatAlertsController extends Notifier<ChatAlert?> {
           prefs: ref.read(notifyPrefsProvider),
           foreground: ref.read(appForegroundProvider),
           viewed: ref.read(viewedChatProvider),
-          petOnScreen: ref.read(petOnScreenProvider),
+          petOnScreen: false,
         ) ==
         AlertDelivery.system) {
       unawaited(_channel.show(postFor(alert)));
@@ -775,11 +774,10 @@ class ChatAlertsController extends Notifier<ChatAlert?> {
       prefs: prefs,
       foreground: foreground,
       viewed: ref.read(viewedChatProvider),
-      petOnScreen: ref.read(petOnScreenProvider),
+      petOnScreen: false,
     );
     // The pet hears every alert (it moves for the one on screen too); it
     // speaks up for those that would have reached the person.
-    petHearAlert(ref, alert, bubble: delivery == AlertDelivery.pet || delivery == AlertDelivery.system);
     switch (delivery) {
       case AlertDelivery.none || AlertDelivery.pet:
         return;

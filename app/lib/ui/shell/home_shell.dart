@@ -12,7 +12,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../links/app_links.dart';
-import '../../pets/pet_overlay_bridge.dart';
 import '../../state/adaptive_layout_state.dart';
 import '../../state/android_features.dart';
 import '../../state/drawer_view_state.dart' show drawerSelectionProvider;
@@ -299,7 +298,6 @@ class _HomeShellState extends ConsumerState<HomeShell> with TickerProviderStateM
     }
     final chat = widget.chatBuilder?.call(_onMenu) ?? ChatScreen(onOpenDrawer: _onMenu, backdrop: false);
     // The floating pet outside the app hears every pet state.
-    ref.listen<void>(petOverlayBridgeProvider, (_, _) {});
     return SafeModeNoticeListener(
       child: PhoneStopWatcher(
         child: PopScope(

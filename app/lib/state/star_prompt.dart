@@ -17,7 +17,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../phone/phone_channel.dart' show PhoneTaskStatus;
-import '../pets/pet_signals.dart' show petFocusProvider, petPendingProvider;
 import '../update/update_config.dart' show updateRepo;
 import 'draft_store.dart';
 import 'notify_state.dart' show appForegroundProvider, chatOnScreenProvider;
@@ -379,8 +378,8 @@ final starPromptSceneProvider = Provider<StarPromptScene>((ref) {
   final draft = ref.watch(draftStoreProvider.select((s) => s.drafts[session ?? 'new']));
   return StarPromptScene(
     onScreen: ref.watch(appForegroundProvider) && ref.watch(chatOnScreenProvider),
-    running: ref.watch(petFocusProvider)?.running ?? false,
-    waiting: ref.watch(petPendingProvider).isNotEmpty,
+    running: false,
+    waiting: false,
     phoneActive: phone.active,
     phoneLastActive: phone.lastActive,
     composing: draft != null && (draft.text.trim().isNotEmpty || draft.attachments.isNotEmpty),
