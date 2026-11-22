@@ -60,7 +60,6 @@ void main() {
       expect(request.text, '报价\nhttps://example.com/a');
       expect(request.attachments.map((a) => (a.name, a.isImage)), [('a.png', true), ('报价单.pdf', false)]);
       expect(request.problems, ['「movie.mp4」太大，未添加', '没能读取「gone.txt」', '「empty.txt」是空文件']);
-      expect(request.voice, isFalse);
     });
 
     test('deletes the cached copies once read', () async {
@@ -221,9 +220,8 @@ void main() {
       final inbox = container.read(composeInboxProvider.notifier);
       inbox
         ..push(const ComposeRequest(text: '一'))
-        ..push(const ComposeRequest.newChat(voice: true));
+        ..push(const ComposeRequest.newChat());
       expect(inbox.take()?.text, '一');
-      expect(inbox.take()?.voice, isTrue);
       expect(inbox.take(), isNull);
     });
 

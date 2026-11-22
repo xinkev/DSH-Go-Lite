@@ -29,7 +29,7 @@ sealed class LauncherEntry {
     final path = raw['path'];
     return switch (raw['kind']) {
       'new' => NewChatEntry(text: text),
-      'voice' => NewChatEntry(voice: true, text: text),
+
       'screenshot' when path is String && path.startsWith('/') && !path.contains('\u0000') => ScreenshotEntry(path),
       'chat' when sessionId is String && sessionId.isNotEmpty => OpenChatEntry(
         HostRef.decode(host is String ? host : null),

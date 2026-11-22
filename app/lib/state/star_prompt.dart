@@ -330,7 +330,7 @@ class StarPromptScene {
   @override
   String toString() =>
       'StarPromptScene(onScreen: $onScreen, running: $running, waiting: $waiting, phone: $phoneActive '
-      '($phoneLastActive), voice: $voice, composing: $composing)';
+      '($phoneLastActive), composing: $composing)';
 }
 
 /// Phone control as the native side reports it: a task now, and when one was

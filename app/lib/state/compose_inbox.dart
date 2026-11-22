@@ -33,12 +33,9 @@ class ComposeRequest {
     this.text = '',
     this.attachments = const [],
     this.problems = const [],
-    this.voice = false,
     this.note,
   });
-
-  /// 新对话 from the launcher or the tile: an empty composer, focused — or
-  const ComposeRequest.newChat({this.voice = false})
+  const ComposeRequest.newChat()
     : text = '',
       attachments = const [],
       problems = const [],
@@ -54,8 +51,6 @@ class ComposeRequest {
   /// wrong (「问 AI」 on a host without the guide).
   final String? note;
 
-  /// Start dictation instead of showing the keyboard.
-  final bool voice;
 
   /// Reads a share's files (copied into the app cache by the native side)
   /// into attachments, then deletes the copies: the bytes live in the draft.

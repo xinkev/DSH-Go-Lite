@@ -117,11 +117,8 @@ class _SystemEntryHostState extends ConsumerState<SystemEntryHost> {
 
   Future<void> _onEntry(LauncherEntry entry) async {
     switch (entry) {
-      case NewChatEntry(:final voice, :final text):
-        // The microphone opens only for an app on screen; the shortcut's
-        // intent can arrive a beat before Flutter hears it is resumed.
-        if (voice) await _untilResumed();
-        if (mounted) await _compose(ComposeRequest(text: text, voice: voice));
+      case NewChatEntry(:final text):
+        if (mounted) await _compose(ComposeRequest(text: text));
       case ScreenshotEntry(:final path):
         final draft = ref.read(draftStoreProvider).drafts['new'];
         // Reuse share intake's validation and cache cleanup; unlike an opened
@@ -180,8 +177,6 @@ class _SystemEntryHostState extends ConsumerState<SystemEntryHost> {
   Future<void> _compose(ComposeRequest request) async {
     final revealed = await _showChat();
     if (!mounted) return;
-    // Siri dictation needs the visible composer. Keeping an edit page open
-    if (!revealed && request.voice && ref.read(operatingSystemProvider) == 'ios') return;
     ref.read(composeInboxProvider.notifier).push(request);
   }
 
