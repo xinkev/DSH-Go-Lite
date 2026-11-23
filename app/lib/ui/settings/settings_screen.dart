@@ -186,9 +186,6 @@ class SettingsScreen extends ConsumerWidget {
               value: text(newApi == null ? null : (newApi ? l10n.engineSearchNewApiBadge : l10n.commonDefault)),
               onTap: () => _push(context, const WebSearchSettingsPage()),
             ),
-            SettingsTile(
-              icon: AppIcons.generateMedia,
-            ),
             if (ref.watch(operatingSystemProvider) == 'ohos') const LinuxEnvironmentTile(tint: SettingsHues.abilities),
           ],
         ),
