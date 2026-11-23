@@ -179,7 +179,7 @@ class _ComposerState extends State<Composer> with SingleTickerProviderStateMixin
   // One value for everything that moves when the composer opens: the corners, the text's
   // width, the height, the keys and the footer's fade. One motion, not several in step.
   late final AnimationController _openController = AnimationController(vsync: this, duration: AppMotion.collapse);
-  late final Animation<double> _open = CurvedAnimation(parent: _openController, curve: AppMotion.collapseCurve);
+  late final CurvedAnimation _open = CurvedAnimation(parent: _openController, curve: AppMotion.collapseCurve);
 
   /// The keyboard went down with the field still focused.
   bool _keyboardDown = false;
@@ -315,6 +315,15 @@ class _ComposerState extends State<Composer> with SingleTickerProviderStateMixin
     if ((oldWidget.footer == null) != (widget.footer == null)) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _syncOpen());
     }
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_draftChanged);
+    widget.focusNode?.removeListener(_focusChanged);
+    _draftEmpty.dispose();
+    _open.dispose();
+    _openController.dispose();
     super.dispose();
   }
 
