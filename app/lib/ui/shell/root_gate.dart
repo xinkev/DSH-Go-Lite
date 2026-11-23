@@ -20,6 +20,7 @@ import '../../state/hosts_state.dart';
 import '../../state/notify_state.dart';
 import '../../state/ohos_linux_state.dart';
 import '../../state/onboarding_state.dart';
+import '../../state/providers_state.dart' show customProvidersProvider;
 import '../../state/settings_state.dart';
 import '../../ui_config/ui_skill.dart';
 import '../onboarding/onboarding_flow.dart';
@@ -294,6 +295,13 @@ class _RootGateState extends ConsumerState<RootGate> {
     // The last host comes back while the splash shows, so a phone without
     // the runtime doesn't open on 本机 for a frame before its remote host.
     ref.read(activeHostProvider);
+    // A provider on the engine is a model to talk to: read the list as soon
+    // as it is connected, and never leave the person on the key step when
+    // one exists (a provider added through the engine, or before this run).
+    ref.watch(customProvidersProvider);
+    ref.listen(customProvidersProvider, (_, next) {
+      if ((next.value?.providers.isNotEmpty ?? false) && _decided && _step == OnboardingStep.apiKey) _goTo(null);
+    });
 
     // "重置运行环境" sends the user back through setup; 「卸载运行环境」
     // (localDeclined) stays home.
@@ -344,7 +352,7 @@ class _RootGateState extends ConsumerState<RootGate> {
         _step = initialOnboardingStep(
           status: runtime.status,
           hasApiKey: settings.hasApiKey,
-          hasCustomProvider: settings.customProviderIds.isNotEmpty,
+          hasCustomProvider: settings.customProviderIds.isNotEmpty || settings.engineProviderIds.isNotEmpty,
           prefs: prefs,
         );
         _chooseRuntime = runtimeStepAsks(runtime.status);

@@ -148,6 +148,7 @@ class SettingsController extends Notifier<AppSettings> {
   static const _chatTextScaleKey = 'chat_text_scale';
   static const _foldTurnsKey = 'fold_completed_turns';
   static const _visualRepliesKey = 'visual_replies';
+  static const _engineProvidersKey = 'engine_provider_ids';
   static const _secure = AppSecureStorage();
   late Future<void> _loaded;
 
@@ -191,8 +192,18 @@ class SettingsController extends Notifier<AppSettings> {
       foldCompletedTurns: prefs.getBool(_foldTurnsKey) ?? true,
       visualReplies: prefs.getBool(_visualRepliesKey) ?? true,
       customProviderIds: providerIds,
+      engineProviderIds: _readEngineProviderIds(prefs),
       loaded: true,
     );
+  }
+
+  /// Providers the engine reported last time (see [adoptEngineProviders]).
+  static Set<String> _readEngineProviderIds(SharedPreferences prefs) {
+    try {
+      return {...?prefs.getStringList(_engineProvidersKey)};
+    } catch (_) {
+      return const {};
+    }
   }
 
   Future<String> _readApiKey() async {
@@ -233,9 +244,16 @@ class SettingsController extends Notifier<AppSettings> {
 
   /// The engine's own provider list: kept in memory only (the vault holds the
   /// keys the phone has), so "has a model" follows what the engine reports.
-  void adoptEngineProviders(Set<String> ids) {
+  Future<void> adoptEngineProviders(Set<String> ids) async {
     if (state.engineProviderIds.length == ids.length && state.engineProviderIds.containsAll(ids)) return;
     state = state.copyWith(engineProviderIds: ids);
+    // Kept so the next launch knows before the engine answers.
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setStringList(_engineProvidersKey, [...ids]);
+    } catch (_) {
+      // This run still has it.
+    }
   }
 
   /// Keeps [key] for the local engine's custom provider [id] (see
