@@ -71,6 +71,9 @@ class RuntimeController private constructor(private val app: Context) : DshProce
     @Volatile private var installer: RuntimeInstaller = RuntimeInstaller(app, manifest, ::note)
     /** The on-demand installer: network, verification, and the installed-version record. */
     private val releaseInstaller = RuntimeReleaseInstaller(app, onLog = ::note)
+    /** Optional layers (office, python): fetched only when a feature is enabled. */
+    private val optionalInstaller = OptionalLayerInstaller(app, onLog = ::note)
+    @Volatile private var optionalBusy: String? = null
     @Volatile private var installedRuntime: InstalledRuntime? = null
     @Volatile private var release: RuntimeRelease? = null
     @Volatile private var releaseError: String? = null
@@ -202,7 +205,25 @@ class RuntimeController private constructor(private val app: Context) : DshProce
         "runtimeManifestUrl" to releaseInstaller.manifestUrl,
         "releaseError" to releaseError,
         "updateAvailable" to (runtimeVersionRelation(installed, available) == RuntimeVersionRelation.UPDATE),
+        "optionalLayers" to optionalLayers(),
+        "optionalBusy" to optionalBusy,
     )
+    }
+
+    /** Available optional layers and whether this runtime version already has each one. */
+    private fun optionalLayers(): List<Map<String, Any?>> {
+        val available = release?.optionalLayers.orEmpty().filter { it.available }
+        if (available.isEmpty()) return emptyList()
+        val version = runCatching { installer.installedVersion() }.getOrNull()
+        return available.map { layer ->
+            val installed = optionalInstaller.installed(layer.name)
+            mapOf(
+                "name" to layer.name,
+                "available" to true,
+                "installed" to (installed != null && version != null && installed.runtimeVersion == version),
+                "bytes" to layer.bytes,
+            )
+        }
     }
 
     private fun directEngine() = DirectLaunch.Preference(
@@ -359,6 +380,71 @@ class RuntimeController private constructor(private val app: Context) : DshProce
         if (phase != Phase.DOWNLOADING) return false
         releaseInstaller.cancel()
         return true
+    }
+
+    /**
+     * Fetches and installs one optional layer (office: document conversion) into the installed
+     * runtime. Needs the runtime installed and the engine stopped, since it replaces files
+     * the engine may be using. A failure leaves the runtime as it was.
+     */
+    @Synchronized fun installOptionalLayer(name: String, onDone: (Throwable?) -> Unit) {
+        if (optionalBusy != null) return onDone(IllegalStateException("another optional layer is being installed"))
+        if (process != null || resetting || phase in setOf(
+                Phase.STARTING, Phase.RUNNING, Phase.STOPPING, Phase.DOWNLOADING, Phase.INSTALLING,
+            )
+        ) {
+            return onDone(IllegalStateException("stop the engine before installing optional layers"))
+        }
+        optionalBusy = name
+        emitStatus()
+        worker.execute {
+            try {
+                if (runCatching { installer.installedVersion() }.getOrNull() == null) {
+                    throw IllegalStateException("runtime not installed")
+                }
+                val next = release ?: releaseInstaller.check().also {
+                    release = it
+                    releaseError = null
+                }
+                val layer = next.optionalLayers.firstOrNull { it.name == name && it.available }
+                    ?: throw RuntimeReleaseRejected("release_invalid", "runtime release has no optional layer " + name)
+                optionalInstaller.install(next.runtimeVersion, layer) { done, total ->
+                    emit(mapOf("type" to "progress", "step" to name, "done" to done, "total" to total))
+                }
+                main.post { onDone(null) }
+            } catch (e: Throwable) {
+                note("[dsh-app] optional layer " + name + " failed: " + e.message)
+                main.post { onDone(e) }
+            } finally {
+                optionalBusy = null
+                emitStatus()
+            }
+        }
+    }
+
+    /** Deletes an optional layer's owned paths; the engine keeps working without them. */
+    @Synchronized fun removeOptionalLayer(name: String, onDone: (Throwable?) -> Unit) {
+        if (optionalBusy != null) return onDone(IllegalStateException("another optional layer is being changed"))
+        if (process != null || resetting || phase in setOf(
+                Phase.STARTING, Phase.RUNNING, Phase.STOPPING, Phase.DOWNLOADING, Phase.INSTALLING,
+            )
+        ) {
+            return onDone(IllegalStateException("stop the engine before removing optional layers"))
+        }
+        optionalBusy = name
+        emitStatus()
+        worker.execute {
+            try {
+                optionalInstaller.remove(name)
+                main.post { onDone(null) }
+            } catch (e: Throwable) {
+                note("[dsh-app] optional layer " + name + " removal failed: " + e.message)
+                main.post { onDone(e) }
+            } finally {
+                optionalBusy = null
+                emitStatus()
+            }
+        }
     }
 
     /** Downloads, verifies and installs one published runtime; all-or-nothing. */

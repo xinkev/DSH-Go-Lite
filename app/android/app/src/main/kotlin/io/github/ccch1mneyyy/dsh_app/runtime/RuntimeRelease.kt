@@ -19,13 +19,23 @@ internal data class RuntimeLayer(
     val uncompressedBytes: Long,
 )
 
-/** A layer the release declares but the install unit does not require yet (office, python). */
+/**
+ * A layer outside the install unit (office today, python later): downloaded only when the
+ * person enables its feature. The release says where it lives so the app needs no per-name code.
+ */
 internal data class RuntimeOptionalLayer(
     val name: String,
     val available: Boolean,
     val file: String?,
     val sha256: String?,
     val bytes: Long,
+    val uncompressedBytes: Long,
+    /** Guest prefix the layer installs under, e.g. /opt/dsh. */
+    val installsInto: String?,
+    /** Required layers that must be installed first. */
+    val requires: List<String>,
+    /** Guest paths the layer owns; install replaces exactly these, remove deletes them. */
+    val paths: List<String>,
     val note: String?,
 )
 
@@ -168,7 +178,10 @@ internal data class RuntimeRelease(
                 if (file != null || digest != null || json.optLong("bytes", 0) != 0L) {
                     throw RuntimeReleaseRejected("release_invalid", "unavailable runtime layer '" + name + "' carries a file")
                 }
-                return RuntimeOptionalLayer(name, false, null, null, 0, json.optString("note").ifEmpty { null })
+                return RuntimeOptionalLayer(
+                    name, false, null, null, 0, 0, null, emptyList(), emptyList(),
+                    json.optString("note").ifEmpty { null },
+                )
             }
             if (file == null || file.contains('/') || file.contains('\\') || !file.endsWith(".tar.xz") ||
                 digest == null || !digest.matches(Regex("[0-9a-f]{64}")) ||
@@ -176,8 +189,36 @@ internal data class RuntimeRelease(
             ) {
                 throw RuntimeReleaseRejected("release_invalid", "available runtime layer '" + name + "' is incomplete")
             }
+            val installsInto = json.optString("installsInto").trimEnd('/')
+            if (!installsInto.startsWith("/") || installsInto == "/" || installsInto.contains("..")) {
+                throw RuntimeReleaseRejected("release_invalid", "optional layer '" + name + "' has no valid installsInto")
+            }
+            val requires = json.optJSONArray("requires")
+            val requiresList = if (requires == null) emptyList()
+                else List(requires.length()) { requires.optString(it) }.filter { it.isNotBlank() }
+            if (requiresList.isEmpty()) {
+                throw RuntimeReleaseRejected("release_invalid", "optional layer '" + name + "' names no required layers")
+            }
+            val paths = json.optJSONArray("paths")
+                ?: throw RuntimeReleaseRejected("release_invalid", "optional layer '" + name + "' owns no paths")
+            val pathList = List(paths.length()) { paths.optString(it) }.filter { it.isNotBlank() }
+            if (pathList.isEmpty()) {
+                throw RuntimeReleaseRejected("release_invalid", "optional layer '" + name + "' owns no paths")
+            }
+            for (path in pathList) {
+                val clean = path.trimEnd('/')
+                if (!clean.startsWith("/") || clean == "/" || clean.contains("..") || clean == installsInto ||
+                    !clean.startsWith(installsInto + "/")
+                ) {
+                    throw RuntimeReleaseRejected("release_invalid", "optional layer '" + name + "' owns a path outside " + installsInto)
+                }
+            }
+            if (pathList.distinct() != pathList) {
+                throw RuntimeReleaseRejected("release_invalid", "optional layer '" + name + "' repeats a path")
+            }
             return RuntimeOptionalLayer(
-                name, true, file, digest, json.optLong("bytes"),
+                name, true, file, digest, json.optLong("bytes"), json.optLong("uncompressedBytes"),
+                installsInto, requiresList, pathList.map { it.trimEnd('/') },
                 json.optString("note").ifEmpty { null },
             )
         }

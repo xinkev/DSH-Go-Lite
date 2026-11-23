@@ -9441,6 +9441,18 @@ class L10nZh extends L10n {
   String get localEngineSizeLabel => '下载大小';
 
   @override
+  String get localEngineOffice => '文档转换';
+
+  @override
+  String get localEngineOptionalInstalled => '已安装';
+
+  @override
+  String get localEngineOptionalNeedsRuntime => '先安装本地引擎';
+
+  @override
+  String get localEngineOptionalFailed => '操作失败，请重试';
+
+  @override
   String localEngineDownloadSize(int mb) {
     return '下载约 $mb MB';
   }

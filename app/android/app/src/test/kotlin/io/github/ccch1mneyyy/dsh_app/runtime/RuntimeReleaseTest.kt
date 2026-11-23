@@ -24,6 +24,18 @@ class RuntimeReleaseTest {
         .put("uncompressedBytes", bytes * 10)
         .put("role", "required")
 
+    private fun office(): JSONObject = JSONObject()
+        .put("file", "office-arm64-v8a.tar.xz")
+        .put("sha256", "c".repeat(64))
+        .put("bytes", 60)
+        .put("uncompressedBytes", 600)
+        .put("role", "optional")
+        .put("available", true)
+        .put("installsInto", "/opt/dsh")
+        .put("requires", JSONArray(listOf("base", "engine")))
+        .put("paths", JSONArray(listOf("/opt/dsh/node_modules/@deepseek-ai/libreoffice-kit-wasm")))
+        .put("note", "downloaded only when enabled")
+
     private fun release(
         schema: Int = 2,
         minAppSchema: Int = 2,
@@ -33,9 +45,7 @@ class RuntimeReleaseTest {
         baseId: String = this.baseId,
         layers: JSONObject = JSONObject()
             .put("base", layer("base")).put("engine", layer("engine", 50))
-            .put("office", JSONObject().put("file", JSONObject.NULL).put("sha256", JSONObject.NULL)
-                .put("bytes", 0).put("uncompressedBytes", 0).put("role", "optional")
-                .put("available", false).put("note", "not shipped yet"))
+            .put("office", office())
             .put("python", JSONObject().put("file", JSONObject.NULL).put("sha256", JSONObject.NULL)
                 .put("bytes", 0).put("uncompressedBytes", 0).put("role", "optional")
                 .put("available", false)),
@@ -78,7 +88,12 @@ class RuntimeReleaseTest {
         assertEquals("arm64-v8a", release.abi)
         assertEquals(listOf("base", "engine"), release.layers.map { it.name })
         assertEquals(listOf("office", "python"), release.optionalLayers.map { it.name })
-        assertTrue(release.optionalLayers.none { it.available })
+        val office = release.optionalLayers.first { it.name == "office" }
+        assertTrue(office.available)
+        assertEquals("/opt/dsh", office.installsInto)
+        assertEquals(listOf("base", "engine"), office.requires)
+        assertEquals(listOf("/opt/dsh/node_modules/@deepseek-ai/libreoffice-kit-wasm"), office.paths)
+        assertFalse(release.optionalLayers.first { it.name == "python" }.available)
         assertEquals(150L, release.totalBytes)
         assertEquals(baseId, release.baseId)
         assertEquals(listOf("sherpa"), release.prunedModules)
@@ -126,12 +141,24 @@ class RuntimeReleaseTest {
         assertEquals("release_invalid", rejected(escaping).code)
     }
 
-    @Test fun optionalLayersStayOutOfTheInstallUnitUntilTheyShip() {
-        val incomplete = release().put("layers", release().getJSONObject("layers").apply {
-            put("office", JSONObject().put("role", "optional").put("available", true)
-                .put("file", JSONObject.NULL).put("sha256", JSONObject.NULL).put("bytes", 0))
+    @Test fun optionalLayersAreValidatedButStayOutOfTheInstallUnit() {
+        // Available but without the install contract cannot be installed safely.
+        val broken = office()
+        broken.remove("installsInto")
+        broken.remove("paths")
+        val noContract = release().put("layers", release().getJSONObject("layers").apply {
+            put("office", broken)
         })
-        assertEquals("release_invalid", rejected(incomplete).code)
+        assertEquals("release_invalid", rejected(noContract).code)
+        // A path outside installsInto would let the layer write elsewhere in the runtime.
+        val escaping = release().put("layers", release().getJSONObject("layers").apply {
+            put("office", office().put("paths", JSONArray(listOf("/opt/dsh/../../etc/passwd"))))
+        })
+        assertEquals("release_invalid", rejected(escaping).code)
+        val outside = release().put("layers", release().getJSONObject("layers").apply {
+            put("office", office().put("paths", JSONArray(listOf("/opt/node/bin/node"))))
+        })
+        assertEquals("release_invalid", rejected(outside).code)
         val bothRequired = release(requiredLayers = JSONArray(listOf("base", "engine", "office")))
         assertEquals("release_invalid", rejected(bothRequired).code)
     }

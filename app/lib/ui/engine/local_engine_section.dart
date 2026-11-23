@@ -44,6 +44,27 @@ class _LocalEngineSectionState extends ConsumerState<LocalEngineSection> {
 
   Future<void> _install() => ref.read(runtimeInstallProvider.notifier).install();
 
+  Future<void> _toggle(RuntimeOptionalLayer layer, bool install) async {
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    final failed = context.l10n.localEngineOptionalFailed;
+    try {
+      final runtime = ref.read(localRuntimeProvider.notifier);
+      if (install) {
+        await runtime.installOptionalLayer(layer.name);
+      } else {
+        await runtime.removeOptionalLayer(layer.name);
+      }
+    } catch (_) {
+      messenger?.showSnackBar(SnackBar(content: Text(failed)));
+    }
+  }
+
+  /// 文档转换 for office; a release that adds another layer shows its own name.
+  String _layerLabel(BuildContext context, String name) => switch (name) {
+    'office' => context.l10n.localEngineOffice,
+    _ => name,
+  };
+
   Future<void> _delete() async {
     final l10n = context.l10n;
     final ok = await showAppDialog<bool>(
@@ -89,6 +110,11 @@ class _LocalEngineSectionState extends ConsumerState<LocalEngineSection> {
     final sizeMb = status.downloadBytes == null ? null : (status.downloadBytes! / (1024 * 1024)).ceil();
     final progress = state.progress;
     final failure = status.phase == RuntimePhase.error && status.error != null;
+    final engineStopped =
+        status.installedVersion != null &&
+        !status.phase.isBusy &&
+        status.phase != RuntimePhase.running &&
+        status.optionalBusy == null;
 
     return SettingsSection(
       title: l10n.localEngineTitle,
@@ -140,6 +166,26 @@ class _LocalEngineSectionState extends ConsumerState<LocalEngineSection> {
               humanizeLocalEngineError(status.error) ?? l10n.localEngineDownloadFailed,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(color: colors.danger),
             ),
+          ),
+        for (final layer in status.optionalLayers)
+          SettingsSwitchTile(
+            title: _layerLabel(context, layer.name),
+            subtitle: status.optionalBusy == layer.name
+                ? l10n.localEngineInstalling
+                : layer.installed
+                ? l10n.localEngineOptionalInstalled
+                : status.installedVersion == null
+                ? l10n.localEngineOptionalNeedsRuntime
+                : layer.bytes == null
+                ? l10n.localEngineDownloadSizeUnknown
+                : l10n.localEngineDownloadSize((layer.bytes! / (1024 * 1024)).ceil()),
+            value: layer.installed,
+            onChanged: engineStopped ? (install) => unawaited(_toggle(layer, install)) : null,
+          ),
+        if (status.optionalBusy != null)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 6),
+            child: LinearProgressIndicator(value: progress?.fraction),
           ),
         if (status.runtimeManifestUrl case final url?)
           Padding(

@@ -93,6 +93,10 @@
   "localEngineTitle": "本地引擎",
   "localEngineSource": "下载来源",
   "localEngineSizeLabel": "下载大小",
+  "localEngineOffice": "文档转换",
+  "localEngineOptionalInstalled": "已安装",
+  "localEngineOptionalNeedsRuntime": "先安装本地引擎",
+  "localEngineOptionalFailed": "操作失败，请重试",
   "localEngineDownloadSize": "下载约 {mb} MB",
   "@localEngineDownloadSize": {
     "placeholders": {

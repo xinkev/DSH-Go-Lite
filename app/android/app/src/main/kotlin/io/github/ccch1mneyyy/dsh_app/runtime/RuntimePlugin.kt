@@ -143,6 +143,20 @@ class RuntimePlugin :
                 }
             }
             "cancelInstall" -> result.success(controller.cancelRuntimeInstall())
+            "installOptionalLayer" -> {
+                val name = call.argument<String>("name")
+                if (name.isNullOrBlank()) result.error("optional_layer_invalid", "name is required", null)
+                else controller.installOptionalLayer(name) { error ->
+                    if (error == null) result.success(null) else result.error("optional_layer_failed", error.message, null)
+                }
+            }
+            "removeOptionalLayer" -> {
+                val name = call.argument<String>("name")
+                if (name.isNullOrBlank()) result.error("optional_layer_invalid", "name is required", null)
+                else controller.removeOptionalLayer(name) { error ->
+                    if (error == null) result.success(null) else result.error("optional_layer_failed", error.message, null)
+                }
+            }
             "checkRuntimeRelease" -> controller.checkRuntimeRelease { error ->
                 if (error == null) result.success(null) else result.error("release_check_failed", error.message, null)
             }

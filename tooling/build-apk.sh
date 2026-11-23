@@ -36,6 +36,11 @@
 # app/assets/companion/whale-girl.zip, else ~/keys/dsh-go/companion-pack-whale-girl.zip
 # (DSH_COMPANION_PACK points elsewhere), credited by tooling/companion_pack.py.
 # This script takes no machine locks; callers add their own.
+#
+# Sandboxed builds (CI or an agent) may have no writable Kotlin daemon temp dir, and Kotlin
+# then fails its daemon handshake with "Operation not permitted". Run with
+#   ORG_GRADLE_PROJECT_kotlin.compiler.execution.strategy=in-process
+# in the environment to compile in the Gradle process instead; it changes no output.
 set -euo pipefail
 
 ROOT=$(CDPATH= cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)

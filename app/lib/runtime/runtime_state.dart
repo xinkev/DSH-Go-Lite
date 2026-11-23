@@ -192,6 +192,12 @@ class LocalRuntimeController extends Notifier<LocalRuntimeState> {
   /// Stops a download in progress; the native side deletes what it wrote.
   Future<bool> cancelInstall() => _bridge.cancelRuntimeInstall();
 
+  /// Installs one optional feature layer (office) into the installed runtime.
+  Future<void> installOptionalLayer(String name) => _bridge.installOptionalLayer(name);
+
+  /// Removes one optional feature layer; the engine keeps working without it.
+  Future<void> removeOptionalLayer(String name) => _bridge.removeOptionalLayer(name);
+
   /// The API key is not passed here: it is written to DSH's own credential store
   /// after connecting (see connection_state.dart), so it can change without a restart.
   /// Keeps the current mode: in safe mode this starts safe mode again.

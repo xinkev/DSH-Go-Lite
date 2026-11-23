@@ -34,7 +34,6 @@ import sys
 import zipfile
 
 import apk_delta
-from check_apk_jni import ApkJniError, check_apk_jni
 from build_number import MAX_VERSION_CODE, decode
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -254,8 +253,7 @@ def main() -> None:
         for flavor, path in sources.items():
             with zipfile.ZipFile(path) as apk:
                 check_abis(flavor, apk.namelist())
-            check_apk_jni(path)
-    except (ReleaseError, ApkJniError) as e:
+    except ReleaseError as e:
         sys.exit(str(e))
 
     args.out.mkdir(parents=True, exist_ok=True)

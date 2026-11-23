@@ -173,6 +173,31 @@ class RuntimeBackgroundTask {
   };
 }
 
+/// One optional runtime feature layer the release offers (office today, python later).
+class RuntimeOptionalLayer {
+  const RuntimeOptionalLayer({required this.name, required this.installed, this.bytes});
+
+  /// Release layer name: `office`, `python`.
+  final String name;
+
+  /// Its files are present for the installed runtime version.
+  final bool installed;
+
+  /// Compressed download size.
+  final int? bytes;
+
+  static RuntimeOptionalLayer? fromMap(Object? raw) {
+    if (raw is! Map) return null;
+    final name = raw['name'];
+    if (name is! String || name.isEmpty) return null;
+    return RuntimeOptionalLayer(
+      name: name,
+      installed: raw['installed'] == true,
+      bytes: (raw['bytes'] as num?)?.toInt(),
+    );
+  }
+}
+
 class RuntimeStatus {
   const RuntimeStatus({
     required this.phase,
@@ -223,6 +248,8 @@ class RuntimeStatus {
     this.runtimeManifestUrl,
     this.releaseError,
     this.updateAvailable = false,
+    this.optionalLayers = const [],
+    this.optionalBusy,
   });
 
   const RuntimeStatus.unknown() : this(phase: RuntimePhase.notInstalled);
@@ -346,6 +373,12 @@ class RuntimeStatus {
   /// A newer runtime is published than the one installed.
   final bool updateAvailable;
 
+  /// Optional feature layers the last release read offers (empty until a check succeeds).
+  final List<RuntimeOptionalLayer> optionalLayers;
+
+  /// The optional layer being installed or removed right now, if any.
+  final String? optionalBusy;
+
 
   Map<String, Object?> get launchDiagnostics => {
     'directEngineEnabled': directEngineEnabled,
@@ -434,6 +467,11 @@ class RuntimeStatus {
     runtimeManifestUrl: map['runtimeManifestUrl'] as String?,
     releaseError: map['releaseError'] as String?,
     updateAvailable: map['updateAvailable'] == true,
+    optionalLayers: switch (map['optionalLayers']) {
+      final List<Object?> list => [for (final item in list) ?RuntimeOptionalLayer.fromMap(item)],
+      _ => const [],
+    },
+    optionalBusy: map['optionalBusy'] as String?,
   );
 }
 
@@ -698,6 +736,14 @@ class RuntimeBridge {
   /// Stops a runtime download in progress; true when one was running.
   Future<bool> cancelRuntimeInstall() async =>
       await _methods.invokeMethod<bool>('cancelInstall') ?? false;
+
+  /// Downloads and installs one optional feature layer (needs the runtime installed and stopped).
+  Future<void> installOptionalLayer(String name) =>
+      _methods.invokeMethod<void>('installOptionalLayer', {'name': name});
+
+  /// Deletes an optional layer's files; the engine keeps working without it.
+  Future<void> removeOptionalLayer(String name) =>
+      _methods.invokeMethod<void>('removeOptionalLayer', {'name': name});
 
   /// [phoneStorage] mounts the phone's shared storage at /sdcard (needs [requestStorage] first).
   /// [mode] null keeps the current mode; [EngineMode.normal] while in safe mode starts the

@@ -17510,6 +17510,30 @@ abstract class L10n {
   /// **'下载大小'**
   String get localEngineSizeLabel;
 
+  /// No description provided for @localEngineOffice.
+  ///
+  /// In zh, this message translates to:
+  /// **'文档转换'**
+  String get localEngineOffice;
+
+  /// No description provided for @localEngineOptionalInstalled.
+  ///
+  /// In zh, this message translates to:
+  /// **'已安装'**
+  String get localEngineOptionalInstalled;
+
+  /// No description provided for @localEngineOptionalNeedsRuntime.
+  ///
+  /// In zh, this message translates to:
+  /// **'先安装本地引擎'**
+  String get localEngineOptionalNeedsRuntime;
+
+  /// No description provided for @localEngineOptionalFailed.
+  ///
+  /// In zh, this message translates to:
+  /// **'操作失败，请重试'**
+  String get localEngineOptionalFailed;
+
   /// No description provided for @localEngineDownloadSize.
   ///
   /// In zh, this message translates to:

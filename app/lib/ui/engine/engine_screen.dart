@@ -190,7 +190,10 @@ class EngineScreen extends ConsumerWidget {
             ),
             // iOS runs what the virtual shell can't in Linux, installed here on demand.
             if (Theme.of(context).platform == TargetPlatform.iOS) const LinuxSection(),
-            if (status.downloadRequired || status.updateAvailable || status.phase == RuntimePhase.downloading)
+            if (status.downloadRequired ||
+                status.updateAvailable ||
+                status.phase == RuntimePhase.downloading ||
+                status.optionalLayers.isNotEmpty)
               const LocalEngineSection(),
             SettingsSection(
               title: l10n.phoneEngineRuntime,

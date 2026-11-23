@@ -9967,6 +9967,18 @@ class L10nEn extends L10n {
   String get localEngineSizeLabel => 'Download size';
 
   @override
+  String get localEngineOffice => 'Document conversion';
+
+  @override
+  String get localEngineOptionalInstalled => 'Installed';
+
+  @override
+  String get localEngineOptionalNeedsRuntime => 'Install the local engine first';
+
+  @override
+  String get localEngineOptionalFailed => 'That didn’t work; try again';
+
+  @override
   String localEngineDownloadSize(int mb) {
     return 'About $mb MB to download';
   }
