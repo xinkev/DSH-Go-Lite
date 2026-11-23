@@ -96,8 +96,7 @@ object DirectLaunch {
         val triplet = if (abi == "x86_64") "x86_64-linux-gnu" else "aarch64-linux-gnu"
         val arch = if (abi == "x86_64") "x64" else "arm64"
         return listOf("usr/lib/$triplet", "lib/$triplet", "usr/lib", "lib",
-            "opt/dsh/node_modules/@img/sharp-libvips-linux-$arch/lib",
-            "opt/dsh/node_modules/sherpa-onnx-linux-$arch")
+            "opt/dsh/node_modules/@img/sharp-libvips-linux-$arch/lib")
     }
 
     /**

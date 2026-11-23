@@ -40,9 +40,9 @@ class DirectLaunchTest {
 
     @Test fun nativeLibrarySearchUsesOnlyTheLockedRuntimePackages() {
         val x64 = DirectLaunch.libraryDirectories("x86_64")
-        assertEquals(listOf("opt/dsh/node_modules/@img/sharp-libvips-linux-x64/lib", "opt/dsh/node_modules/sherpa-onnx-linux-x64"), x64.takeLast(2))
+        assertEquals("opt/dsh/node_modules/@img/sharp-libvips-linux-x64/lib", x64.last())
         val arm64 = DirectLaunch.libraryDirectories("arm64-v8a")
-        assertEquals(listOf("opt/dsh/node_modules/@img/sharp-libvips-linux-arm64/lib", "opt/dsh/node_modules/sherpa-onnx-linux-arm64"), arm64.takeLast(2))
+        assertEquals("opt/dsh/node_modules/@img/sharp-libvips-linux-arm64/lib", arm64.last())
         assertTrue((x64 + arm64).none { it.contains("profiles") || it.startsWith('/') })
         assertThrows(IllegalStateException::class.java) { DirectLaunch.libraryDirectories("unknown") }
     }
