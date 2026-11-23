@@ -48,6 +48,9 @@ class ProviderFormPage extends ConsumerStatefulWidget {
 /// The fields that can carry an error, in page order.
 enum _F { baseUrl, key, headers, models }
 
+/// Providers whose setup is more than a name and a key.
+enum _Preset { opencodeGo }
+
 class _HeaderDraft {
   _HeaderDraft(this.name, this.value, {this.locked = false});
 
@@ -93,6 +96,25 @@ class _ProviderFormPageState extends ConsumerState<ProviderFormPage> with FieldP
   bool get _isEdit => _editing != null;
 
   /// A stored base is authoritative until its address or protocol is edited.
+  /// Fills in what a provider's own docs get wrong here.
+  ///
+  /// OpenCode Go documents its base URL as `https://opencode.ai/inference/go`
+  /// and serves models at `/inference/go/v1/models`. Discovery only appends
+  /// `/v1` to a bare host, so the URL without `/v1` answers 404 and the form
+  /// cannot list models.
+  void _applyPreset(_Preset preset) {
+    switch (preset) {
+      case _Preset.opencodeGo:
+        setState(() {
+          _name.text = context.l10n.engineProviderPresetOpencodeGo;
+          _baseUrl.text = 'https://opencode.ai/inference/go/v1';
+          _api = ProviderApi.openaiCompletions;
+          _baseUrlNote = null;
+        });
+        _edited(_F.baseUrl);
+    }
+  }
+
   String _baseUrlForRequest(String raw, ProviderApi api) {
     final existing = _editing;
     if (existing != null && existing.api == api && existing.baseUrl == raw) return raw;
@@ -390,6 +412,18 @@ class _ProviderFormPageState extends ConsumerState<ProviderFormPage> with FieldP
                         onChanged: busy ? null : (v) => setState(() => _api = v),
                       ),
                     ),
+                    if (!_isEdit)
+                      FormFieldBlock(
+                        label: l10n.engineProviderPreset,
+                        child: Align(
+                          alignment: AlignmentDirectional.centerStart,
+                          child: ActionChip(
+                            key: const ValueKey('provider-preset-opencode-go'),
+                            label: Text(l10n.engineProviderPresetOpencodeGo),
+                            onPressed: busy ? null : () => _applyPreset(_Preset.opencodeGo),
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ],

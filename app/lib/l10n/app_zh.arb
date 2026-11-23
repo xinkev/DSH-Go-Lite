@@ -3521,6 +3521,8 @@
   "engineProviderBasicInfo": "基本信息",
   "engineProviderNameHint": "比如：我的网关",
   "engineProviderCompatibleProtocol": "兼容协议",
+  "engineProviderPreset": "预设",
+  "engineProviderPresetOpencodeGo": "OpenCode Go",
   "engineProviderKeepStoredKey": "已保存，留空则不修改",
   "engineProviderSaving": "正在保存",
   "engineProviderWaitingEngine": "等待引擎连接",

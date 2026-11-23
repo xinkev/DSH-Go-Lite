@@ -6548,6 +6548,12 @@ class L10nEn extends L10n {
   String get engineProviderCompatibleProtocol => 'Compatible protocol';
 
   @override
+  String get engineProviderPreset => 'Preset';
+
+  @override
+  String get engineProviderPresetOpencodeGo => 'OpenCode Go';
+
+  @override
   String get engineProviderKeepStoredKey => 'Saved. Leave blank to keep it';
 
   @override

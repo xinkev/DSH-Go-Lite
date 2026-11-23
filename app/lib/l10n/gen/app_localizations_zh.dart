@@ -6193,6 +6193,12 @@ class L10nZh extends L10n {
   String get engineProviderCompatibleProtocol => '兼容协议';
 
   @override
+  String get engineProviderPreset => '预设';
+
+  @override
+  String get engineProviderPresetOpencodeGo => 'OpenCode Go';
+
+  @override
   String get engineProviderKeepStoredKey => '已保存，留空则不修改';
 
   @override

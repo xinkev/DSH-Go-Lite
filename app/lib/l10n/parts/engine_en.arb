@@ -249,6 +249,8 @@
   "engineProviderBasicInfo": "Basic info",
   "engineProviderNameHint": "e.g. My gateway",
   "engineProviderCompatibleProtocol": "Compatible protocol",
+  "engineProviderPreset": "Preset",
+  "engineProviderPresetOpencodeGo": "OpenCode Go",
   "engineProviderKeepStoredKey": "Saved. Leave blank to keep it",
   "engineProviderSaving": "Saving",
   "engineProviderWaitingEngine": "Waiting for engine",

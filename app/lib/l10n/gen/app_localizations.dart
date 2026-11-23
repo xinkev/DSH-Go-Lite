@@ -11612,6 +11612,18 @@ abstract class L10n {
   /// **'兼容协议'**
   String get engineProviderCompatibleProtocol;
 
+  /// No description provided for @engineProviderPreset.
+  ///
+  /// In zh, this message translates to:
+  /// **'预设'**
+  String get engineProviderPreset;
+
+  /// No description provided for @engineProviderPresetOpencodeGo.
+  ///
+  /// In zh, this message translates to:
+  /// **'OpenCode Go'**
+  String get engineProviderPresetOpencodeGo;
+
   /// No description provided for @engineProviderKeepStoredKey.
   ///
   /// In zh, this message translates to:

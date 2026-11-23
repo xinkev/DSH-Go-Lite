@@ -147,6 +147,14 @@ Future<void> _manualModel(WidgetTester tester) async {
 }
 
 void main() {
+  testWidgets('预设 OpenCode Go 填入它文档里缺了 /v1 的地址', (tester) async {
+    final backend = FakeProviderBackend();
+    await _open(tester, backend);
+    await _tapVisible(tester, find.byKey(const ValueKey('provider-preset-opencode-go')));
+    expect(tester.widget<TextField>(_field('Base URL')).controller!.text, 'https://opencode.ai/inference/go/v1');
+    expect(tester.widget<TextField>(_field('名称')).controller!.text, 'OpenCode Go');
+  });
+
   testWidgets('late discovery preserves an endpoint edited while loading', (tester) async {
     final backend = _DelayedDiscovery();
     await _open(tester, backend);
