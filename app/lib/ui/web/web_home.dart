@@ -169,8 +169,8 @@ class _WebHomeState extends ConsumerState<WebHome> {
         link: _link,
         onSession: _onSession,
       ),
-      UrlDshWeb(:final url, :final hostName) => WebViewPage(
-        key: ValueKey((url, phoneLayout)),
+      UrlDshWeb(:final url, :final hostName, :final cookies) => WebViewPage(
+        key: ValueKey((url, phoneLayout, cookies.length)),
         url: url,
         title: context.l10n.webTitle,
         subtitle: hostName,
@@ -182,6 +182,15 @@ class _WebHomeState extends ConsumerState<WebHome> {
         root: true,
         link: _link,
         onSession: _onSession,
+        cookies: cookies,
+      ),
+      ExternalDshWeb(:final url) => _NoWeb(
+        reason: context.l10n.webLanInBrowser,
+        handle: _handle,
+        action: FilledButton(
+          onPressed: () => unawaited(openInBrowser(context, url)),
+          child: Text(context.l10n.webOpenInBrowser),
+        ),
       ),
       NoDshWeb(:final reason) => _NoWeb(reason: reason, handle: _handle),
     };
@@ -195,10 +204,13 @@ class _WebHomeState extends ConsumerState<WebHome> {
 }
 
 class _NoWeb extends StatelessWidget {
-  const _NoWeb({required this.reason, required this.handle});
+  const _NoWeb({required this.reason, required this.handle, this.action});
 
   final String reason;
   final Widget Function(double size) handle;
+
+  /// Shown under the reason, when the page can be reached another way.
+  final Widget? action;
 
   @override
   Widget build(BuildContext context) {
@@ -212,7 +224,12 @@ class _NoWeb extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(bottom: 80),
             child: Center(
-              child: EmptyView(icon: AppIcons.webApp, title: context.l10n.webHostUnavailable, message: reason),
+              child: EmptyView(
+                icon: AppIcons.webApp,
+                title: context.l10n.webHostUnavailable,
+                message: reason,
+                action: action,
+              ),
             ),
           ),
         ),

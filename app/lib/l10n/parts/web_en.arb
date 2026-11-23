@@ -40,5 +40,6 @@
   "webTargetNewChatFailed": "Couldn’t start a chat. You’re on the DSH Web home page.",
   "webTargetPageFailed": "Couldn’t open this page. You’re on the DSH Web home page.",
   "webConnectHostFirst": "Connect to “{name}” to open DSH Web",
-  "webUrlNeedsToken": "Add the engine sign-in token (the ?token= part of the dsh web URL) to open DSH Web"
+  "webUrlNeedsToken": "Add the engine sign-in token (the ?token= part of the dsh web URL) to open DSH Web",
+  "webLanInBrowser": "This host is on the local network over plain http, so DSH Web opens in your browser"
 }

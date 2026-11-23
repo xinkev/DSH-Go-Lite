@@ -15016,6 +15016,7 @@
     }
   },
   "webUrlNeedsToken": "填上引擎登录令牌（dsh web 地址里 ?token= 那段）才能打开网页版",
+  "webLanInBrowser": "这台主机在局域网里走明文 http，网页版会在浏览器中打开",
   "workshopTitle": "创意工坊",
   "workshopSubtitle": "大家做的宠物和伙伴，挑喜欢的装上",
   "workshopEntrySubtitle": "找别人做的宠物和伙伴",

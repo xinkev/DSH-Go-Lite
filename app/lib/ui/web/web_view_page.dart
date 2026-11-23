@@ -48,6 +48,7 @@ class WebViewPage extends StatefulWidget {
     this.root = false,
     this.link,
     this.onSession,
+    this.cookies = const [],
   });
 
   final Uri url;
@@ -101,10 +102,23 @@ class WebViewPage extends StatefulWidget {
   /// the client's stored selection; null for none).
   final ValueChanged<String?>? onSession;
 
+  /// Cookies this page needs before its first request, for a host that cannot
+  /// be signed in with a `?token=` URL (dsh-pocket's LAN mode).
+  final List<WebViewCookie> cookies;
+
   bool get _adapt => dshWeb && phoneLayout;
 
   @override
   State<WebViewPage> createState() => _WebViewPageState();
+}
+
+/// The WebView cookie for one name/value pair the app already holds, bound to
+/// [base]'s host. Null for an empty pair (a cookie a WebView cannot carry).
+WebViewCookie? webViewCookie(Uri base, String name, String value) {
+  final trimmedName = name.trim();
+  final trimmedValue = value.trim();
+  if (trimmedName.isEmpty || trimmedValue.isEmpty || base.host.isEmpty) return null;
+  return WebViewCookie(name: trimmedName, value: trimmedValue, domain: base.host, path: '/');
 }
 
 /// Frame width from which DSH Web keeps its own layout: the official client
@@ -736,6 +750,13 @@ class _WebViewPageState extends State<WebViewPage> {
         if (widget.dshWeb) controller.addJavaScriptChannel('DshAppSidebar', onMessageReceived: _onSidebar),
       ].map((f) => f.catchError((_) {})),
     );
+    if (!mounted || controller != _controller) return;
+    // Before the first request: a page that has to sign in with a cookie the
+    // app already holds (dsh-pocket's LAN mode hands out no launch token).
+    if (widget.cookies.isNotEmpty) {
+      final jar = WebViewCookieManager();
+      await Future.wait(widget.cookies.map((cookie) => jar.setCookie(cookie).catchError((_) {})));
+    }
     if (!mounted || controller != _controller) return;
     // After the navigation delegate: the guard wraps the client it set.
     await _guard.attach(controller, dark: _dark, textZoom: _textZoom);

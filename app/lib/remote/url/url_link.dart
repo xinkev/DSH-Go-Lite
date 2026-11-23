@@ -370,6 +370,23 @@ class UrlHostLink implements HostLink {
     });
   }
 
+  /// Cookies this link already holds, for a WebView that has to sign in
+  /// without a launch token (dsh-pocket on the LAN hands out no token: the gate
+  /// injects one on `GET /` and mints the engine cookie the app keeps here).
+  /// Empty until the link has a client.
+  List<({String name, String value})> get heldCookies {
+    final carrier = _client?.carrier;
+    if (carrier is! DshHttpCarrier) return const [];
+    final connection = carrier.connection;
+    final gate = connection.pocketCookie?.trim() ?? '';
+    final eq = gate.indexOf('=');
+    final session = connection.cookie;
+    return [
+      if (eq > 0) (name: gate.substring(0, eq), value: gate.substring(eq + 1)),
+      if (session != null && session.name.isNotEmpty) (name: session.name, value: session.value),
+    ];
+  }
+
   /// The engine (or the pocket gate) forgot this session: sign in to the gate
   /// again if one is configured, then exchange the saved launch token for a
   /// fresh engine cookie.

@@ -44300,6 +44300,12 @@ abstract class L10n {
   /// **'填上引擎登录令牌（dsh web 地址里 ?token= 那段）才能打开网页版'**
   String get webUrlNeedsToken;
 
+  /// No description provided for @webLanInBrowser.
+  ///
+  /// In zh, this message translates to:
+  /// **'这台主机在局域网里走明文 http，网页版会在浏览器中打开'**
+  String get webLanInBrowser;
+
   /// No description provided for @workshopTitle.
   ///
   /// In zh, this message translates to:

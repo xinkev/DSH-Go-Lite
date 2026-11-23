@@ -25610,6 +25610,9 @@ class L10nEn extends L10n {
   String get webUrlNeedsToken => 'Add the engine sign-in token (the ?token= part of the dsh web URL) to open DSH Web';
 
   @override
+  String get webLanInBrowser => 'This host is on the local network over plain http, so DSH Web opens in your browser';
+
+  @override
   String get workshopTitle => 'Workshop';
 
   @override
