@@ -60,14 +60,6 @@ class RemoteScreen extends ConsumerWidget {
     if (nothingHere && ref.read(activeHostProvider).isLocal) await _use(context, ref, HostRef.ssh(saved.id));
   }
 
-  Future<void> _addUrl(BuildContext context, WidgetRef ref) async {
-    final saved = await Navigator.of(context)
-        .push<UrlHostConfig>(MaterialPageRoute(builder: (_) => const UrlHostFormPage()));
-    if (saved == null || !context.mounted) return;
-    final nothingHere = ref.read(localRuntimeProvider).status.runtimeMissing;
-    if (nothingHere && ref.read(activeHostProvider).isLocal) await _use(context, ref, HostRef.url(saved.id));
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
@@ -124,13 +116,6 @@ class RemoteScreen extends ConsumerWidget {
                 onTap: () => _use(context, ref, HostRef.url(h.id)),
                 onEdit: () => push(UrlHostFormPage(existing: h)),
               ),
-            SettingsTile(
-              icon: AppIcons.add,
-              tinted: false,
-              title: l10n.remoteAddUrlHost,
-              subtitle: urls.isEmpty ? l10n.remoteUrlDirect : null,
-              onTap: () => unawaited(_addUrl(context, ref)),
-            ),
             SettingsTile(
               icon: AppIcons.qrCode,
               tinted: false,
