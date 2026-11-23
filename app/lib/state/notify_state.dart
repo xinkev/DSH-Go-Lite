@@ -311,10 +311,18 @@ class ChatAlertsController extends Notifier<ChatAlert?> {
     _lifetime = Object();
     final channel = _channel;
     unawaited(() async {
-      if (!(await channel.status()).native || !ref.mounted) return;
+      final status = await channel.status();
+      if (!status.native || !ref.mounted) return;
       _actions = channel.actions.listen((action) async {
         await channel.completeAction(action, await respondAction(action));
       });
+      // Android 13+ drops every notification until its runtime permission is
+      // granted, and no other screen asks on the app's own behalf. Asked once
+      // per process, only while notifications are wanted.
+      if (ref.read(notifyPrefsProvider).enabled && !status.enabled) {
+        await channel.requestPermission();
+        if (ref.mounted) ref.invalidate(notifySystemStatusProvider);
+      }
     }());
     ref.onDispose(() {
       _lifetime = Object();

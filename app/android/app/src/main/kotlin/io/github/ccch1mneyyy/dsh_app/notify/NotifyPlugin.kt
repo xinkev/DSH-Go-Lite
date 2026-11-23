@@ -2,8 +2,10 @@ package io.github.ccch1mneyyy.dsh_app.notify
 
 import io.github.ccch1mneyyy.dsh_app.i18n.AppStrings
 import io.github.ccch1mneyyy.dsh_app.R
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -28,7 +30,8 @@ class NotifyPlugin :
     ActivityAware,
     MethodChannel.MethodCallHandler,
     EventChannel.StreamHandler,
-    PluginRegistry.NewIntentListener {
+    PluginRegistry.NewIntentListener,
+    PluginRegistry.RequestPermissionsResultListener {
 
     private lateinit var appContext: Context
     private lateinit var notifier: ChatNotifier
@@ -39,6 +42,7 @@ class NotifyPlugin :
     private var activity: ActivityPluginBinding? = null
     private var sink: EventChannel.EventSink? = null
     private var pendingTap: Map<String, Any?>? = null
+    private var pendingPermission: MethodChannel.Result? = null
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         instance = this
@@ -70,6 +74,7 @@ class NotifyPlugin :
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         activity = binding
         binding.addOnNewIntentListener(this)
+        binding.addRequestPermissionsResultListener(this)
         notifier.takeTap(binding.activity.intent)?.let(::deliver)
     }
 
@@ -79,7 +84,29 @@ class NotifyPlugin :
 
     override fun onDetachedFromActivity() {
         activity?.removeOnNewIntentListener(this)
+        activity?.removeRequestPermissionsResultListener(this)
         activity = null
+    }
+
+    /** Android 13+'s runtime permission, asked through the foreground activity. */
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+    ): Boolean {
+        if (requestCode != PERMISSION_REQUEST) return false
+        pendingPermission?.success(notifier.status()["enabled"] == true)
+        pendingPermission = null
+        return true
+    }
+
+    private fun requestPermission(result: MethodChannel.Result) {
+        val granted = notifier.status()["enabled"] == true
+        if (granted || Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return result.success(granted)
+        val host = activity?.activity ?: return result.success(false)
+        if (pendingPermission != null) return result.success(false)
+        pendingPermission = result
+        host.requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), PERMISSION_REQUEST)
     }
 
     override fun onNewIntent(intent: Intent): Boolean {
@@ -143,6 +170,7 @@ class NotifyPlugin :
                 notifier.cancelAll()
                 result.success(null)
             }
+            "requestPermission" -> requestPermission(result)
             "openSettings" -> result.success(openSettings(call.argument<String>("channel")))
             "live" -> {
                 LiveActivity.update(
@@ -199,6 +227,8 @@ class NotifyPlugin :
     }
 
     companion object {
+        private const val PERMISSION_REQUEST = 0x5d6
+
         @Volatile private var instance: NotifyPlugin? = null
 
         /** Sends a tapped approval button to Flutter; false when nothing listens (no engine yet). */
