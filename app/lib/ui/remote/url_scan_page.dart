@@ -12,6 +12,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import '../../l10n/l10n.dart';
 import '../../remote/url/barcode_scanner.dart';
 import '../../remote/url/pocket_auth.dart';
+import 'pocket_pin_dialog.dart';
 import '../../state/hosts_state.dart';
 import '../theme/theme.dart';
 
@@ -109,7 +110,7 @@ class _UrlScanPageState extends ConsumerState<UrlScanPage> {
     String? error;
     while (true) {
       if (!mounted) return null;
-      final entered = await showDialog<String>(context: context, builder: (_) => _PinDialog(error: error));
+      final entered = await askPocketPin(context, error: error);
       if (entered == null || entered.isEmpty) return null;
       try {
         final cookie = await PocketAuth.login(baseUri, entered);
@@ -121,7 +122,6 @@ class _UrlScanPageState extends ConsumerState<UrlScanPage> {
             : context.l10n.remoteScanPinWrong;
       }
     }
-    return null;
   }
 
   Widget _message(String text) => Center(
@@ -167,56 +167,3 @@ class _UrlScanPageState extends ConsumerState<UrlScanPage> {
     );
   }
 }
-
-/// The pocket access PIN, typed once and verified before the host is saved.
-class _PinDialog extends StatefulWidget {
-  const _PinDialog({this.error});
-
-  final String? error;
-
-  @override
-  State<_PinDialog> createState() => _PinDialogState();
-}
-
-class _PinDialogState extends State<_PinDialog> {
-  final _controller = TextEditingController();
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  void _submit() => Navigator.of(context).pop(_controller.text.trim());
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    return AlertDialog(
-      title: Text(l10n.remoteScanPinTitle),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(l10n.remoteScanPinHint),
-          const SizedBox(height: 12),
-          TextField(
-            controller: _controller,
-            autofocus: true,
-            obscureText: true,
-            autocorrect: false,
-            enableSuggestions: false,
-            keyboardType: TextInputType.visiblePassword,
-            decoration: InputDecoration(labelText: l10n.remoteUrlPocketPin, errorText: widget.error),
-            onSubmitted: (_) => _submit(),
-          ),
-        ],
-      ),
-      actions: [
-        TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(l10n.commonCancel)),
-        FilledButton(onPressed: _submit, child: Text(l10n.remoteScanPinConnect)),
-      ],
-    );
-  }
-}
-

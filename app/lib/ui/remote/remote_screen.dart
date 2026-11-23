@@ -17,6 +17,7 @@ import '../theme/app_icons.dart';
 import '../theme/theme.dart';
 import 'host_key_dialog.dart';
 import 'host_status.dart';
+import 'pocket_pin_dialog.dart';
 import 'link_progress.dart';
 import 'ssh_host_form.dart';
 import 'url_host_form.dart';
@@ -205,7 +206,14 @@ class _ActiveCard extends ConsumerWidget {
               padding: const EdgeInsets.only(left: OverviewCard.inset, right: OverviewCard.inset - 12),
               child: LinkErrorBox(
                 error: error,
-                action: needsSettings
+                // A refused PIN is answered here: the gate rotated it, and
+                // hunting for the host form to retype one field is silly.
+                action: error.kind == HostLinkErrorKind.loginFailed && url != null
+                    ? (
+                        l10n.remoteSignInAgain,
+                        () => _repromptPin(context, ref, url),
+                      )
+                    : needsSettings
                     ? (
                         l10n.remoteHostSettings,
                         () => Navigator.of(context).push(
@@ -220,6 +228,14 @@ class _ActiveCard extends ConsumerWidget {
             )
           : null,
     );
+  }
+
+  /// A new gate PIN replaces the refused one, then the link retries once.
+  Future<void> _repromptPin(BuildContext context, WidgetRef ref, UrlHostConfig url) async {
+    final pin = await askPocketPin(context, error: context.l10n.remoteUrlErrPocketPinDetail);
+    if (pin == null || pin.isEmpty) return;
+    await ref.read(hostsProvider.notifier).saveUrlPocketPin(url.id, pin);
+    ref.read(remoteConnectionProvider(HostRef.url(url.id)).notifier).retry();
   }
 
   static String _statusLine(HostLinkStatus status, HostStatusView view, String? connected) {

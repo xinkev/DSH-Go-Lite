@@ -355,6 +355,16 @@ class HostsController extends Notifier<HostsState> {
   Future<void> saveUrlPocketCookie(String id, String? cookie) =>
       _saveUrlSecret(UrlHostSecrets.pocketCookieKey(id), cookie);
 
+  /// Replaces the gate PIN after a refusal (the PIN was rotated, or the gate
+  /// restarted). The cookie that died with the old PIN goes with it; every
+  /// other secret stays.
+  Future<void> saveUrlPocketPin(String id, String pin) async {
+    final value = pin.trim();
+    if (value.isEmpty) return;
+    await _saveUrlSecret(UrlHostSecrets.pocketPinKey(id), value);
+    await saveUrlPocketCookie(id, null);
+  }
+
   Future<void> _saveUrlSecret(String key, String? value) async {
     try {
       final text = value?.trim() ?? '';
