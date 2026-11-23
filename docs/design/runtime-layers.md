@@ -2,7 +2,7 @@
 
 Lite APK **默认不带运行时**：`tooling/build-apk.sh` 默认 `--no-runtime`，不打包 `runtime/out` 的 assets 与 jniLibs。App 首次选择「本机」时从运行时发布仓库下载 base + engine 两层，校验 sha256 后按原有目录布局安装；远端主机（直连 URL / Pocket / SSH）不触发任何下载。`--with-runtime` 仍可把 `runtime/out` 打进包内，供离线开发与对照验证。Gradle 侧读 `-PdshRuntime=bundled|none`（或环境变量 `DSH_RUNTIME`）；属性缺省为 bundled，只有 `none` 才排除。
 
-下载契约见运行时发布仓库的 README（本仓库 `runtime-release/`）：固定入口
+下载契约见运行时发布仓库的 README（本仓库 `runtime/` 是它的源码子模块，发布脚本在 `runtime/release/`）：固定入口
 `https://github.com/xinkev/DSH-Go-Lite-Runtime/releases/latest/download/manifest.json`，
 `schema 2`、`compatibility.runtimeMajor == r15`、requiredLayers 全部下载并逐个校验。安装是
 all-or-nothing：先写 `runtime/downloads` 与 `runtime/staging`，成功后由原有

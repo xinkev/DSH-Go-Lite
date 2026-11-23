@@ -1,0 +1,4 @@
+[submodule "runtime"]
+	path = runtime
+	url = https://github.com/xinkev/DSH-Go-Lite-Runtime.git
+	branch = main

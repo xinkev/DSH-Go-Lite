@@ -11,6 +11,7 @@ on:
       - 'app/**'
       - 'packages/**'
       - 'tooling/ios/**'
+      - 'runtime'
       - 'runtime/**'
       - '.github/workflows/ios-compile.yml'
   workflow_dispatch:
@@ -41,6 +42,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          submodules: recursive
       - name: Check the shared phone native owner without Apple services
         run: |
           bash tooling/ios/build-phone-self-runner.sh --check
@@ -59,6 +61,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          submodules: recursive
 
       - name: Show the toolchain
         run: |
@@ -128,6 +131,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          submodules: recursive
 
       # The phone runner's Rust library takes six minutes to build for its three targets, and
       # what it is built from rarely changes: kept under the hash of those inputs. With the

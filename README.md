@@ -259,15 +259,20 @@ Start with the complete source tree and project assets. Fonts, images and other 
 ```bash
 git clone https://github.com/ccch1mneyyy/dsh-go.git
 cd dsh-go
+git submodule update --init runtime   # the runtime source lives in its own repository
 
 bash tooling/setup-toolchain.sh
 source tooling/env.sh
 flutter --version
 java -version
 
-bash runtime/build-runtime.sh arm64-v8a
+bash runtime/build-runtime.sh arm64-v8a      # only needed for --with-runtime builds
 DSH_BETA_TOKEN_FILE= bash tooling/build-apk.sh -f arm64 --keep-daemon
 ```
+
+The APK carries no runtime: on first run the app downloads a verified build from
+`xinkev/DSH-Go-Lite-Runtime`. Add `--with-runtime` to bundle the runtime built above, for
+offline installs.
 
 The toolchain script downloads the SDK/NDK and emulator images and runs Android SDK license acceptance. Its default location is `~/dev`; set `DEV_ROOT` to use a separate directory. The script reuses existing installations, so check their versions before building.
 

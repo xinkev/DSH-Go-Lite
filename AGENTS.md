@@ -19,7 +19,7 @@ app/lib/l10n/parts/           Chinese and English ARB input for UI text
 app/ohos/                     HarmonyOS ArkTS host project (Android does not read it)
 packages/dsh_client/          Pure Dart client: HTTP/SSE, mux, session and delete APIs
 packages/dsh_remote/          Remote transport: WebRTC / LAN / TURN / relay
-runtime/                      Patched DSH engine runtime
+runtime/                      Runtime source: a submodule of xinkev/DSH-Go-Lite-Runtime (build recipe, patches, bridge, ohos engine, release publisher)
 runtime/bridge/dsh-go-bridge/  App <-> engine HTTP bridge (/dsh-go/v1/*, session delete routes)
 runtime/patches/              Engine patches and their pins.json (patches pinned to versions, targetSets: android / ohos)
 runtime/ohos/                 HarmonyOS on-device engine: Node host, virtual processes, lifecycle, runtime composition
