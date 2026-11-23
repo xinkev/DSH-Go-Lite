@@ -65,7 +65,10 @@ Future<DshClient> connectUrlHost({
     // A stale gate answers a plain GET with its login page (200 HTML). A
     // 401/403 here is ambiguous (gate or engine), so the mux refusal below
     // owns that recovery instead.
-    if (pocketCookie != null) {
+    // A dsh-pocket host with its LAN PIN switched off hands out no cookie:
+    // the proxy still only adds the launch token to `GET /`, so the exchange
+    // has to happen even without a gate cookie.
+    if (pocketCookie != null || launch.isEmpty) {
       // No saved engine session (or a refused one): force the handshake the
       // browser does after signing in, rather than letting a cookie the gate
       // considers present skip the launch-token exchange.
