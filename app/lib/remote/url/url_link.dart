@@ -66,7 +66,11 @@ Future<DshClient> connectUrlHost({
     // 401/403 here is ambiguous (gate or engine), so the mux refusal below
     // owns that recovery instead.
     if (pocketCookie != null) {
-      final response = await connection.get('/', followRedirects: false);
+      // No saved engine session (or a refused one): force the handshake the
+      // browser does after signing in, rather than letting a cookie the gate
+      // considers present skip the launch-token exchange.
+      final path = cookie == null ? '/?dsh-pocket-auth=1' : '/';
+      final response = await connection.get(path, followRedirects: false);
       if (_isPocketLoginPage(response.statusCode, response.text)) {
         throw const PocketGateRefused(200);
       }
@@ -233,7 +237,9 @@ class UrlHostLink implements HostLink {
     final pocket = await _signInPocket(pin, secrets.requestHeaders());
     await _persistPocketCookie(pocket);
     try {
-      return await _openOnce(secrets, pocket, cookie);
+      // The old engine session is what was refused: hand it back after the
+      // forced handshake mints a new one.
+      return await _openOnce(secrets, pocket, null);
     } on PocketGateRefused {
       throw _pocketError();
     } on DshHttpException catch (error) {
