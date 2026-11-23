@@ -8,6 +8,7 @@
 #   COMPRESS=gz runtime/build-runtime.sh     # .tar.gz instead of .tar.xz
 #   RUNTIME_LAYERS=1 runtime/build-runtime.sh # opt in to base + engine assets
 #   RUNTIME_OUT=/path runtime/build-runtime.sh   # stage outputs outside runtime/out (not packaged)
+#   RUNTIME_PRUNE=sherpa,office runtime/build-runtime.sh  # optional npm modules to drop (default sherpa)
 #
 # The DSH tree is patched with runtime/patches/*.diff (pinned per DSH version in
 # runtime/patches/pins.json; an unvetted DSH version fails the build) and the dsh-go-bridge
@@ -58,6 +59,9 @@ COMPRESS="${COMPRESS:-xz}"          # xz | gz
 XZ_PRESET="${XZ_PRESET:-6}"         # 8 MiB dictionary: modest memory for xz-java on phones
 XZ_THREADS="${XZ_THREADS:-4}"       # xz 5.8.1 -6, 136704-byte sample: -T1=408 B, -T2/-T4=416 B; threads can change bytes
 PRUNE_DEV_METADATA="${PRUNE_DEV_METADATA:-1}"   # drop *.map / *.d.ts from node_modules
+# Optional DSH npm modules removed before assembly (comma list of rtbuild PRUNE_MODULES names;
+# empty disables). Speech is dropped from the product, so sherpa's native engine does not ship.
+RUNTIME_PRUNE="${RUNTIME_PRUNE:-sherpa}"
 SOURCE_DATE_EPOCH="${SOURCE_DATE_EPOCH:-1767225600}"  # 2026-01-01T00:00:00Z, fixed tar mtimes
 
 UBUNTU_MIRROR="https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cdimage/ubuntu-base/releases/24.04/release"
@@ -450,6 +454,13 @@ PYEOF
   log "patching DSH (runtime/patches, pinned for $DSH_VERSION)"
   "${PY[@]}" patch-dsh --prefix "$prefix" --dsh-version "$DSH_VERSION" --target android --patches "$HERE/patches" \
     --out "$work/dsh-patches.json" --target-report "$work/dsh-patch-target.json" >&2
+  local pruned="$work/pruned.json"
+  if [[ -n "$RUNTIME_PRUNE" ]]; then
+    log "pruning optional DSH modules: $RUNTIME_PRUNE"
+    "${PY[@]}" prune-modules --prefix "$prefix" --modules "$RUNTIME_PRUNE" --out "$pruned" >&2
+  else
+    printf '{"schema":1,"modules":[]}\n' > "$pruned"
+  fi
   local bridge="$HERE/bridge/dsh-go-bridge"
   local bridge_version
   bridge_version="$(python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1]))["version"])' "$bridge/package.json")"
@@ -461,7 +472,7 @@ PYEOF
   local pnpm_lockfile="$LOCKS/pnpm-$PNPM_VERSION/package-lock.json"
   local inputs_sha
   inputs_sha="$( {
-      echo "$RUNTIME_REVISION $abi $DSH_VERSION $NODE_VERSION $PNPM_VERSION $UBUNTU_VERSION $COMPRESS $XZ_PRESET $XZ_THREADS $PRUNE_DEV_METADATA $SOURCE_DATE_EPOCH $RUNTIME_LAYERS"
+      echo "$RUNTIME_REVISION $abi $DSH_VERSION $NODE_VERSION $PNPM_VERSION $UBUNTU_VERSION $COMPRESS $XZ_PRESET $XZ_THREADS $PRUNE_DEV_METADATA $SOURCE_DATE_EPOCH $RUNTIME_LAYERS $RUNTIME_PRUNE"
       sha256 "$base"; sha256 "$node"; sha256 "$python"; sha256sum "${extra_debs[@]}" | cut -d' ' -f1
       sha256 "$proot_deb"; sha256 "$talloc_deb"; sha256 "$shmem_deb"
       sha256 "$lockfile"; sha256 "$pnpm_lockfile"
@@ -486,6 +497,7 @@ PYEOF
   "${PY[@]}" assemble --abi "$abi" --base "$base" --node "$node" --dsh-prefix "$prefix" --pnpm-prefix "$pnpm_prefix" \
     "${archive_args[@]}" --report "$out/build-report.json" --runtime-info "$runtime_info" \
     --compress "$COMPRESS" --xz-preset "$XZ_PRESET" --threads "$XZ_THREADS" --epoch "$SOURCE_DATE_EPOCH" "${prune[@]}" \
+    --prune-record "$pruned" \
     "${extra_debs[@]/#/--deb=}" --python "$python" --bridge "$bridge"
 
   local versions
@@ -524,7 +536,7 @@ for abi in ("x86_64", "arm64-v8a"):
     m = json.load(open(p))
     index["abis"][abi] = {k: m.get(k) for k in (  # .get: another ABI may still hold an older build
         "runtimeVersion", "rootfs", "rootfsSha256", "rootfsBytes", "uncompressedBytes", "entries",
-        "dshVersion", "nodeVersion", "pnpmVersion", "ubuntuVersion", "prootVersion")}
+        "dshVersion", "nodeVersion", "pnpmVersion", "ubuntuVersion", "prootVersion", "prunedModules")}
     if m.get("schema", 1) == 2:
         index["schema"] = 2
         for key in ("rootfs", "rootfsSha256"):

@@ -6,6 +6,7 @@ Runs with `python3 -I` on the build host (any arch). Never executes anything fro
 inputs it reads; downloaded archives are treated as data.
 """
 import argparse
+import fnmatch
 import gzip
 import hashlib
 import io
@@ -882,6 +883,103 @@ def pnpm_drop_reason(rel, abi, prune_dev):
     return dsh_drop_reason(rel, abi, prune_dev)
 
 
+# ---------------------------------------------------------------------------
+# optional npm module pruning (RUNTIME_PRUNE)
+# ---------------------------------------------------------------------------
+# Each name maps to package-name globs matched against every node_modules directory in the
+# DSH prefix. A requested module that matches nothing aborts the build, so an upstream rename
+# cannot silently put the package back into the archive.
+PRUNE_MODULES = {
+    "sherpa": ["sherpa-onnx-linux-*"],
+    "office": ["@deepseek-ai/libreoffice-kit-wasm"],
+}
+
+
+def _node_packages(prefix):
+    """[(package name, absolute dir)] for every package directly inside a node_modules dir."""
+    def fail(error):
+        raise error
+
+    found = []
+    for dirpath, dirnames, _files in os.walk(prefix, onerror=fail):
+        if os.path.basename(dirpath) != "node_modules":
+            continue
+        for name in sorted(dirnames):
+            full = os.path.join(dirpath, name)
+            if os.path.islink(full):
+                continue
+            if name.startswith("@"):
+                for sub in sorted(os.listdir(full)):
+                    subfull = os.path.join(full, sub)
+                    if os.path.isdir(subfull) and not os.path.islink(subfull):
+                        found.append((name + "/" + sub, subfull))
+            elif os.path.isdir(full):
+                found.append((name, full))
+    return found
+
+
+def _package_record(prefix, name, full):
+    files = total = 0
+    for dirpath, _dirnames, filenames in os.walk(full):
+        for filename in filenames:
+            target = os.path.join(dirpath, filename)
+            try:
+                st = os.lstat(target)
+            except OSError:
+                continue
+            files += 1
+            total += st.st_size if stat.S_ISREG(st.st_mode) else 0
+    version = None
+    try:
+        with open(os.path.join(full, "package.json"), "rb") as fh:
+            version = json.load(fh).get("version")
+    except (OSError, ValueError):
+        pass
+    return {"name": name, "path": os.path.relpath(full, prefix).replace(os.sep, "/"),
+            "version": version, "files": files, "bytes": total}
+
+
+def cmd_prune_modules(args):
+    requested = []
+    for name in args.modules.split(","):
+        name = name.strip()
+        if name and name not in requested:
+            requested.append(name)
+    unknown = [name for name in requested if name not in PRUNE_MODULES]
+    if unknown:
+        raise SystemExit("unknown RUNTIME_PRUNE module(s): %s (known: %s)"
+                         % (", ".join(unknown), ", ".join(sorted(PRUNE_MODULES))))
+    modules, targets = [], {}
+    if requested:
+        packages = _node_packages(args.prefix)
+        for name in requested:
+            patterns = PRUNE_MODULES[name]
+            hits = [(pkg, full) for pkg, full in packages
+                    if any(fnmatch.fnmatchcase(pkg, pattern) for pattern in patterns)]
+            if not hits:
+                raise SystemExit("RUNTIME_PRUNE=%s matched no package (%s) under %s; update "
+                                 "PRUNE_MODULES in rtbuild.py if the upstream package was renamed"
+                                 % (name, ", ".join(patterns), args.prefix))
+            rows = [_package_record(args.prefix, pkg, full) for pkg, full in hits]
+            modules.append({"name": name, "patterns": patterns,
+                            "bytes": sum(row["bytes"] for row in rows),
+                            "files": sum(row["files"] for row in rows),
+                            "packages": rows})
+            for _pkg, full in hits:
+                targets[os.path.abspath(full)] = True
+        for full in sorted(targets):
+            shutil.rmtree(full)
+    record = {"schema": 1, "modules": modules}
+    with open(args.out + ".tmp", "w") as f:
+        json.dump(record, f, indent=2, sort_keys=True)
+        f.write("\n")
+    os.replace(args.out + ".tmp", args.out)
+    for module in modules:
+        print("pruned %s: %d package(s), %d files, %.1f MiB (%s)" % (
+            module["name"], len(module["packages"]), module["files"], module["bytes"] / 2**20,
+            ", ".join(row["path"] for row in module["packages"])), file=sys.stderr)
+
+
 PY_DROP_DIRS = ("test", "idlelib", "tkinter", "turtledemo", "lib2to3/tests")
 
 
@@ -1332,6 +1430,14 @@ def cmd_assemble(args):
     entries = {}
     report = {"abi": abi, "dropped": {}, "droppedSamples": {}, "elf": [], "warnings": [],
               "convertedHardlinks": [], "relativizedSymlinks": 0, "installScriptsNotRun": []}
+    if args.prune_record:
+        with open(args.prune_record) as f:
+            pruned = json.load(f)
+        if pruned.get("schema") != 1:
+            raise SystemExit("unsupported prune record schema in " + args.prune_record)
+        report["prunedModules"] = pruned["modules"]
+    else:
+        report["prunedModules"] = []
 
     def drop(reason, path, size):
         report["dropped"][reason] = report["dropped"].get(reason, 0) + size
@@ -1789,6 +1895,7 @@ def cmd_manifest(args):
         **({} if layered else {"tarSha256": report["tarSha256"]}),
         "uncompressedBytes": report["uncompressedBytes"],
         "entries": report["counts"],
+        "prunedModules": report.get("prunedModules", []),
         "archiveNotes": "GNU tar; names relative (no ./); only dirs, regular files and symlinks; "
                         "hard links already converted to copies; every symlink is relative and stays "
                         "inside the rootfs; no member lies under a symlink; setuid/setgid cleared; "
@@ -1877,6 +1984,12 @@ def main():
     p.add_argument("files", nargs="+")
     p.set_defaults(fn=cmd_elf_info)
 
+    p = sub.add_parser("prune-modules")
+    p.add_argument("--prefix", required=True, help="npm --prefix tree holding node_modules")
+    p.add_argument("--modules", default="", help="comma list of PRUNE_MODULES names (empty: prune nothing)")
+    p.add_argument("--out", required=True, help="write the pruned-module record here")
+    p.set_defaults(fn=cmd_prune_modules)
+
     p = sub.add_parser("assemble")
     p.add_argument("--abi", required=True, choices=sorted(ABI))
     p.add_argument("--base", required=True)
@@ -1895,6 +2008,8 @@ def main():
     p.add_argument("--threads", type=int, default=0)
     p.add_argument("--epoch", type=int, default=1767225600)
     p.add_argument("--prune-dev-metadata", action="store_true")
+    p.add_argument("--prune-record", help="JSON from prune-modules: optional npm modules removed "
+                                          "before assembly, recorded in the report and manifest")
     p.add_argument("--deb", action="append", help="extra .deb to unpack and register (no maintainer scripts)")
     p.add_argument("--python", help="python-build-standalone install_only tarball -> /opt/python")
     p.add_argument("--bridge", help="dsh-go-bridge package dir -> " + DSH_GO_BRIDGE + " (+ overlay row)")
