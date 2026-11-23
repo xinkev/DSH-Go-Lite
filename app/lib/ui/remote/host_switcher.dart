@@ -149,16 +149,6 @@ class HostSheet extends ConsumerWidget {
                 margin: const EdgeInsets.fromLTRB(SheetTitleBar.inset, 0, SheetTitleBar.inset, 12),
                 children: [
                   SettingsTile(
-                    icon: AppIcons.profile,
-                    tinted: false,
-                    title: l10n.companionTitle,
-                    subtitle: l10n.companionEntrySubtitle,
-                    onTap: () {
-                      final navigator = Navigator.of(context);
-                      navigator.pop();
-                    },
-                  ),
-                  SettingsTile(
                     icon: ssh.isEmpty && urls.isEmpty ? AppIcons.add : AppIcons.configure,
                     tinted: false,
                     title: ssh.isEmpty && urls.isEmpty ? l10n.remoteConnectComputer : l10n.remoteManageHosts,
