@@ -23525,7 +23525,10 @@ class L10nZh extends L10n {
   String get viewModelEffort => '思考深度';
 
   @override
-  String get viewModelKeyRequired => '需要 API Key';
+  String get viewModelKeyRequired => '这台主机还没有模型';
+
+  @override
+  String get viewModelKeyRequiredHint => '添加这台主机用的渠道，或填写 DeepSeek API Key';
 
   @override
   String get viewModelProvidersHint => '支持 DeepSeek 和其他模型渠道';

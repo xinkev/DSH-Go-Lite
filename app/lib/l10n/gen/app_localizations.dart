@@ -43013,8 +43013,14 @@ abstract class L10n {
   /// No description provided for @viewModelKeyRequired.
   ///
   /// In zh, this message translates to:
-  /// **'需要 API Key'**
+  /// **'这台主机还没有模型'**
   String get viewModelKeyRequired;
+
+  /// No description provided for @viewModelKeyRequiredHint.
+  ///
+  /// In zh, this message translates to:
+  /// **'添加这台主机用的渠道，或填写 DeepSeek API Key'**
+  String get viewModelKeyRequiredHint;
 
   /// No description provided for @viewModelProvidersHint.
   ///

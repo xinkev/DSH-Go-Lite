@@ -24831,7 +24831,10 @@ class L10nEn extends L10n {
   String get viewModelEffort => 'Thinking effort';
 
   @override
-  String get viewModelKeyRequired => 'API key needed';
+  String get viewModelKeyRequired => 'No model on this host';
+
+  @override
+  String get viewModelKeyRequiredHint => 'Add the provider this host uses, or enter a DeepSeek key';
 
   @override
   String get viewModelProvidersHint => 'Supports DeepSeek and other model providers';

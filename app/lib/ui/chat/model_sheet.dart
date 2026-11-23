@@ -1055,16 +1055,18 @@ class _EmptyCatalog extends StatelessWidget {
         padding: _emptyPadding,
         icon: AppIcons.apiKey,
         title: l10n.viewModelKeyRequired,
-        message: l10n.viewModelProvidersHint,
+        message: l10n.viewModelKeyRequiredHint,
         action: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            FilledButton(
+            // The engine's own providers first: a DeepSeek key is one of them,
+            // not the only way in.
+            FilledButton(onPressed: () => push(const ProviderFormPage()), child: Text(l10n.viewModelAddProvider)),
+            const SizedBox(height: 4),
+            TextButton(
               onPressed: () => push(const ApiKeyPage(onboarding: false)),
               child: Text(l10n.viewModelEnterKey),
             ),
-            const SizedBox(height: 4),
-            TextButton(onPressed: () => push(const ProviderFormPage()), child: Text(l10n.viewModelAddProvider)),
           ],
         ),
       );
