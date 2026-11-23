@@ -29,13 +29,7 @@ const pageLinkHost = 'open';
 /// [FeatureItem.id]: each is a native page that needs no open conversation.
 /// Settings pages and rows answer through the settings index
 /// ([SettingsIndex.linkIds]).
-const catalogPageLinks = <String>{'schedules', 'agent-team', 'forum', 'ds-bot', 'workspaces'};
-
-/// 伙伴小屋: the home-screen widget opens it (android companion/CompanionWidget.kt).
-const companionPageLink = 'companion';
-
-/// 酒馆 (role play): main.dart registers its page ([registerPageLink]).
-const tavernPageLink = 'tavern';
+const catalogPageLinks = <String>{'schedules', 'agent-team', 'workspaces'};
 
 /// Pages the entry point adds, by id: pages under ui/ that this file may not
 /// import itself (docs/architecture.md, 目录).
@@ -49,7 +43,6 @@ void registerPageLink(String id, Widget Function() page) => _registeredPages[id]
 Set<String> get pageLinkIds => {
   ...SettingsIndex.linkIds,
   ...catalogPageLinks,
-  companionPageLink,
   ..._registeredPages.keys,
 };
 

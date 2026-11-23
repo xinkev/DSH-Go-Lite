@@ -12,16 +12,13 @@ import '../../l10n/l10n.dart';
 import '../../state/android_features.dart';
 import '../common/feature_tile.dart';
 import '../agents/team_page.dart';
-import '../bots/bots_page.dart';
 import '../files/files_page.dart';
-import '../forum/forum_home_page.dart';
 import '../phone/phone_control_screen.dart';
 import '../phone/system_actions_page.dart';
 import '../providers/providers_page.dart';
 import '../remote/remote_screen.dart';
 import '../session/session_artifacts.dart';
 import '../session/session_detail_page.dart';
-import '../share_code/profile_share_sheet.dart';
 import '../shell/session_search_page.dart';
 import '../terminal/terminal_page.dart';
 import '../theme/app_icons.dart';
@@ -253,29 +250,6 @@ final featureSections = <FeatureSection>[
       summary: (l10n) => l10n.catalogAgentTeamSummary,
       icon: AppIcons.team,
       native: (id) => TeamPage(sessionId: id),
-    ),
-  ]),
-  FeatureSection.localized((l10n) => l10n.catalogCommunitySharingSection, [
-    FeatureItem.localized(
-      id: 'forum',
-      title: (l10n) => l10n.catalogForum,
-      summary: (l10n) => l10n.catalogForumSummary,
-      icon: AppIcons.forum,
-      native: (_) => const ForumHomePage(),
-    ),
-    FeatureItem.localized(
-      id: 'ds-bot',
-      title: (_) => 'DS Bot',
-      summary: (l10n) => l10n.catalogBotSummary,
-      icon: AppIcons.bot,
-      native: (_) => const BotsPage(),
-    ),
-    FeatureItem.localized(
-      id: 'share-profile',
-      title: (l10n) => l10n.catalogShareProfile,
-      summary: (l10n) => l10n.catalogShareProfileSummary,
-      icon: AppIcons.shareConfig,
-      action: (context, ref, _) => showShareProfileSheet(context),
     ),
   ]),
   FeatureSection.localized((l10n) => l10n.catalogToolsSection, [

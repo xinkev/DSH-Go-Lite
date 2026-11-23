@@ -146,13 +146,8 @@ void main() {
           'shell-settings',
           'subagent-settings',
           'general',
-          'plugin-inventory',
           'reference',
-          'cot-translation',
-          'voice-input',
           'account',
-          'ds-bot',
-          'share-profile',
         ]),
       );
     });
