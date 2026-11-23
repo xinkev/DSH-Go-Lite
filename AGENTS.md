@@ -1,128 +1,137 @@
 # AGENTS.md
 
-dsh-Go 是 DeepSeek Harness 的手机应用：Flutter 原生界面 + 纯 Dart 客户端 + 打过补丁的 DSH 引擎运行时。Android 版在 PRoot 里运行 `dsh web`；鸿蒙版共用同一套 Dart，宿主是 ArkTS（`app/ohos/`），引擎跑在 App 进程内的 Node 里（`runtime/ohos/`，见 [docs/architecture.md §3B](docs/architecture.md)）。改动前先读 [CONTRIBUTING.md](CONTRIBUTING.md)（贡献与验证契约）与 [docs/architecture.md](docs/architecture.md)。
+dsh-Go is the phone app for DeepSeek Harness: Flutter native UI, a pure Dart client, and a patched DSH engine runtime. The Android build runs `dsh web` inside PRoot; the HarmonyOS build shares the same Dart with an ArkTS host (`app/ohos/`), and its engine runs in a Node process inside the app (`runtime/ohos/`, see [docs/architecture.md §3B](docs/architecture.md)). Read [CONTRIBUTING.md](CONTRIBUTING.md) (the contribution and verification contract) and [docs/architecture.md](docs/architecture.md) before changing anything.
 
-## 仓库布局
+## Language
+
+English is the project's primary language.
+
+- Documentation, code comments, commit messages, PR descriptions and review notes are written in English.
+- Chinese is a translation: a `*.zh.md` page beside its English page, `docs/guide/zh/`, and the `zh` ARB strings. Write the English page first; the translation follows it.
+- The app follows the phone's language: Chinese on a Chinese system, English otherwise.
+- Reply in the language the person writes in. Do not switch to Chinese on your own.
+
+## Repository layout
 
 ```
-app/                         Flutter App：原生界面、Riverpod 状态、l10n、手机操控
-app/lib/l10n/parts/          界面文案的中英文 ARB 输入
-app/ohos/                    鸿蒙 ArkTS 宿主工程（Android 不读）
-packages/dsh_client/         纯 Dart 客户端：HTTP/SSE、mux、会话与删除 API
-packages/dsh_remote/         远程传输：WebRTC / LAN / TURN / 中继
-runtime/                     打补丁的 DSH 引擎运行时
-runtime/bridge/dsh-go-bridge/  App ↔ 引擎的 HTTP 桥（/dsh-go/v1/*，含会话删除路由）
-runtime/patches/             引擎补丁及其 pins.json（补丁与版本钉死，targetSets 分 android / ohos）
-runtime/ohos/                鸿蒙本机引擎：Node 宿主、虚拟进程、生命周期、运行时组成
-tooling/                     APK 构建与构建号脚本；tooling/ohos/ 是鸿蒙构建、ArkTS 检查与门禁
-docs/                        架构、发布、路线图、用户指南（鸿蒙版在 docs/guide/harmony/，设计在 docs/design/harmonyos/）
+app/                         Flutter app: native UI, Riverpod state, l10n, phone control
+app/lib/l10n/parts/           Chinese and English ARB input for UI text
+app/ohos/                     HarmonyOS ArkTS host project (Android does not read it)
+packages/dsh_client/          Pure Dart client: HTTP/SSE, mux, session and delete APIs
+packages/dsh_remote/          Remote transport: WebRTC / LAN / TURN / relay
+runtime/                      Patched DSH engine runtime
+runtime/bridge/dsh-go-bridge/  App <-> engine HTTP bridge (/dsh-go/v1/*, session delete routes)
+runtime/patches/              Engine patches and their pins.json (patches pinned to versions, targetSets: android / ohos)
+runtime/ohos/                 HarmonyOS on-device engine: Node host, virtual processes, lifecycle, runtime composition
+tooling/                      APK build and build-number scripts; tooling/ohos/ is the HarmonyOS build, ArkTS checks and gates
+docs/                         Architecture, release, roadmap, user guide (HarmonyOS in docs/guide/harmony/, designs in docs/design/harmonyos/)
 ```
 
-## 命令
+## Commands
 
-按改动面选择验证，在 PR/报告里写实际执行的命令和结果。完整说明见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+Pick the checks that match the change, and write the commands you actually ran and their results in the PR or report. The full contract is in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ```bash
-(cd app && flutter pub get && flutter analyze && flutter test)   # Flutter 应用
+(cd app && flutter pub get && flutter analyze && flutter test)   # Flutter app
 (cd packages/dsh_client && dart pub get && dart analyze && dart test)
 (cd packages/dsh_remote && dart pub get && dart analyze && dart test)
-node --test runtime/tests/*.test.mjs                               # 引擎桥/补丁测试
-python3 app/tool/l10n_merge.py --check                             # 文案生成检查
-python3 app/tool/guide_sync.py --check                             # 用户指南同步检查
-tooling/build-apk.sh --build-name <x.y.z>                          # 构建 APK
-tooling/ohos/check-arkts.sh --sdk <OpenHarmony SDK> --hms-stubs    # 鸿蒙严格 ArkTS 编译
-bash tooling/ohos/run-gates.sh --config <inputs.json> --out <dir>  # 鸿蒙全量门禁（tooling/ohos/GATES.zh.md）
+node --test runtime/tests/*.test.mjs                               # engine bridge/patch tests
+python3 app/tool/l10n_merge.py --check                             # UI text generation check
+python3 app/tool/guide_sync.py --check                             # user guide sync check
+tooling/build-apk.sh --build-name <x.y.z>                          # build the APK
+tooling/ohos/check-arkts.sh --sdk <OpenHarmony SDK> --hms-stubs    # strict HarmonyOS ArkTS compile
+bash tooling/ohos/run-gates.sh --config <inputs.json> --out <dir>  # full HarmonyOS gates (tooling/ohos/GATES.zh.md)
 ```
 
-CI（`.github/workflows/ci.yml`）在 PR 上跑通用检查和改动涉及的部分，在 `main` 上跑全量，结果看 `CI OK`。它不碰真机和真实账号，绿了不等于手机上没问题。
+CI (`.github/workflows/ci.yml`) runs the general checks and the parts a PR touches; `main` runs everything; the result is `CI OK`. It never touches a real phone or a real account, so green does not mean the phone is fine.
 
-## 硬规则
+## Hard rules
 
-### 不接受外部 PR（最高优先级）
+### No external pull requests (highest priority)
 
-- 本仓库**暂不接受任何外部 Pull Request**（代码、文档、配置、模板都不收）。
-- **禁止合并任何外部 PR**：不得用 `gh pr merge`、GitHub API、网页合并、rebase 或 cherry-pick 把外部提交带进 `main`。
-- **禁止替用户创建 PR**，除非用户在当次对话里明确要求。
-- 收到外部 PR：关闭它并回复"暂不接受外部 PR，请改用 issue 提供建议"。入口检查（`.github/workflows/pr-gate.yml`）会自动关闭外部 PR；人工按同一政策处理，不要"先合并再说"。
-- 不要因为某个 issue 有了实现，就自动把实现包装成 PR 合入。
+- This repository **accepts no external pull requests at all** (code, docs, configuration or templates).
+- **Never merge an external PR**: no `gh pr merge`, no GitHub API, no web merge, no rebase or cherry-pick that brings an external commit into `main`.
+- **Never open a PR on the user's behalf**, unless the user asked for it in the current conversation.
+- When an external PR arrives: close it and answer "外部 PR 暂不接受，请改用 issue 提供建议". The entry check (`.github/workflows/pr-gate.yml`) closes external PRs automatically; handle it the same way by hand, never "merge first, sort it out later".
+- Do not turn an implementation into a PR just because an issue now has one.
 
-### 源码、生成物与运行时补丁
+### Source, generated outputs and runtime patches
 
-- 不手改生成物：`app/build/`、`.dart_tool/`、生成的 l10n 产物等；改输入后运行对应生成器。
-- 界面文案改 `app/lib/l10n/parts/*.arb`，中英文同步，再跑 `python3 app/tool/l10n_merge.py`；不要手改生成结果。
-- 用户指南改 `docs/guide/`，再跑 `python3 app/tool/guide_sync.py`。鸿蒙版指南在 `docs/guide/harmony/`，功能在鸿蒙上有差异时两套都要改。
-- 引擎补丁在 `runtime/patches/`：补丁文件与 `pins.json` 保持同步，不手改正被补丁覆盖的产物。新补丁要登记进 `pins.json` 的 `targetSets`（`android`、`ohos` 或两者），没登记的补丁 rtbuild 拒绝构建。
+- Never hand-edit generated outputs: `app/build/`, `.dart_tool/`, generated l10n output and the like; change the input and run the generator.
+- UI text changes go into `app/lib/l10n/parts/*.arb` with the Chinese and English sides in sync, then `python3 app/tool/l10n_merge.py`; never edit the generated result.
+- User guide changes go into `docs/guide/`, then `python3 app/tool/guide_sync.py`. The HarmonyOS guide lives in `docs/guide/harmony/`; when a feature differs on HarmonyOS, change both.
+- Engine patches live in `runtime/patches/`: patch files stay in sync with `pins.json`, and patched output is never edited by hand. A new patch must be registered in `pins.json`'s `targetSets` (`android`, `ohos` or both); rtbuild refuses to build an unregistered patch.
 
-### 行为与契约
+### Behavior and contracts
 
-- 客户端、桥接、插件协议的改动，同时检查另一端的调用方与向后兼容。
-- 危险操作（删除会话、权限、凭据）以主机/引擎的实际回答为准，不用本地推断代替；失败要有稳定错误码，不静默吞掉。
-- 界面文案中英两版同步（`app/lib/l10n/parts/*.arb` 与对应 `.en.arb`）。
-- 双语文档同步：README、CONTRIBUTING、SECURITY、docs/guide 中英两版同步。
+- For client, bridge and plugin-protocol changes, check the caller on the other side and backward compatibility as well.
+- Dangerous operations (deleting sessions, permissions, credentials) take the host's or engine's real answer as the truth, never a local guess; failures carry a stable error code and are never swallowed.
+- UI text keeps the Chinese and English sides in sync (`app/lib/l10n/parts/*.arb` with the matching `.en.arb`).
+- Documentation stays bilingual: README, CONTRIBUTING, SECURITY and docs/guide keep an English page and a Chinese one. English is the source page; the Chinese page follows it.
 
-### 鸿蒙
+### HarmonyOS
 
-- 鸿蒙和 Android 功能一致是目标，前端优先。能实现的功能走同一套 UI；做不到的才用 `androidSystemFeaturesProvider` / `operatingSystemProvider`（`app/lib/state/android_features.dart`）按功能隐藏，不全局放开或关闭，并在鸿蒙指南里写明替代。
-- `androidSystemFeaturesProvider` 在鸿蒙和 iOS 上都是 false。只属于鸿蒙的分支判断 `operatingSystemProvider == 'ohos'`，不要用它的 false 代指鸿蒙。
-- 鸿蒙改动不能改变 Android 的运行时字节和行为；门禁的 Android 对照（`android-targets`、`android-version-tree`）以 main 为基线。
-- ArkTS 按严格模式写：for-of 变量显式类型、子类传给 `Error` 参数要 `as Error`、静态方法不用 `this`。改了 `app/ohos/` 就跑 `check-arkts.sh`。
-- 签名材料（`.p12`、证书、profile）只放仓库外（`DSH_OHOS_SIGN`），不入库、不回显。
+- Feature parity with Android is the goal, front end first. Anything that can work uses the same UI; only what cannot work is hidden per feature through `androidSystemFeaturesProvider` / `operatingSystemProvider` (`app/lib/state/android_features.dart`), never switched off globally, and the HarmonyOS guide names the alternative.
+- `androidSystemFeaturesProvider` is false on both HarmonyOS and iOS. A HarmonyOS-only branch tests `operatingSystemProvider == 'ohos'`; do not use that provider's false as a stand-in for HarmonyOS.
+- A HarmonyOS change must not change Android's runtime bytes or behavior; the gates' Android controls (`android-targets`, `android-version-tree`) use main as the baseline.
+- Write ArkTS in strict mode: explicit types on for-of variables, `as Error` when passing a subclass to an `Error` parameter, no `this` in static methods. After changing `app/ohos/`, run `check-arkts.sh`.
+- Signing material (`.p12`, certificates, profiles) stays outside the repository (`DSH_OHOS_SIGN`); never commit or echo it.
 
-### 凭据与隐私
+### Credentials and privacy
 
-- 不记录、不回显、不持久化完整 API key、token、cookie、登录态。
-- 诊断包和日志外发前人工检查；自动打码不能当成保证。
+- Never log, echo or persist a complete API key, token, cookie or login state.
+- Inspect diagnostic bundles and logs by hand before they leave the machine; automatic masking is not a guarantee.
 
-### Git 安全
+### Git safety
 
-- **每次开工前先拉平基线**：`git fetch origin main` 后把当前分支同步到最新 `origin/main`（能快进就 `git merge --ff-only`），检查、改动和开 PR 都在最新基线上做。不在落后 `main` 的分支上直接叠加任务——否则容易重复实现 `main` 已经修好的东西，白改一遍。
-- 拉平前先处理未提交改动：自己的改动先备份（patch 或临时副本）再让分支快进；用户或其他任务的未提交改动不得丢弃、reset、stash 或覆盖，拉不平就停下来问。默认从最新 `origin/main` 建立隔离工作分支。
-- 工作提交并合并后，必须清理本次创建的临时工作树与分支；清理前确认提交已合入目标、没有未保存或未推送的成果。不强制删除含改动的工作树，不删除其他任务的分支。
-- 合并及清理后，再获取最新 `main`，在干净的主工作树内仅用 fast-forward 同步，并报告最终提交与未清理事项；主工作树有无关改动时保留并说明，不能为了制造“干净”而丢失工作。
-- 只暂存明确路径，不用 `git add .` / `git add -A`。
-- 未经要求不 commit、不 push、不打 tag、不发布。
-- 不 force push `main` 或重写共享历史，除非用户在当前对话里明确要求；重写后必须重建受影响的分支与 PR。
+- **Flatten the baseline before starting**: `git fetch origin main`, then bring the current branch onto the latest `origin/main` (`git merge --ff-only` when it fast-forwards), and do the review, the change and the PR on that baseline. Do not stack work on a branch that trails `main` — you end up reimplementing what `main` already fixed.
+- Handle uncommitted work before flattening: back up your own changes (patch or a temporary copy) and then fast-forward; never discard, reset, stash or overwrite the user's or another task's uncommitted changes. If it does not flatten, stop and ask. By default, start an isolated work branch from the latest `origin/main`.
+- After the work is committed and merged, clean up the temporary worktree and branch you created; before cleaning, confirm the commits reached the target and nothing is unsaved or unpushed. Never force-delete a worktree that has changes, and never delete another task's branch.
+- After merging and cleaning, fetch `main` again, sync the clean main worktree fast-forward only, and report the final commit and anything left uncleaned; keep unrelated changes in the main worktree and say so — never lose work just to look clean.
+- Stage explicit paths only; never `git add .` or `git add -A`.
+- Unless asked, do not commit, push, tag or publish.
+- Never force-push `main` or rewrite shared history unless the user asked in the current conversation; after a rewrite, rebuild the affected branches and PRs.
 
-### 真机验证
+### Device verification
 
-- Flutter widget 测试需要对应架构的 Flutter 引擎；只有桌面端（x86_64）而设备是 arm64 时，明确写"未运行"及原因。
-- 手机操控、PRoot、直接启动、更新安装相关改动必须在真机上验证；桌面结果不能替代。
-- 鸿蒙的系统能力（HMS、后台、通知、语音、卡片）只有真机能证明；`--hms-stubs` 只是让调用方编得过的非官方声明，编过不等于能用。
+- Flutter widget tests need a Flutter engine of the matching architecture; when only the desktop engine (x86_64) is available and the device is arm64, state plainly that it was not run, and why.
+- Phone control, PRoot, direct start and update-install changes must be verified on a real phone; a desktop result is not a substitute.
+- HarmonyOS system capabilities (HMS, background, notifications, voice, cards) can only be proven on a device; `--hms-stubs` is an unofficial declaration that only lets callers compile, and compiling is not working.
 
-## 代码审查原则
+## Code review principles
 
-审查 PR 或改动时，以**不引入新 Bug、最小必要改动、保持代码简洁**为核心：
+Review a PR or a change around three things: **no new bugs, the smallest necessary change, simple code**.
 
-1. **防止回归**：优先检查新增 Bug、竞态、资源泄漏、性能退化、兼容性问题，特别关注共享层（`packages/dsh_client`、bridge、runtime 补丁）对既有主机连接方式的影响。
-2. **避免过度设计**：识别重复实现、无必要的抽象、冗余封装和过度防御性编程；只在存在更简单等效方案时报告，不误判必要的安全校验和错误处理。
-3. **严格控制范围**：改动应围绕目标与关联 issue，不夹带无关重构、格式化、依赖升级或其他功能修改；必要的测试和文档同步除外。
-4. **保证实质价值**：关注无效代码、重复逻辑、无意义拆分和缺乏有效断言的测试；不以代码行数或提交次数判断贡献，不推测贡献者动机。
-5. **审查必须有据**：只报告本次改动引入的实质问题，说明具体位置、触发条件和实际影响，优先给最小修复建议。
+1. **Prevent regressions**: look first for new bugs, races, resource leaks, performance regressions and compatibility problems, especially in shared layers (`packages/dsh_client`, the bridge, runtime patches) and how they affect existing host connections.
+2. **Avoid over-design**: spot duplicate implementations, unnecessary abstraction, redundant wrappers and over-defensive programming; report them only when a simpler equivalent exists, and do not mistake necessary validation or error handling for over-defense.
+3. **Keep the scope tight**: the change stays on its goal and related issues, without unrelated refactors, formatting, dependency bumps or other features; necessary tests and documentation sync are the exception.
+4. **Deliver real value**: watch for dead code, duplicated logic, meaningless splits and tests without a real assertion; judge contributions by the work, not by line or commit count, and do not speculate about a contributor's motives.
+5. **Every review claim needs evidence**: report only the substantive problems this change introduces, name the location, the trigger and the real impact, and prefer the smallest fix.
 
-### 过度防御也是缺陷（写代码时就按这个判）
+### Over-defense is a defect too (apply this while writing code)
 
-防御不是越多越好。判断只有一条：**这个分支挡住的事情，真的会发生吗。**
+Defense is not a virtue on its own. There is one question: **would the thing this branch stops actually happen.**
 
-- 只对能说出触发条件的失败加防御；说不出触发条件的分支删掉。
-- 能用类型、单点入口或既有调用顺序保证的，不加运行时校验、不加兜底重试、不加多层状态机。
-- 错误处理只有两种出口：可恢复的给出可执行结果，不可恢复的明确失败。不许静默吞、不许无限重试、不许为了「更安全」把功能锁死。
-- 安全边界（权限、资源收尾、外部输入校验）该严就严，但必须留恢复路径：拒绝之后用户要走得回来，不能永久卡住。
-- 新增的状态标记、门禁、握手，必须写清「谁置位、谁清除、清不掉会怎样」；写不清就别加。
+- Add defense only for a failure you can describe the trigger for; delete a branch whose trigger you cannot name.
+- When a type, a single entry point or the existing call order already guarantees it, add no runtime check, no fallback retry and no extra state machine.
+- Error handling has two exits: recoverable cases return a usable result, unrecoverable ones fail clearly. Never swallow silently, never retry forever, never lock a feature off "to be safe".
+- Security boundaries (permissions, resource cleanup, external input validation) should be strict, but always leave a way back: after a refusal the user must be able to recover, not get stuck.
+- Any new state flag, gate or handshake must state who sets it, who clears it and what happens when it cannot be cleared; if that is not clear, do not add it.
 
-### 先做最短能跑通的
+### Build the shortest thing that works first
 
-- 需求没写的防护不加：多层重试、兜底回退、冗余校验、层层判空、功能开关。
-- 不为自己造流程：冻结清单、签名台账、状态快照、验收报告，除非用户要求。
-- 不建 v1 / v2 / final 这类并行目录；直接改原文件，历史交给 git。
-- 出问题先读真实输出定位根因，不靠加重试掩盖；改一处就重跑确认，通过后再跑几次看稳定。
-- 本节与上面硬规则冲突时以硬规则为准（Git 安全、外部 PR 政策、真机验证、双语同步）。
+- Do not add protection the requirement did not ask for: retry layers, fallback paths, redundant validation, null checks at every level, feature switches.
+- Do not invent process for yourself: freeze lists, signature ledgers, state snapshots, acceptance reports — unless the user asks.
+- Do not create parallel v1 / v2 / final directories; edit the real file and let git hold the history.
+- When something breaks, read the real output and find the cause instead of burying it under retries; change one thing, re-run, confirm, then run a few times for stability.
+- Where this section conflicts with the hard rules above, the hard rules win (Git safety, external PR policy, device verification, bilingual docs).
 
-## 技能与流程
+## Skills and process
 
-- 内部 PR：走 `.agents/skills/pr`（流程、模板、验证记录）。
-- 代码审查：走 `.agents/skills/review`（证据优先，只报本次改动引入的实质问题）。
-- 缺陷报告：`.agents/skills/bug`；安全审计：`.agents/skills/vuln-check`；大范围审计：`.agents/skills/audit`。
+- Internal PR: `.agents/skills/pr` (flow, template, verification record).
+- Code review: `.agents/skills/review` (evidence first; report only the substantive problems this change introduces).
+- Defect report: `.agents/skills/bug`; security audit: `.agents/skills/vuln-check`; broad audit: `.agents/skills/audit`.
 
-## 编辑本文件
+## Editing this file
 
-`CLAUDE.md` 是指向 `AGENTS.md` 的符号链接；编辑真身。每条规则保持自包含，细节链接到权威文档。
+`CLAUDE.md` is a symbolic link to `AGENTS.md`; edit the real file. Keep each rule self-contained and link its details to the authoritative document.
