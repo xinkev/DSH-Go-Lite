@@ -80,7 +80,6 @@ Future<ProviderContainer> _pump(
                     // does not temporarily render these sessions as unfiled.
                     if (!ref.watch(drawerViewProvider).loaded) return const SizedBox.shrink();
                     return DrawerConversationList(
-                      now: sampleNow,
                       leading: const SizedBox(height: 44),
                       onOpen: onOpen ?? (_) {},
                       onLongPress: onLongPress ?? (_) {},

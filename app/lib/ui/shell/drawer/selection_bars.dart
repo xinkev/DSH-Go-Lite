@@ -29,7 +29,7 @@ class DrawerSelectionHeader extends ConsumerWidget {
     final l10n = context.l10n;
     final theme = Theme.of(context);
     // What 全选 picks: the conversations on screen.
-    final selectable = drawerSelectableIds(watchDrawerBlocks(ref, now: now) ?? const []);
+    final selectable = drawerSelectableIds(watchDrawerBlocks(ref) ?? const []);
     final selected = ref.watch(drawerSelectionProvider) ?? const {};
     final notifier = ref.read(drawerSelectionProvider.notifier);
     final all = selectable.isNotEmpty && selectable.every(selected.contains);

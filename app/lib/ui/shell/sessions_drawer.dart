@@ -42,8 +42,6 @@ import '../theme/app_icons.dart';
 import '../theme/theme.dart';
 import '../web/mode_home.dart';
 import '../workspace/text_prompt.dart';
-import '../workspace/workspace_switcher.dart';
-import '../workspace/workspaces_page.dart';
 import 'adaptive/adaptive_layout.dart' show WindowClass;
 import 'brand_mark.dart';
 import 'drawer/drawer_actions.dart';
@@ -55,7 +53,6 @@ import 'drawer/selection_bars.dart';
 import 'drawer/session_deletion.dart';
 import 'session_search_page.dart';
 
-export '../../state/drawer_view_state.dart' show SessionDay, sessionDayOf;
 export 'drawer/drawer_destination.dart';
 export 'drawer/session_tile.dart' show SessionTile;
 
@@ -113,12 +110,6 @@ class SessionsDrawer extends ConsumerWidget {
     void newChat() {
       ref.read(currentSessionProvider.notifier).select(null);
       onClose();
-    }
-
-    void manageWorkspaces() {
-      Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const WorkspacesPage()));
-      // Close once the page covers us, so "back" lands on the chat.
-      Future<void>.delayed(AppMotion.slow, onClose);
     }
 
     final selecting =
@@ -185,19 +176,8 @@ class SessionsDrawer extends ConsumerWidget {
         onDetails: () => onOpen(DrawerDestination.engine),
       ),
       SessionSearchBar(onClose: onClose),
-      // The workspace switcher (once the host's workspace list has
-      // arrived) and the list's options, then the status filters.
-      SmoothSize(
-        duration: AppMotion.of(context, AppMotion.standard),
-        curve: AppMotion.std,
-        alignment: Alignment.topCenter,
-        child: Row(
-          children: [
-            Expanded(child: WorkspaceSwitcher(onManage: manageWorkspaces)),
-            _ViewOptionsKey(onClose: onClose),
-          ],
-        ),
-      ),
+      // The list's options, then the status filters.
+      Align(alignment: AlignmentDirectional.centerEnd, child: _ViewOptionsKey(onClose: onClose)),
       SmoothSize(
         duration: AppMotion.of(context, AppMotion.standard),
         curve: AppMotion.std,
@@ -206,7 +186,7 @@ class SessionsDrawer extends ConsumerWidget {
       ),
     ];
     final list = _EdgeFade(
-      child: _SessionList(onClose: onClose, now: now),
+      child: _SessionList(onClose: onClose),
     );
 
     const radius = BorderRadius.only(topRight: Radius.circular(AppShape.xl), bottomRight: Radius.circular(AppShape.xl));
@@ -456,10 +436,9 @@ class _EdgeFade extends StatelessWidget {
 }
 
 class _SessionList extends ConsumerWidget {
-  const _SessionList({required this.onClose, this.now});
+  const _SessionList({required this.onClose});
 
   final VoidCallback onClose;
-  final DateTime? now;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -490,7 +469,6 @@ class _SessionList extends ConsumerWidget {
       return workspace == null ? const _EmptyState() : const _WorkspaceEmptyState();
     }
     return DrawerConversationList(
-      now: now,
       onNewChat: onClose,
       readOnly: scope.readOnly,
       onOpen: (id) {

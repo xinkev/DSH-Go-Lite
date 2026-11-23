@@ -71,7 +71,6 @@ List<Override> _shell() => [
   localConnectionProvider.overrideWith(FakeConnection.new),
   onboardingPrefsProvider.overrideWith(FakeOnboardingPrefs.new),
   accountWalletBalanceProvider.overrideWithValue(null),
-  drawerClockProvider.overrideWithValue(() => sampleNow),
   localRuntimeProvider.overrideWith(() => FakeRuntime(const LocalRuntimeState(loaded: true, status: runningStatus))),
   localRuntimeLogsProvider.overrideWithBuild((ref, notifier) => sampleLogs),
   settingsProvider.overrideWith(() => FakeSettings(const AppSettings(loaded: true, apiKey: 'sk-tour'))),

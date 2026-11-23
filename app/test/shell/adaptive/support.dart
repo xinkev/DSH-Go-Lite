@@ -11,7 +11,6 @@ import 'package:dsh_app/state/bots_state.dart' show dsBotApiFactoryProvider;
 import 'package:dsh_app/state/chat_state.dart';
 import 'package:dsh_app/state/commands_state.dart';
 import 'package:dsh_app/state/connection_state.dart';
-import 'package:dsh_app/state/drawer_view_state.dart' show drawerClockProvider;
 import 'package:dsh_app/state/models_state.dart';
 import 'package:dsh_app/state/notify_state.dart';
 import 'package:dsh_app/state/session_detail_state.dart';
@@ -144,7 +143,6 @@ List<Override> homeOverrides({
   hostCommandsProvider.overrideWith((ref, id) async => testHostCommands),
   sessionUsageProvider.overrideWith2((id) => FakeUsage(id, sampleUsage)),
   sessionsProvider.overrideWith(() => _Sessions(sampleSessions())),
-  drawerClockProvider.overrideWithValue(() => sampleNow),
   currentSessionProvider.overrideWith(() => FixedSession(session)),
   chatProvider.overrideWith2(
     (id) => FakeChatController(id, chat?.call(id) ?? (id == 's1' ? runInfoState() : const ChatState(loading: false))),

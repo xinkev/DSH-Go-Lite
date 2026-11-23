@@ -21,7 +21,6 @@ import 'package:dsh_app/ui/shell/home_shell.dart';
 import 'package:dsh_app/ui/shell/sessions_drawer.dart';
 import 'package:dsh_app/ui/theme/app_icons.dart';
 import 'package:dsh_app/ui/theme/theme.dart';
-import 'package:dsh_app/ui/workspace/workspace_switcher.dart';
 import 'package:dsh_client/dsh_client.dart' show SessionSummary;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -132,7 +131,7 @@ void main() {
       expect(drawer.right - key.right, _near(10));
     });
 
-    testWidgets('on a connected host the options key shares the workspace row’s centre line', (tester) async {
+    testWidgets('on a connected host the options key sits above filters on the 10 line', (tester) async {
       SharedPreferences.setMockInitialValues({});
       final host = FakeWorkspaceHost();
       for (final session in sampleSessions()) {
@@ -153,11 +152,7 @@ void main() {
       addTearDown(container.read(activeConnectionProvider).value!.client.close);
       final drawer = _rect(tester, find.byType(SessionsDrawer));
       final key = _rect(tester, find.byType(DrawerViewButton));
-      final row = _rect(tester, find.byType(WorkspaceSwitcher));
-      expect(row.height, _near(WorkspaceSwitcher.height));
-      expect(key.center.dy, _near(row.center.dy));
       expect(drawer.right - key.right, _near(10));
-      // The first capsule's edge sits under the switcher's highlight edge.
       final first = _rect(tester, find.widgetWithText(CapsuleChoiceChip, DrawerFilter.all.label));
       expect(first.left - drawer.left, _near(10));
     });

@@ -28,7 +28,6 @@ class DrawerConversationList extends ConsumerWidget {
     required this.onLongPress,
     this.onNewChat,
     this.leading,
-    this.now,
     this.readOnly = false,
   });
 
@@ -44,8 +43,6 @@ class DrawerConversationList extends ConsumerWidget {
   /// Above everything when nothing is filtered or chosen (DS Bot's row).
   final Widget? leading;
 
-  /// Clock override for the day groups (tests).
-  final DateTime? now;
   final bool readOnly;
 
   /// The list's padding: rows' edges on the drawer's 10 line.
@@ -54,7 +51,7 @@ class DrawerConversationList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
-    final blocks = watchDrawerBlocks(ref, now: now);
+    final blocks = watchDrawerBlocks(ref);
     if (blocks == null) return const SizedBox.shrink();
     final selection = ref.watch(drawerSelectionProvider);
     final selecting = !readOnly && selection != null;
@@ -152,9 +149,7 @@ class DrawerConversationList extends ConsumerWidget {
               childrenBuilder: () => [for (final s in items) tile(s, inFolder: true)],
             ),
           );
-        case DayBlock(:final day, :final items):
-          final key = ValueKey('day-${day.name}');
-          add(key, (_) => DrawerEyebrow(sessionDayLabels[day]!, key: key));
+        case FlatBlock(:final items):
           addSessions(items);
       }
     }

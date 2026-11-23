@@ -205,7 +205,6 @@ Widget goldenApp({
       localConnectionProvider.overrideWith(FakeConnection.new),
       onboardingPrefsProvider.overrideWith(() => prefs == null ? FakeOnboardingPrefs() : FakeOnboardingPrefs(prefs)),
       accountWalletBalanceProvider.overrideWithValue(null),
-      drawerClockProvider.overrideWithValue(() => sampleNow),
       ...overrides,
     ],
     child: MaterialApp(

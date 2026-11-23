@@ -161,19 +161,6 @@ void main() {
   });
 
   group('formatters', () {
-    test('sessions group by local calendar day', () {
-      final now = DateTime(2026, 10, 23, 9);
-      expect(sessionDayOf(DateTime(2026, 10, 23, 0, 1), now), SessionDay.today);
-      expect(sessionDayOf(DateTime(2026, 10, 22, 23, 59), now), SessionDay.yesterday);
-      // 23 Oct 2026 is a Friday; the week starts on Monday the 19th.
-      expect(sessionDayOf(DateTime(2026, 10, 20), now), SessionDay.thisWeek);
-      expect(sessionDayOf(DateTime(2026, 10, 19, 0, 1), now), SessionDay.thisWeek);
-      expect(sessionDayOf(DateTime(2026, 10, 18, 23, 59), now), SessionDay.earlier);
-      // On a Monday, Sunday is 昨天 and nothing is 本周 before it.
-      final monday = DateTime(2026, 10, 19, 9);
-      expect(sessionDayOf(DateTime(2026, 10, 18, 12), monday), SessionDay.yesterday);
-      expect(sessionDayOf(DateTime(2026, 10, 17, 12), monday), SessionDay.earlier);
-    });
 
     test('runtime version is shortened to release and hash', () {
       expect(shortRuntimeVersion(_v), 'r1 · a45b1e89');

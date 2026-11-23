@@ -132,7 +132,6 @@ void main() {
             overrides: [
               onboardingPrefsProvider.overrideWith(FakeOnboardingPrefs.new),
               accountWalletBalanceProvider.overrideWithValue(null),
-              drawerClockProvider.overrideWithValue(() => sampleNow),
               activeHostProvider.overrideWith(_LocalHost.new),
               localRuntimeProvider.overrideWith(_Runtime.new),
               settingsProvider.overrideWith(() => FakeSettings(const AppSettings(loaded: true))),

@@ -45,7 +45,6 @@ Widget _app(Widget home, {required Locale locale, required List<Override> overri
     localConnectionProvider.overrideWith(FakeConnection.new),
     onboardingPrefsProvider.overrideWith(FakeOnboardingPrefs.new),
     accountWalletBalanceProvider.overrideWithValue(null),
-    drawerClockProvider.overrideWithValue(() => sampleNow),
     settingsProvider.overrideWith(() => FakeSettings(const AppSettings(loaded: true))),
     accountProvider.overrideWith(RecordingAccount.new),
     accountEngineStarterProvider.overrideWithValue(() async {}),

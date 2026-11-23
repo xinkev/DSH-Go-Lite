@@ -54,7 +54,6 @@ List<DrawerBlock> _blocks({
   pending: pending,
   unread: unread,
   createdAt: created,
-  now: _now,
   scoped: scoped,
 );
 
@@ -89,16 +88,11 @@ void main() {
   setUp(() => SharedPreferences.setMockInitialValues({}));
 
   group('drawerBlocks', () {
-    test('no folders: pinned, then days by activity', () {
+    test('no folders: pinned, then one flat run by activity', () {
       final blocks = _blocks(pinned: ['b']);
-      expect(blocks.map((b) => b.runtimeType), [PinnedBlock, DayBlock, DayBlock, DayBlock, DayBlock]);
+      expect(blocks.map((b) => b.runtimeType), [PinnedBlock, FlatBlock]);
       expect(_ids(blocks[0]), ['b']);
-      expect(
-        [for (final b in blocks.whereType<DayBlock>()) b.day],
-        [SessionDay.today, SessionDay.yesterday, SessionDay.thisWeek, SessionDay.earlier],
-      );
-      expect(_ids(blocks[1]), ['a']);
-      expect(_ids(blocks[3]), ['d']);
+      expect(_ids(blocks[1]), ['a', 'c', 'd', 'e']);
     });
 
     test('a conversation shows once: its folder wins over 置顶 and its day', () {
@@ -169,7 +163,7 @@ void main() {
       expect(empty.items, isEmpty);
     });
 
-    test('创建时间 sorts and groups by creation, falling back to activity', () {
+    test('创建时间 sorts by creation, falling back to activity', () {
       final blocks = _blocks(
         view: const DrawerView(loaded: true, sort: DrawerSort.created),
         created: {'a': _now.subtract(const Duration(days: 30)), 'e': _now.subtract(const Duration(minutes: 2))},
@@ -177,8 +171,6 @@ void main() {
       final order = [for (final b in blocks) ..._ids(b)];
       // e (made 2 min ago) before b (no time yet: its activity, 5 min ago).
       expect(order, ['e', 'b', 'c', 'd', 'a']);
-      expect((blocks.first as DayBlock).day, SessionDay.today);
-      expect((blocks.last as DayBlock).day, SessionDay.earlier);
     });
 
     test('全选 skips members of a collapsed folder', () {

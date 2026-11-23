@@ -463,29 +463,6 @@ final drawerSelectionProvider = NotifierProvider<DrawerSelectionController, Set<
 
 // ── What the list shows ──────────────────────────────────────────────────────
 
-enum SessionDay { today, yesterday, thisWeek, earlier }
-
-/// Calendar grouping in local time; weeks start on Monday.
-SessionDay sessionDayOf(DateTime at, DateTime now) {
-  final local = at.toLocal();
-  // Compare calendar dates on a fixed-length day axis, including across DST.
-  final today = DateTime.utc(now.year, now.month, now.day);
-  final day = DateTime.utc(local.year, local.month, local.day);
-  final diff = today.difference(day).inDays;
-  if (diff <= 0) return SessionDay.today;
-  if (diff == 1) return SessionDay.yesterday;
-  final monday = today.subtract(Duration(days: today.weekday - DateTime.monday));
-  if (!day.isBefore(monday)) return SessionDay.thisWeek;
-  return SessionDay.earlier;
-}
-
-Map<SessionDay, String> get sessionDayLabels => {
-  SessionDay.today: appL10n.stateDrawerToday,
-  SessionDay.yesterday: appL10n.commonYesterday,
-  SessionDay.thisWeek: appL10n.stateDrawerThisWeek,
-  SessionDay.earlier: appL10n.stateDrawerEarlier,
-};
-
 /// The drawer's conversations of the active host after the workspace scope,
 /// with DS Bot's own conversations split out (they fold into one row).
 class DrawerScope {
@@ -647,11 +624,9 @@ final class FolderBlock extends DrawerBlock {
   final DrawerFolder folder;
 }
 
-/// The rest, by day of the sort key.
-final class DayBlock extends DrawerBlock {
-  const DayBlock(this.day, super.items);
-
-  final SessionDay day;
+/// The rest: one flat run in the drawer's sort order, no day headings.
+final class FlatBlock extends DrawerBlock {
+  const FlatBlock(super.items);
 }
 
 /// A status filter's matches, flat (no folders or days).
@@ -671,7 +646,6 @@ List<DrawerBlock> drawerBlocks({
   required Map<String, PendingKind> pending,
   required Set<String> unread,
   required Map<String, DateTime> createdAt,
-  required DateTime now,
   bool scoped = false,
 }) {
   DateTime keyOf(SessionSummary s) =>
@@ -721,14 +695,11 @@ List<DrawerBlock> drawerBlocks({
       ]),
     );
   }
-  final days = <SessionDay, List<SessionSummary>>{};
-  for (final s in sorted) {
-    if (folderOf.containsKey(s.sessionId) || pinnedSet.contains(s.sessionId)) continue;
-    days.putIfAbsent(sessionDayOf(keyOf(s), now), () => []).add(s);
-  }
-  for (final day in SessionDay.values) {
-    if (days[day] case final items?) blocks.add(DayBlock(day, items));
-  }
+  final rest = [
+    for (final s in sorted)
+      if (!folderOf.containsKey(s.sessionId) && !pinnedSet.contains(s.sessionId)) s,
+  ];
+  if (rest.isNotEmpty) blocks.add(FlatBlock(rest));
   return blocks;
 }
 
@@ -740,11 +711,8 @@ List<String> drawerSelectableIds(List<DrawerBlock> blocks) => [
       for (final s in block.items) s.sessionId,
 ];
 
-/// Clock for day grouping (tests override it).
-final drawerClockProvider = Provider<DateTime Function()>((ref) => DateTime.now);
-
 /// [drawerBlocks] over the live providers; null while the list loads.
-List<DrawerBlock>? watchDrawerBlocks(WidgetRef ref, {DateTime? now}) {
+List<DrawerBlock>? watchDrawerBlocks(WidgetRef ref) {
   final scope = ref.watch(drawerScopeProvider);
   if (scope == null) return null;
   final view = ref.watch(drawerViewProvider);
@@ -756,7 +724,6 @@ List<DrawerBlock>? watchDrawerBlocks(WidgetRef ref, {DateTime? now}) {
     pending: scope.readOnly ? const {} : ref.watch(pendingInteractionsProvider),
     unread: scope.readOnly ? const {} : ref.watch(unreadSessionIdsProvider),
     createdAt: view.sort == DrawerSort.created ? ref.watch(sessionCreatedProvider) : const {},
-    now: now ?? ref.watch(drawerClockProvider)(),
     scoped: scope.scoped,
   );
 }
