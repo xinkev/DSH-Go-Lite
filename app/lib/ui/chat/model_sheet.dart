@@ -14,6 +14,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
 import '../../state/models_state.dart';
+import '../../state/providers_state.dart' show customProvidersProvider;
 import '../../state/settings_state.dart';
 import '../common/app_sheet.dart';
 import '../common/empty_view.dart';
@@ -523,7 +524,12 @@ class _ModelSheetState extends ConsumerState<_ModelSheet> {
       if (groups.isEmpty) {
         body = _EmptyCatalog(
           // A failing provider counts: something is set up, just not working.
-          configured: ref.watch(settingsProvider.select((s) => s.hasModelAccess)) || catalog.failures.isNotEmpty,
+          // So does a provider the engine reports without listing models: the
+          // person needs the provider page, not a DeepSeek key.
+          configured:
+              ref.watch(settingsProvider.select((s) => s.hasModelAccess)) ||
+              catalog.failures.isNotEmpty ||
+              (ref.watch(customProvidersProvider).value?.providers.isNotEmpty ?? false),
           failure: catalog.failures.isEmpty ? null : catalog.failures.first.message,
         );
       } else {
