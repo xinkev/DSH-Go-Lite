@@ -19,6 +19,7 @@ import '../../theme/motion.dart';
 import '../sessions_drawer.dart' show sessionTitle;
 import 'drawer_actions.dart';
 import 'folder_header.dart';
+import 'project_header.dart';
 import 'session_tile.dart';
 
 class DrawerConversationList extends ConsumerWidget {
@@ -151,8 +152,18 @@ class DrawerConversationList extends ConsumerWidget {
           );
         case ProjectBlock(:final projectId, :final title, :final items):
           final key = ValueKey('project-$projectId');
-          add(key, (_) => DrawerEyebrow(title, key: key));
-          addSessions(items);
+          final open = !ref.watch(drawerViewProvider.select((v) => v.collapsedProjects.contains(projectId)));
+          add(
+            key,
+            (_) => DrawerProjectHeader(
+              key: key,
+              title: title,
+              count: items.length,
+              open: open,
+              onTap: () => ref.read(drawerViewProvider.notifier).toggleProject(projectId),
+            ),
+          );
+          if (open) addSessions(items);
       }
     }
     // Preserve keyed row/folder state when pinning, sorting or hiding the

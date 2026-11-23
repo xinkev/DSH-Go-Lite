@@ -106,7 +106,12 @@ enum DrawerSort {
 
 /// The drawer's view of one host: folders in display order and the sort.
 class DrawerView {
-  const DrawerView({this.loaded = false, this.folders = const [], this.sort = DrawerSort.activity});
+  const DrawerView({
+    this.loaded = false,
+    this.folders = const [],
+    this.sort = DrawerSort.activity,
+    this.collapsedProjects = const {},
+  });
 
   factory DrawerView.fromJson(Object? json) {
     final map = json is Map ? json : const {};
@@ -120,6 +125,11 @@ class DrawerView {
             if (DrawerFolder.fromJson(raw) case final f? when seen.add(f.id)) f,
       ],
       sort: map['sort'] == 'created' ? DrawerSort.created : DrawerSort.activity,
+      collapsedProjects: {
+        if (map['collapsedProjects'] case final List<Object?> ids)
+          for (final id in ids)
+            if (id is String) id,
+      },
     );
   }
 
@@ -127,9 +137,14 @@ class DrawerView {
   final List<DrawerFolder> folders;
   final DrawerSort sort;
 
+  /// Projects (workspaces) whose conversations are folded away, as in the
+  /// official sidebar.
+  final Set<String> collapsedProjects;
+
   Map<String, Object?> toJson() => {
     'folders': [for (final f in folders) f.toJson()],
     'sort': sort.name,
+    'collapsedProjects': [...collapsedProjects],
   };
 
   DrawerFolder? byId(String? id) {
@@ -146,8 +161,13 @@ class DrawerView {
       for (final id in f.sessionIds) id: f.id,
   };
 
-  DrawerView copyWith({List<DrawerFolder>? folders, DrawerSort? sort}) =>
-      DrawerView(loaded: loaded, folders: folders ?? this.folders, sort: sort ?? this.sort);
+  DrawerView copyWith({List<DrawerFolder>? folders, DrawerSort? sort, Set<String>? collapsedProjects}) =>
+      DrawerView(
+        loaded: loaded,
+        folders: folders ?? this.folders,
+        sort: sort ?? this.sort,
+        collapsedProjects: collapsedProjects ?? this.collapsedProjects,
+      );
 }
 
 /// [DrawerView] of the active host, in shared preferences.
@@ -283,6 +303,13 @@ class DrawerViewController extends Notifier<DrawerView> {
       ],
     ),
   );
+
+  /// Folds or opens one project's conversations.
+  Future<void> toggleProject(String id) => _update((view) {
+    final next = {...view.collapsedProjects};
+    if (!next.remove(id)) next.add(id);
+    return view.copyWith(collapsedProjects: next);
+  });
 
   Future<void> toggleCollapsed(String id) async {
     await _loading;
@@ -720,11 +747,12 @@ List<DrawerBlock> drawerBlocks({
 }
 
 /// What 全选 picks: every conversation on screen (members of a collapsed
-/// folder are not).
-List<String> drawerSelectableIds(List<DrawerBlock> blocks) => [
+/// folder or a folded project are not).
+List<String> drawerSelectableIds(List<DrawerBlock> blocks, {Set<String> collapsedProjects = const {}}) => [
   for (final block in blocks)
     if (block is! FolderBlock || !block.folder.collapsed)
-      for (final s in block.items) s.sessionId,
+      if (block is! ProjectBlock || !collapsedProjects.contains(block.projectId))
+        for (final s in block.items) s.sessionId,
 ];
 
 /// [drawerBlocks] over the live providers; null while the list loads.
