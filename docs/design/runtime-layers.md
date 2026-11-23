@@ -12,6 +12,10 @@ all-or-nothing：先写 `runtime/downloads` 与 `runtime/staging`，成功后由
 `RuntimeLaunchTemplate` 按 runtime major 提供），启动路径优先已安装运行时，其次包内资产，
 两者都没有时报告「runtime not installed」而不是崩溃。
 
+office 是 `role: optional` 的独立层：设置里的「文档转换」按清单的 `file/sha256/bytes` 下载，
+只替换 `paths` 列出的路径（`installsInto` 之下），失败回滚、删除即还原；引擎安装单元不含它，
+装/删都不影响引擎启动。App 不认层名，只按清单字段安装，后续 python 层复用同一路径。
+
 `RUNTIME_LAYERS=1` 仍是运行时构建产物的分层开关，基础层与引擎层用于发布仓库。
 
 ## 构建入口
