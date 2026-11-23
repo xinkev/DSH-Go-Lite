@@ -65,8 +65,15 @@ Future<DshClient> connectUrlHost({
     // A stale gate answers a plain GET with its login page (200 HTML). A
     // 401/403 here is ambiguous (gate or engine), so the mux refusal below
     // owns that recovery instead.
-    if (pocketCookie != null && await _servesPocketLoginPage(connection)) {
-      throw const PocketGateRefused(200);
+    if (pocketCookie != null) {
+      final response = await connection.get('/', followRedirects: false);
+      if (_isPocketLoginPage(response.statusCode, response.text)) {
+        throw const PocketGateRefused(200);
+      }
+      // The gate adds the engine's launch token to this GET on the way out, and
+      // the response mints the `dsh-auth-*` cookie every /api call and the
+      // WebSocket need. A client that only speaks /api never gets one itself.
+      connection.adoptSessionCookie(response);
     }
     // Same readiness the local engine uses: the WebSocket route exists only
     // after application readiness, and its first frame is ready.
@@ -82,12 +89,6 @@ bool _pocketRefusal(DshHttpException error) =>
     error.statusCode == 401 || error.statusCode == 403 || _isPocketLoginPage(error.statusCode, error.body);
 
 bool _isPocketLoginPage(int status, String body) => status == 200 && body.toLowerCase().contains('pocket-login');
-
-Future<bool> _servesPocketLoginPage(DshConnection connection) async {
-  final response = await connection.get('/', followRedirects: false);
-  if (_isPocketLoginPage(response.statusCode, response.text)) return true;
-  return false;
-}
 
 /// [HostLink] over HTTP + WebSocket at a saved direct URL.
 ///
@@ -394,6 +395,9 @@ class UrlHostLink implements HostLink {
         // No engine token saved: only a health check can say whether the fresh
         // gate cookie was enough. Never reconnect blind: an expired engine
         // cookie without a token would loop through this method.
+        if (pin.isNotEmpty) {
+          connection.adoptSessionCookie(await connection.get('/', followRedirects: false));
+        }
         final health = await connection.checkHealth();
         if (health == DshHealth.ok) {
           client.mux.reconnect();

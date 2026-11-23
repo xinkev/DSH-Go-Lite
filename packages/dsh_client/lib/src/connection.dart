@@ -367,6 +367,22 @@ class DshConnection {
     return minted;
   }
 
+  /// Takes the engine session cookie minted by [response], if any.
+  ///
+  /// Behind dsh-pocket the phone never holds a launch token: the proxy adds
+  /// `?token=<engine token>` to `GET /` on the way out, and that response sets
+  /// `dsh-auth-*`. Every `/api` call and the WebSocket need it, so the caller
+  /// adopts it from the same request it already makes through the gate.
+  DshCookie? adoptSessionCookie(DshHttpResponse response) {
+    final minted = response.setCookies
+        .map((raw) => _parseSetCookie(raw, authority))
+        .whereType<DshCookie>()
+        .where((c) => c.name.startsWith('dsh-auth-'))
+        .firstOrNull;
+    if (minted != null) cookie = minted;
+    return minted;
+  }
+
   /// Cheap readiness probe: `GET /` with the cookie. `dsh web` prints its URL
   /// line only after startup completes, and the WebSocket route is mounted
   /// only after application readiness, so 200 here plus a `ready` frame on
