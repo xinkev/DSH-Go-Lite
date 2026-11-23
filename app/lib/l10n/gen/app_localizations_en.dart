@@ -6611,7 +6611,7 @@ class L10nEn extends L10n {
   String get engineProviderConfiguredInWeb => 'Configured in Web';
 
   @override
-  String get engineProvidersTitle => 'Models';
+  String get engineProvidersTitle => 'Providers';
 
   @override
   String get engineProvidersNotConnected => 'Not connected to the engine';

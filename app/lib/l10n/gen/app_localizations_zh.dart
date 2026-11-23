@@ -6256,7 +6256,7 @@ class L10nZh extends L10n {
   String get engineProviderConfiguredInWeb => '网页版配置';
 
   @override
-  String get engineProvidersTitle => '模型';
+  String get engineProvidersTitle => '服务商';
 
   @override
   String get engineProvidersNotConnected => '没有连上引擎';

@@ -11741,7 +11741,7 @@ abstract class L10n {
   /// No description provided for @engineProvidersTitle.
   ///
   /// In zh, this message translates to:
-  /// **'模型'**
+  /// **'服务商'**
   String get engineProvidersTitle;
 
   /// No description provided for @engineProvidersNotConnected.

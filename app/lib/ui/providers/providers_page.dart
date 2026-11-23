@@ -174,9 +174,10 @@ class _DeepSeekCard extends ConsumerWidget {
         onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const AccountPage())),
       );
     }
+    // One list of providers: DeepSeek is the first row, not a page of its own.
     return Padding(
-      padding: const EdgeInsets.only(bottom: 24),
-      child: ListPageCard(title: l10n.engineProvidersOfficial, children: [row]),
+      padding: const EdgeInsets.only(bottom: 12),
+      child: ListPageCard(children: [row]),
     );
   }
 }

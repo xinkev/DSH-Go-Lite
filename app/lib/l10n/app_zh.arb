@@ -3542,7 +3542,7 @@
   "engineProviderMisconfigured": "配置有误",
   "engineProviderInactive": "未启用",
   "engineProviderConfiguredInWeb": "网页版配置",
-  "engineProvidersTitle": "模型",
+  "engineProvidersTitle": "服务商",
   "engineProvidersNotConnected": "没有连上引擎",
   "engineProvidersStartEngine": "引擎运行后可添加渠道",
   "engineProvidersUnsupported": "这台主机不支持自定义渠道",

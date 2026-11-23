@@ -270,7 +270,7 @@
   "engineProviderMisconfigured": "Invalid config",
   "engineProviderInactive": "Not enabled",
   "engineProviderConfiguredInWeb": "Configured in Web",
-  "engineProvidersTitle": "Models",
+  "engineProvidersTitle": "Providers",
   "engineProvidersNotConnected": "Not connected to the engine",
   "engineProvidersStartEngine": "Start the engine to add providers",
   "engineProvidersUnsupported": "This host doesn’t support custom providers",
