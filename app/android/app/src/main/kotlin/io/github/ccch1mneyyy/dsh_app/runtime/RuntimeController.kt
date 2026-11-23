@@ -213,9 +213,8 @@ class RuntimeController private constructor(private val app: Context) : DshProce
     /** Available optional layers and whether this runtime version already has each one. */
     private fun optionalLayers(): List<Map<String, Any?>> {
         val available = release?.optionalLayers.orEmpty().filter { it.available }
-        if (available.isEmpty()) return emptyList()
         val version = runCatching { installer.installedVersion() }.getOrNull()
-        return available.map { layer ->
+        val listed = available.map { layer ->
             val installed = optionalInstaller.installed(layer.name)
             mapOf(
                 "name" to layer.name,
@@ -224,6 +223,13 @@ class RuntimeController private constructor(private val app: Context) : DshProce
                 "bytes" to layer.bytes,
             )
         }
+        // Modules the agent installed with runtime_install_module: the release may not be
+        // loaded (offline), but the marker under the rootfs is still the shared state.
+        val installedHere = runCatching { optionalInstaller.installedNames() }.getOrDefault(emptyList())
+        val extras = installedHere.filter { name -> available.none { it.name == name } }.map { name ->
+            mapOf("name" to name, "available" to false, "installed" to true, "bytes" to null)
+        }
+        return listed + extras
     }
 
     private fun directEngine() = DirectLaunch.Preference(

@@ -173,7 +173,8 @@ class RuntimeBackgroundTask {
   };
 }
 
-/// One optional runtime feature layer the release offers (office today, python later).
+/// One optional runtime feature layer: offered by the release (office today, python later) or
+/// already installed by the engine's agent (visible through the marker under the rootfs).
 class RuntimeOptionalLayer {
   const RuntimeOptionalLayer({required this.name, required this.installed, this.bytes});
 

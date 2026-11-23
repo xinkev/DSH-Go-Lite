@@ -32,6 +32,8 @@ class _LocalEngineSectionState extends ConsumerState<LocalEngineSection> {
     // never read on launch, so remote hosts never touch the network for the runtime.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
+      // Modules the agent installed live in the rootfs; re-read so this section shows them.
+      unawaited(ref.read(localRuntimeProvider.notifier).refreshStatus());
       final status = ref.read(localRuntimeProvider).status;
       if (status.releaseVersion != null ||
           status.phase == RuntimePhase.downloading ||

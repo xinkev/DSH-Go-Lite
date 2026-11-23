@@ -17,6 +17,7 @@
     "lib/session-deletion.js",
     "lib/speech.js",
     "lib/config-source.js",
+    "lib/runtime-modules.js",
     "lib/client.js",
     "lib/companion/*.js",
     "cordis.patch.yml",

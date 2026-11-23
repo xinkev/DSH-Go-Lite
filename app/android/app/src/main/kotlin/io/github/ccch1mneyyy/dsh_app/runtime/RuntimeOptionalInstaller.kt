@@ -32,7 +32,9 @@ internal class OptionalLayerInstaller(
     private val downloads = File(base, "downloads")
     private val staging = File(base, "optional-staging")
     private val backup = File(base, "optional-backup")
-    private val stateDir = File(base, "optional")
+    // Inside the rootfs, so the engine's dsh-go-bridge tools see the same state: an agent
+    // that installs a module writes here, and this installer keeps the UI in step with it.
+    private val stateDir = File(rootfs, "opt/dsh/runtime/optional")
 
     fun installed(name: String): Installed? {
         val json = try {
@@ -45,8 +47,17 @@ internal class OptionalLayerInstaller(
         if (owned.isEmpty()) return null
         // An engine update replaces its own prefix; a layer whose files are gone is not installed.
         if (owned.none { File(rootfs, relative(it)).exists() }) return null
-        return Installed(json.optString("runtimeVersion"), json.optLong("installedAt", 0L), owned)
+        // The bridge writes "version"; this installer has always written "runtimeVersion".
+        val version = json.optString("version").ifEmpty { json.optString("runtimeVersion") }
+        return Installed(version, json.optLong("installedAt", 0L), owned)
     }
+
+    /** Module names recorded under the installed rootfs, whoever installed them. */
+    fun installedNames(): List<String> = (stateDir.listFiles() ?: emptyArray())
+        .map { it.name }
+        .filter { it.endsWith(".json") }
+        .map { it.removeSuffix(".json") }
+        .sorted()
 
     fun install(
         runtimeVersion: String,
@@ -84,9 +95,11 @@ internal class OptionalLayerInstaller(
                 JSONObject()
                     .put("schema", 1)
                     .put("name", layer.name)
+                    .put("version", runtimeVersion)
                     .put("runtimeVersion", runtimeVersion)
                     .put("installedAt", System.currentTimeMillis())
                     .put("paths", owned)
+                    .put("source", "app")
                     .toString(2) + "\n",
             )
             onLog("[dsh-app] optional " + layer.name + ": installed")

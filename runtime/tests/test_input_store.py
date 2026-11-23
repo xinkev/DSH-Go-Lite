@@ -45,8 +45,8 @@ class InputStoreTest(unittest.TestCase):
     def test_current_inventory_covers_two_abis_host_and_all_npm_locks(self):
         current = store.inventory(REPO)
         historical = store.inventory(REPO, all_locks=True)
-        self.assertEqual(len(current), 723)
-        self.assertEqual(len(historical), 1061)
+        self.assertEqual(len(current), 726)
+        self.assertEqual(len(historical), 1064)
         npm = [obj for obj in current if obj["algorithm"] == "sha512"]
         self.assertEqual(len(npm), 661)
         self.assertEqual(sum(len(obj["refs"]) for obj in npm), 662)
@@ -67,7 +67,7 @@ class InputStoreTest(unittest.TestCase):
         shutil.copytree(REPO / "runtime/locks", repo / "runtime/locks")
         lock = repo / "runtime/locks/pnpm-11.28.5/package-lock.json"
         selected = store.inventory(repo, [lock])
-        self.assertEqual(len(selected), 63)
+        self.assertEqual(len(selected), 66)
         self.assertIn("sha256-" + "f" * 64, {obj["key"] for obj in selected})
         self.assertNotIn("sha256-" + old, {obj["key"] for obj in selected})
 
@@ -132,7 +132,7 @@ class InputStoreTest(unittest.TestCase):
         for path in defaults:
             path.unlink()
         # Explicit selection replaces default npm locks; it is not a full-default claim.
-        self.assertEqual(len(store.inventory(repo, [selected])), 63)
+        self.assertEqual(len(store.inventory(repo, [selected])), 66)
 
     def test_collect_original_bytes_under_extensionless_digest_name(self):
         source = self.file("origin.data", b"original archive bytes")

@@ -150,6 +150,10 @@ class LocalRuntimeController extends Notifier<LocalRuntimeState> {
     }
   }
 
+  /// Re-reads the engine status, which also re-reads the optional-module markers under
+  /// the installed rootfs (a module the agent installed becomes visible here).
+  Future<void> refreshStatus() => _refresh();
+
   void _onEvent(RuntimeEvent event) {
     switch (event) {
       case RuntimeStatusEvent(:final status):

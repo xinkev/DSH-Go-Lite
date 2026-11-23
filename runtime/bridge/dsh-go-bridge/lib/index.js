@@ -27,6 +27,7 @@ import { createCompanionStore } from "./companion/store.js";
 import { createRecallCoordinator } from "./companion/recall.js";
 import { createRecallContexts } from "./companion/recall-context.js";
 import { createCompanionSignals } from "./companion/signals.js";
+import { createRuntimeModuleManager, createRuntimeModuleTools, SECTION as RUNTIME_MODULES_SECTION } from "./runtime-modules.js";
 
 export const name = "dsh-go-bridge";
 
@@ -307,6 +308,26 @@ export function apply(ctx, config) {
     companionRecall.dispose();
     companionContexts.dispose();
   }, "dsh-go-bridge: companion recall");
+  // Optional runtime modules the agent may install for itself (office today, python later).
+  // The tools are global so every preset sees them; the prompt line reads only the cached
+  // manifest, never the network, during assembly.
+  const runtimeModules = createRuntimeModuleManager();
+  ctx.effect(() => {
+    let dispose = () => {};
+    ctx.inject(["tools", "systemPrompt"], (toolCtx) => {
+      const disposers = createRuntimeModuleTools(runtimeModules).map((definition) => toolCtx.tools.register(definition));
+      disposers.push(toolCtx.systemPrompt.section({
+        name: RUNTIME_MODULES_SECTION,
+        order: 3200,
+        text: () => runtimeModules.promptLine(),
+        interpolate: false,
+      }));
+      dispose = () => { for (const disposer of disposers.reverse()) disposer(); };
+    });
+    return () => dispose();
+  }, "dsh-go-bridge: optional runtime module tools");
+  void runtimeModules.prepare();
+
   let pluginConfig;
   ctx.on("internal/status", (fiber) => { pluginConfig?.statusChanged(fiber); });
 

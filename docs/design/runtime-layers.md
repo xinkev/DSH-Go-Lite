@@ -16,6 +16,14 @@ office 是 `role: optional` 的独立层：设置里的「文档转换」按清�
 只替换 `paths` 列出的路径（`installsInto` 之下），失败回滚、删除即还原；引擎安装单元不含它，
 装/删都不影响引擎启动。App 不认层名，只按清单字段安装，后续 python 层复用同一路径。
 
+引擎里的 agent 也能自己装同一层：dsh-go-bridge 注册 `runtime_modules`（列清单里可选的模块、
+大小、是否已装）和 `runtime_install_module`（按名字安装）两个工具。它读同一份清单、同一套
+`paths`，先下载并校验 sha256/字节数到 `/opt/dsh/runtime/tmp`，解到 staging，再逐条换入
+ownership 路径，失败不留半成品；成功后写标记 `/opt/dsh/runtime/optional/<name>.json`
+`{version, installedAt, paths}`。App 的「本地引擎」读 rootfs 里这份标记显示状态，UI 触发的
+安装仍走 App 自己的安装器（两边不做反向调用，标记是唯一共享状态）。引擎更新会替换 `opt/dsh`，
+标记随之消失，需要重装；同一进程里模块可能已被缓存，工具结果会明确提示必要时重启引擎。
+
 `RUNTIME_LAYERS=1` 仍是运行时构建产物的分层开关，基础层与引擎层用于发布仓库。
 
 ## 构建入口
