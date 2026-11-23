@@ -130,14 +130,6 @@ class _LocalEngineSectionState extends ConsumerState<LocalEngineSection> {
           label: l10n.localEngineSizeLabel,
           value: sizeMb == null ? l10n.localEngineDownloadSizeUnknown : l10n.localEngineDownloadSize(sizeMb),
         ),
-        if (status.prunedModules.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 6, 16, 6),
-            child: Text(
-              l10n.localEnginePruned(status.prunedModules.join(', ')),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: colors.textTertiary),
-            ),
-          ),
         if (busy)
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 10, 16, 6),
