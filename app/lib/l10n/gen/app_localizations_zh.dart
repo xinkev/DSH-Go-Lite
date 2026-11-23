@@ -8597,16 +8597,25 @@ class L10nZh extends L10n {
   String get hubAbout => '关于 DSH Go Lite';
 
   @override
-  String get hubAboutAuthor => 'DSH Go Lite 原作者';
+  String get hubAboutBuiltOn => '构建于';
 
   @override
-  String get hubAboutBilibili => 'B站主页';
+  String get hubAboutHarness => 'DeepSeek Harness';
 
   @override
-  String get hubAboutX => 'X 主页';
+  String get hubAboutHarnessNote => '本应用运行的开放引擎';
 
   @override
-  String get hubAboutGithub => 'GitHub 主页';
+  String get hubAboutOriginal => 'ccch1mneyyy 的 DSH Go';
+
+  @override
+  String get hubAboutOriginalNote => '本构建来源的原始 Android 应用';
+
+  @override
+  String get hubAboutRuntime => 'DSH Go Lite 运行时';
+
+  @override
+  String get hubAboutRuntimeNote => '本构建附带的引擎文件';
 
   @override
   String get hubAboutNewVersion => '有新版本';

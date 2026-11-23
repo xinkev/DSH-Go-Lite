@@ -9086,16 +9086,25 @@ class L10nEn extends L10n {
   String get hubAbout => 'About DSH Go Lite';
 
   @override
-  String get hubAboutAuthor => 'Original author of DSH Go Lite';
+  String get hubAboutBuiltOn => 'Built on';
 
   @override
-  String get hubAboutBilibili => 'Bilibili profile';
+  String get hubAboutHarness => 'DeepSeek Harness';
 
   @override
-  String get hubAboutX => 'X profile';
+  String get hubAboutHarnessNote => 'the open engine this app runs';
 
   @override
-  String get hubAboutGithub => 'GitHub profile';
+  String get hubAboutOriginal => 'DSH Go by ccch1mneyyy';
+
+  @override
+  String get hubAboutOriginalNote => 'the original Android app this build comes from';
+
+  @override
+  String get hubAboutRuntime => 'DSH Go Lite runtime';
+
+  @override
+  String get hubAboutRuntimeNote => 'the engine files this build ships';
 
   @override
   String get hubAboutNewVersion => 'Update available';

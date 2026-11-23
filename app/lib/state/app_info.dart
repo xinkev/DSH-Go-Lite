@@ -37,6 +37,12 @@ abstract final class AppInfo {
   static const authorXUrl = 'https://x.com/cccch1mneyyyy';
   static const authorGithubUrl = 'https://github.com/ccch1mneyyy';
 
+  /// The open engine this app runs.
+  static const harnessUrl = 'https://github.com/deepseek-ai/deepseek-harness';
+
+  /// The runtime this build ships: source, build recipe and release publisher.
+  static const runtimeUrl = 'https://github.com/xinkev/DSH-Go-Lite-Runtime';
+
   static const deepseekPlatform = 'https://platform.deepseek.com/api_keys';
   static const remoteConsole = 'https://dsh.r2049.cn/app';
 

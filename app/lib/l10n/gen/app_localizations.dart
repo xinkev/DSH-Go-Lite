@@ -15890,29 +15890,47 @@ abstract class L10n {
   /// **'关于 DSH Go Lite'**
   String get hubAbout;
 
-  /// No description provided for @hubAboutAuthor.
+  /// No description provided for @hubAboutBuiltOn.
   ///
   /// In zh, this message translates to:
-  /// **'DSH Go Lite 原作者'**
-  String get hubAboutAuthor;
+  /// **'构建于'**
+  String get hubAboutBuiltOn;
 
-  /// No description provided for @hubAboutBilibili.
+  /// No description provided for @hubAboutHarness.
   ///
   /// In zh, this message translates to:
-  /// **'B站主页'**
-  String get hubAboutBilibili;
+  /// **'DeepSeek Harness'**
+  String get hubAboutHarness;
 
-  /// No description provided for @hubAboutX.
+  /// No description provided for @hubAboutHarnessNote.
   ///
   /// In zh, this message translates to:
-  /// **'X 主页'**
-  String get hubAboutX;
+  /// **'本应用运行的开放引擎'**
+  String get hubAboutHarnessNote;
 
-  /// No description provided for @hubAboutGithub.
+  /// No description provided for @hubAboutOriginal.
   ///
   /// In zh, this message translates to:
-  /// **'GitHub 主页'**
-  String get hubAboutGithub;
+  /// **'ccch1mneyyy 的 DSH Go'**
+  String get hubAboutOriginal;
+
+  /// No description provided for @hubAboutOriginalNote.
+  ///
+  /// In zh, this message translates to:
+  /// **'本构建来源的原始 Android 应用'**
+  String get hubAboutOriginalNote;
+
+  /// No description provided for @hubAboutRuntime.
+  ///
+  /// In zh, this message translates to:
+  /// **'DSH Go Lite 运行时'**
+  String get hubAboutRuntime;
+
+  /// No description provided for @hubAboutRuntimeNote.
+  ///
+  /// In zh, this message translates to:
+  /// **'本构建附带的引擎文件'**
+  String get hubAboutRuntimeNote;
 
   /// No description provided for @hubAboutNewVersion.
   ///

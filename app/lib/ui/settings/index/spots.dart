@@ -1021,12 +1021,6 @@ abstract final class Spots {
     title: (l) => l.updateAutoCheck,
     keywords: (l) => l.searchKwUpdateAuto,
   );
-  static final star = SettingSpot(
-    'star',
-    page: SettingsPageId.about,
-    title: (l) => l.starSettingsTitle,
-    keywords: (l) => l.searchKwStar,
-  );
   static final licenses = SettingSpot(
     'licenses',
     page: SettingsPageId.about,
@@ -1091,6 +1085,5 @@ final _rows = <SettingSpot>[
   Spots.version,
   Spots.updateCheck,
   Spots.updateAuto,
-  Spots.star,
   Spots.licenses,
 ];
