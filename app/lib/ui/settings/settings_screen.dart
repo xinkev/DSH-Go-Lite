@@ -37,6 +37,7 @@ import '../onboarding/api_key_page.dart' show maskApiKey;
 import '../phone/phone_control_screen.dart';
 import '../phone/system_actions_page.dart';
 import '../providers/providers_page.dart';
+import '../../state/providers_state.dart' show customProvidersProvider, ProviderHealth;
 import '../remote/host_status.dart';
 import '../remote/remote_screen.dart';
 import '../shell/brand_mark.dart';
@@ -369,6 +370,13 @@ class _SettingsOverviewState extends ConsumerState<SettingsOverview> {
     final colors = DshColors.of(context);
     final active = ref.watch(activeHostProvider);
     final remoteOnly = runtime.status.runtimeMissing && !active.isLocal;
+    // Providers the engine itself has: the card speaks for them rather than
+    // asking for a DeepSeek sign-in.
+    final providers = ref.watch(customProvidersProvider).value;
+    final providerCount = providers?.providers.length ?? 0;
+    final providerReady = providers == null
+        ? 0
+        : providers.providers.where((p) => providers.healthOf(p) == ProviderHealth.ready).length;
 
     // The account's wallets when signed in; otherwise the key's balance.
     final money = account.signedIn && wallets != null ? balanceFromAccount(wallets) : balance.balance;
@@ -402,6 +410,10 @@ class _SettingsOverviewState extends ConsumerState<SettingsOverview> {
         subtitle = [l10n.commonRemoteHost, link.label].join(' · ');
         warn = link.tone == StatusTone.error || link.tone == StatusTone.warn;
         hostLink = link.label;
+      case _ when providerCount > 0:
+        leading = const OverviewGlyph(AppIcons.providers);
+        title = l10n.hubSettingsProviders;
+        subtitle = l10n.engineProvidersSummary(providerCount, providerReady);
       case _ when settings.hasApiKey:
         leading = const OverviewGlyph(AppIcons.apiKey);
         title = l10n.hubSettingsApiKey;
@@ -440,7 +452,13 @@ class _SettingsOverviewState extends ConsumerState<SettingsOverview> {
         semanticLabel: hostLink != null
             ? l10n.hubSettingsHostSemantics(title, hostLink)
             : l10n.hubSettingsAccountSemantics(title, subtitle),
-        onTap: () => _push(hostLink != null ? const RemoteScreen() : const AccountPage()),
+        onTap: () => _push(
+          hostLink != null
+              ? const RemoteScreen()
+              : providerCount > 0
+              ? const ProvidersPage()
+              : const AccountPage(),
+        ),
         footer: OverviewFooter(
           tone: engine.tone,
           text: [l10n.hubSettingsEngine, engine.label, if (dsh != null) 'DSH $dsh'].join(' · '),

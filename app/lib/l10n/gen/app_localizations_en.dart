@@ -3340,7 +3340,7 @@ class L10nEn extends L10n {
   String get catalogAgentPresetsSummary => 'How new chats work';
 
   @override
-  String get catalogModels => 'Models';
+  String get catalogModels => 'Providers';
 
   @override
   String get catalogModelsSummary => 'Subscriptions and custom providers';
@@ -8884,7 +8884,7 @@ class L10nEn extends L10n {
   String get hubSettingsEngine => 'Local engine';
 
   @override
-  String get hubSettingsProviders => 'Models';
+  String get hubSettingsProviders => 'Providers';
 
   @override
   String get hubSettingsEngineSettings => 'Engine parameters';

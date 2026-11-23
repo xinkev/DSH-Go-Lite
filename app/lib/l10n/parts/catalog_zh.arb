@@ -28,7 +28,7 @@
   "catalogPermissionSummary": "执行前是否确认",
   "catalogAgentPresets": "Agent 预设",
   "catalogAgentPresetsSummary": "新对话的工作方式",
-  "catalogModels": "模型",
+  "catalogModels": "服务商",
   "catalogModelsSummary": "订阅与自定义渠道",
   "catalogSubagentSettings": "子代理设置",
   "catalogSubagentSettingsSummary": "层数、并行与模型",

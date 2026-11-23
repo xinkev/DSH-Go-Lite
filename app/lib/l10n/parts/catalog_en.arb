@@ -28,7 +28,7 @@
   "catalogPermissionSummary": "Choose when to ask for approval",
   "catalogAgentPresets": "Agent presets",
   "catalogAgentPresetsSummary": "How new chats work",
-  "catalogModels": "Models",
+  "catalogModels": "Providers",
   "catalogModelsSummary": "Subscriptions and custom providers",
   "catalogSubagentSettings": "Subagent settings",
   "catalogSubagentSettingsSummary": "Depth, parallelism and models",

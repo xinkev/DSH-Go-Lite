@@ -5873,7 +5873,7 @@ abstract class L10n {
   /// No description provided for @catalogModels.
   ///
   /// In zh, this message translates to:
-  /// **'模型'**
+  /// **'服务商'**
   String get catalogModels;
 
   /// No description provided for @catalogModelsSummary.
@@ -15581,7 +15581,7 @@ abstract class L10n {
   /// No description provided for @hubSettingsProviders.
   ///
   /// In zh, this message translates to:
-  /// **'模型'**
+  /// **'服务商'**
   String get hubSettingsProviders;
 
   /// No description provided for @hubSettingsEngineSettings.

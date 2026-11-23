@@ -3172,7 +3172,7 @@ class L10nZh extends L10n {
   String get catalogAgentPresetsSummary => '新对话的工作方式';
 
   @override
-  String get catalogModels => '模型';
+  String get catalogModels => '服务商';
 
   @override
   String get catalogModelsSummary => '订阅与自定义渠道';
@@ -8411,7 +8411,7 @@ class L10nZh extends L10n {
   String get hubSettingsEngine => '本机引擎';
 
   @override
-  String get hubSettingsProviders => '模型';
+  String get hubSettingsProviders => '服务商';
 
   @override
   String get hubSettingsEngineSettings => '引擎参数';

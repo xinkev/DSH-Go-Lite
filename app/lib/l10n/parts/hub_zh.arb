@@ -57,7 +57,7 @@
   "hubSettingsWebPhoneLayoutHint": "为手机屏幕重排网页版",
   "hubSettingsEngineExtensions": "引擎与扩展",
   "hubSettingsEngine": "本机引擎",
-  "hubSettingsProviders": "模型",
+  "hubSettingsProviders": "服务商",
   "hubSettingsEngineSettings": "引擎参数",
   "hubSettingsShareConfig": "分享配置",
   "hubSettingsAllFeatures": "全部功能",
