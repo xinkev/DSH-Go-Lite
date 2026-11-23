@@ -186,6 +186,12 @@ class LocalRuntimeController extends Notifier<LocalRuntimeState> {
     return _bridge.install(dropKept: true);
   }
 
+  /// Reads the published runtime version, size and source; no download starts here.
+  Future<void> checkRelease() => _bridge.checkRuntimeRelease();
+
+  /// Stops a download in progress; the native side deletes what it wrote.
+  Future<bool> cancelInstall() => _bridge.cancelRuntimeInstall();
+
   /// The API key is not passed here: it is written to DSH's own credential store
   /// after connecting (see connection_state.dart), so it can change without a restart.
   /// Keeps the current mode: in safe mode this starts safe mode again.

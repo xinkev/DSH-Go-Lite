@@ -57,6 +57,8 @@ class RuntimeInstaller(
      * whatever cannot and installs anyway.
      */
     fun install(dropKept: Boolean = false, onProgress: (Long, Long) -> Unit) {
+        // Without assets this build installs from the runtime release repository instead.
+        if (manifest.archives.isEmpty()) throw RuntimeUpgradeBlocked("no_bundled_runtime")
         // A reset killed halfway finishes first, so what it keeps is in runtime-keep for the restore.
         settleReset(baseDir, retiredDir, keepDir, dropKept, sync)
         baseDir.mkdirs()

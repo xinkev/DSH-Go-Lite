@@ -80,7 +80,8 @@ class DshService : Service() {
                 if (taskId != null) PhoneControl.get(this).stopShownTask("用户在通知里停止", taskId)
             }
             ACTION_STOP -> {
-                if (controller.phase != RuntimeController.Phase.INSTALLING) {
+                if (controller.phase != RuntimeController.Phase.DOWNLOADING &&
+                    controller.phase != RuntimeController.Phase.INSTALLING) {
                     val expected = if (intent.hasExtra(EXTRA_STOP_GENERATION))
                         intent.getIntExtra(EXTRA_STOP_GENERATION, -1) else null
                     if (controller.stopProcess(expected, intent.getStringExtra(EXTRA_STOP_OWNER))) {

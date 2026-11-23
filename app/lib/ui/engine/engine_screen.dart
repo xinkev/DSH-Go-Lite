@@ -28,6 +28,7 @@ import '../web/local_web_screen.dart';
 import 'engine_status.dart';
 import 'engine_capabilities.dart';
 import 'linux_section.dart';
+import 'local_engine_section.dart';
 import 'local_uninstall.dart';
 import 'reset_outcome.dart';
 import 'log_view.dart';
@@ -59,6 +60,7 @@ String engineDetail(RuntimeStatus status) => switch (status.phase) {
           )
         : appL10n.phoneEngineStoppingEllipsis,
   RuntimePhase.installed => status.inSafeMode ? appL10n.phoneEngineStoppedNextSafe : appL10n.commonStopped,
+  RuntimePhase.downloading => appL10n.shellRuntimeDownloading,
   RuntimePhase.installing => appL10n.phoneEngineInstallingRuntime,
   RuntimePhase.notInstalled => appL10n.phoneEngineRuntimeNotInstalled,
   RuntimePhase.error =>
@@ -188,6 +190,8 @@ class EngineScreen extends ConsumerWidget {
             ),
             // iOS runs what the virtual shell can't in Linux, installed here on demand.
             if (Theme.of(context).platform == TargetPlatform.iOS) const LinuxSection(),
+            if (status.downloadRequired || status.updateAvailable || status.phase == RuntimePhase.downloading)
+              const LocalEngineSection(),
             SettingsSection(
               title: l10n.phoneEngineRuntime,
               children: [

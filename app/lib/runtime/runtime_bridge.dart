@@ -7,6 +7,7 @@ import 'background_protection.dart';
 /// Lifecycle of the on-device Linux runtime and the local DSH server.
 enum RuntimePhase {
   notInstalled,
+  downloading,
   installing,
   installed,
   starting,
@@ -17,7 +18,7 @@ enum RuntimePhase {
   static RuntimePhase parse(Object? wire) =>
       RuntimePhase.values.firstWhere((p) => p.name == wire, orElse: () => RuntimePhase.error);
 
-  bool get isBusy => this == installing || this == starting || this == stopping;
+  bool get isBusy => this == downloading || this == installing || this == starting || this == stopping;
 }
 
 /// Which profile the local DSH boots: the user's `web`, or the rescue profile.
@@ -212,6 +213,16 @@ class RuntimeStatus {
     this.backgroundTask,
     this.longTaskEligible = false,
     this.continuedRun = false,
+    this.localRuntime = false,
+    this.bundledRuntime = false,
+    this.downloadRequired = false,
+    this.runtimeSource,
+    this.releaseVersion,
+    this.downloadBytes,
+    this.prunedModules = const [],
+    this.runtimeManifestUrl,
+    this.releaseError,
+    this.updateAvailable = false,
   });
 
   const RuntimeStatus.unknown() : this(phase: RuntimePhase.notInstalled);
@@ -304,6 +315,38 @@ class RuntimeStatus {
   /// iOS: the system is letting the engine keep running while the app is away.
   final bool continuedRun;
 
+  /// This platform has a native local-runtime slot (Android sets it even when the APK
+  /// carries no runtime bytes). `false` in tests and on hosts without one.
+  final bool localRuntime;
+
+  /// The APK carries the runtime assets itself (development builds, `--with-runtime`).
+  final bool bundledRuntime;
+
+  /// Nothing local to unpack: installing means downloading from the runtime repository.
+  final bool downloadRequired;
+
+  /// `bundled` or `download`: where an install on this build gets its bytes.
+  final String? runtimeSource;
+
+  /// The published runtime version last read; null until `checkRuntimeRelease` succeeds.
+  final String? releaseVersion;
+
+  /// Compressed size of the required layers of [releaseVersion].
+  final int? downloadBytes;
+
+  /// Optional engine modules the installed (or published) build leaves out (e.g. `sherpa`).
+  final List<String> prunedModules;
+
+  /// Where releases come from (shown in 本地引擎).
+  final String? runtimeManifestUrl;
+
+  /// Why the last release check failed; the engine keeps working without it.
+  final String? releaseError;
+
+  /// A newer runtime is published than the one installed.
+  final bool updateAvailable;
+
+
   Map<String, Object?> get launchDiagnostics => {
     'directEngineEnabled': directEngineEnabled,
     'directEngineAvailable': directEngineAvailable,
@@ -378,6 +421,19 @@ class RuntimeStatus {
     tidyingFiles: map['tidyingFiles'] == true,
     resetPending: map['resetPending'] == true,
     continuedRun: map['continuedRun'] == true,
+    localRuntime: map['localRuntime'] == true,
+    bundledRuntime: map['bundledRuntime'] == true,
+    downloadRequired: map['downloadRequired'] == true,
+    runtimeSource: map['runtimeSource'] as String?,
+    releaseVersion: map['releaseVersion'] as String?,
+    downloadBytes: (map['downloadBytes'] as num?)?.toInt(),
+    prunedModules: switch (map['prunedModules']) {
+      final List<Object?> list => [for (final item in list) if (item is String) item],
+      _ => const [],
+    },
+    runtimeManifestUrl: map['runtimeManifestUrl'] as String?,
+    releaseError: map['releaseError'] as String?,
+    updateAvailable: map['updateAvailable'] == true,
   );
 }
 
@@ -635,6 +691,13 @@ class RuntimeBridge {
   /// [dropKept]: give up what a reset kept but cannot be put back.
   Future<void> install({bool dropKept = false}) =>
       _methods.invokeMethod<void>('install', dropKept ? const {'dropKept': true} : null);
+
+  /// Reads the published runtime manifest (no download yet); resolves once status carries it.
+  Future<void> checkRuntimeRelease() => _methods.invokeMethod<void>('checkRuntimeRelease');
+
+  /// Stops a runtime download in progress; true when one was running.
+  Future<bool> cancelRuntimeInstall() async =>
+      await _methods.invokeMethod<bool>('cancelInstall') ?? false;
 
   /// [phoneStorage] mounts the phone's shared storage at /sdcard (needs [requestStorage] first).
   /// [mode] null keeps the current mode; [EngineMode.normal] while in safe mode starts the

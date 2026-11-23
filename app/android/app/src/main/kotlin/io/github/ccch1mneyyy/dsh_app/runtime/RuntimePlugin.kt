@@ -126,7 +126,8 @@ class RuntimePlugin :
             }
             "install" -> {
                 // A second call must not end the running unpack's foreground service.
-                if (controller.phase == RuntimeController.Phase.INSTALLING) return result.error("install_busy", null, null)
+                if (controller.phase == RuntimeController.Phase.DOWNLOADING ||
+                    controller.phase == RuntimeController.Phase.INSTALLING) return result.error("install_busy", null, null)
                 val intent = Intent(appContext, DshService::class.java).setAction(DshService.ACTION_INSTALL)
                     .putExtra("upgrade", controller.status()["installedVersion"] != null)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) appContext.startForegroundService(intent)
@@ -136,8 +137,14 @@ class RuntimePlugin :
                         Intent(appContext, DshService::class.java).setAction(DshService.ACTION_INSTALL_DONE)
                             .putExtra(DshService.EXTRA_INSTALL_OK, error == null),
                     )
-                    if (error == null) result.success(null) else result.error("install_failed", error.message, null)
+                    // A cancelled download is the user's own choice, not a failure to report.
+                    if (error == null || error is RuntimeInstallCancelled) result.success(null)
+                    else result.error("install_failed", error.message, null)
                 }
+            }
+            "cancelInstall" -> result.success(controller.cancelRuntimeInstall())
+            "checkRuntimeRelease" -> controller.checkRuntimeRelease { error ->
+                if (error == null) result.success(null) else result.error("release_check_failed", error.message, null)
             }
             "start" -> {
                 val env = (call.argument<Map<String, Any?>>("env") ?: emptyMap())

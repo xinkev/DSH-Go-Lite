@@ -114,7 +114,7 @@ class _RuntimeSetupPageState extends ConsumerState<RuntimeSetupPage> {
     final status = state.status;
     final installedCurrent = status.installedVersion != null && status.installedVersion == status.bundledVersion;
     return switch (status.phase) {
-      RuntimePhase.installing => _SetupView.installing,
+      RuntimePhase.downloading || RuntimePhase.installing => _SetupView.installing,
       RuntimePhase.installed ||
       RuntimePhase.starting ||
       RuntimePhase.running ||
@@ -196,6 +196,9 @@ class _RuntimeSetupPageState extends ConsumerState<RuntimeSetupPage> {
       _SetupView.failed => l10n.shellRuntimeIncomplete,
     };
     final body = switch (view) {
+      _SetupView.waiting ||
+      _SetupView.installing ||
+      _SetupView.choose when state.status.phase == RuntimePhase.downloading => l10n.shellRuntimeDownloading,
       _SetupView.waiting || _SetupView.installing || _SetupView.choose when widget.waiting => l10n.setupWaitingBody,
       _SetupView.waiting ||
       _SetupView.installing ||

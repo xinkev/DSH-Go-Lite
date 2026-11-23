@@ -5631,6 +5631,59 @@
   "localEnvChooseUseTitle": "想怎么用 dsh-Go？",
   "localEnvTavernTitle": "和角色聊天",
   "localEnvTavernDetail": "接回 DeepSeek 的对话也在这里 · 不用安装",
+  "localEnvDownloadDetail": "首次安装会从网络下载运行环境",
+  "localEnvDownloadSize": "需下载约 {mb} MB",
+  "@localEnvDownloadSize": {
+    "placeholders": {
+      "mb": {
+        "type": "int"
+      }
+    }
+  },
+  "shellRuntimeDownloading": "正在下载运行环境",
+  "localEngineTitle": "本地引擎",
+  "localEngineSource": "下载来源",
+  "localEngineSizeLabel": "下载大小",
+  "localEngineDownloadSize": "下载约 {mb} MB",
+  "@localEngineDownloadSize": {
+    "placeholders": {
+      "mb": {
+        "type": "int"
+      }
+    }
+  },
+  "localEngineDownloadSizeUnknown": "下载大小未知",
+  "localEngineUpdateAvailable": "有新版本 {version}",
+  "@localEngineUpdateAvailable": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "localEngineInstall": "下载并安装",
+  "localEngineUpdate": "下载更新",
+  "localEngineRetry": "重试",
+  "localEngineCancel": "取消下载",
+  "localEngineDownloading": "正在下载运行环境",
+  "localEngineInstalling": "正在安装运行环境",
+  "localEngineDelete": "删除本地引擎",
+  "localEngineDeleteTitle": "删除本地引擎？",
+  "localEngineDeleteBody": "本机的对话、工作区、插件、设置、界面配置和技能会一并删除；下次使用需要重新下载。",
+  "localEnginePruned": "已移除可选模块：{modules}",
+  "@localEnginePruned": {
+    "placeholders": {
+      "modules": {
+        "type": "String"
+      }
+    }
+  },
+  "localEngineReleaseFailed": "检查不到运行环境发布，请检查网络",
+  "localEngineChecksumFailed": "运行环境文件校验失败，请重试",
+  "localEngineDownloadFailed": "下载运行环境失败，请重试",
+  "localEngineUnsupported": "这个运行环境不支持当前设备",
+  "localEngineInstalled": "已安装",
+  "localEngineNotInstalled": "未安装",
   "marketSectionOfficial": "官方",
   "marketSectionAdapted": "适配 DSH Go",
   "marketSectionAll": "全部",

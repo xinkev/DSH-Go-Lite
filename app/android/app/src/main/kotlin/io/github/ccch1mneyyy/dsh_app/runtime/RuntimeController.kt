@@ -26,7 +26,7 @@ import java.util.concurrent.Executors
 class RuntimeController private constructor(private val app: Context) : DshProcess.Listener {
 
     enum class Phase(val wire: String) {
-        NOT_INSTALLED("notInstalled"), INSTALLING("installing"), INSTALLED("installed"),
+        NOT_INSTALLED("notInstalled"), DOWNLOADING("downloading"), INSTALLING("installing"), INSTALLED("installed"),
         STARTING("starting"), RUNNING("running"), STOPPING("stopping"), ERROR("error"),
     }
 
@@ -65,8 +65,15 @@ class RuntimeController private constructor(private val app: Context) : DshProce
         }
     }
 
-    val manifest: RuntimeManifest by lazy { RuntimeManifest.load(app) }
-    private val installer by lazy { RuntimeInstaller(app, manifest, ::note) }
+    /** The runtime to launch: installed first, the APK's bundled assets as a fallback. */
+    @Volatile private var manifest: RuntimeManifest = RuntimeManifest.resolve(app)
+    private val bundledManifest: RuntimeManifest? = RuntimeManifest.bundled(app)
+    @Volatile private var installer: RuntimeInstaller = RuntimeInstaller(app, manifest, ::note)
+    /** The on-demand installer: network, verification, and the installed-version record. */
+    private val releaseInstaller = RuntimeReleaseInstaller(app, onLog = ::note)
+    @Volatile private var installedRuntime: InstalledRuntime? = null
+    @Volatile private var release: RuntimeRelease? = null
+    @Volatile private var releaseError: String? = null
     @Volatile private var process: DshProcess? = null
     @Volatile private var lastLaunch: LaunchDiagnostics? = null
     /** The start in progress is turning PRoot's fake hard links into real files (see [L2sMigration]). */
@@ -126,6 +133,7 @@ class RuntimeController private constructor(private val app: Context) : DshProce
     val safeRun: Boolean get() = runSafe
 
     init {
+        installedRuntime = runCatching { releaseInstaller.installed() }.getOrNull()
         phase = try {
             if (installer.isCurrent()) Phase.INSTALLED else Phase.NOT_INSTALLED
         } catch (e: Exception) {
@@ -134,13 +142,28 @@ class RuntimeController private constructor(private val app: Context) : DshProce
         }
     }
 
+    /** Re-reads what is installed after an install, a reset, or a finished upgrade. */
+    private fun reloadRuntime() {
+        manifest = RuntimeManifest.resolve(app)
+        installer = RuntimeInstaller(app, manifest, ::note)
+        installedRuntime = runCatching { releaseInstaller.installed() }.getOrNull()
+    }
+
     fun addSink(sink: EventSink) = synchronized(sinks) { sinks += sink }
     fun removeSink(sink: EventSink) = synchronized(sinks) { sinks -= sink }
 
-    fun status(): Map<String, Any?> = mapOf(
+    fun status(): Map<String, Any?> {
+        val installed = runCatching { installer.installedVersion() }.getOrNull()
+        val available = release?.runtimeVersion
+        return mapOf(
         "abi" to (runCatching { manifest.abi }.getOrNull() ?: Build.SUPPORTED_ABIS.firstOrNull()),
-        "bundledVersion" to runCatching { manifest.runtimeVersion }.getOrNull(),
-        "installedVersion" to runCatching { installer.installedVersion() }.getOrNull(),
+        // The version this build can install (bundled) or has installed; null before either.
+        "bundledVersion" to (bundledManifest?.runtimeVersion ?: manifest.runtimeVersion.ifEmpty { null }),
+        "bundledRuntime" to (bundledManifest != null),
+        "downloadRequired" to (bundledManifest == null),
+        "runtimeSource" to if (bundledManifest != null) "bundled" else "download",
+        "localRuntime" to true,
+        "installedVersion" to installed,
         "dshVersion" to runCatching { manifest.dshVersion }.getOrNull(),
         "nodeVersion" to runCatching { manifest.nodeVersion }.getOrNull(),
         "phase" to phase.wire,
@@ -173,7 +196,14 @@ class RuntimeController private constructor(private val app: Context) : DshProce
         "launchSpawned" to (lastLaunch?.spawned == true),
         "launchFailureReason" to lastLaunch?.failureReason,
         "tidyingFiles" to tidyingFiles,
+        "releaseVersion" to available,
+        "downloadBytes" to release?.totalBytes?.takeIf { it > 0 },
+        "prunedModules" to (installedRuntime?.prunedModules?.takeIf { it.isNotEmpty() } ?: release?.prunedModules.orEmpty()),
+        "runtimeManifestUrl" to releaseInstaller.manifestUrl,
+        "releaseError" to releaseError,
+        "updateAvailable" to (runtimeVersionRelation(installed, available) == RuntimeVersionRelation.UPDATE),
     )
+    }
 
     private fun directEngine() = DirectLaunch.Preference(
         saved = if (prefs.contains(K_DIRECT_ENGINE)) prefs.getBoolean(K_DIRECT_ENGINE, false) else null,
@@ -254,9 +284,18 @@ class RuntimeController private constructor(private val app: Context) : DshProce
         return if (active) runSafe else safeState == SafeState.ON
     }
 
-    /** [dropKept]: give up what a reset kept but cannot be put back (see [KeepFailed]). */
+    /**
+     * Installs the runtime: the APK's bundled assets when this build carries them and
+     * nothing older is installed, otherwise the published release (download, verify, unpack).
+     * [dropKept]: give up what a reset kept but cannot be put back (see [KeepFailed]).
+     */
     @Synchronized fun install(dropKept: Boolean = false, onDone: (Throwable?) -> Unit) {
-        if (phase == Phase.INSTALLING) return onDone(null)
+        if (phase == Phase.INSTALLING || phase == Phase.DOWNLOADING) return onDone(null)
+        // A build without assets has nothing local to unpack; an existing runtime is updated
+        // from the release repository rather than from a stale bundled copy.
+        if (bundledManifest == null || runCatching { installer.installedVersion() }.getOrNull() != null) {
+            return installFromRelease(dropKept, onDone)
+        }
         val current = runCatching { installer.isCurrent() }.getOrElse { return onDone(it) }
         if (current && phase != Phase.ERROR && !resetting) {
             if (phase == Phase.NOT_INSTALLED) setPhase(Phase.INSTALLED)
@@ -279,6 +318,7 @@ class RuntimeController private constructor(private val app: Context) : DshProce
                     emit(mapOf("type" to "progress", "step" to "extract", "done" to done, "total" to total))
                 }
                 log("[dsh-app] runtime ready in ${(System.currentTimeMillis() - started) / 1000}s", "system")
+                reloadRuntime()
                 error = null
                 // A new runtime may well fix what failed before.
                 strikes = 0
@@ -286,6 +326,84 @@ class RuntimeController private constructor(private val app: Context) : DshProce
                 prefs.edit().putInt(K_STRIKES, 0).remove(K_FAILURE).apply()
                 setPhase(Phase.INSTALLED)
                 main.post { onDone(null) }
+            } catch (e: Throwable) {
+                error = "install failed: ${e.message}"
+                log("[dsh-app] ${error}", "system")
+                setPhase(Phase.ERROR)
+                main.post { onDone(e) }
+            }
+        }
+    }
+
+    /** Reads the published release and remembers it, so 本地引擎 can show size and version. */
+    fun checkRuntimeRelease(onDone: (Throwable?) -> Unit) {
+        if (phase == Phase.INSTALLING || phase == Phase.DOWNLOADING) return onDone(null)
+        worker.execute {
+            try {
+                val next = releaseInstaller.check()
+                release = next
+                releaseError = null
+                note("[dsh-app] runtime release: ${next.runtimeVersion} (${next.totalBytes} bytes)")
+                emitStatus()
+                main.post { onDone(null) }
+            } catch (e: Throwable) {
+                releaseError = e.message ?: e.javaClass.simpleName
+                emitStatus()
+                main.post { onDone(e) }
+            }
+        }
+    }
+
+    /** Stops a download in progress; the worker deletes what it wrote and returns to not installed. */
+    @Synchronized fun cancelRuntimeInstall(): Boolean {
+        if (phase != Phase.DOWNLOADING) return false
+        releaseInstaller.cancel()
+        return true
+    }
+
+    /** Downloads, verifies and installs one published runtime; all-or-nothing. */
+    private fun installFromRelease(dropKept: Boolean, onDone: (Throwable?) -> Unit) {
+        if (process != null || resetting || phase in setOf(Phase.STARTING, Phase.RUNNING, Phase.STOPPING)) {
+            return onDone(RuntimeUpgradeBlocked("running"))
+        }
+        setPhase(Phase.DOWNLOADING)
+        worker.execute {
+            try {
+                val next = release ?: releaseInstaller.check().also {
+                    release = it
+                    releaseError = null
+                }
+                if (releaseInstaller.installed()?.runtimeVersion == next.runtimeVersion) {
+                    reloadRuntime()
+                    error = null
+                    setPhase(Phase.INSTALLED)
+                    main.post { onDone(null) }
+                    return@execute
+                }
+                log("[dsh-app] downloading runtime ${next.runtimeVersion} (${next.abi}), ${next.totalBytes} bytes", "system")
+                val started = System.currentTimeMillis()
+                var extracting = false
+                releaseInstaller.install(next, dropKept) { step, done, total ->
+                    if (step == "extract" && !extracting) {
+                        extracting = true
+                        setPhase(Phase.INSTALLING)
+                    }
+                    emit(mapOf("type" to "progress", "step" to step, "done" to done, "total" to total))
+                }
+                log("[dsh-app] runtime ready in ${(System.currentTimeMillis() - started) / 1000}s", "system")
+                reloadRuntime()
+                error = null
+                strikes = 0
+                failure = null
+                prefs.edit().putInt(K_STRIKES, 0).remove(K_FAILURE).apply()
+                setPhase(Phase.INSTALLED)
+                main.post { onDone(null) }
+            } catch (e: RuntimeInstallCancelled) {
+                log("[dsh-app] runtime download cancelled", "system")
+                error = null
+                // An update keeps the runtime that was already installed.
+                setPhase(if (runCatching { installer.isCurrent() }.getOrDefault(false)) Phase.INSTALLED else Phase.NOT_INSTALLED)
+                main.post { onDone(e) }
             } catch (e: Throwable) {
                 error = "install failed: ${e.message}"
                 log("[dsh-app] ${error}", "system")
@@ -528,7 +646,7 @@ class RuntimeController private constructor(private val app: Context) : DshProce
     }
 
     @Synchronized internal fun startProcess() {
-        if (process != null || phase == Phase.INSTALLING || phase == Phase.STOPPING) return
+        if (process != null || phase == Phase.DOWNLOADING || phase == Phase.INSTALLING || phase == Phase.STOPPING) return
         serviceRecovery.beginRun()
         lastLaunch = null
         val problem = try {
@@ -674,7 +792,7 @@ class RuntimeController private constructor(private val app: Context) : DshProce
         // An automatic stop can arrive after a new request but before its START is consumed.
         // Check under the same monitor that accepts starts and advances runGen.
         if (!RuntimeServiceRecovery.acceptsStop(expectedGeneration, runGen, expectedOwner, serviceRecovery.stopOwner)) return false
-        if (phase == Phase.INSTALLING) return false
+        if (phase == Phase.DOWNLOADING || phase == Phase.INSTALLING) return false
         serviceRecovery.clear()
         stopGen = runGen
         val p = process
@@ -774,6 +892,7 @@ class RuntimeController private constructor(private val app: Context) : DshProce
                     if (next) edit.putBoolean(K_WORKSPACE_RECOVERY, true) else edit.remove(K_WORKSPACE_RECOVERY)
                     edit.commit()
                 }
+                reloadRuntime()
                 synchronized(this) {
                     baseUrl = null
                     token = null
@@ -1225,7 +1344,7 @@ class RuntimeController private constructor(private val app: Context) : DshProce
 
     private fun setPhase(next: Phase) {
         if (next == Phase.ERROR && serviceRecovery.canRecreate) note("[dsh-app] runtime failed; system service recreation disabled")
-        if (next in setOf(Phase.INSTALLED, Phase.NOT_INSTALLED, Phase.INSTALLING, Phase.ERROR)) serviceRecovery.clear()
+        if (next in setOf(Phase.INSTALLED, Phase.NOT_INSTALLED, Phase.DOWNLOADING, Phase.INSTALLING, Phase.ERROR)) serviceRecovery.clear()
         if (next != Phase.RUNNING) managedSkillGate.retire()
         phase = next
         emitStatus()

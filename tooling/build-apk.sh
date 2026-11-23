@@ -22,6 +22,8 @@
 #   --side                           test build that installs next to the released app
 #                                    (package ...dsh_app.test, named DSH Go 测试, own data)
 #   --no-star                        release without the star prompt
+#   --no-runtime | --with-runtime    leave the Linux runtime out of the APK (default: out;
+#                                    it is downloaded on first use) or bundle runtime/out
 #   --dry-run                        print what would run
 #
 # The version name comes from app/pubspec.yaml; its `+N` is only a placeholder.
@@ -40,10 +42,10 @@ ROOT=$(CDPATH= cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 APP="$ROOT/app"
 OUT="$APP/build/app/outputs/flutter-apk"
 
-usage() { sed -n '2,27p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '2,30p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
 die() { echo "build-apk: $*" >&2; exit 1; }
 
-flavor=arm64 mode=release target='' code='' name='' dry=0 keep_daemon=0 want_beta=0 side=0 companion=1 no_companion=0 star=1
+flavor=arm64 mode=release target='' code='' name='' dry=0 keep_daemon=0 want_beta=0 side=0 companion=1 no_companion=0 star=1 runtime=0
 extra=()
 while (($#)); do
   case "$1" in
@@ -60,6 +62,8 @@ while (($#)); do
     --beta) want_beta=1; shift ;;
     --side) side=1; shift ;;
     --no-star) star=0; shift ;;
+    --no-runtime) runtime=0; shift ;;
+    --with-runtime) runtime=1; shift ;;
     --no-companion) companion=0 no_companion=1; shift ;;
     --dry-run) dry=1; shift ;;
     -h | --help) usage; exit 0 ;;
@@ -133,7 +137,8 @@ star_on=0
 commands=()
 for f in "${flavors[@]}"; do
   cmd=(flutter build apk "--$mode" --flavor "$f" --target-platform "$(platform_of "$f")"
-    --build-name "$name" --build-number "$code" "--dart-define=DSH_APP_VERSION=$name+$code")
+    --build-name "$name" --build-number "$code" "--dart-define=DSH_APP_VERSION=$name+$code"
+    "--android-project-arg=dshRuntime=$( ((runtime)) && echo bundled || echo none )")
   [[ -n $target ]] && cmd+=(-t "$target")
   ((beta)) && cmd+=("--dart-define-from-file=$beta_json")
   ((star_on)) && cmd+=("--dart-define-from-file=../tooling/star-prompt-on.json")
@@ -149,7 +154,7 @@ if ((side)); then
 else
   unset DSH_SIDE_BUILD
 fi
-echo "dsh-go $name ($code, $when) · $mode · ${flavors[*]}$( ((beta)) && echo ' · beta channel')$( ((side)) && echo ' · side (dsh_app.test)')$( ((star_on)) && echo ' · star prompt')"
+echo "dsh-go $name ($code, $when) · $mode · ${flavors[*]}$( ((beta)) && echo ' · beta channel')$( ((side)) && echo ' · side (dsh_app.test)')$( ((star_on)) && echo ' · star prompt')$( ((runtime)) || echo ' · no runtime')"
 if ((dry)); then
   for c in "${commands[@]}"; do echo "(cd app && ${c% })"; done
   ((keep_daemon)) || echo "(cd app/android && ./gradlew --stop)"
@@ -157,8 +162,9 @@ if ((dry)); then
 fi
 
 # Check every selected flavor before starting any build or writing build config.
-# Debug/profile may intentionally exercise UI without a bundled runtime.
-if [[ $mode == release ]]; then
+# The Lite APK has no runtime by default (downloaded on first use); --with-runtime
+# checks the exact per-flavor inputs it packages. Debug/profile may go without one too.
+if [[ $mode == release ]] && ((runtime)); then
   python3 -I "$ROOT/tooling/check_runtime_bundle.py" "${flavors[@]}"
 fi
 

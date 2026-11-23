@@ -17474,6 +17474,156 @@ abstract class L10n {
   /// **'接回 DeepSeek 的对话也在这里 · 不用安装'**
   String get localEnvTavernDetail;
 
+  /// No description provided for @localEnvDownloadDetail.
+  ///
+  /// In zh, this message translates to:
+  /// **'首次安装会从网络下载运行环境'**
+  String get localEnvDownloadDetail;
+
+  /// No description provided for @localEnvDownloadSize.
+  ///
+  /// In zh, this message translates to:
+  /// **'需下载约 {mb} MB'**
+  String localEnvDownloadSize(int mb);
+
+  /// No description provided for @shellRuntimeDownloading.
+  ///
+  /// In zh, this message translates to:
+  /// **'正在下载运行环境'**
+  String get shellRuntimeDownloading;
+
+  /// No description provided for @localEngineTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'本地引擎'**
+  String get localEngineTitle;
+
+  /// No description provided for @localEngineSource.
+  ///
+  /// In zh, this message translates to:
+  /// **'下载来源'**
+  String get localEngineSource;
+
+  /// No description provided for @localEngineSizeLabel.
+  ///
+  /// In zh, this message translates to:
+  /// **'下载大小'**
+  String get localEngineSizeLabel;
+
+  /// No description provided for @localEngineDownloadSize.
+  ///
+  /// In zh, this message translates to:
+  /// **'下载约 {mb} MB'**
+  String localEngineDownloadSize(int mb);
+
+  /// No description provided for @localEngineDownloadSizeUnknown.
+  ///
+  /// In zh, this message translates to:
+  /// **'下载大小未知'**
+  String get localEngineDownloadSizeUnknown;
+
+  /// No description provided for @localEngineUpdateAvailable.
+  ///
+  /// In zh, this message translates to:
+  /// **'有新版本 {version}'**
+  String localEngineUpdateAvailable(String version);
+
+  /// No description provided for @localEngineInstall.
+  ///
+  /// In zh, this message translates to:
+  /// **'下载并安装'**
+  String get localEngineInstall;
+
+  /// No description provided for @localEngineUpdate.
+  ///
+  /// In zh, this message translates to:
+  /// **'下载更新'**
+  String get localEngineUpdate;
+
+  /// No description provided for @localEngineRetry.
+  ///
+  /// In zh, this message translates to:
+  /// **'重试'**
+  String get localEngineRetry;
+
+  /// No description provided for @localEngineCancel.
+  ///
+  /// In zh, this message translates to:
+  /// **'取消下载'**
+  String get localEngineCancel;
+
+  /// No description provided for @localEngineDownloading.
+  ///
+  /// In zh, this message translates to:
+  /// **'正在下载运行环境'**
+  String get localEngineDownloading;
+
+  /// No description provided for @localEngineInstalling.
+  ///
+  /// In zh, this message translates to:
+  /// **'正在安装运行环境'**
+  String get localEngineInstalling;
+
+  /// No description provided for @localEngineDelete.
+  ///
+  /// In zh, this message translates to:
+  /// **'删除本地引擎'**
+  String get localEngineDelete;
+
+  /// No description provided for @localEngineDeleteTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'删除本地引擎？'**
+  String get localEngineDeleteTitle;
+
+  /// No description provided for @localEngineDeleteBody.
+  ///
+  /// In zh, this message translates to:
+  /// **'本机的对话、工作区、插件、设置、界面配置和技能会一并删除；下次使用需要重新下载。'**
+  String get localEngineDeleteBody;
+
+  /// No description provided for @localEnginePruned.
+  ///
+  /// In zh, this message translates to:
+  /// **'已移除可选模块：{modules}'**
+  String localEnginePruned(String modules);
+
+  /// No description provided for @localEngineReleaseFailed.
+  ///
+  /// In zh, this message translates to:
+  /// **'检查不到运行环境发布，请检查网络'**
+  String get localEngineReleaseFailed;
+
+  /// No description provided for @localEngineChecksumFailed.
+  ///
+  /// In zh, this message translates to:
+  /// **'运行环境文件校验失败，请重试'**
+  String get localEngineChecksumFailed;
+
+  /// No description provided for @localEngineDownloadFailed.
+  ///
+  /// In zh, this message translates to:
+  /// **'下载运行环境失败，请重试'**
+  String get localEngineDownloadFailed;
+
+  /// No description provided for @localEngineUnsupported.
+  ///
+  /// In zh, this message translates to:
+  /// **'这个运行环境不支持当前设备'**
+  String get localEngineUnsupported;
+
+  /// No description provided for @localEngineInstalled.
+  ///
+  /// In zh, this message translates to:
+  /// **'已安装'**
+  String get localEngineInstalled;
+
+  /// No description provided for @localEngineNotInstalled.
+  ///
+  /// In zh, this message translates to:
+  /// **'未安装'**
+  String get localEngineNotInstalled;
+
   /// No description provided for @marketSectionOfficial.
   ///
   /// In zh, this message translates to:

@@ -11,7 +11,8 @@ extension RuntimeMissing on RuntimeStatus {
   /// uninstalled. Every real report names the bundled runtime; a status
   /// without one is no report at all (no native side: tests, other
   /// platforms) and counts as unknown, not missing.
-  bool get runtimeMissing => phase == RuntimePhase.notInstalled && bundledVersion != null;
+  bool get runtimeMissing =>
+      phase == RuntimePhase.notInstalled && (bundledVersion != null || localRuntime);
 }
 
 /// The phone's memory and free storage, and the bundled runtime's unpacked

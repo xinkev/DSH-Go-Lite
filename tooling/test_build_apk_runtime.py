@@ -183,28 +183,36 @@ apk.write_bytes(b'fake APK: shell flow only')
         self.assertIn(message, result.stderr)
         self.assertEqual(self.calls(), [], "preflight must finish before any Flutter build")
 
-    def test_release_missing_runtime_blocks_each_flavor(self):
+    def test_release_ships_without_the_runtime_by_default(self):
+        # The Lite APK downloads its runtime: no runtime/out needed, and Gradle is told so.
+        result = self.run_script()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue(any("dshRuntime=none" in arg for arg in self.calls()[0]))
+        self.assertIn("· no runtime", result.stdout)
+
+    def test_with_runtime_requires_complete_bundles_per_flavor(self):
         for flavor in ("arm64", "x64", "all"):
             with self.subTest(flavor=flavor):
-                self.assert_blocked(self.run_script("--release", "-f", flavor), "manifest.json")
+                self.assert_blocked(self.run_script("--with-runtime", "-f", flavor), "manifest.json")
 
     def test_all_preflights_both_before_building_either(self):
         self.make_bundle("arm64", 1)
-        self.assert_blocked(self.run_script("-f", "all"), "x86_64/assets/runtime/manifest.json")
+        self.assert_blocked(self.run_script("--with-runtime", "-f", "all"), "x86_64/assets/runtime/manifest.json")
 
     def test_both_schemas_and_abis_accept_complete_bundles(self):
         for flavor in ABIS:
             for schema in (1, 2):
                 with self.subTest(flavor=flavor, schema=schema):
                     self.make_bundle(flavor, schema)
-                    result = self.run_script("-f", flavor)
+                    result = self.run_script("--with-runtime", "-f", flavor)
                     self.assertEqual(result.returncode, 0, result.stderr)
                     self.assertEqual(len(self.calls()), 1)
+                    self.assertTrue(any("dshRuntime=bundled" in arg for arg in self.calls()[0]))
 
     def test_all_complete_flavors_build_with_one_number(self):
         self.make_bundle("arm64", 1)
         self.make_bundle("x64", 2)
-        result = self.run_script("-f", "all")
+        result = self.run_script("--with-runtime", "-f", "all")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual([args[args.index("--flavor") + 1] for args in self.calls()], ["arm64", "x64"])
         self.assertEqual({args[args.index("--build-number") + 1] for args in self.calls()}, {"10251234"})
@@ -224,20 +232,20 @@ apk.write_bytes(b'fake APK: shell flow only')
                 path, data = self.make_bundle("arm64", schema)
                 name = data["rootfs"] if schema == 1 else data["layers"][kind]["asset"]
                 (path.parent / name).unlink()
-                self.assert_blocked(self.run_script(), name)
+                self.assert_blocked(self.run_script("--with-runtime"), name)
 
     def test_each_required_jni_file_is_required(self):
         for name in JNI:
             with self.subTest(name=name):
                 self.make_bundle("arm64", 2)
                 (self.root / "runtime/out/arm64-v8a/jniLibs/arm64-v8a" / name).unlink()
-                self.assert_blocked(self.run_script(), name)
+                self.assert_blocked(self.run_script("--with-runtime"), name)
 
     def test_jni_cannot_be_omitted_from_manifest(self):
         path, data = self.make_bundle("arm64", 2)
         del data["jniLibs"]["libproot-loader.so"]
         path.write_text(json.dumps(data))
-        self.assert_blocked(self.run_script(), "libproot-loader.so")
+        self.assert_blocked(self.run_script("--with-runtime"), "libproot-loader.so")
 
     def test_declared_archive_and_jni_size_and_hash_are_checked(self):
         for item in ("archive", "jni"):
@@ -247,7 +255,7 @@ apk.write_bytes(b'fake APK: shell flow only')
                     record = data["layers"]["engine"] if item == "archive" else data["jniLibs"]["libproot.so"]
                     record[field] = value
                     path.write_text(json.dumps(data))
-                    self.assert_blocked(self.run_script(), message)
+                    self.assert_blocked(self.run_script("--with-runtime"), message)
 
     def test_wrong_abi_unknown_schema_and_mixed_manifests_fail(self):
         cases = [(1, {"abi": "x86_64"}, "expected ABI"), (1, {"schema": 9}, "schema"),
@@ -257,7 +265,7 @@ apk.write_bytes(b'fake APK: shell flow only')
                 path, data = self.make_bundle("arm64", schema)
                 data.update(change)
                 path.write_text(json.dumps(data))
-                self.assert_blocked(self.run_script(), message)
+                self.assert_blocked(self.run_script("--with-runtime"), message)
 
     def test_release_needs_libtawcroot_and_debug_goes_on_without_it(self):
         self.make_bundle("arm64", 2)

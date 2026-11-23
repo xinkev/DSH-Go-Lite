@@ -9421,6 +9421,89 @@ class L10nZh extends L10n {
   String get localEnvTavernDetail => '接回 DeepSeek 的对话也在这里 · 不用安装';
 
   @override
+  String get localEnvDownloadDetail => '首次安装会从网络下载运行环境';
+
+  @override
+  String localEnvDownloadSize(int mb) {
+    return '需下载约 $mb MB';
+  }
+
+  @override
+  String get shellRuntimeDownloading => '正在下载运行环境';
+
+  @override
+  String get localEngineTitle => '本地引擎';
+
+  @override
+  String get localEngineSource => '下载来源';
+
+  @override
+  String get localEngineSizeLabel => '下载大小';
+
+  @override
+  String localEngineDownloadSize(int mb) {
+    return '下载约 $mb MB';
+  }
+
+  @override
+  String get localEngineDownloadSizeUnknown => '下载大小未知';
+
+  @override
+  String localEngineUpdateAvailable(String version) {
+    return '有新版本 $version';
+  }
+
+  @override
+  String get localEngineInstall => '下载并安装';
+
+  @override
+  String get localEngineUpdate => '下载更新';
+
+  @override
+  String get localEngineRetry => '重试';
+
+  @override
+  String get localEngineCancel => '取消下载';
+
+  @override
+  String get localEngineDownloading => '正在下载运行环境';
+
+  @override
+  String get localEngineInstalling => '正在安装运行环境';
+
+  @override
+  String get localEngineDelete => '删除本地引擎';
+
+  @override
+  String get localEngineDeleteTitle => '删除本地引擎？';
+
+  @override
+  String get localEngineDeleteBody => '本机的对话、工作区、插件、设置、界面配置和技能会一并删除；下次使用需要重新下载。';
+
+  @override
+  String localEnginePruned(String modules) {
+    return '已移除可选模块：$modules';
+  }
+
+  @override
+  String get localEngineReleaseFailed => '检查不到运行环境发布，请检查网络';
+
+  @override
+  String get localEngineChecksumFailed => '运行环境文件校验失败，请重试';
+
+  @override
+  String get localEngineDownloadFailed => '下载运行环境失败，请重试';
+
+  @override
+  String get localEngineUnsupported => '这个运行环境不支持当前设备';
+
+  @override
+  String get localEngineInstalled => '已安装';
+
+  @override
+  String get localEngineNotInstalled => '未安装';
+
+  @override
   String get marketSectionOfficial => '官方';
 
   @override

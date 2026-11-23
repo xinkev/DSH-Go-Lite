@@ -66,6 +66,7 @@ class _RuntimeChoiceViewState extends ConsumerState<RuntimeChoiceView> {
     final footprint = ref.watch(localFootprintProvider).value;
     final light = ref.watch(performanceDefaultsProvider).recommendRemote;
     final available = ref.watch(localRuntimeProvider.select((s) => s.available));
+    final runtime = ref.watch(localRuntimeProvider.select((s) => s.status));
     final suggested = !available || light || footprint?.suggestRemote == true
         ? RuntimeOption.remote
         : RuntimeOption.local;
@@ -84,6 +85,10 @@ class _RuntimeChoiceViewState extends ConsumerState<RuntimeChoiceView> {
     } else if (footprint != null && footprint.lowStorage) {
       localDetail = l10n.localEnvLowStorage(footprint.requiredRoundedMb!);
       localWarn = true;
+    } else if (runtime.downloadBytes case final bytes?) {
+      localDetail = l10n.localEnvDownloadSize((bytes / (1024 * 1024)).ceil());
+    } else if (runtime.downloadRequired) {
+      localDetail = l10n.localEnvDownloadDetail;
     } else if (footprint?.unpackedMb case final unpacked?) {
       localDetail = l10n.localEnvThisPhoneDetail(LocalFootprint.round(unpacked), LocalFootprint.engineMemoryMb);
     } else {

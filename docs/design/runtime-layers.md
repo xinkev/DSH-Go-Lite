@@ -1,6 +1,18 @@
 # 运行时分层资产：构建与验收
 
-当前构建默认仍为单包 schema 1。`RUNTIME_LAYERS=1` 显式选择 schema 2，基础层与引擎层仍随 APK 携带；不新增联网下载。默认切换须等完整构建、安装及升级恢复验证后另作决定。
+Lite APK **默认不带运行时**：`tooling/build-apk.sh` 默认 `--no-runtime`，不打包 `runtime/out` 的 assets 与 jniLibs。App 首次选择「本机」时从运行时发布仓库下载 base + engine 两层，校验 sha256 后按原有目录布局安装；远端主机（直连 URL / Pocket / SSH）不触发任何下载。`--with-runtime` 仍可把 `runtime/out` 打进包内，供离线开发与对照验证。Gradle 侧读 `-PdshRuntime=bundled|none`（或环境变量 `DSH_RUNTIME`）；属性缺省为 bundled，只有 `none` 才排除。
+
+下载契约见运行时发布仓库的 README（本仓库 `runtime-release/`）：固定入口
+`https://github.com/xinkev/DSH-Go-Lite-Runtime/releases/latest/download/manifest.json`，
+`schema 2`、`compatibility.runtimeMajor == r15`、requiredLayers 全部下载并逐个校验。安装是
+all-or-nothing：先写 `runtime/downloads` 与 `runtime/staging`，成功后由原有
+`activateRootfs` / `EngineUpgrade` 事务发布；失败或取消只删临时目录，已装运行时不受影响。
+`baseId` 相同的更新只下载 engine 层。安装后写 `runtime/installed.json`（版本、
+`prunedModules`、来源）与 `runtime/manifest.json`（启动 argv 由 App 的
+`RuntimeLaunchTemplate` 按 runtime major 提供），启动路径优先已安装运行时，其次包内资产，
+两者都没有时报告「runtime not installed」而不是崩溃。
+
+`RUNTIME_LAYERS=1` 仍是运行时构建产物的分层开关，基础层与引擎层用于发布仓库。
 
 ## 构建入口
 

@@ -44,6 +44,12 @@ abstract class SideShortcuts : DefaultTask() {
 
 // Per-ABI runtime bundles produced by runtime/build-runtime.sh.
 val runtimeOut = rootProject.file("../../runtime/out")
+// The Lite APK ships without the Linux runtime: the app downloads it on first use
+// (tooling/build-apk.sh --no-runtime, the default there). `-PdshRuntime=bundled` or
+// DSH_RUNTIME=bundled keeps the in-APK runtime for development builds.
+val bundleRuntime = providers.gradleProperty("dshRuntime")
+    .orElse(providers.environmentVariable("DSH_RUNTIME"))
+    .orNull?.lowercase() != "none"
 // libtawcroot.so for the opt-in tawcroot launch method (runtime/tawcroot/build.py; missing = unavailable).
 val tawcrootOut = rootProject.file("../../runtime/out-tawcroot")
 
@@ -101,12 +107,16 @@ android {
             jniLibs.srcDir(File(tawcrootOut, "jniLibs"))
         }
         getByName("arm64") {
-            assets.srcDir(File(runtimeOut, "arm64-v8a/assets"))
-            jniLibs.srcDir(File(runtimeOut, "arm64-v8a/jniLibs"))
+            if (bundleRuntime) {
+                assets.srcDir(File(runtimeOut, "arm64-v8a/assets"))
+                jniLibs.srcDir(File(runtimeOut, "arm64-v8a/jniLibs"))
+            }
         }
         getByName("x64") {
-            assets.srcDir(File(runtimeOut, "x86_64/assets"))
-            jniLibs.srcDir(File(runtimeOut, "x86_64/jniLibs"))
+            if (bundleRuntime) {
+                assets.srcDir(File(runtimeOut, "x86_64/assets"))
+                jniLibs.srcDir(File(runtimeOut, "x86_64/jniLibs"))
+            }
         }
     }
 

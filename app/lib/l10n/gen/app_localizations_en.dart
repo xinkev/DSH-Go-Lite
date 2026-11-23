@@ -9947,6 +9947,90 @@ class L10nEn extends L10n {
   String get localEnvTavernDetail => 'Bring DeepSeek chats over here too · nothing to install';
 
   @override
+  String get localEnvDownloadDetail => 'First install downloads the runtime';
+
+  @override
+  String localEnvDownloadSize(int mb) {
+    return 'About $mb MB to download';
+  }
+
+  @override
+  String get shellRuntimeDownloading => 'Downloading the runtime';
+
+  @override
+  String get localEngineTitle => 'Local engine';
+
+  @override
+  String get localEngineSource => 'Source';
+
+  @override
+  String get localEngineSizeLabel => 'Download size';
+
+  @override
+  String localEngineDownloadSize(int mb) {
+    return 'About $mb MB to download';
+  }
+
+  @override
+  String get localEngineDownloadSizeUnknown => 'Download size unknown';
+
+  @override
+  String localEngineUpdateAvailable(String version) {
+    return 'Update $version available';
+  }
+
+  @override
+  String get localEngineInstall => 'Download and install';
+
+  @override
+  String get localEngineUpdate => 'Download update';
+
+  @override
+  String get localEngineRetry => 'Retry';
+
+  @override
+  String get localEngineCancel => 'Cancel download';
+
+  @override
+  String get localEngineDownloading => 'Downloading the runtime';
+
+  @override
+  String get localEngineInstalling => 'Installing the runtime';
+
+  @override
+  String get localEngineDelete => 'Delete local engine';
+
+  @override
+  String get localEngineDeleteTitle => 'Delete the local engine?';
+
+  @override
+  String get localEngineDeleteBody =>
+      'Chats, workspaces, plugins, settings, interface settings and skills on this phone will be deleted; using it again downloads it again.';
+
+  @override
+  String localEnginePruned(String modules) {
+    return 'Optional modules left out: $modules';
+  }
+
+  @override
+  String get localEngineReleaseFailed => 'Can’t reach the runtime release; check the network';
+
+  @override
+  String get localEngineChecksumFailed => 'The runtime file failed verification; try again';
+
+  @override
+  String get localEngineDownloadFailed => 'The runtime download failed; try again';
+
+  @override
+  String get localEngineUnsupported => 'This runtime doesn’t support this device';
+
+  @override
+  String get localEngineInstalled => 'Installed';
+
+  @override
+  String get localEngineNotInstalled => 'Not installed';
+
+  @override
   String get marketSectionOfficial => 'Official';
 
   @override

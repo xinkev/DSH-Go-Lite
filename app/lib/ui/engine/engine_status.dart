@@ -29,7 +29,7 @@ class EngineStatusView {
     final startupFailure = isLocalStartupFailure(status);
     return switch (status.phase) {
       RuntimePhase.notInstalled => EngineStatusView(StatusTone.idle, appL10n.phoneEngineNotInstalled),
-      RuntimePhase.installing => EngineStatusView(
+      RuntimePhase.downloading || RuntimePhase.installing => EngineStatusView(
         StatusTone.busy,
         state.progress == null
             ? appL10n.phoneEngineInstalling
@@ -113,6 +113,13 @@ String? humanizeRuntimeError(String? raw) {
     return appL10n.phoneEngineExited;
   }
   if (text == 'runtime not installed') return appL10n.phoneEngineRuntimeMissing;
+  if (text.contains('sha256')) return appL10n.localEngineChecksumFailed;
+  if (text.contains('could not reach the runtime release') ||
+      text.contains('invalid runtime release URL') ||
+      text.contains('runtime release returned HTTP')) {
+    return appL10n.localEngineReleaseFailed;
+  }
+  if (text.contains('runtime layer')) return appL10n.localEngineDownloadFailed;
   if (text.startsWith('safe mode:')) return appL10n.phoneEngineSafeUnsupported;
   if (text.startsWith('manifest:')) return appL10n.phoneEngineRuntimeIncomplete;
   return null;

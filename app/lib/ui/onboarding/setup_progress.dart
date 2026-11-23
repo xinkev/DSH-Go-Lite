@@ -76,7 +76,7 @@ enum SetupRuntime {
 }
 
 SetupRuntime setupRuntimeOf(RuntimeStatus status, {bool launchFailed = false}) => switch (status.phase) {
-  RuntimePhase.installing => SetupRuntime.unpacking,
+  RuntimePhase.downloading || RuntimePhase.installing => SetupRuntime.unpacking,
   RuntimePhase.installed ||
   RuntimePhase.starting ||
   RuntimePhase.running ||
