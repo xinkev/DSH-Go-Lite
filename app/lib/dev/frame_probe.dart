@@ -291,9 +291,7 @@ class _Probe {
     final useful = frames.where((line) => !line.contains('package:flutter/')).toList();
     final app = useful.where(
       (line) =>
-          line.contains('package:dsh_app/') ||
-          line.contains('package:dsh_client/') ||
-          line.contains('package:dsh_remote/'),
+          line.contains('package:dsh_app/') || line.contains('package:dsh_client/'),
     );
     final selected = (app.isNotEmpty ? app : useful)
         .take(2)

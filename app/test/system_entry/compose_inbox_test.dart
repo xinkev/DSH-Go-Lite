@@ -210,7 +210,6 @@ void main() {
     expect(canStageFiles(connection, HostRef.local), isTrue);
     expect(canStageFiles(null, HostRef.local), isTrue);
     expect(canStageFiles(null, const HostRef.ssh('a')), isTrue);
-    expect(canStageFiles(null, const HostRef.relay('r')), isFalse);
   });
 
   group('inbox', () {

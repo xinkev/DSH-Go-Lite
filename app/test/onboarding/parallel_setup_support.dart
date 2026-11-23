@@ -23,7 +23,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../account/support.dart' show FakeBrowser;
-import '../remote/support/fake_relay.dart';
 import '../remote/support/fake_ssh.dart';
 import '../shell/golden_harness.dart';
 import 'local_optional_support.dart';
@@ -111,7 +110,6 @@ void useSavedHost() {
 List<Override> remoteOverrides() => [
   secretStoreProvider.overrideWithValue(MemorySecretStore()),
   networkKicksProvider.overrideWithValue(const Stream.empty()),
-  relayBackendProvider.overrideWithValue(FakeRelayBackend()),
   sshTransportFactoryProvider.overrideWithValue(FakeSshServer().connect),
   hostLinkStatusProvider.overrideWith((ref, host) => Stream.value(HostLinkStatus.idle)),
 ];

@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../l10n/l10n.dart';
 import '../remote/link_status.dart';
 import '../remote/network_watch.dart';
-import '../remote/relay/relay_backend.dart';
 import '../remote/ssh/ssh_link.dart';
 import '../remote/ssh/ssh_transport.dart';
 import '../remote/url/url_link.dart';
@@ -21,7 +20,7 @@ import 'provider_backend.dart';
 import 'provider_keys.dart';
 import 'settings_state.dart';
 
-/// A connected DSH host: the on-device engine, an SSH host or a relay device.
+/// A connected DSH host: the on-device engine, an SSH host or a direct URL.
 class HostConnection {
   const HostConnection({
     required this.client,
@@ -226,32 +225,6 @@ final hostLinkProvider = Provider.autoDispose.family<HostLink?, HostRef>((ref, h
       });
       ref.onDispose(() => unawaited(link.close()));
       return link;
-    case HostKind.relay:
-      final backend = ref.watch(relayBackendProvider);
-      final link = RelayHostLink(
-        backend: backend,
-        hostId: host.id,
-        // Fresh presence straight from the server (the account list on the
-        // remote page refreshes on its own).
-        resolveHost: () async {
-          final hosts = await backend.listHosts(refresh: true);
-          for (final h in hosts) {
-            if (h.id == host.id) return h;
-          }
-          return null;
-        },
-        kicks: ref.read(networkKicksProvider),
-      );
-      final statuses = link.statuses.listen((status) {
-        if (status.phase == HostLinkPhase.failed && status.error?.kind == HostLinkErrorKind.notLoggedIn) {
-          unawaited(ref.read(relayAccountProvider.notifier).recheck());
-        }
-      });
-      ref.onDispose(() {
-        unawaited(statuses.cancel());
-        unawaited(link.close());
-      });
-      return link;
     case HostKind.url:
       // Reconnect only when the address changes; a rename applies in place.
       final key = ref.watch(hostsProvider.select((s) => s.urlById(host.id)?.connectionKey));
@@ -283,7 +256,6 @@ final hostNameProvider = Provider.autoDispose.family<String?, HostRef>((ref, hos
     HostKind.local => appL10n.commonThisPhone,
     HostKind.ssh => ref.watch(hostsProvider.select((s) => s.sshById(host.id)?.name)),
     HostKind.url => ref.watch(hostsProvider.select((s) => s.urlById(host.id)?.name)),
-    HostKind.relay => ref.watch(relayAccountProvider.select((a) => a.value?.hostById(host.id)?.name)) ?? host.name,
   };
 });
 
@@ -581,8 +553,6 @@ AsyncValue<HostConnection?> _connectionForHost(Ref ref, HostRef host) {
       if (!known) return ref.watch(localConnectionProvider);
       final loaded = ref.watch(hostsProvider.select((s) => s.loaded));
       if (!loaded) return const AsyncLoading();
-      return ref.watch(remoteConnectionProvider(host));
-    case HostKind.relay:
       return ref.watch(remoteConnectionProvider(host));
     case HostKind.url:
       final known = ref.watch(hostsProvider.select((s) => !s.loaded || s.urlById(host.id) != null));

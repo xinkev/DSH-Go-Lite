@@ -23,7 +23,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 
-import '../remote/support/fake_relay.dart';
 import '../remote/support/fake_ssh.dart';
 import '../shell/golden_harness.dart';
 import '../support/english_preview.dart';
@@ -51,7 +50,6 @@ List<Override> _hostList() => [
   networkKicksProvider.overrideWithValue(const Stream.empty()),
   hostsProvider.overrideWith(_Hosts.new),
   activeHostProvider.overrideWith(_Active.new),
-  relayBackendProvider.overrideWithValue(FakeRelayBackend()),
   hostLinkStatusProvider.overrideWith(
     (ref, host) => Stream.value(
       host.isLocal

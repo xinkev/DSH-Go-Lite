@@ -79,8 +79,7 @@ class RecentShortcut {
       other is RecentShortcut &&
       other.sessionId == sessionId &&
       other.title == title &&
-      other.host == host &&
-      other.host.name == host.name;
+      other.host == host;
 
   @override
   int get hashCode => Object.hash(sessionId, title, host);

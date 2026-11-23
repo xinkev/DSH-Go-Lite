@@ -70,7 +70,7 @@ class _Client extends DshClient {
   }
 }
 
-const _remoteHost = HostRef.relay('metadata-fixture');
+const _remoteHost = HostRef.url('metadata-fixture');
 
 class _RemoteHost extends ActiveHostController {
   @override

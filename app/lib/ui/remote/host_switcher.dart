@@ -84,8 +84,6 @@ class HostSheet extends ConsumerWidget {
     final active = ref.watch(activeHostProvider);
     final ssh = ref.watch(hostsProvider.select((s) => s.ssh));
     final urls = ref.watch(hostsProvider.select((s) => s.url));
-    final account = ref.watch(relayAccountProvider).value;
-    final relayHosts = account?.signedIn == true ? account!.hosts : const <RelayHost>[];
 
     Future<void> pick(HostRef host) async {
       if (host == active) {
@@ -145,27 +143,8 @@ class HostSheet extends ConsumerWidget {
                       active: active == HostRef.url(h.id),
                       onTap: () => pick(HostRef.url(h.id)),
                     ),
-                  for (final h in relayHosts)
-                    _HostRow(
-                      host: HostRef.relay(h.id, name: h.name),
-                      title: h.name,
-                      subtitle: h.platform == null
-                          ? l10n.remoteRemoteLabel
-                          : l10n.remoteRemotePlatform(RelayHost.platformLabel(h.platform!)),
-                      active: active == HostRef.relay(h.id),
-                      relay: h,
-                      onTap: () => pick(HostRef.relay(h.id, name: h.name)),
-                    ),
                 ],
               ),
-              if (relayHosts.length > 1)
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(SheetTitleBar.inset + 8, 0, SheetTitleBar.inset + 8, 12),
-                  child: Text(
-                    l10n.remoteRelaySwitchWarning,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: DshColors.of(context).textTertiary),
-                  ),
-                ),
               SheetGroup(
                 margin: const EdgeInsets.fromLTRB(SheetTitleBar.inset, 0, SheetTitleBar.inset, 12),
                 children: [
@@ -180,12 +159,10 @@ class HostSheet extends ConsumerWidget {
                     },
                   ),
                   SettingsTile(
-                    icon: ssh.isEmpty && urls.isEmpty && relayHosts.isEmpty ? AppIcons.add : AppIcons.configure,
+                    icon: ssh.isEmpty && urls.isEmpty ? AppIcons.add : AppIcons.configure,
                     tinted: false,
-                    title: ssh.isEmpty && urls.isEmpty && relayHosts.isEmpty
-                        ? l10n.remoteConnectComputer
-                        : l10n.remoteManageHosts,
-                    subtitle: ssh.isEmpty && urls.isEmpty && relayHosts.isEmpty ? l10n.remoteConnectionMethods : null,
+                    title: ssh.isEmpty && urls.isEmpty ? l10n.remoteConnectComputer : l10n.remoteManageHosts,
+                    subtitle: ssh.isEmpty && urls.isEmpty ? l10n.remoteConnectionMethods : null,
                     onTap: () {
                       Navigator.of(context).pop();
                       onManage();
@@ -209,7 +186,6 @@ class _HostRow extends ConsumerWidget {
     required this.subtitle,
     required this.active,
     required this.onTap,
-    this.relay,
   });
 
   final HostRef host;
@@ -217,19 +193,13 @@ class _HostRow extends ConsumerWidget {
   final String subtitle;
   final bool active;
   final VoidCallback onTap;
-  final RelayHost? relay;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final scheme = Theme.of(context).colorScheme;
-    // Live state for 本机 and the active remote host; presence for relay
-    // hosts; nothing for idle SSH hosts (connecting just to show a dot
-    // would cost a login).
-    final HostStatusView? view = host.isLocal || active
-        ? watchHostStatus(ref, host)
-        : relay != null
-        ? HostStatusView.ofRelayHost(relay!)
-        : null;
+    // Live state for 本机 and the active remote host; nothing for idle hosts
+    // (connecting just to show a dot would cost a login).
+    final HostStatusView? view = host.isLocal || active ? watchHostStatus(ref, host) : null;
     return Semantics(
       key: ValueKey('host-row-${host.kind.name}-${host.id}'),
       selected: active,

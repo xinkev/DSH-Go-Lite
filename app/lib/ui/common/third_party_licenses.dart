@@ -17,14 +17,6 @@ void registerThirdPartyLicenses({String? os}) {
     () => Stream<LicenseEntry>.fromIterable([..._copiedCode, ...harmony ? _inTheHap : _inTheApk, ..._iconsAndData]),
   );
   LicenseRegistry.addLicense(() async* {
-    // The HAP carries no WebRTC (flutter_webrtc is Android's).
-    if (!harmony) {
-      // Preserve the complete release-tag bundle verbatim, including all upstream
-      // third-party sections. The embedded top-level notice also supplies PATENTS.
-      // Provenance and the binary/asset hashes are in THIRD_PARTY_NOTICES.md.
-      final bundledNotices = await rootBundle.loadString('assets/licenses/webrtc-150.7871.04.md');
-      yield LicenseEntryWithLineBreaks(<String>['WebRTC'], '$_webrtcBsd\n$bundledNotices');
-    }
     // The libraries a card's scripts find on the tavern's canvas page, as 酒馆助手's pages
     // give them; each package's own LICENSE file, verbatim.
     yield LicenseEntryWithLineBreaks(<String>[
@@ -39,11 +31,6 @@ void registerThirdPartyLicenses({String? os}) {
     yield LicenseEntryWithLineBreaks(<String>[
       'YAML (eemeli/yaml)',
     ], await rootBundle.loadString('assets/licenses/yaml-2.9.1-LICENSE.txt'));
-    // The streaming recognizer's model, downloaded on demand (語音 › 实时识别). HarmonyOS
-    if (!harmony) {
-      yield LicenseEntryWithLineBreaks(<String>[
-      ], await rootBundle.loadString('assets/licenses/streaming-asr-model-APACHE-2.0.txt'));
-    }
   });
 }
 
@@ -69,16 +56,8 @@ const _inTheApk = <LicenseEntry>[
   LicenseEntryWithLineBreaks(<String>['Bouncy Castle'], _bouncyCastle),
   LicenseEntryWithLineBreaks(<String>['XZ for Java'], _xzForJava0bsd),
   LicenseEntryWithLineBreaks(<String>['AndroidX WebKit'], _androidxWebkitNotice + _apache2),
-  LicenseEntryWithLineBreaks(<String>['ONNX Runtime'], _onnxRuntimeMit),
-  // Speech models bundled as assets (app/android/app/src/main/assets/speech).
-  LicenseEntryWithLineBreaks(<String>['Silero VAD'], _sileroMit),
-  LicenseEntryWithLineBreaks(<String>['smart-turn'], _smartTurnBsd2),
   // Native launcher built from source (runtime/tawcroot/build.py).
   LicenseEntryWithLineBreaks(<String>['tawcroot (tawc)'], _tawcMit),
-  // flutter_webrtc's own MIT licence comes with its pub package; these are its NOTICE and
-  // the native WebRTC it bundles.
-  LicenseEntryWithLineBreaks(<String>['flutter_webrtc'], _flutterWebrtcNotice + _apache2),
-  LicenseEntryWithLineBreaks(<String>['AudioSwitch'], _audioSwitchNotice + _apache2),
 ];
 
 /// What the HAP carries instead: Node in its native library, and the virtual shell's
@@ -190,49 +169,6 @@ MIT License
 Copyright (c) 2026 qiannianhuanxiang
 
 $_mitTerms''';
-
-/// ONNX Runtime for Android (`com.microsoft.onnxruntime:onnxruntime-android`), 1.27.0.
-const _onnxRuntimeMit = '''
-MIT License
-
-Copyright (c) Microsoft Corporation
-
-$_mitTerms''';
-
-/// Silero VAD v6.2 (`silero_vad.onnx`).
-const _sileroMit = '''
-MIT License
-
-Copyright (c) 2020-present Silero Team
-
-$_mitTerms''';
-
-/// smart-turn v3.2 (`smart-turn-v3.2-cpu.onnx`), Pipecat.
-const _smartTurnBsd2 = r'''
-BSD 2-Clause License
-
-Copyright (c) 2024–2025, Daily
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-1. Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the following disclaimer.
-
-2. Redistributions in binary form must reproduce the above copyright notice,
-   this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''';
 
 /// Libraries.dev (UI effects in lib/ui/fx), commit 387b049.
 const _librariesDevMit = '''
@@ -401,96 +337,6 @@ CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
 LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
 NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-''';
-
-/// Apache License 2.0: DS Bot, libadb-android, Conscrypt, AndroidX WebKit and Material Icons.
-/// flutter_webrtc's NOTICE: Android code it took from react-native-webrtc (MIT) and Shiguredo's
-/// simulcast encoder wrapper (Apache-2.0).
-const _flutterWebrtcNotice =
-    '''
-react-native-webrtc
-https://github.com/react-native-webrtc/react-native-webrtc
-
-The MIT License (MIT)
-
-Copyright (c) 2015 Howard Yang
-
-$_mitTerms
-SimulcastVideoEncoderFactoryWrapper.kt
-
-Copyright 2017, Lyo Kato <lyo.kato at gmail.com> (Original Author)
-Copyright 2017-2021, Shiguredo Inc.
-
-Licensed under the Apache License 2.0:
-
-''';
-
-/// libwebrtc (io.github.webrtc-sdk:android, m150) with Google's patent grant. The third-party
-/// components it links are listed in THIRD_PARTY_NOTICES.md.
-const _webrtcBsd = '''
-Copyright (c) 2011, The WebRTC project authors. All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are
-met:
-
-  * Redistributions of source code must retain the above copyright
-    notice, this list of conditions and the following disclaimer.
-
-  * Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in
-    the documentation and/or other materials provided with the
-    distribution.
-
-  * Neither the name of Google nor the names of its contributors may
-    be used to endorse or promote products derived from this software
-    without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-Additional IP Rights Grant (Patents)
-
-"This implementation" means the copyrightable works distributed by
-Google as part of the WebRTC code package.
-
-Google hereby grants to you a perpetual, worldwide, non-exclusive,
-no-charge, irrevocable (except as stated in this section) patent
-license to make, have made, use, offer to sell, sell, import,
-transfer, and otherwise run, modify and propagate the contents of this
-implementation of the WebRTC code package, where such license applies
-only to those patent claims, both currently owned by Google and
-acquired in the future, licensable by Google that are necessarily
-infringed by this implementation of the WebRTC code package. This
-grant does not include claims that would be infringed only as a
-consequence of further modification of this implementation. If you or
-your agent or exclusive licensee institute or order or agree to the
-institution of patent litigation against any entity (including a
-cross-claim or counterclaim in a lawsuit) alleging that this
-implementation of the WebRTC code package or any code incorporated
-within this implementation of the WebRTC code package constitutes
-direct or contributory patent infringement, or inducement of patent
-infringement, then any patent rights granted to you under this License
-for this implementation of the WebRTC code package shall terminate as
-of the date such litigation is filed.
-''';
-
-/// AudioSwitch (davidliu's fork of twilio/audioswitch), pulled in by flutter_webrtc.
-const _audioSwitchNotice = '''
-AudioSwitch
-Copyright 2020 Twilio, inc.
-
-Licensed under the Apache License 2.0:
-
 ''';
 
 const _apache2 = '''

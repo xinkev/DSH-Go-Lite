@@ -1,17 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
-import '../../remote/relay/relay_backend.dart';
 import '../../runtime/local_footprint.dart';
 import '../../runtime/runtime_state.dart';
-import '../../state/app_info.dart';
 import '../../state/connection_state.dart';
 import '../../state/hosts_state.dart';
-import '../common/app_dialog.dart';
 import '../common/ask_ai.dart';
 import '../common/overview_card.dart';
 import '../common/status_chip.dart';
@@ -19,17 +15,12 @@ import '../settings/settings_widgets.dart';
 import '../shell/page_frame.dart';
 import '../theme/app_icons.dart';
 import '../theme/theme.dart';
-import '../web/web_view_page.dart';
 import 'host_key_dialog.dart';
 import 'host_status.dart';
 import 'link_progress.dart';
-import 'network_details_sheet.dart';
-import 'relay_login_sheet.dart';
 import 'ssh_host_form.dart';
 import 'url_host_form.dart';
 import 'url_scan_page.dart';
-import 'session_backup_page.dart';
-import 'remote_web/remote_web_entry.dart';
 
 /// 远程主机 (a list page): the computers this phone can drive.
 ///
@@ -39,22 +30,6 @@ import 'remote_web/remote_web_entry.dart';
 /// the session list follow. No account and no relay sign-in.
 class RemoteScreen extends ConsumerWidget {
   const RemoteScreen({super.key});
-
-  void _openConsole(BuildContext context) {
-    final l10n = context.l10n;
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => WebViewPage(
-          url: Uri.parse(AppInfo.remoteConsole),
-          title: l10n.remoteConsole,
-          subtitle: 'dsh.r2049.cn',
-          allowOpenExternal: true,
-          // Android suspends the page in the background and its connection drops.
-          reloadAfterBackground: const Duration(seconds: 60),
-        ),
-      ),
-    );
-  }
 
   Future<void> _use(BuildContext context, WidgetRef ref, HostRef host) async {
     final navigator = Navigator.of(context);
@@ -99,7 +74,6 @@ class RemoteScreen extends ConsumerWidget {
     final ssh = ref.watch(hostsProvider.select((s) => s.ssh));
     final urls = ref.watch(hostsProvider.select((s) => s.url));
     final active = ref.watch(activeHostProvider);
-    final signedIn = ref.watch(relayAccountProvider.select((a) => a.value?.signedIn ?? false));
     void push(Widget page) => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => page));
     return AppPage.list(
       title: l10n.commonRemoteHost,
@@ -169,20 +143,8 @@ class RemoteScreen extends ConsumerWidget {
             ),
           ],
         ),
-        SettingsSection(
-          title: l10n.remoteOtherMethods,
-          children: [
-            SettingsTile(
-              icon: AppIcons.webConsole,
-              tinted: false,
-              title: l10n.remoteWebConsole,
-              subtitle: l10n.remoteWebConsoleProvider,
-              onTap: () => _openConsole(context),
-            ),
-          ],
-        ),
         // Only meaningful once there is a host to come back to.
-        if (ssh.isNotEmpty || urls.isNotEmpty || signedIn)
+        if (ssh.isNotEmpty || urls.isNotEmpty)
           SettingsSection(
             title: l10n.remoteStartupSection,
             children: [
@@ -195,16 +157,6 @@ class RemoteScreen extends ConsumerWidget {
               ),
             ],
           ),
-        SettingsSection(
-          children: [
-            SettingsTile(
-              icon: AppIcons.save,
-              spot: Spots.remoteSessionBackup,
-              onTap: () => push(const SessionBackupPage()),
-            ),
-          ],
-        ),
-        const RemoteWebEntry(),
       ],
     );
   }
@@ -227,13 +179,8 @@ class _ActiveCard extends ConsumerWidget {
     final ssh = active.kind == HostKind.ssh ? ref.watch(hostsProvider).sshById(active.id) : null;
     final url = active.kind == HostKind.url ? ref.watch(hostsProvider).urlById(active.id) : null;
     final error = status.error;
-    // Errors a retry can't fix go to the host's settings (SSH / URL) or the
-    // trust check (relay) instead.
-    final needsLogin = active.kind == HostKind.relay && error?.kind == HostLinkErrorKind.notLoggedIn;
+    // Errors a retry can't fix go to the host's settings (SSH / URL) instead.
     final needsSettings = (ssh != null || url != null) && error != null && !error.retryable;
-    final needsTrust =
-        active.kind == HostKind.relay &&
-        (error?.kind == HostLinkErrorKind.hostKeyMismatch || error?.kind == HostLinkErrorKind.hostKeyUnverified);
     void reconnect() => ref.read(remoteConnectionProvider(active).notifier).retry();
     final failed = status.phase == HostLinkPhase.failed && error != null;
     // No runtime on this phone: 本机 is nowhere to go back to.
@@ -241,35 +188,26 @@ class _ActiveCard extends ConsumerWidget {
     return OverviewCard(
       leading: OverviewGlyph(hostKindIcon(active.kind), tint: hostKindTint(active.kind)),
       title: Text(l10n.remoteActiveHost(name)),
-      subtitle: InkWell(
-        onTap: active.kind == HostKind.relay && status.isConnected
-            ? () => showRemoteNetworkDetails(context, active)
-            : null,
-        child: Row(
-          children: [
-            AnimatedStatusDot(tone: view.tone, size: 7),
-            const SizedBox(width: 6),
-            Flexible(
-              child: Text(
-                _statusLine(
-                  status,
-                  view,
-                  ssh != null
-                      ? l10n.remoteConnectedSsh(ssh.address)
-                      : url != null
-                      ? l10n.remoteConnectedUrl(url.address)
-                      : null,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+      subtitle: Row(
+        children: [
+          AnimatedStatusDot(tone: view.tone, size: 7),
+          const SizedBox(width: 6),
+          Flexible(
+            child: Text(
+              _statusLine(
+                status,
+                view,
+                ssh != null
+                    ? l10n.remoteConnectedSsh(ssh.address)
+                    : url != null
+                    ? l10n.remoteConnectedUrl(url.address)
+                    : null,
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            if (active.kind == HostKind.relay && status.isConnected) ...[
-              const SizedBox(width: 6),
-              Tooltip(message: l10n.remoteNetworkDetails, child: const Icon(AppIcons.info, size: 16)),
-            ],
-          ],
-        ),
+          ),
+        ],
       ),
       trailing: canGoLocal
           ? _EdgeTextButton(
@@ -282,29 +220,7 @@ class _ActiveCard extends ConsumerWidget {
               padding: const EdgeInsets.only(left: OverviewCard.inset, right: OverviewCard.inset - 12),
               child: LinkErrorBox(
                 error: error,
-                action: needsLogin
-                    ? (
-                        l10n.remoteSignInAgain,
-                        () async {
-                          if (ref.read(relayAccountProvider).value?.user?.provider == 'password') {
-                            final backend = ref.read(relayBackendProvider);
-                            final signedIn = await showSelfHostedLogin(
-                              context,
-                              initialServer: ref.read(relayServerProvider) ?? defaultRelayServer,
-                            );
-                            if (signedIn == true &&
-                                context.mounted &&
-                                ref.read(activeHostProvider) == active &&
-                                identical(backend, ref.read(relayBackendProvider))) {
-                              reconnect();
-                            }
-                            return;
-                          }
-                          await ref.read(relayAccountProvider.notifier).login();
-                          if (context.mounted && (ref.read(relayAccountProvider).value?.signedIn ?? false)) reconnect();
-                        },
-                      )
-                    : needsSettings
+                action: needsSettings
                     ? (
                         l10n.remoteHostSettings,
                         () => Navigator.of(context).push(
@@ -314,16 +230,7 @@ class _ActiveCard extends ConsumerWidget {
                           ),
                         ),
                       )
-                    : needsTrust
-                    ? (
-                        l10n.remoteHostKeyTrustAgain,
-                        () async {
-                          if (await activateHost(context, ref, active)) {
-                            reconnect();
-                          }
-                        },
-                      )
-                    : (active.kind == HostKind.relay ? l10n.remoteReconnect : l10n.commonRetry, reconnect),
+                    : (l10n.commonRetry, reconnect),
               ),
             )
           : null,

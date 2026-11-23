@@ -217,7 +217,7 @@ void main() {
         expect(picker.calls, ['files']);
       }
       final host = container.read(activeHostProvider.notifier);
-      if (stage != 'same-host') host.select(const HostRef.relay('synthetic-unused-host'));
+      if (stage != 'same-host') host.select(const HostRef.url('synthetic-unused-host'));
       host.select(HostRef.local);
       expect(container.read(currentSessionProvider), isNull);
       if (stage == 'menu') {

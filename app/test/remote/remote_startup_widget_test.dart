@@ -12,7 +12,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../shell/golden_harness.dart';
-import 'support/fake_relay.dart';
 import 'support/fake_ssh.dart';
 
 const autoConnectKey = 'remote_auto_connect_on_startup';
@@ -22,7 +21,6 @@ void main() {
     HostsController.prefsKey: jsonEncode([sampleSsh.toJson()]),
     ActiveHostController.prefsKey: host.encode(),
   });
-  final relay = FakeRelayBackend(user: sampleRelayUser);
 
   testWidgets('startup preference is editable and does not disconnect the active host', (tester) async {
     seed(HostRef.ssh(sampleSsh.id));
@@ -34,7 +32,6 @@ void main() {
         overrides: [
           secretStoreProvider.overrideWithValue(MemorySecretStore()),
           networkKicksProvider.overrideWithValue(const Stream.empty()),
-          relayBackendProvider.overrideWithValue(relay),
           hostLinkStatusProvider.overrideWith((ref, host) => Stream.value(HostLinkStatus.idle)),
           localRuntimeProvider.overrideWith(
             () => FakeRuntime(const LocalRuntimeState(loaded: true, status: runningStatus)),
@@ -67,7 +64,6 @@ void main() {
         overrides: [
           secretStoreProvider.overrideWithValue(MemorySecretStore()),
           networkKicksProvider.overrideWithValue(const Stream.empty()),
-          relayBackendProvider.overrideWithValue(relay),
           hostLinkStatusProvider.overrideWith((ref, host) => Stream.value(HostLinkStatus.idle)),
           localRuntimeProvider.overrideWith(
             () => FakeRuntime(const LocalRuntimeState(loaded: true, status: runningStatus)),
@@ -94,7 +90,6 @@ void main() {
         overrides: [
           secretStoreProvider.overrideWithValue(MemorySecretStore()),
           networkKicksProvider.overrideWithValue(const Stream.empty()),
-          relayBackendProvider.overrideWithValue(FakeRelayBackend()),
           hostLinkStatusProvider.overrideWith((ref, host) => Stream.value(HostLinkStatus.idle)),
           localRuntimeProvider.overrideWith(
             () => FakeRuntime(const LocalRuntimeState(loaded: true, status: runningStatus)),

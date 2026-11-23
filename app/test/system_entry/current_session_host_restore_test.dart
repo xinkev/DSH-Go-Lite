@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const _remote = HostRef.relay('mac', name: 'Mac');
+const _remote = HostRef.url('mac');
 
 Future<SharedPreferences> _seed({HostRef host = HostRef.local, bool autoConnect = true, String? legacyId}) async {
   SharedPreferences.setMockInitialValues({
@@ -170,22 +170,6 @@ void main() {
     await _settle(next);
     expect(next.read(activeHostProvider), _remote);
     expect(next.read(currentSessionProvider), isNull);
-  });
-
-  test('a relay display-name change does not change the saved conversation owner', () async {
-    await _seed();
-    final current = _open();
-    await _settle(current);
-    current.read(activeHostProvider.notifier).select(_remote);
-    current.read(currentSessionProvider.notifier).select('remote-session');
-    const renamed = HostRef.relay('mac', name: 'Renamed Mac');
-    current.read(activeHostProvider.notifier).select(renamed);
-    await _settle(current);
-
-    final next = _open();
-    await _settle(next);
-    expect(next.read(activeHostProvider).name, 'Renamed Mac');
-    expect(next.read(viewedChatProvider), (host: renamed, sessionId: 'remote-session'));
   });
 
   test('disposing a startup before preferences continuations does not publish a target', () async {

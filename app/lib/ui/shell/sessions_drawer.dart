@@ -37,7 +37,6 @@ import '../onboarding/local_install.dart';
 import '../modes/mode_switch.dart';
 import '../remote/host_status.dart';
 import '../remote/host_switcher.dart' show showHostSheet;
-import '../remote/network_details_sheet.dart' show showRemoteNetworkDetails;
 import '../safe_mode/engine_failure_card.dart';
 import '../safe_mode/safe_mode_banner.dart';
 import '../share/share_entry.dart';
@@ -978,9 +977,7 @@ class IdentityBar extends ConsumerWidget {
     final host = ref.watch(activeHostProvider);
     final name = ref.watch(hostNameProvider(host)) ?? (host.isLocal ? l10n.commonThisPhone : l10n.commonRemoteHost);
     final view = watchHostStatus(ref, host);
-    final link = host.kind == HostKind.relay ? ref.watch(hostLinkStatusProvider(host)).value : null;
-    final path = link?.isConnected == true ? link?.network?.path ?? link?.path : null;
-    final statusLabel = path == null ? view.label : path.label;
+    final statusLabel = view.label;
     final tint = hostKindTint(host.kind);
     return Padding(
       // Same 10 / 20 grid as the rows above: the highlight's edge at 10, the
@@ -997,8 +994,8 @@ class IdentityBar extends ConsumerWidget {
                 const SizedBox(width: 6),
                 IconButton(
                   key: const ValueKey('identity-host-details'),
-                  tooltip: host.isLocal ? l10n.phoneEngineTitle : l10n.remoteNetworkDetails,
-                  onPressed: host.isLocal ? onLocalDetails : () => showRemoteNetworkDetails(context, host),
+                  tooltip: host.isLocal ? l10n.phoneEngineTitle : l10n.remoteSwitchHost,
+                  onPressed: host.isLocal ? onLocalDetails : onHost,
                   padding: const EdgeInsets.all(4),
                   constraints: const BoxConstraints.tightFor(width: keySize, height: keySize),
                   style: IconButton.styleFrom(tapTargetSize: MaterialTapTargetSize.shrinkWrap),

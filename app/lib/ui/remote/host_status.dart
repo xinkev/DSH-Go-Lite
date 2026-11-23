@@ -27,9 +27,6 @@ class HostStatusView {
     HostLinkPhase.failed => HostStatusView(StatusTone.error, appL10n.commonConnectionFailed),
   };
 
-  static HostStatusView ofRelayHost(RelayHost host) => host.online
-      ? HostStatusView(StatusTone.ok, appL10n.remoteOnline)
-      : HostStatusView(StatusTone.idle, appL10n.remoteOffline);
 }
 
 /// Live status of [host]: the engine for 本机, the link for remote hosts.
@@ -45,7 +42,6 @@ HostStatusView watchHostStatus(WidgetRef ref, HostRef host) {
 IconData hostKindIcon(HostKind kind) => switch (kind) {
   HostKind.local => AppIcons.thisPhone,
   HostKind.ssh => AppIcons.sshHost,
-  HostKind.relay => AppIcons.computer,
   HostKind.url => AppIcons.link,
 };
 
@@ -53,6 +49,5 @@ IconData hostKindIcon(HostKind kind) => switch (kind) {
 int hostKindTint(HostKind kind) => switch (kind) {
   HostKind.local => 0,
   HostKind.ssh => 6,
-  HostKind.relay => 1,
   HostKind.url => 3,
 };

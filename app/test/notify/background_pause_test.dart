@@ -227,7 +227,7 @@ void main() {
     });
 
     test('a remote host: nothing', () {
-      final c = container(host: const HostRef.relay('r1'));
+      final c = container(host: const HostRef.url('r1'));
       leave(c);
       comeBack(c);
       expect(c.read(backgroundPauseProvider), isFalse);

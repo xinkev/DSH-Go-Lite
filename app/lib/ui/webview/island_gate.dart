@@ -29,7 +29,6 @@ const islandsWithoutGuard = bool.fromEnvironment('DSH_GO_LOCAL_ISLANDS');
 
 /// Whether a host may have islands at all (§9). Pure:
 ///
-/// - relay: never (no DSH Web over the relay);
 /// - SSH and a direct URL: yes, the same exposure as the 网页版 entry that's
 ///   already there;
 /// - on-device: only once the route guard ships with the runtime — the
@@ -43,7 +42,6 @@ bool islandHostAllowed(
   RouteGuard probed = RouteGuard.unknown,
   bool override = false,
 }) => switch (kind) {
-  HostKind.relay => false,
   HostKind.ssh || HostKind.url => true,
   HostKind.local => override || (reported == true && probed == RouteGuard.present),
 };
@@ -153,8 +151,6 @@ final islandHostUrlProvider = Provider.autoDispose.family<Uri?, HostRef>((ref, h
         path: config.baseUri.path.isEmpty ? '/' : '${config.baseUri.path}/',
         queryParameters: {'token': token},
       );
-    case HostKind.relay:
-      return null;
   }
 });
 

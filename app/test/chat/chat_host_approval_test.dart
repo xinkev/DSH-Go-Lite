@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../packages/dsh_client/test/support/fake_dsh.dart';
 import 'support/session_sync_host.dart';
 
-const _remote = HostRef.relay('controlled-B');
+const _remote = HostRef.url('controlled-B');
 final _peers = Provider<Map<HostRef, _Peer?>>((ref) => const {});
 final _routing = activeConnectionProvider.overrideWith((ref) {
   final host = ref.watch(activeHostProvider);
@@ -281,21 +281,6 @@ void main() {
     expect(h.b.answers, isEmpty);
     expect(h.state.openApproval?.eventId, 'ask-A-initial');
     expect(h.state.autoAnswered, isEmpty);
-  }));
-
-  test('renaming a relay display name preserves the same host consent', () => scenario((h) async {
-    await h.select(_remote, h.b);
-    h.b.ask('ask-B-initial');
-    await waitSync(() => h.state.openApproval?.eventId == 'ask-B-initial', 'initial B request');
-    await h.chat.allowAll(h.state.openApproval!);
-    await waitSync(() => h.b.answers.length == 1, 'initial B approval');
-    h.container.read(activeHostProvider.notifier).select(const HostRef.relay('controlled-B', name: 'Renamed'));
-    await h.container.pump();
-    await h.ready(h.b);
-    expect(h.container.read(currentSessionProvider), 'S');
-    h.b.ask('ask-B-renamed');
-    await waitSync(() => h.b.answers.length == 2, 'same relay identity approval');
-    expect(h.state.autoApprove, isTrue);
   }));
 
   test('same client WebSocket reconnect preserves conversation consent', () => scenario((h) async {

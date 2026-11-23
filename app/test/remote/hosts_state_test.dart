@@ -1,12 +1,10 @@
 // Hosts model: persistence (configs in prefs, secrets in the secret store),
-// the active host, relay account flow, and activeConnectionProvider
+// Hosts model: persistence (configs in prefs, secrets in the secret store),
 // resolving to the right connection.
 
 import 'dart:convert';
 
 import 'package:dsh_app/remote/link_status.dart';
-import 'package:dsh_app/remote/relay/dsh_remote_backend.dart';
-import 'package:dsh_app/remote/relay/relay_backend.dart';
 import 'package:dsh_app/remote/secret_store.dart';
 import 'package:dsh_app/remote/ssh/ssh_link.dart';
 import 'package:dsh_app/state/connection_state.dart';
@@ -16,7 +14,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'support/fake_relay.dart';
 import 'support/fake_ssh.dart';
 import 'support/wait.dart';
 
@@ -32,14 +29,12 @@ void main() {
   late FakeSshServer server;
   late FakeConnector connector;
 
-  ProviderContainer container({FakeRelayBackend? relay, UrlOpener? opener}) {
+  ProviderContainer container() {
     final c = ProviderContainer(
       overrides: [
         secretStoreProvider.overrideWithValue(secrets),
         localConnectionProvider.overrideWith(_NoLocal.new),
         networkKicksProvider.overrideWithValue(const Stream.empty()),
-        relayBackendProvider.overrideWithValue(relay ?? FakeRelayBackend()),
-        urlOpenerProvider.overrideWithValue(opener ?? (_) async => true),
         sshLinkFactoryProvider.overrideWithValue(
           (ref, config) => SshHostLink(
             config: config,
@@ -70,11 +65,9 @@ void main() {
 
   group('HostRef', () {
     test('round-trips and compares by kind + id', () {
-      for (final ref in [HostRef.local, const HostRef.ssh('ssh-1'), const HostRef.relay('mac', name: '家里的 Mac')]) {
+      for (final ref in [HostRef.local, const HostRef.ssh('ssh-1'), const HostRef.url('url-1')]) {
         expect(HostRef.decode(ref.encode()), ref);
       }
-      expect(HostRef.decode(const HostRef.relay('mac', name: 'A').encode()).name, 'A');
-      expect(const HostRef.relay('mac', name: 'A'), const HostRef.relay('mac', name: 'B'));
       expect(HostRef.decode(null), HostRef.local);
       expect(HostRef.decode('{oops'), HostRef.local);
       expect(HostRef.decode('{"kind":"ssh"}'), HostRef.local);
@@ -83,7 +76,6 @@ void main() {
     test('labels read well in the chat header', () {
       expect(hostLabel(HostKind.local, null), '本机');
       expect(hostLabel(HostKind.ssh, '电脑'), '电脑 · SSH');
-      expect(hostLabel(HostKind.relay, '家里的 Mac'), '家里的 Mac · 远程');
       expect(hostLabel(HostKind.ssh, '一个名字特别特别特别特别长的服务器'), endsWith('… · SSH'));
     });
   });
@@ -362,160 +354,6 @@ void main() {
       // Same as 本机 (whose fake engine isn't running).
       expect(c.read(activeConnectionProvider), const AsyncData<HostConnection?>(null));
     });
-
-    test('relay host → connects through the backend', () async {
-      final relay = FakeRelayBackend(user: sampleRelayUser);
-      final c = container(relay: relay);
-      await c.read(relayAccountProvider.future);
-      c.read(activeHostProvider.notifier).select(const HostRef.relay('mac', name: '家里的 Mac'));
-      final sub = c.listen(activeConnectionProvider, (_, _) {});
-      addTearDown(sub.close);
-      await until(c, activeConnectionProvider, (s) => s.value != null, what: '远程主机连接成功');
-      expect(c.read(activeConnectionProvider).value?.label, '家里的 Mac · 远程');
-      expect(relay.connected, ['mac']);
-    });
-
-    test('offline relay host fails with a clear reason', () async {
-      final relay = FakeRelayBackend(user: sampleRelayUser);
-      final c = container(relay: relay);
-      await c.read(relayAccountProvider.future);
-      c.read(activeHostProvider.notifier).select(const HostRef.relay('nas'));
-      final sub = c.listen(activeConnectionProvider, (_, _) {});
-      addTearDown(sub.close);
-      final statuses = c.listen(hostLinkStatusProvider(const HostRef.relay('nas')), (_, _) {});
-      addTearDown(statuses.close);
-      await until(
-        c,
-        hostLinkStatusProvider(const HostRef.relay('nas')),
-        (s) => s.value?.error?.kind == HostLinkErrorKind.hostOffline,
-        what: '主机离线状态',
-      );
-      final status = c.read(hostLinkStatusProvider(const HostRef.relay('nas'))).value;
-      expect(status?.error?.kind, HostLinkErrorKind.hostOffline);
-      expect(relay.connected, isEmpty);
-    });
-  });
-
-  group('relay account', () {
-    test('recheck clears a revoked account and its host list', () async {
-      final relay = FakeRelayBackend(user: sampleRelayUser);
-      final c = container(relay: relay);
-      await c.read(relayAccountProvider.future);
-      relay.user = null;
-      await c.read(relayAccountProvider.notifier).recheck();
-      expect(c.read(relayAccountProvider).value!.signedIn, isFalse);
-      expect(c.read(relayAccountProvider).value!.hosts, isEmpty);
-    });
-
-    test('refresh failure keeps the list, flags it and rechecks the account', () async {
-      final relay = FakeRelayBackend(user: sampleRelayUser);
-      final c = container(relay: relay);
-      await c.read(relayAccountProvider.future);
-      relay.listError = StateError('secret server failure');
-      await c.read(relayAccountProvider.notifier).refresh();
-      expect(c.read(relayAccountProvider).value!.hostsFailed, isTrue);
-      expect(c.read(relayAccountProvider).value!.hosts, isNotEmpty);
-      expect(c.read(relayAccountProvider).value!.error, isNull);
-      relay.user = null;
-      await c.read(relayAccountProvider.notifier).refresh();
-      expect(c.read(relayAccountProvider).value!.signedIn, isFalse);
-    });
-
-    test('initial host-list failure is distinct from an empty account', () async {
-      final relay = FakeRelayBackend(user: sampleRelayUser)..listError = StateError('raw');
-      final c = container(relay: relay);
-      final account = await c.read(relayAccountProvider.future);
-      expect(account.signedIn, isTrue);
-      expect(account.hostsFailed, isTrue);
-      expect(account.hosts, isEmpty);
-    });
-
-    test('unavailable backend: not signed in, login disabled', () async {
-      final c = ProviderContainer(
-        overrides: [
-          secretStoreProvider.overrideWithValue(secrets),
-          relayBackendProvider.overrideWithValue(const UnavailableRelayBackend()),
-        ],
-      );
-      addTearDown(c.dispose);
-      final state = await c.read(relayAccountProvider.future);
-      expect(state.available, isFalse);
-      expect(state.signedIn, isFalse);
-    });
-
-    test('default backend is dsh_remote: available, signed out with an empty store', () async {
-      final c = ProviderContainer(overrides: [secretStoreProvider.overrideWithValue(secrets)]);
-      addTearDown(c.dispose);
-      expect(c.read(relayBackendProvider), isA<DshRemoteRelayBackend>());
-      final state = await c.read(relayAccountProvider.future);
-      expect(state.available, isTrue);
-      expect(state.server, 'dsh.r2049.cn');
-      expect(state.signedIn, isFalse);
-    });
-
-    test('a signed-out state carries the Server sign-in providers', () async {
-      final c = container(relay: FakeRelayBackend());
-      final state = await c.read(relayAccountProvider.future);
-      expect(state.providers.map((p) => p.id), ['zhihu', 'github', 'google']);
-      expect(state.providers.first.displayName, '知乎');
-    });
-
-    test('login(providerId) signs in with that provider', () async {
-      final relay = FakeRelayBackend();
-      final opened = <Uri>[];
-      final c = container(
-        relay: relay,
-        opener: (u) async {
-          opened.add(u);
-          return true;
-        },
-      );
-      await c.read(relayAccountProvider.future);
-      final login = c.read(relayAccountProvider.notifier).login(providerId: 'github');
-      await until(c, relayAccountProvider, (s) => s.value?.loginUrl != null, what: 'GitHub 登录已打开');
-      expect(relay.loginProviderIds, ['github']);
-      expect(opened.single.host, 'dsh.r2049.cn');
-      relay.pendingLogin!.complete(sampleRelayUser);
-      await login;
-      expect(c.read(relayAccountProvider).value!.user!.provider, 'github');
-    });
-
-    test('browser login: opens the URL, waits, then lists hosts', () async {
-      final relay = FakeRelayBackend();
-      final opened = <Uri>[];
-      final c2 = container(
-        relay: relay,
-        opener: (u) async {
-          opened.add(u);
-          return true;
-        },
-      );
-      await c2.read(relayAccountProvider.future);
-      final login = c2.read(relayAccountProvider.notifier).login();
-      await until(c2, relayAccountProvider, (s) => s.value?.loginUrl != null, what: '浏览器登录已打开');
-      expect(c2.read(relayAccountProvider).value!.loggingIn, isTrue);
-      expect(opened.single.host, 'dsh.r2049.cn');
-      relay.pendingLogin!.complete(sampleRelayUser);
-      await login;
-      final state = c2.read(relayAccountProvider).value!;
-      expect(state.signedIn, isTrue);
-      expect(state.loggingIn, isFalse);
-      expect(state.hosts.map((h) => h.name), ['家里的 Mac', '书房 NAS']);
-    });
-
-    test('logout while a relay host is active switches back to 本机', () async {
-      final c = container(relay: FakeRelayBackend(user: sampleRelayUser));
-      await c.read(relayAccountProvider.future);
-      c.read(activeHostProvider.notifier).select(const HostRef.relay('mac'));
-      await c.read(relayAccountProvider.notifier).logout();
-      expect(c.read(activeHostProvider), HostRef.local);
-      expect(c.read(relayAccountProvider).value!.signedIn, isFalse);
-    });
-  });
-
-  test('RelayHost subtitle', () {
-    expect(sampleRelayHosts.first.subtitle, 'macOS · Harness 0.2.1-rc.2');
-    expect(const RelayHost(id: 'x', name: 'x', online: false).subtitle, '离线');
   });
 
   test('status summaries', () {

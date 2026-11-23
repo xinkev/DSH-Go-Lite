@@ -321,7 +321,7 @@ void main() {
         tester,
         'CLIENT_UPGRADE_REQUIRED',
         upgrade,
-        extra: [activeHostProvider.overrideWith(_RelayHost.new)],
+        extra: [activeHostProvider.overrideWith(_RemoteHost.new)],
       );
       expect(find.text('这个模型需要新版引擎'), findsOneWidget);
       expect(find.widgetWithText(TextButton, '检查更新'), findsNothing);
@@ -402,8 +402,8 @@ class _UpToDate extends AppUpdateController {
   }
 }
 
-/// A DSH Remote host is the active one.
-class _RelayHost extends ActiveHostController {
+/// A remote host is the active one.
+class _RemoteHost extends ActiveHostController {
   @override
-  HostRef build() => const HostRef.relay('r1', name: 'Mac');
+  HostRef build() => const HostRef.url('r1');
 }

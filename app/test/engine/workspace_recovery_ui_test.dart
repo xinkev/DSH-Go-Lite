@@ -16,7 +16,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../remote/support/fake_relay.dart';
 import '../safe_mode/support.dart';
 import '../shell/golden_harness.dart';
 
@@ -110,7 +109,6 @@ void main() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(_channel, f.handle);
     usePhoneSurface(tester);
     if (narrow) tester.view.physicalSize = const Size(320 * 2, 640 * 2);
-    final relay = FakeRelayBackend(user: null);
     await tester.pumpWidget(
       goldenApp(
         home: Builder(
@@ -127,7 +125,6 @@ void main() {
           settingsProvider.overrideWith(() => FakeSettings(const AppSettings(loaded: true))),
           activeHostProvider.overrideWith(_Active.new),
           secretStoreProvider.overrideWithValue(MemorySecretStore()),
-          relayBackendProvider.overrideWithValue(relay),
           networkKicksProvider.overrideWithValue(const Stream.empty()),
           hostLinkStatusProvider.overrideWith((ref, host) => const Stream.empty()),
           activeConnectionProvider.overrideWith(

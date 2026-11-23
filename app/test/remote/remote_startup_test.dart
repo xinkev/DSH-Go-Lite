@@ -9,7 +9,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'support/fake_relay.dart';
 import 'support/fake_ssh.dart';
 import 'support/wait.dart';
 
@@ -23,7 +22,6 @@ class _NoLocal extends LocalConnectionController {
 void main() {
   late FakeSshServer server;
   late FakeConnector connector;
-  late FakeRelayBackend relay;
 
   void seed(HostRef host, {bool? autoConnect}) {
     SharedPreferences.setMockInitialValues({
@@ -39,7 +37,6 @@ void main() {
         secretStoreProvider.overrideWithValue(MemorySecretStore()),
         localConnectionProvider.overrideWith(_NoLocal.new),
         networkKicksProvider.overrideWithValue(const Stream.empty()),
-        relayBackendProvider.overrideWithValue(relay),
         sshLinkFactoryProvider.overrideWithValue(
           (ref, config) => SshHostLink(
             config: config,
@@ -65,18 +62,16 @@ void main() {
   setUp(() {
     server = FakeSshServer();
     connector = FakeConnector();
-    relay = FakeRelayBackend(user: sampleRelayUser);
     seed(HostRef.local);
   });
 
-  for (final host in [HostRef.ssh(sampleSsh.id), const HostRef.relay('mac')]) {
+  for (final host in [HostRef.ssh(sampleSsh.id)]) {
     test('disabled startup restore stays local for ${host.kind.name}', () async {
       seed(host, autoConnect: false);
       final c = container();
       await loaded(c);
       expect(c.read(activeHostProvider), HostRef.local);
       expect(server.connects, isEmpty);
-      expect(relay.connected, isEmpty);
       expect(c.read(hostsProvider).ssh, [sampleSsh]);
       expect(HostRef.decode((await SharedPreferences.getInstance()).getString(ActiveHostController.prefsKey)), host);
     });
@@ -91,7 +86,7 @@ void main() {
     });
   }
 
-  test('disabled startup auto-connect still permits manual SSH, reconnect, relay, and local', () async {
+  test('disabled startup auto-connect still permits manual SSH, reconnect, and local', () async {
     seed(HostRef.local, autoConnect: false);
     final c = container();
     await loaded(c);
@@ -103,9 +98,6 @@ void main() {
     await reconnected;
     expect(server.connects, hasLength(2));
 
-    c.read(activeHostProvider.notifier).select(const HostRef.relay('mac'));
-    await until(c, activeConnectionProvider, (s) => s.value?.kind == HostKind.relay, what: 'manual relay connection');
-    expect(relay.connected, ['mac']);
     c.read(activeHostProvider.notifier).select(HostRef.local);
     await loaded(c);
     expect(c.read(activeHostProvider), HostRef.local);
@@ -113,12 +105,11 @@ void main() {
   });
 
   test('manual selection before preferences restore wins over the remembered host', () async {
-    seed(const HostRef.relay('mac'), autoConnect: false);
+    seed(const HostRef.url('remembered'), autoConnect: false);
     final c = container();
     c.read(activeHostProvider.notifier).select(HostRef.ssh(sampleSsh.id));
     await until(c, activeConnectionProvider, (s) => s.value?.kind == HostKind.ssh, what: 'early manual connection');
     expect(c.read(activeHostProvider), HostRef.ssh(sampleSsh.id));
-    expect(relay.connected, isEmpty);
   });
 
   test('a host deleted while the preference is off is not restored after turning it back on', () async {
@@ -137,25 +128,14 @@ void main() {
     expect(server.connects, isEmpty);
   });
 
-  test('signing out of DSH Remote while the preference is off drops the saved relay host', () async {
-    seed(const HostRef.relay('mac'), autoConnect: false);
-    final c = container();
-    await loaded(c);
-    await c.read(relayAccountProvider.future);
-    await c.read(relayAccountProvider.notifier).logout();
-    await c.pump();
-    final prefs = await SharedPreferences.getInstance();
-    expect(HostRef.decode(prefs.getString(ActiveHostController.prefsKey)), HostRef.local);
-  });
-
   test('another saved host survives deleting an unrelated SSH host', () async {
-    seed(const HostRef.relay('mac'), autoConnect: false);
+    seed(const HostRef.url('kept'), autoConnect: false);
     final c = container();
     await loaded(c);
     await c.read(hostsProvider.notifier).removeSsh(sampleSsh.id);
     await c.pump();
     final prefs = await SharedPreferences.getInstance();
-    expect(HostRef.decode(prefs.getString(ActiveHostController.prefsKey)), const HostRef.relay('mac'));
+    expect(HostRef.decode(prefs.getString(ActiveHostController.prefsKey)), const HostRef.url('kept'));
   });
 
   test('the preference is read at startup, before the remote hosts page asks', () async {

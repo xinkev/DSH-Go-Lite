@@ -29,12 +29,6 @@ const _expected = <String, String>{
   'Bouncy Castle': 'Copyright (c) 2000-2023 The Legion of the Bouncy Castle Inc.',
   'XZ for Java': 'Copyright (C) The XZ for Java authors and contributors',
   'AndroidX WebKit': 'The Android Open Source Project',
-  'ONNX Runtime': 'Copyright (c) Microsoft Corporation',
-  'Silero VAD': 'Copyright (c) 2020-present Silero Team',
-  'smart-turn': 'Copyright (c) 2024–2025, Daily',
-  'flutter_webrtc': 'Copyright (c) 2015 Howard Yang',
-  'WebRTC': 'Copyright (c) 2011, The WebRTC project authors',
-  'AudioSwitch': 'Copyright 2020 Twilio, inc.',
   'Phosphor Icons': 'Copyright (c) 2023 Phosphor Icons',
   'Material Icons': 'Google',
   'discourse-emojis': 'Joffrey Jaffeux',
@@ -43,7 +37,6 @@ const _expected = <String, String>{
   'Lodash': 'Copyright OpenJS Foundation and other contributors <https://openjsf.org/>',
   'Zod': 'Copyright (c) 2025 Colin McDonnell',
   'YAML (eemeli/yaml)': 'Copyright Eemeli Aro <eemeli@gmail.com>',
-  'Streaming Zipformer zh-en (sherpa-onnx)': 'csukuangfj/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20',
 };
 
 const _mit = 'Permission is hereby granted, free of charge';
@@ -76,14 +69,7 @@ void main() {
       'Bouncy Castle',
       'XZ for Java',
       'AndroidX WebKit',
-      'ONNX Runtime',
-      'Silero VAD',
-      'smart-turn',
       'tawcroot (tawc)',
-      'flutter_webrtc',
-      'AudioSwitch',
-      'WebRTC',
-      'Streaming Zipformer zh-en (sherpa-onnx)',
     ];
 
     setUp(() async {
@@ -121,19 +107,6 @@ void main() {
       expect(runtime, contains('runtime/ohos/licenses/texts'));
       expect(Directory('../runtime/ohos/licenses/texts').existsSync(), isTrue);
     });
-  });
-
-  test('WebRTC entry exposes the complete upstream asset without truncation', () {
-    final file = File('assets/licenses/webrtc-150.7871.04.md');
-    final bundle = file.readAsStringSync();
-    expect(
-      sha256.convert(file.readAsBytesSync()).toString(),
-      'd1f9382c6878ac024155fd6d44a5977329108bb8b0a01cea40e4a2f1d7de252e',
-    );
-    expect(textOf('WebRTC'), endsWith(bundle));
-    expect(RegExp(r'^# ', multiLine: true).allMatches(bundle).length, 30);
-    expect(bundle, contains('# boringssl'));
-    expect(bundle, contains('# zlib'));
   });
 
   test('ML Kit carries its SDK terms rather than sample-code Apache terms', () {
@@ -184,8 +157,6 @@ void main() {
       'libadb-android',
       'Conscrypt',
       'AndroidX WebKit',
-      'flutter_webrtc',
-      'AudioSwitch',
       'Material Icons',
     ]) {
       expect(textOf(package), contains(_apache), reason: package);
@@ -196,8 +167,6 @@ void main() {
       allOf(contains("with the author's permission"), contains('Copyright (c) 2026 CikeSeven'), contains(_mit)),
     );
     expect(textOf('Bouncy Castle'), contains(_mit));
-    expect(textOf('flutter_webrtc'), contains(_mit));
-    expect(textOf('WebRTC'), allOf(contains('Neither the name of Google'), contains('Additional IP Rights Grant')));
     expect(textOf('XZ for Java'), contains('Permission to use, copy, modify, and/or distribute'));
     expect(textOf('JetBrains Mono'), contains('SIL OPEN FONT LICENSE Version 1.1'));
     // The canvas libraries: their own LICENSE files, as published (npm tarball integrity in

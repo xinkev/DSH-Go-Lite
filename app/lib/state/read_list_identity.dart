@@ -213,38 +213,6 @@ final readListIdentityProvider = Provider<ReadListIdentity?>((ref) {
       if ((connection?.workingDirectory?.length ?? 0) > 4096) return null;
       final resolved = ref.watch(_resolvedDirectoriesProvider).observe(config.digest, connection);
       return ReadListIdentity.of([config.digest, resolved]);
-    case HostKind.relay:
-      final account = ref.watch(relayAccountProvider);
-      if (account.isLoading || account.hasError) return null;
-      final state = account.value;
-      final host = state?.hostById(selected.id);
-      if (state == null ||
-          state.loggingIn ||
-          state.user == null ||
-          host == null ||
-          host.trust != RelayTrust.pinned ||
-          host.fingerprint == null ||
-          host.fingerprint!.trim().isEmpty) {
-        return null;
-      }
-      final server = ref.watch(relayServerProvider) ?? defaultRelayServer;
-      if (server.length > 4096 ||
-          state.user!.id.length > 256 ||
-          host.id.length > 256 ||
-          host.fingerprint!.length > 512 ||
-          (host.harnessVersion?.length ?? 0) > 256) {
-        return null;
-      }
-      return ReadListIdentity.of([
-        'relay',
-        server,
-        state.user!.id,
-        state.user!.provider,
-        host.id,
-        host.fingerprint,
-        host.harnessVersion,
-        epoch,
-      ]);
     case HostKind.url:
       final hosts = ref.watch(hostsProvider);
       final host = hosts.urlById(selected.id);

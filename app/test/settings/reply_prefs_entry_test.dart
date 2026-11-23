@@ -16,7 +16,7 @@ import '../shell/golden_harness.dart';
 void main() {
   setUp(() => SharedPreferences.setMockInitialValues({}));
 
-  for (final host in [HostRef.local, const HostRef.ssh('pc'), const HostRef.relay('pc')]) {
+  for (final host in [HostRef.local, const HostRef.ssh('pc'), const HostRef.url('pc')]) {
     testWidgets('个性化 › 个人偏好 is local only: $host', (tester) async {
       final fs = tempGuest();
       addTearDown(() => fs.root.parent.deleteSync(recursive: true));

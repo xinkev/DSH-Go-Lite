@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../packages/dsh_client/test/support/fake_dsh.dart';
 import 'support/session_sync_host.dart';
 
-const _remote = HostRef.relay('controlled-B');
+const _remote = HostRef.url('controlled-B');
 final _peers = Provider<Map<HostRef, _Peer?>>((ref) => const {});
 final _routing = activeConnectionProvider.overrideWith((ref) {
   final host = ref.watch(activeHostProvider);
@@ -331,23 +331,6 @@ void main() {
       await _releaseAnswer(release);
       expect(h.state.autoAnswered, isNot(contains(id)));
       expect(h.state.openApproval?.eventId, id);
-      expect(h.state.error, isNotNull);
-    }),
-  );
-
-  test(
-    'relay display-name change keeps the current failed approval recoverable',
-    () => scenario((h) async {
-      await h.select(_remote, h.b);
-      final release = await _holdAnswer(h, h.b, 'relay-failure', fail: true);
-      h.container
-          .read(activeHostProvider.notifier)
-          .select(const HostRef.relay('controlled-B', name: 'Renamed'));
-      await h.container.pump();
-      expect(h.container.read(currentSessionProvider), 'S');
-      await _releaseAnswer(release);
-      expect(h.state.openApproval?.eventId, 'relay-failure');
-      expect(h.state.autoAnswered, isEmpty);
       expect(h.state.error, isNotNull);
     }),
   );

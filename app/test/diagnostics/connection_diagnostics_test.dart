@@ -143,12 +143,9 @@ ProviderContainer _observed(HostRef host, _Link link) {
 }
 
 void main() {
-  for (final host in [HostRef.local, const HostRef.ssh('private-host-id'), const HostRef.relay('private-host-id')]) {
+  for (final host in [HostRef.local, const HostRef.ssh('private-host-id'), const HostRef.url('private-host-id')]) {
     test('diagnostics capture existing ${host.kind.name} status without private connection text', () async {
-      final link = _Link(
-        step: host.kind == HostKind.relay ? HostLinkStep.connect : HostLinkStep.startDsh,
-        errorKind: host.kind == HostKind.relay ? HostLinkErrorKind.hostOffline : HostLinkErrorKind.dshTimeout,
-      );
+      final link = _Link(step: HostLinkStep.startDsh, errorKind: HostLinkErrorKind.dshTimeout);
       final c = _observed(host, link);
       await until(c, activeConnectionProvider, (value) => value.hasError, what: 'observed failure');
       final diagnostic = (await collect(c)).connection;
@@ -182,7 +179,7 @@ void main() {
     });
   }
 
-  for (final host in [HostRef.local, const HostRef.ssh('private-host-id'), const HostRef.relay('private-host-id')]) {
+  for (final host in [HostRef.local, const HostRef.ssh('private-host-id'), const HostRef.url('private-host-id')]) {
     test('exporting diagnostics does not initialize an unobserved ${host.kind.name} connection or link', () async {
       var connectionReads = 0;
       var linkBuilds = 0;

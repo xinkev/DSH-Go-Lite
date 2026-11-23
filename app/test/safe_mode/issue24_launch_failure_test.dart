@@ -17,7 +17,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../remote/support/fake_relay.dart';
 import '../shell/golden_harness.dart';
 import 'support.dart';
 
@@ -157,7 +156,6 @@ void main() {
     usePhoneSurface(tester);
     final bridge = FakeBridge(log: const [execError]);
     final runtime = RecordingRuntime(LocalRuntimeState(loaded: true, status: failedStatus(failure: launchFailure())));
-    final relay = FakeRelayBackend();
     await tester.pumpWidget(
       goldenApp(
         brightness: Brightness.light,
@@ -167,7 +165,6 @@ void main() {
           settingsProvider.overrideWith(() => FakeSettings(const AppSettings(loaded: true))),
           secretStoreProvider.overrideWithValue(MemorySecretStore()),
           networkKicksProvider.overrideWithValue(const Stream.empty()),
-          relayBackendProvider.overrideWithValue(relay),
           hostLinkStatusProvider.overrideWith((ref, host) => Stream.value(HostLinkStatus.idle)),
         ],
         home: const Scaffold(
@@ -184,8 +181,6 @@ void main() {
     expect(container.read(activeHostProvider), HostRef.local);
     expect(runtime.starts, isEmpty);
     expect(runtime.stops, 0);
-    expect(relay.connected, isEmpty);
-    expect(relay.pendingLogin, isNull);
     expect(tester.takeException(), isNull);
     Navigator.of(tester.element(find.byType(RemoteScreen))).pop();
     await tester.pumpAndSettle();

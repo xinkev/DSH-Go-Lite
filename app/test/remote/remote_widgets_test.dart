@@ -1,6 +1,5 @@
 // Interaction: switching hosts from the sheet (with the first-use host-key
-// check), relay trust, saving an SSH host, and going back to 本机.
-
+// check), saving an SSH host, and going back to 本机.
 import 'dart:convert';
 import 'dart:ui' show Tristate;
 
@@ -21,7 +20,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../shell/golden_harness.dart';
-import 'support/fake_relay.dart';
 import 'support/fake_ssh.dart';
 
 const _unpinned = SshHostConfig(id: 'ssh-lab', name: '实验室服务器', host: 'lab.example.com', user: 'root');
@@ -29,26 +27,12 @@ const _unpinned = SshHostConfig(id: 'ssh-lab', name: '实验室服务器', host:
 void main() {
   late MemorySecretStore secrets;
   late FakeSshServer server;
-  late FakeRelayBackend relay;
   HostLinkStatus linkStatus = HostLinkStatus.idle;
 
   setUp(() {
     linkStatus = HostLinkStatus.idle;
     secrets = MemorySecretStore();
     server = FakeSshServer();
-    relay = FakeRelayBackend(
-      user: sampleRelayUser,
-      hosts: const [
-        RelayHost(
-          id: 'mac',
-          name: '家里的 Mac',
-          online: true,
-          platform: 'darwin',
-          fingerprint: '3F2A 9C41 07BE',
-          trust: RelayTrust.unpinned,
-        ),
-      ],
-    );
     SharedPreferences.setMockInitialValues({
       HostsController.prefsKey: jsonEncode([sampleSsh.toJson(), _unpinned.toJson()]),
     });
@@ -57,11 +41,9 @@ void main() {
   List<Override> overrides() => [
     secretStoreProvider.overrideWithValue(secrets),
     networkKicksProvider.overrideWithValue(const Stream.empty()),
-    relayBackendProvider.overrideWithValue(relay),
     sshTransportFactoryProvider.overrideWithValue(server.connect),
     // Keep links idle: these tests are about the UI, not connecting.
     hostLinkStatusProvider.overrideWith((ref, host) => Stream.value(linkStatus)),
-    urlOpenerProvider.overrideWithValue((_) async => true),
     localRuntimeProvider.overrideWith(() => FakeRuntime(const LocalRuntimeState(loaded: true, status: runningStatus))),
   ];
 
@@ -76,7 +58,6 @@ void main() {
   Future<void> openSheet(WidgetTester tester) async {
     await tester.tap(find.text('open'));
     await tester.pump();
-    await tester.pump(const Duration(milliseconds: 500));
   }
 
   Future<void> frames(WidgetTester tester, [int n = 8]) async {
@@ -84,65 +65,6 @@ void main() {
       await tester.pump(const Duration(milliseconds: 60));
     }
   }
-
-  testWidgets('expired relay login offers 重新登录 even after account sign-out', (tester) async {
-    relay.user = null;
-    linkStatus = const HostLinkStatus(
-      HostLinkPhase.failed,
-      error: HostLinkError(HostLinkErrorKind.notLoggedIn, '登录已失效'),
-    );
-    SharedPreferences.setMockInitialValues({ActiveHostController.prefsKey: const HostRef.relay('mac').encode()});
-    await pump(tester, const RemoteScreen());
-    await frames(tester, 3);
-    expect(find.text('重新登录'), findsOneWidget);
-    expect(find.text('登录 DSH Remote'), findsOneWidget);
-  });
-
-  testWidgets('signed-out card offers one button per sign-in provider, GitHub first', (tester) async {
-    relay.user = null;
-    await pump(tester, const RemoteScreen());
-    await frames(tester, 3);
-    for (final provider in ['GitHub', '知乎', 'Google']) {
-      expect(find.widgetWithText(FilledButton, '使用 $provider 登录'), findsOneWidget);
-    }
-    expect(tester.getTopLeft(find.text('使用 GitHub 登录')).dy, lessThan(tester.getTopLeft(find.text('使用 知乎 登录')).dy));
-    await tester.tap(find.text('使用 GitHub 登录'));
-    await tester.pump();
-    expect(relay.loginProviderIds, ['github']);
-    // Let the flow finish so nothing keeps the controller alive after teardown.
-    relay.pendingLogin!.complete(sampleRelayUser);
-    await frames(tester, 4);
-    expect(relay.user?.provider, 'github');
-  });
-
-  testWidgets('host-list failure shows retry rather than the empty account copy', (tester) async {
-    relay.listError = StateError('raw server error');
-    await pump(tester, const RemoteScreen());
-    await frames(tester, 3);
-    expect(find.text('没能获取主机列表 · 轻点重试'), findsOneWidget);
-    expect(find.text('还没有主机'), findsNothing);
-    expect(find.textContaining('raw server'), findsNothing);
-  });
-
-  testWidgets('remote rows announce selection and align their status right edges', (tester) async {
-    final semantics = tester.ensureSemantics();
-    relay.hosts = [sampleRelayHosts.first, const RelayHost(id: 'second', name: '另一台主机', online: true)];
-    SharedPreferences.setMockInitialValues({ActiveHostController.prefsKey: const HostRef.relay('mac').encode()});
-    await pump(tester, const RemoteScreen());
-    await frames(tester, 3);
-    expect(
-      tester.getSemantics(find.byKey(const ValueKey('remote-row-mac'))).flagsCollection.isSelected,
-      Tristate.isTrue,
-    );
-    expect(
-      tester.getSemantics(find.byKey(const ValueKey('remote-row-second'))).flagsCollection.isSelected,
-      isNot(Tristate.isTrue),
-    );
-    final first = tester.getRect(find.byKey(const ValueKey('remote-status-mac')));
-    final second = tester.getRect(find.byKey(const ValueKey('remote-status-second')));
-    expect(first.right, closeTo(second.right, 0.1));
-    semantics.dispose();
-  });
 
   testWidgets('host switcher exposes the active row as selected', (tester) async {
     final semantics = tester.ensureSemantics();
@@ -186,51 +108,6 @@ void main() {
     await frames(tester);
     expect(c.read(activeHostProvider), HostRef.local);
     expect(c.read(hostsProvider).sshById('ssh-lab')!.hostKeyFingerprint, isNull);
-  });
-
-  testWidgets('a relay host seen for the first time is confirmed by fingerprint', (tester) async {
-    final c = await pump(tester, const _Launcher());
-    await c.read(relayAccountProvider.future);
-    await openSheet(tester);
-    await tester.tap(find.text('家里的 Mac'));
-    await frames(tester);
-    expect(find.text('信任这台主机？'), findsOneWidget);
-    expect(find.text('3F2A 9C41 07BE'), findsOneWidget);
-    await tester.tap(find.text('信任并连接'));
-    await frames(tester);
-    expect(relay.approved, {'mac'});
-    expect(c.read(activeHostProvider), const HostRef.relay('mac'));
-  });
-
-  testWidgets('self-hosted server: email + password sign-in switches the server', (tester) async {
-    relay.user = null;
-    final c = await pump(tester, const RemoteScreen());
-    await frames(tester, 3);
-    await tester.tap(find.text('自建服务器 · 邮箱登录'));
-    await frames(tester);
-    await tester.enterText(find.byType(TextField).at(0), 'remote.example.com');
-    await tester.enterText(find.byType(TextField).at(1), 'me@example.com');
-    await tester.enterText(find.byType(TextField).at(2), 'pw');
-    await tester.tap(find.widgetWithText(FilledButton, '登录'));
-    await frames(tester);
-    expect(relay.passwordLogins, [('me@example.com', 'pw')]);
-    expect(c.read(relayServerProvider), 'https://remote.example.com');
-    expect(find.text('自建服务器'), findsNothing, reason: 'sheet closed');
-  });
-
-  testWidgets('self-hosted server: a bad address is explained, nothing is sent', (tester) async {
-    relay.user = null;
-    await pump(tester, const RemoteScreen());
-    await frames(tester, 3);
-    await tester.tap(find.text('自建服务器 · 邮箱登录'));
-    await frames(tester);
-    await tester.enterText(find.byType(TextField).at(0), 'http://public.example.com');
-    await tester.enterText(find.byType(TextField).at(1), 'me@example.com');
-    await tester.enterText(find.byType(TextField).at(2), 'pw');
-    await tester.tap(find.widgetWithText(FilledButton, '登录'));
-    await frames(tester);
-    expect(find.textContaining('服务器地址无效'), findsOneWidget);
-    expect(relay.passwordLogins, isEmpty);
   });
 
   group('where the password is kept', () {
