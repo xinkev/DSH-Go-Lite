@@ -152,6 +152,10 @@ class _DeepSeekCard extends ConsumerWidget {
         title: 'DeepSeek',
         subtitle: ready ? l10n.engineFieldConfigured : l10n.engineProvidersNotConfiguredHere,
         trailing: ProviderDot(ready ? StatusTone.ok : StatusTone.idle),
+        // The DeepSeek account is the app's own, not the host's: the way in
+        // stays here whichever host is connected.
+        chevron: true,
+        onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const AccountPage())),
       );
     } else {
       final account = ref.watch(accountProvider);

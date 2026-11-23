@@ -411,9 +411,10 @@ class _SettingsOverviewState extends ConsumerState<SettingsOverview> {
         warn = link.tone == StatusTone.error || link.tone == StatusTone.warn;
         hostLink = link.label;
       case _ when providerCount > 0:
+        // Not "Providers" again: the row below already says that.
         leading = const OverviewGlyph(AppIcons.providers);
-        title = l10n.hubSettingsProviders;
-        subtitle = l10n.engineProvidersSummary(providerCount, providerReady);
+        title = l10n.engineProvidersSummary(providerCount, providerReady);
+        subtitle = l10n.viewModelManageProviders;
       case _ when settings.hasApiKey:
         leading = const OverviewGlyph(AppIcons.apiKey);
         title = l10n.hubSettingsApiKey;
