@@ -172,8 +172,8 @@ internal data class RuntimeRelease(
                 throw RuntimeReleaseRejected("release_invalid", "runtime layer '" + name + "' is neither required nor optional")
             }
             val available = json.optBoolean("available", false)
-            val file = json.optString("file").ifEmpty { null }
-            val digest = json.optString("sha256").ifEmpty { null }
+            val file = json.nullableString("file")
+            val digest = json.nullableString("sha256")
             if (!available) {
                 if (file != null || digest != null || json.optLong("bytes", 0) != 0L) {
                     throw RuntimeReleaseRejected("release_invalid", "unavailable runtime layer '" + name + "' carries a file")
@@ -189,7 +189,7 @@ internal data class RuntimeRelease(
             ) {
                 throw RuntimeReleaseRejected("release_invalid", "available runtime layer '" + name + "' is incomplete")
             }
-            val installsInto = json.optString("installsInto").trimEnd('/')
+            val installsInto = json.nullableString("installsInto")?.trimEnd('/') ?: ""
             if (!installsInto.startsWith("/") || installsInto == "/" || installsInto.contains("..")) {
                 throw RuntimeReleaseRejected("release_invalid", "optional layer '" + name + "' has no valid installsInto")
             }
@@ -228,8 +228,8 @@ internal data class RuntimeRelease(
                 throw RuntimeReleaseRejected("release_invalid", "unknown runtime layer '" + name + "'")
             }
             if (json == null) throw RuntimeReleaseRejected("release_invalid", "runtime release has no '" + name + "' layer")
-            val file = json.optString("file")
-            val digest = json.optString("sha256")
+            val file = json.nullableString("file") ?: ""
+            val digest = json.nullableString("sha256") ?: ""
             val bytes = json.optLong("bytes", -1)
             val uncompressed = json.optLong("uncompressedBytes", -1)
             if (json.optString("role") != "required") {
@@ -328,4 +328,10 @@ internal class InstalledRuntimeStore(private val base: File) {
             java.nio.file.StandardCopyOption.REPLACE_EXISTING,
         )
     }
+}
+
+/** JSON null, an absent key and "" all mean "no value"; org.json's optString says "null". */
+private fun JSONObject.nullableString(name: String): String? {
+    if (!has(name) || isNull(name)) return null
+    return optString(name).trim().ifEmpty { null }
 }
