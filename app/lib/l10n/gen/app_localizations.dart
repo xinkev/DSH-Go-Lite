@@ -28250,6 +28250,12 @@ abstract class L10n {
   /// **'这台手机打不开相机'**
   String get remoteScanQrUnavailable;
 
+  /// No description provided for @remoteScanQrPermissionDenied.
+  ///
+  /// In zh, this message translates to:
+  /// **'这个 App 的相机权限被关掉了。到系统设置里允许相机，再回来打开扫码'**
+  String get remoteScanQrPermissionDenied;
+
   /// No description provided for @remotePairEntry.
   ///
   /// In zh, this message translates to:

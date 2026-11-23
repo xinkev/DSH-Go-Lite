@@ -192,7 +192,7 @@ class MainActivity : FlutterActivity() {
         appChannel!!.setMethodCallHandler { call, result ->
             when (call.method) {
                 "getTimeZoneId" -> result.success(TimeZone.getDefault().id)
-                "initializePairingScanner" -> {
+                "initializeBarcodeScanner" -> {
                     try {
                         io.github.ccch1mneyyy.dsh_app.mlkit.MlKitRuntime.initialize(applicationContext)
                         result.success(null)

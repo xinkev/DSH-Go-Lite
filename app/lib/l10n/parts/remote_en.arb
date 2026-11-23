@@ -519,5 +519,6 @@
   "remoteScanQr": "Scan QR code",
   "remoteScanQrHint": "Point at the QR code shown by dsh-pocket or dsh web; it is added and connected automatically.",
   "remoteScanQrInvalid": "That is not a usable pairing code",
-  "remoteScanQrUnavailable": "The camera cannot start on this phone"
+  "remoteScanQrUnavailable": "The camera cannot start on this phone",
+  "remoteScanQrPermissionDenied": "Camera access is off for this app. Allow the camera in system settings, then open the scanner again"
 }

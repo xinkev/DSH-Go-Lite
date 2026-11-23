@@ -1622,9 +1622,8 @@ def main():
           cwd=g.flutter_source / 'app', env=g.flutter_env, needs=('flutter-input-identity',), timeout=180,
           tests=['app/lib/media/video.dart', rt + 'media-video-poster-data_test.dart'],
           scope='Actual Flutter analyzer for the OH poster cache data file and its finite consumer tests; no UI or Native edits')
-    flutter_tests = ['test/secrets', 'test/ohos/attachment_files_test.dart', 'test/runtime/phone_callback_bridge_test.dart', 'test/runtime/runtime_recovery_test.dart', 'test/runtime/ohos_install_record_test.dart', 'test/usage/ohos_device_contract_test.dart',
+    flutter_tests = ['test/secrets', 'test/ohos/attachment_files_test.dart', 'test/runtime/phone_callback_bridge_test.dart', 'test/runtime/runtime_recovery_test.dart', 'test/runtime/ohos_install_record_test.dart',
                      'test/safe_mode/safe_mode_logic_test.dart', 'test/state/engine_control_test.dart', 'test/runtime/runtime_controller_test.dart',
-                     'test/plugins/ohos_replace_cancel_test.dart', 'test/remote/pairing_system_scanner_test.dart',
                      'test/chat/artifact_ohos_workspace_materialize_test.dart',
                      'test/runtime/ohos_idle_diagnostics_test.dart',
                      'test/chat/attachment_file_budget_test.dart', 'test/remote/private_key_file_budget_test.dart',

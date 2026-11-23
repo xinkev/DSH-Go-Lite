@@ -16198,6 +16198,10 @@ class L10nEn extends L10n {
   String get remoteScanQrUnavailable => 'The camera cannot start on this phone';
 
   @override
+  String get remoteScanQrPermissionDenied =>
+      'Camera access is off for this app. Allow the camera in system settings, then open the scanner again';
+
+  @override
   String get remotePairEntry => 'Pair a computer by scanning';
 
   @override

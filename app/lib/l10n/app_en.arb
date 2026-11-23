@@ -4693,6 +4693,7 @@
   "remoteScanQrHint": "Point at the QR code shown by dsh-pocket or dsh web; it is added and connected automatically.",
   "remoteScanQrInvalid": "That is not a usable pairing code",
   "remoteScanQrUnavailable": "The camera cannot start on this phone",
+  "remoteScanQrPermissionDenied": "Camera access is off for this app. Allow the camera in system settings, then open the scanner again",
   "remotePairEntry": "Pair a computer by scanning",
   "remotePairEntryHint": "Scan the code the Remote plugin shows on your computer. No Remote account needed; sign in to DeepSeek first.",
   "remotePairAddComputer": "Add a computer by scanning",

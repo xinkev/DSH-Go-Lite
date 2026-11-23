@@ -15363,6 +15363,9 @@ class L10nZh extends L10n {
   String get remoteScanQrUnavailable => '这台手机打不开相机';
 
   @override
+  String get remoteScanQrPermissionDenied => '这个 App 的相机权限被关掉了。到系统设置里允许相机，再回来打开扫码';
+
+  @override
   String get remotePairEntry => '扫码配对电脑';
 
   @override

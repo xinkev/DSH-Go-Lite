@@ -3,7 +3,7 @@ package io.github.ccch1mneyyy.dsh_app.mlkit
 import android.content.Context
 import com.google.mlkit.common.MlKit
 
-/** Called only when opening the pairing scanner or admitting an enabled OCR job. */
+/** Called only when opening the barcode scanner or admitting an enabled OCR job. */
 internal object MlKitRuntime {
     private val initialization = MlKitInitialization()
 
