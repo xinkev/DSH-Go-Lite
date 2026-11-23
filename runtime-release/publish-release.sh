@@ -5,7 +5,7 @@
 #   runtime-release/publish-release.sh runtime/out/arm64-v8a/assets/runtime [--latest]
 #
 # The first argument is the directory written by a RUNTIME_LAYERS=1 build
-# (manifest.json + base-<abi>.tar.xz + engine-<abi>.tar.xz). This script:
+# (manifest.json + base/engine/office-<abi>.tar.xz). This script:
 #   1. rewrites the build manifest into the release shape the app fetches,
 #   2. verifies every uploaded file's sha256 against the build manifest,
 #   3. writes SHA256SUMS and release notes,
@@ -22,7 +22,7 @@ DRY_RUN=0
 LATEST=0
 
 usage() {
-  sed -n '2,16p' "${BASH_SOURCE[0]}" | sed 's/^# {0,1}//'
+  sed -n '2,16p' "${BASH_SOURCE[0]}" | sed 's/^# //'
 }
 
 die() { printf 'publish-release: %s\n' "$*" >&2; exit 1; }
@@ -52,10 +52,18 @@ trap 'rm -rf "$STAGE"' EXIT
 # Release-shaped manifest; this also verifies the layer files against the build manifest.
 python3 -I "$HERE/release-manifest.py" --artifacts "$ARTIFACTS" --out "$STAGE/manifest.json" >&2
 VERSION="$(python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1]))["runtimeVersion"])' "$STAGE/manifest.json")"
-BASE_FILE="$(python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1]))["layers"]["base"]["file"])' "$STAGE/manifest.json")"
-ENGINE_FILE="$(python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1]))["layers"]["engine"]["file"])' "$STAGE/manifest.json")"
-cp "$ARTIFACTS/$BASE_FILE" "$STAGE/$BASE_FILE"
-cp "$ARTIFACTS/$ENGINE_FILE" "$STAGE/$ENGINE_FILE"
+LAYER_FILES=()
+while IFS= read -r name; do
+  LAYER_FILES+=("$name")
+  cp "$ARTIFACTS/$name" "$STAGE/$name"
+done < <(python3 -I - "$STAGE/manifest.json" <<'PYEOF'
+import json, sys
+m = json.load(open(sys.argv[1]))
+for name in m["files"]:
+    if name not in ("manifest.json", "SHA256SUMS"):
+        print(name)
+PYEOF
+)
 
 # SHA256SUMS covers every uploaded asset except itself, sorted by file name.
 ( cd "$STAGE" && python3 -I - <<'PYEOF'
@@ -90,13 +98,22 @@ print("- Install unit: %s (%d files, %.1f MiB compressed)" % (
 for kind in unit["requiredLayers"]:
     layer = m["layers"][kind]
     print("  - %s: %s, %.1f MiB" % (kind, layer["file"], layer["bytes"] / 2**20))
-print("- Optional layers office/python: not shipped in this release")
+for kind, layer in m["layers"].items():
+    if layer["role"] != "optional":
+        continue
+    if layer["available"]:
+        print("  - %s (optional, installs into %s): %s, %.1f MiB" % (
+            kind, layer["installsInto"], layer["file"], layer["bytes"] / 2**20))
+    else:
+        print("  - %s (optional): not shipped in this release" % kind)
 if m.get("prunedModules"):
     print("- Pruned at build: " + ", ".join(sorted({x["name"] for x in m["prunedModules"]})))
 print("- The app installs base + engine atomically and may reuse the same base for an engine-only update.")
 PYEOF
 
-FILES=("$STAGE/manifest.json" "$STAGE/$BASE_FILE" "$STAGE/$ENGINE_FILE" "$STAGE/SHA256SUMS")
+FILES=("$STAGE/manifest.json")
+for name in "${LAYER_FILES[@]}"; do FILES+=("$STAGE/$name"); done
+FILES+=("$STAGE/SHA256SUMS")
 CMD=(gh release create "$VERSION" --repo "$REPO" --title "Runtime $VERSION"
      --notes-file "$STAGE/RELEASE_NOTES.md")
 [[ "$LATEST" == 1 ]] && CMD+=(--latest)

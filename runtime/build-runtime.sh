@@ -18,7 +18,8 @@
 #
 # Outputs (consumed by app/android/app/build.gradle.kts flavors):
 #   runtime/out/<abi>/assets/runtime/rootfs-<abi>.tar.xz
-#     or base-<abi>.tar.xz + engine-<abi>.tar.xz when RUNTIME_LAYERS=1
+#     or base-<abi>.tar.xz + engine-<abi>.tar.xz + optional office-<abi>.tar.xz
+#     when RUNTIME_LAYERS=1
 #   runtime/out/<abi>/assets/runtime/manifest.json      (versions, hashes, launch template)
 #   runtime/out/<abi>/assets/runtime/licenses/...
 #   runtime/out/<abi>/jniLibs/<abi>/lib{proot,proot-loader,talloc,android-shmem}.so
@@ -489,8 +490,8 @@ PYEOF
   local -a archives=("$assets/rootfs-$abi.tar.$COMPRESS")
   local -a archive_args=(--out "${archives[0]}")
   if [[ "$RUNTIME_LAYERS" == 1 ]]; then
-    archives=("$assets/base-$abi.tar.$COMPRESS" "$assets/engine-$abi.tar.$COMPRESS")
-    archive_args=(--base-out "${archives[0]}" --engine-out "${archives[1]}" --base-cache "$BASE_LAYER_CACHE")
+    archives=("$assets/base-$abi.tar.$COMPRESS" "$assets/engine-$abi.tar.$COMPRESS" "$assets/office-$abi.tar.$COMPRESS")
+    archive_args=(--base-out "${archives[0]}" --engine-out "${archives[1]}" --office-out "${archives[2]}" --base-cache "$BASE_LAYER_CACHE")
   fi
   local -a prune=(); [[ "$PRUNE_DEV_METADATA" == 1 ]] && prune=(--prune-dev-metadata)
   log "assembling rootfs ($COMPRESS)"

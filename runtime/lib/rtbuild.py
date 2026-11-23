@@ -41,6 +41,16 @@ ENGINE_PATHS = [
     "opt/dsh", "opt/node", "opt/dsh-go", "etc/dsh-app",
     "etc/profile.d/dsh-app.sh", "usr/local/lib/node_modules/pnpm",
 ] + ["usr/local/bin/" + name for name in ("dsh", "node", "npm", "npx", "corepack", *PNPM_BINS)]
+# Optional app-owned layers cut out of the engine layer into their own archive. They are not part
+# of the required install unit: the app downloads one only when the user asks for the feature, and
+# it installs into the same DSH prefix on top of base + engine.
+OPTIONAL_LAYERS = {
+    "office": {
+        "roots": ["opt/dsh/node_modules/@deepseek-ai/libreoffice-kit-wasm"],
+        "installsInto": "/opt/dsh",
+        "requires": ["base", "engine"],
+    },
+}
 
 
 def upgrade_descriptor(abi, ubuntu_version, base_sha, deb_shas, python_sha):
@@ -1242,19 +1252,39 @@ def write_archive(entries, out, args, *, layered=False):
     }
 
 
-def partition_entries(entries):
-    """Split the final normalized tree; shared ancestors are identical dirs."""
-    def owned(path):
-        return any(path == root or path.startswith(root + "/") for root in ENGINE_PATHS)
+def partition_entries(entries, optional_names=()):
+    """Split the final tree into base, engine, and the named optional layers.
 
-    base = {p: e for p, e in entries.items() if not owned(p)}
-    engine = {p: e for p, e in entries.items() if owned(p)}
+    Optional layers are carved out of the engine slice (their parent dirs stay in the engine so
+    each archive extracts on its own). An optional layer with no matching files aborts the build:
+    a renamed package must not silently fall back into the engine archive.
+    """
+    def owned(path, roots):
+        return any(path == root or path.startswith(root + "/") for root in roots)
+
+    base = {p: e for p, e in entries.items() if not owned(p, ENGINE_PATHS)}
+    engine = {p: e for p, e in entries.items() if owned(p, ENGINE_PATHS)}
+    optional = {}
+    for name in optional_names:
+        roots = OPTIONAL_LAYERS[name]["roots"]
+        layer = {p: e for p, e in engine.items() if owned(p, roots)}
+        if not layer:
+            raise SystemExit("optional %s layer is empty: %s not in the DSH tree"
+                             % (name, ", ".join(roots)))
+        for path in list(layer):
+            parent = posixpath.dirname(path)
+            while parent:
+                layer[parent] = entries[parent]
+                parent = posixpath.dirname(parent)
+        # Only the package subtree leaves the engine; injected parents stay in both archives.
+        engine = {p: e for p, e in engine.items() if not owned(p, roots)}
+        optional[name] = layer
     for path in list(engine):
         parent = posixpath.dirname(path)
         while parent:
             engine[parent] = entries[parent]
             parent = posixpath.dirname(parent)
-    return base, engine
+    return base, engine, optional
 
 
 def archive_file(entries, path):
@@ -1420,11 +1450,14 @@ def cmd_assemble(args):
     if layered:
         if args.out or not (args.base_out and args.engine_out and args.base_cache):
             raise SystemExit("use --base-out, --engine-out and --base-cache together, without --out")
-        for kind, out in (("base", args.base_out), ("engine", args.engine_out)):
-            expected = "%s-%s.tar.%s" % (kind, abi, args.compress)
-            if os.path.basename(out) != expected:
-                raise SystemExit("layer output must use basename " + expected)
-    elif not args.out or args.base_cache:
+        expected = {"base": args.base_out, "engine": args.engine_out}
+        if args.office_out:
+            expected["office"] = args.office_out
+        for kind, out in expected.items():
+            want = "%s-%s.tar.%s" % (kind, abi, args.compress)
+            if os.path.basename(out) != want:
+                raise SystemExit("layer output must use basename " + want)
+    elif not args.out or args.base_cache or args.office_out:
         raise SystemExit("use --out for a single archive, or the paired layer outputs with --base-cache")
     machine = ABI[abi]["machine"]
     entries = {}
@@ -1745,19 +1778,33 @@ def cmd_assemble(args):
         elif e.kind == "file":
             e.mode = (e.mode & 0o777) | 0o600
 
-    # 7. The same normalized tree feeds either the legacy archive or both layers.
+    # 7. The same normalized tree feeds either the legacy archive, the paired required layers, or
+    # those layers plus optional ones cut out of the engine slice.
     if layered:
-        base, engine = partition_entries(entries)
+        optional_names = ["office"] if args.office_out else []
+        base, engine, optional = partition_entries(entries, optional_names)
         compatibility = base_compatibility(base, with_python=bool(args.python))
         runtime_info["baseCompatibility"] = compatibility
         entries["etc/dsh-app/runtime.json"].data = (json.dumps(runtime_info, indent=2, sort_keys=True) + "\n").encode()
         base_stats, cache = write_base_archive(base, args.base_out, args, sources)
         engine_stats = write_archive(engine, args.engine_out, args, layered=True)
+        layers = {"base": layer_descriptor(base_stats), "engine": layer_descriptor(engine_stats)}
+        optional_bytes = optional_tar_bytes = 0
+        for name in optional_names:
+            spec = OPTIONAL_LAYERS[name]
+            stats = write_archive(optional[name], getattr(args, name + "_out"), args, layered=True)
+            descriptor = layer_descriptor(stats)
+            descriptor.update(role="optional", installsInto=spec["installsInto"],
+                              requires=spec["requires"],
+                              paths=["/" + root for root in spec["roots"]])
+            layers[name] = descriptor
+            optional_bytes += stats["archiveBytes"]
+            optional_tar_bytes += stats["tarBytes"]
         report.update(entry_statistics(entries))
-        report.update(layers={"base": layer_descriptor(base_stats), "engine": layer_descriptor(engine_stats)},
-                      baseCompatibility=compatibility, baseCache=cache,
+        report.update(layers=layers, baseCompatibility=compatibility, baseCache=cache,
                       archiveBytes=base_stats["archiveBytes"] + engine_stats["archiveBytes"],
-                      tarBytes=base_stats["tarBytes"] + engine_stats["tarBytes"])
+                      tarBytes=base_stats["tarBytes"] + engine_stats["tarBytes"],
+                      optionalArchiveBytes=optional_bytes, optionalTarBytes=optional_tar_bytes)
     else:
         report.update(write_archive(entries, args.out, args))
     counts = report["counts"]
@@ -1770,6 +1817,9 @@ def cmd_assemble(args):
         (args.base_out + " + " + args.engine_out) if layered else args.out,
         counts["file"], counts["dir"], counts["symlink"], file_bytes / 2**20,
         report["archiveBytes"] / 2**20))
+    if report.get("layers", {}).get("office"):
+        print("optional office layer: %.1f MiB archive" % (
+            report["layers"]["office"]["bytes"] / 2**20))
     if layered:
         print("base cache %s: %s%s" % (cache["status"], cache["key"],
                                       " (" + cache["reason"] + ")" if "reason" in cache else ""))
@@ -1874,8 +1924,11 @@ def cmd_manifest(args):
     v = json.loads(args.versions)
     layered = "layers" in report
     if layered:
-        if set(report["layers"]) != {"base", "engine"} or "archive" in report or "archiveSha256" in report:
-            raise SystemExit("layer report must contain only base and engine, without a single archive")
+        required = {"base", "engine"}
+        extra = set(report["layers"]) - required - set(OPTIONAL_LAYERS)
+        if not required <= set(report["layers"]) or extra or "archive" in report or "archiveSha256" in report:
+            raise SystemExit("layer report must contain base and engine plus optional layers %s, "
+                             "without a single archive" % sorted(OPTIONAL_LAYERS))
         for kind, layer in report["layers"].items():
             names = {"%s-%s.tar.%s" % (kind, args.abi, suffix) for suffix in ("xz", "gz")}
             if layer["asset"] not in names:
@@ -1999,6 +2052,8 @@ def main():
     p.add_argument("--out", help="legacy single rootfs archive")
     p.add_argument("--base-out", help="base-<abi>.tar.xz or .tar.gz; paired with --engine-out")
     p.add_argument("--engine-out", help="engine-<abi>.tar.xz or .tar.gz; paired with --base-out")
+    p.add_argument("--office-out", help="optional office-<abi>.tar.xz or .tar.gz; cuts the office "
+                                        "package out of the engine layer into its own archive")
     p.add_argument("--base-cache", help="explicit directory for validated base archive reuse")
     p.add_argument("--report", required=True)
     p.add_argument("--runtime-info", required=True)

@@ -160,6 +160,7 @@ class RuntimeConsumers(unittest.TestCase):
             else:
                 self.assertEqual(args, ['--base-out', env['assets'] + '/base-arm64-v8a.tar.xz',
                                         '--engine-out', env['assets'] + '/engine-arm64-v8a.tar.xz',
+                                        '--office-out', env['assets'] + '/office-arm64-v8a.tar.xz',
                                         '--base-cache', env['BASE_LAYER_CACHE']])
         env['RUNTIME_LAYERS'] = 'invalid'
         result = subprocess.run(['bash', str(ROOT / 'runtime/build-runtime.sh')], env=env,

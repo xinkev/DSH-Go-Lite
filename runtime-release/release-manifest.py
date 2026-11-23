@@ -20,9 +20,10 @@ import re
 import sys
 
 OPTIONAL_LAYERS = {
-    "office": "Office document conversion (libreoffice-kit-wasm); not shipped yet",
+    "office": "Office document conversion (libreoffice-kit-wasm); downloaded only when enabled",
     "python": "Bundled Python 3 for user scripts; not shipped yet",
 }
+REQUIRED_LAYERS = ("base", "engine")
 
 
 def sha256_file(path):
@@ -66,12 +67,14 @@ def main():
         raise SystemExit("runtimeVersion does not start with a runtime major (rNN): %r" % version)
     runtime_major = match.group(1)
 
-    if set(built["layers"]) != {"base", "engine"}:
-        raise SystemExit("build manifest must carry exactly the base and engine layers")
+    extra = set(built["layers"]) - set(REQUIRED_LAYERS) - set(OPTIONAL_LAYERS)
+    if not set(REQUIRED_LAYERS) <= set(built["layers"]) or extra:
+        raise SystemExit("build manifest must carry base and engine plus optional layers %s, not %s"
+                         % (sorted(OPTIONAL_LAYERS), sorted(extra)))
 
     total = 0
     layers = {}
-    for kind in ("base", "engine"):
+    for kind in REQUIRED_LAYERS:
         layer = built["layers"][kind]
         name = layer.get("asset")
         if not name or os.path.basename(name) != name:
@@ -90,19 +93,49 @@ def main():
             "file": name,
             "sha256": actual,
             "bytes": actual_size,
+            "tarSha256": layer.get("tarSha256"),
             "uncompressedBytes": layer.get("uncompressedBytes"),
             "role": "required",
         }
         total += actual_size
 
     for kind, note in OPTIONAL_LAYERS.items():
+        layer = built["layers"].get(kind)
+        if layer is None:
+            layers[kind] = {
+                "file": None,
+                "sha256": None,
+                "bytes": 0,
+                "tarSha256": None,
+                "uncompressedBytes": 0,
+                "role": "optional",
+                "available": False,
+                "note": note,
+            }
+            continue
+        name = layer.get("asset")
+        if not name or os.path.basename(name) != name:
+            raise SystemExit("invalid %s layer file name: %r" % (kind, name))
+        path = os.path.join(artifacts, name)
+        if not os.path.isfile(path):
+            raise SystemExit("missing %s layer: %s" % (kind, path))
+        actual = sha256_file(path)
+        actual_size = os.path.getsize(path)
+        if actual != layer.get("sha256") or actual_size != layer.get("bytes"):
+            raise SystemExit("%s layer does not match the build manifest (%s: sha256 %s/%s, "
+                             "bytes %s/%s)" % (kind, name, actual, layer.get("sha256"),
+                                               actual_size, layer.get("bytes")))
         layers[kind] = {
-            "file": None,
-            "sha256": None,
-            "bytes": 0,
-            "uncompressedBytes": 0,
+            "file": name,
+            "sha256": actual,
+            "bytes": actual_size,
+            "tarSha256": layer.get("tarSha256"),
+            "uncompressedBytes": layer.get("uncompressedBytes"),
             "role": "optional",
-            "available": False,
+            "available": True,
+            "installsInto": layer.get("installsInto"),
+            "requires": layer.get("requires") or list(REQUIRED_LAYERS),
+            "paths": layer.get("paths") or [],
             "note": note,
         }
 
@@ -136,15 +169,19 @@ def main():
             "note": "Installing app needs manifest schema >= minAppSchema and must pin runtimeMajor; "
                     "baseCompatibility.baseId identifies a base the app may reuse for an engine-only update.",
         },
-        "files": ["manifest.json", layers["base"]["file"], layers["engine"]["file"], "SHA256SUMS"],
+        "files": ["manifest.json"] + [layers[kind]["file"] for kind in REQUIRED_LAYERS]
+                 + [l["file"] for l in layers.values() if l["role"] == "optional" and l["available"]]
+                 + ["SHA256SUMS"],
     }
 
     with open(args.out + ".tmp", "w") as f:
         json.dump(release, f, indent=2)
         f.write("\n")
     os.replace(args.out + ".tmp", args.out)
-    print("%s %s (%s): %.1f MiB required, %d layer file(s)" % (
-        version, abi, runtime_major, total / 2**20, 2))
+    print("%s %s (%s): %.1f MiB required, optional: %s" % (
+        version, abi, runtime_major, total / 2**20,
+        ", ".join("%s %.1f MiB" % (kind, layers[kind]["bytes"] / 2**20)
+                  for kind in OPTIONAL_LAYERS if layers[kind]["available"]) or "none"))
 
 
 if __name__ == "__main__":

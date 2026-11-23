@@ -83,7 +83,7 @@ class LayerPackaging(unittest.TestCase):
         self.jni = self.root / 'jni.json'
         self.jni.write_text('{}')
 
-    def command(self, name, *, layered=True, with_python=True, compress='gz'):
+    def command(self, name, *, layered=True, with_python=True, compress='gz', office=False):
         out = self.root / name
         out.mkdir()
         command = [sys.executable, '-I', str(HERE / 'lib/rtbuild.py'), 'assemble',
@@ -97,6 +97,8 @@ class LayerPackaging(unittest.TestCase):
             command += ['--base-out', str(out / ('base-arm64-v8a.tar.' + compress)),
                         '--engine-out', str(out / ('engine-arm64-v8a.tar.' + compress)),
                         '--base-cache', str(self.root / 'cache')]
+            if office:
+                command += ['--office-out', str(out / ('office-arm64-v8a.tar.' + compress))]
         else:
             command += ['--out', str(out / ('rootfs.tar.' + compress))]
         return out, command
@@ -186,6 +188,32 @@ class LayerPackaging(unittest.TestCase):
             self.assertEqual(layer['tarSha256'], hashlib.sha256(tar).hexdigest())
             self.assertEqual(layer['uncompressedBytes'], sum(len(row[3]) for row in
                              members(out / layer['asset']).values() if row[3] is not None))
+
+    def test_office_layer_is_optional_and_split_out_of_engine(self):
+        package = self.root / 'dsh/node_modules/@deepseek-ai/libreoffice-kit-wasm'
+        (package / 'assets').mkdir(parents=True)
+        (package / 'package.json').write_text(
+            '{"name":"@deepseek-ai/libreoffice-kit-wasm","version":"1.0.0"}')
+        (package / 'assets/soffice.wasm').write_bytes(b'wasm fixture')
+        out, command = self.command('office', office=True)
+        result = subprocess.run(command, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        report = json.loads((out / 'report.json').read_text())
+        manifest = self.manifest(out)
+        root = 'opt/dsh/node_modules/@deepseek-ai/libreoffice-kit-wasm'
+        layer = manifest['layers']['office']
+        self.assertEqual(layer['role'], 'optional')
+        self.assertEqual(layer['requires'], ['base', 'engine'])
+        self.assertEqual(layer['installsInto'], '/opt/dsh')
+        self.assertEqual(layer['paths'], ['/' + root])
+        self.assertEqual(report['optionalArchiveBytes'], layer['bytes'])
+        engine = members(out / 'engine-arm64-v8a.tar.gz')
+        self.assertNotIn(root, engine)
+        self.assertFalse(any(path.startswith(root + '/') for path in engine))
+        office = members(out / 'office-arm64-v8a.tar.gz')
+        self.assertIn(root + '/assets/soffice.wasm', office)
+        self.assertEqual(manifest['rootfsBytes'],
+                         manifest['layers']['base']['bytes'] + manifest['layers']['engine']['bytes'])
 
     @unittest.skipUnless(shutil.which('xz'), 'xz is unavailable')
     def test_real_xz_layer_cli_and_manifest(self):
