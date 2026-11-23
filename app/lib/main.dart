@@ -11,6 +11,7 @@ import 'diagnostics/app_error_log.dart';
 import 'launch/launch_state.dart';
 import 'runtime/local_paths.dart';
 import 'state/locale_state.dart';
+import 'ui/common/build_failure_view.dart';
 import 'ui/common/third_party_licenses.dart';
 import 'ui/fx/metal/metal_shader.dart';
 import 'ui/fx/waves/distortion_wave.dart';
@@ -23,6 +24,9 @@ Future<void> _startApp() async {
   if (!frameProbeEnabled) SteadyFrameBinding();
   WidgetsFlutterBinding.ensureInitialized();
   appErrorCapture.install();
+  // Flutter's own fallback for a failed subtree is a blank box (grey in release):
+  // keep the reason on screen so it can be read and reported.
+  ErrorWidget.builder = (details) => BuildFailureView(details: details);
   // The first frame is already in the chosen language (设置 → 语言), and is the launch
   // window's own picture (启动画面, lib/launch/launch_state.dart).
   await Future.wait([AppLanguageController.load(), LaunchController.begin(), LocalPaths.load()]);
