@@ -445,9 +445,7 @@ class _SessionList extends ConsumerWidget {
     final l10n = context.l10n;
     final sessions = ref.watch(sessionsProvider);
     final identity = ref.watch(readListIdentityProvider);
-    final workspace = ref.watch(selectedWorkspaceProvider);
-    // Null while loading, or while a selected workspace's members haven't
-    // arrived (rather than flash every conversation).
+    // Null while the list is still loading.
     final scope = ref.watch(drawerScopeProvider);
     if (scope == null) {
       if (ref.watch(readListLiveConnectionProvider) == null && !sessions.isLoading) return const _EmptyState();
@@ -466,7 +464,7 @@ class _SessionList extends ConsumerWidget {
     }
     if (scope.sessions.isEmpty && ref.watch(drawerViewProvider).folders.isEmpty) {
       if (scope.readOnly) return _Centered(child: Text(readListStatusText(scope.status)));
-      return workspace == null ? const _EmptyState() : const _WorkspaceEmptyState();
+      return const _EmptyState();
     }
     return DrawerConversationList(
       onNewChat: onClose,
@@ -710,26 +708,6 @@ class _Centered extends StatelessWidget {
             child: Padding(padding: const EdgeInsets.symmetric(vertical: 24), child: child),
           ),
         ),
-      ),
-    );
-  }
-}
-
-/// The selected workspace has no conversations yet.
-class _WorkspaceEmptyState extends ConsumerWidget {
-  const _WorkspaceEmptyState();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = context.l10n;
-    return _Centered(
-      child: EmptyView(
-        compact: true,
-        icon: AppIcons.folderOpen,
-        title: l10n.shellWorkspaceNoChats,
-        message: l10n.shellWorkspaceNewChatsHint,
-        actionLabel: l10n.remoteWorkspaceAllChats,
-        onAction: () => ref.read(workspacePrefsProvider.notifier).select(null),
       ),
     );
   }

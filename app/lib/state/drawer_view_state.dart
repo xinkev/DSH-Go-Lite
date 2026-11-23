@@ -528,10 +528,10 @@ final drawerScopeProvider = Provider<DrawerScope?>((ref) {
   final prefs = ref.watch(workspacePrefsProvider);
   final registry = ref.watch(workspacesProvider);
   final registryCurrent = cache.current(registry, identity, connection?.client);
-  final workspace = ref.watch(selectedWorkspaceProvider);
-  final key = prefs.loaded
-      ? readListKey(identity, ReadListKind.sessions, prefs.selected == null ? 'all' : 'workspace:${prefs.selected}')
-      : null;
+  // Every conversation of the host, grouped by its project. Which workspace a
+  // new chat starts in never narrows this list: picking one on the composer
+  // used to hide every other project, with no way back from the drawer.
+  final key = prefs.loaded ? readListKey(identity, ReadListKind.sessions, 'all') : null;
   final validSource = all != null && cache.current(all, identity, connection?.client);
   final activity = cache.refresh(ReadListKind.sessions, identity, all);
   final readOnly = sessions.isLoading || sessions.hasError || activity?.pending == true || activity?.failed == true;
@@ -540,36 +540,15 @@ final drawerScopeProvider = Provider<DrawerScope?>((ref) {
       : connection == null
       ? ReadListStatus.offline
       : ReadListStatus.updating;
-  final pending = ref.watch(workspaceFilterPendingProvider);
-  final workspaceKnown = prefs.selected == null || registryCurrent && registry.ready && workspace != null;
-  if (!validSource || pending || !workspaceKnown || cache.origin(all) != null && !prefs.loaded) {
+  if (!validSource || cache.origin(all) != null && !prefs.loaded) {
     final cached = cache.get<CachedSessions>(key);
     if (cached == null) return null;
-    // Once a registry is known, deletion or a changed path/membership version
-    // invalidates the old projection. Offline, only the exact last confirmed
-    // selected workspace may be shown; never fall back to all sessions.
-    if (prefs.selected != null &&
-        registryCurrent &&
-        registry.ready &&
-        (workspace == null || readWorkspaceVersion(workspace) != cached.workspaceVersion)) {
-      return null;
-    }
-    return DrawerScope(
-      sessions: cached.sessions,
-      bots: cached.bots,
-      scoped: cached.scoped,
-      readOnly: true,
-      status: status,
-      workspaceLabel: cached.workspaceLabel,
-    );
+    return DrawerScope(sessions: cached.sessions, bots: cached.bots, scoped: false, readOnly: true, status: status);
   }
-  // A workspace is selected but its members haven't arrived: wait rather
-  // than flash every conversation.
-  final members = workspace?.sessionIds.toSet();
   final archived = registryCurrent && registry.ready ? registry.archivedSessionIds.toSet() : const <String>{};
   final inScope = [
     for (final s in all)
-      if (!archived.contains(s.sessionId) && (members == null || members.contains(s.sessionId))) s,
+      if (!archived.contains(s.sessionId)) s,
   ];
   final botOwned = ref.watch(dsBotOwnedSessionsProvider);
   final result = DrawerScope(
@@ -581,22 +560,14 @@ final drawerScopeProvider = Provider<DrawerScope?>((ref) {
       for (final s in inScope)
         if (botOwned.contains(s.sessionId)) s,
     ],
-    scoped: workspace != null,
+    scoped: false,
     readOnly: readOnly,
     status: readOnly ? status : ReadListStatus.current,
-    workspaceLabel: workspace == null
-        ? null
-        : workspace.title.trim().isNotEmpty
-        ? workspace.title.trim()
-        : workspaceTitle(workspace),
   );
-  // A workspace baseline also supplies the archived set. Do not cache a
-  // partial pre-baseline session list or an unconfirmed membership.
+  // The registry supplies the archived set. Do not cache a partial
+  // pre-baseline session list.
   if (!result.readOnly && registry.ready && registryCurrent) {
-    final version = workspace == null ? null : readWorkspaceVersion(workspace);
-    if (workspace != null && version == null ||
-        result.sessions.length + result.bots.length > ReadListData.maxRows ||
-        (result.workspaceLabel?.length ?? 0) > 512) {
+    if (result.sessions.length + result.bots.length > ReadListData.maxRows) {
       cache.invalidate(key);
       return result;
     }
@@ -611,19 +582,11 @@ final drawerScopeProvider = Provider<DrawerScope?>((ref) {
     cache.put(
       key,
       all,
-      () => CachedSessions(
-        sessions: result.sessions,
-        bots: result.bots,
-        workspaceVersion: version,
-        scoped: result.scoped,
-        workspaceLabel: result.workspaceLabel,
-      ),
+      () => CachedSessions(sessions: result.sessions, bots: result.bots),
       // The registry can deliver an archive frame before SessionsController's
       // independent subscription. Include the actual visible membership, not
-      // only the original list revision or selected workspace version.
+      // only the original list revision.
       projection: ReadListIdentity.of([
-        version,
-        result.workspaceLabel,
         [for (final row in result.sessions) row.sessionId],
         [for (final row in result.bots) row.sessionId],
       ]).digest,

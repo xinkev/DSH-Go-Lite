@@ -1,7 +1,3 @@
-import 'package:crypto/crypto.dart';
-
-import 'dart:convert';
-
 import 'package:dsh_client/dsh_client.dart';
 
 import 'providers_state.dart' show ProvidersSnapshot, ProviderHealth;
@@ -167,52 +163,15 @@ final class CachedProviders extends ReadListData {
   };
 }
 
-/// Membership/path changes are a different workspace version. The digest
-/// does not preserve a workspace path in a cached display row.
-String? readWorkspaceVersion(Workspace workspace) {
-  if (workspace.workspaceId.length > 256 ||
-      workspace.path.length > 4096 ||
-      workspace.sessionIds.length > ReadListData.maxRows ||
-      workspace.sessionIds.any((id) => id.length > 256)) {
-    return null;
-  }
-  var units = 0;
-  for (final id in workspace.sessionIds) {
-    units += id.length;
-    if (units > ReadListData.maxIdentityUnits) return null;
-  }
-  return sha256
-      .convert(
-        utf8.encode(
-          jsonEncode([
-            workspace.workspaceId,
-            workspace.path,
-            workspace.updatedAt?.millisecondsSinceEpoch,
-            [...workspace.sessionIds]..sort(),
-          ]),
-        ),
-      )
-      .toString();
-}
-
 final class CachedSessions extends ReadListData {
-  CachedSessions({
-    required List<SessionSummary> sessions,
-    required List<SessionSummary> bots,
-    required this.workspaceVersion,
-    required this.scoped,
-    String? workspaceLabel,
-  }) : sessions = _copy(sessions),
-       bots = _copy(bots),
-       workspaceLabel = ReadListData.optional(workspaceLabel, 512) {
+  CachedSessions({required List<SessionSummary> sessions, required List<SessionSummary> bots})
+    : sessions = _copy(sessions),
+      bots = _copy(bots) {
     ReadListData.rows(sessions.length + bots.length);
   }
 
   final List<SessionSummary> sessions;
   final List<SessionSummary> bots;
-  final String? workspaceVersion;
-  final bool scoped;
-  final String? workspaceLabel;
 
   static List<SessionSummary> _copy(List<SessionSummary> source) {
     final budget = _DisplayBudget();
@@ -232,9 +191,6 @@ final class CachedSessions extends ReadListData {
 
   @override
   Map<String, Object?> toJson() => {
-    'workspaceVersion': workspaceVersion,
-    'scoped': scoped,
-    'workspaceLabel': workspaceLabel,
     'sessions': [
       for (final s in sessions) {'id': s.sessionId, 'title': s.title, 'updated': s.updatedAt.millisecondsSinceEpoch},
     ],

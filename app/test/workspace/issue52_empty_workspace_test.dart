@@ -1,6 +1,5 @@
 import 'package:dsh_app/l10n/l10n.dart';
 import 'package:dsh_app/state/workspaces_state.dart';
-import 'package:dsh_app/ui/common/empty_view.dart';
 import 'package:dsh_app/ui/shell/home_shell.dart';
 import 'package:dsh_app/ui/shell/sessions_drawer.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +17,7 @@ void main() {
   for (final locale in AppLocale.supported) {
     for (final brightness in Brightness.values) {
       for (final scale in [1.0, 1.3, 2.0]) {
-        testWidgets('empty workspace keeps old chats reachable: $locale $brightness ${scale}x', (tester) async {
+        testWidgets('a selected workspace hides no chat: $locale $brightness ${scale}x', (tester) async {
           AppLocale.use(locale);
           usePhoneSurface(tester);
           tester.view.physicalSize = const Size(320 * 2, 640 * 2);
@@ -44,27 +43,13 @@ void main() {
           await tester.pump();
           await tester.pump(const Duration(milliseconds: 800));
 
-          expect(find.text(appL10n.shellWorkspaceNewChatsHint), findsOneWidget);
-          expect(find.text('Earlier conversation'), findsNothing);
-          final action = find.descendant(
-            of: find.byType(EmptyView),
-            matching: find.widgetWithText(OutlinedButton, appL10n.remoteWorkspaceAllChats),
-          );
-          expect(action, findsOneWidget);
-          await tester.ensureVisible(action);
-          final bounds = tester.getRect(action);
-          expect(bounds.height, greaterThanOrEqualTo(48));
-          expect(bounds.left, greaterThanOrEqualTo(0));
-          expect(bounds.right, lessThanOrEqualTo(320));
-          expect(tester.takeException(), isNull);
-          await tester.tap(action);
-          await tester.pump();
-          await tester.pump(const Duration(milliseconds: 400));
-
-          final container = ProviderScope.containerOf(tester.element(find.byType(SessionsDrawer)));
-          expect(container.read(workspacePrefsProvider).selected, isNull);
+          // The workspace is where the next chat starts; the drawer still
+          // lists every conversation, so nothing needs an "all chats" escape.
           expect(find.text('Earlier conversation'), findsOneWidget);
-          // Changing a view filter must not rewrite historical membership.
+          expect(find.text(appL10n.remoteWorkspaceAllChats), findsNothing);
+          expect(find.text(appL10n.shellWorkspaceNoChats), findsNothing);
+          final container = ProviderScope.containerOf(tester.element(find.byType(SessionsDrawer)));
+          expect(container.read(workspacePrefsProvider).selected, workspace['workspaceId']);
           expect(workspace['sessionIds'], isEmpty);
           expect(host.argsOf('session/create'), isEmpty);
           expect(tester.takeException(), isNull);

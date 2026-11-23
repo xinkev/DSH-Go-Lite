@@ -1,8 +1,10 @@
-// Workspace flows against the in-memory host: the drawer's switcher filters
-// the list and pins conversations, 「添加工作区」 walks the folder picker
+// Workspace flows against the in-memory host: the workspace sheet chooses
+// where new chats start (never what the drawer lists) and pins conversations,
+// 「添加工作区」 walks the folder picker
 // (browse, new folder, add), the management page renames, pins, groups and
 // removes, and remote hosts only get what their carrier serves.
 
+import 'dart:async';
 import 'dart:ui' show Tristate;
 
 import 'package:dsh_app/state/connection_state.dart';
@@ -63,8 +65,10 @@ Finder _tileTitles() => find.descendant(of: find.byType(SessionTile), matching: 
 
 List<String> _titles(WidgetTester tester) => [for (final t in tester.widgetList<Text>(_tileTitles())) t.data!];
 
+/// Opens the workspace sheet the way the composer does; the drawer itself has
+/// no row for it (its list is always every project).
 Future<void> _openSwitcher(WidgetTester tester) async {
-  await tester.tap(find.descendant(of: find.byType(WorkspaceSwitcher), matching: find.byType(InkWell)));
+  unawaited(showWorkspaceSheet(tester.element(find.byType(SessionsDrawer)), onManage: () {}));
   await _settle(tester);
 }
 
@@ -72,21 +76,23 @@ void main() {
   setUp(() => SharedPreferences.setMockInitialValues({}));
 
   group('drawer', () {
-    testWidgets('the switcher filters the list; 全部对话 shows everything again', (tester) async {
+    testWidgets('picking a workspace sets where chats start, never what the drawer lists', (tester) async {
       final host = sampleWorkspaceHost();
       final container = await _pump(
         tester,
         HomeShell(chatBuilder: (_) => const SizedBox.expand(), initiallyOpen: true),
         _live(host),
       );
-      expect(find.text('全部对话'), findsOneWidget);
       expect(_titles(tester), hasLength(6));
 
       await _openSwitcher(tester);
       expect(find.text('工作区'), findsOneWidget);
-      await tester.tap(find.text('博客'));
+      // The drawer's project header carries the same name: tap the sheet's row.
+      await tester.tap(find.descendant(of: find.byType(WorkspaceSheet), matching: find.text('博客')));
       await _settle(tester);
-      expect(_titles(tester), ['写一篇 proot 入门']);
+
+      // Every project stays on screen: only the new chat's target changed.
+      expect(_titles(tester), hasLength(6));
       expect(container.read(workspacePrefsProvider).selected, 'ws-2');
 
       // New conversations now start there.
@@ -95,17 +101,18 @@ void main() {
         'request': {'workspaceId': 'ws-2'},
       });
 
-      // An empty workspace says so.
+      // Even an empty workspace hides nothing.
       await _openSwitcher(tester);
-      await tester.tap(find.text('notes'));
+      await tester.tap(find.descendant(of: find.byType(WorkspaceSheet), matching: find.text('notes')));
       await _settle(tester);
-      expect(find.text('这里还没有对话'), findsOneWidget);
+      expect(_titles(tester), hasLength(6));
+      expect(find.text('这里还没有对话'), findsNothing);
 
       await _openSwitcher(tester);
       await tester.tap(find.text('全部对话').last);
       await _settle(tester);
-      expect(_titles(tester), hasLength(6));
       expect(container.read(workspacePrefsProvider).selected, isNull);
+      expect(_titles(tester), hasLength(6));
     });
 
     testWidgets('long-press pins a conversation into 置顶 and unpins it', (tester) async {
@@ -131,17 +138,10 @@ void main() {
       expect(find.text('置顶'), findsNothing);
     });
 
-    testWidgets('no switcher while the host is offline', (tester) async {
-      await _pump(tester, HomeShell(chatBuilder: (_) => const SizedBox.expand(), initiallyOpen: true), [
-        sessionsProvider.overrideWith(() => FakeSessions(sampleSessions())),
-      ]);
-      expect(find.text('全部对话'), findsNothing);
-      expect(tester.getSize(find.byType(WorkspaceSwitcher)).height, 0);
-    });
   });
 
   group('添加工作区', () {
-    testWidgets('browse from 主目录, create a folder, add it; it becomes the shown workspace', (tester) async {
+    testWidgets('browse from 主目录, create a folder, add it; it becomes where new chats start', (tester) async {
       final host = sampleWorkspaceHost();
       final container = await _pump(
         tester,
@@ -195,8 +195,9 @@ void main() {
       final prefs = container.read(workspacePrefsProvider);
       expect(container.read(workspacesProvider).byId(prefs.selected)?.path, '/root/code/new-app');
       expect(prefs.recent, ['/root/code']);
-      // The drawer now shows the new, empty workspace.
-      expect(find.text('这里还没有对话'), findsOneWidget);
+      // New chats go there; the drawer keeps listing every conversation.
+      expect(_titles(tester), isNotEmpty);
+      expect(find.text('这里还没有对话'), findsNothing);
     });
 
     testWidgets('a typed path opens the browser there; a missing one stays put', (tester) async {
