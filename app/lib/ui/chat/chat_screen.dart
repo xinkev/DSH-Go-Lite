@@ -40,6 +40,7 @@ import '../../state/models_state.dart';
 import '../../state/new_chat_modes.dart';
 import '../../state/session_search.dart' show folderLabel;
 import '../../state/safe_mode_state.dart';
+import '../../state/send_mode_state.dart';
 import '../../state/session_modes.dart';
 import '../../state/sessions_state.dart';
 import '../../state/settings_state.dart';
@@ -602,9 +603,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
     }
   }
 
-  Future<void> _send({SendMode mode = SendMode.now}) async {
+  Future<void> _send({SendMode? mode}) async {
     // The `@` picker is open on a typed name: sending picks its marked row.
     if (_mentions.pickHighlighted()) return;
+    // Nothing picked here: the mode the send sheet remembers. 发送 while a
+    // turn runs then steers only if that is what was chosen last.
+    final SendMode chosen = mode ?? ref.read(sendModeProvider);
     final typed = _input.text.trim();
     final drafts = _drafts;
     if ((typed.isEmpty && drafts.isEmpty) || _creating != null || _syncWait != null) return;
@@ -640,7 +644,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
     if (sessionId == null || !ownsDraft() || _draftKey != sessionId) return;
     final chat = ref.read(chatProvider(sessionId).notifier);
     if (!ref.read(chatProvider(sessionId)).controlReady) {
-      if (mode == SendMode.interrupt) return;
+      if (chosen == SendMode.interrupt) return;
       // session/create can finish before its first follow snapshot. Keep
       // the draft visible while waiting; a timeout must not eat the message.
       final wait = Object();
@@ -680,11 +684,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
     if (current.singleQuestion case final request?
         when drafts.isEmpty &&
             quote == null &&
-            mode == SendMode.now &&
+            chosen == SendMode.now &&
             current.openApproval == null) {
       ok = await chat.answer(request, [QuestionAnswer(request.questions.single.id, custom: text)]);
     } else {
-      ok = await chat.send(text, attachments: drafts, mode: mode);
+      ok = await chat.send(text, attachments: drafts, mode: chosen);
       // A generation request, counted on top of its turn.
     }
     if (!ok && _sameHost(client)) _giveBack(sessionId, typed, drafts, quote: quote);
@@ -812,6 +816,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
     final text = _input.text;
     final drafts = _drafts;
     final quote = ref.read(composerQuoteProvider)[sessionId];
+    final stored = ref.read(sendModeProvider);
     final mode = await showAppSheet<SendMode>(
       context,
       builder: (sheet) => SafeArea(
@@ -835,6 +840,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
                     icon: icon,
                     title: title,
                     subtitle: subtitle,
+                    trailing: mode == stored
+                        ? Icon(AppIcons.selected, size: 20, color: Theme.of(context).colorScheme.primary)
+                        : null,
                     onTap: () => Navigator.pop(sheet, mode),
                   ),
               ],
@@ -857,6 +865,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with WidgetsBindingObse
         ref.read(composerQuoteProvider)[sessionId] != quote) {
       return;
     }
+    // Remembered for the next send too: 排队 should stay 排队.
+    await ref.read(sendModeProvider.notifier).set(mode);
     await _send(mode: mode);
   }
 
