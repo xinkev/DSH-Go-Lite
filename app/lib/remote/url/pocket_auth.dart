@@ -53,6 +53,39 @@ class PocketAuth {
     }
   }
 
+  /// Whether the address sits behind a pocket PIN gate.
+  ///
+  /// An unauthenticated request for `/` answers the gate's login form (it
+  /// posts to `/pocket-login`). A host whose LAN PIN is switched off answers
+  /// the app itself, and a plain `dsh web` answers its own sign-in page, so
+  /// neither asks the person for a pocket PIN.
+  static Future<bool> needsPin(
+    Uri baseUri, {
+    Map<String, String> headers = const {},
+    HttpClient? httpClient,
+    Duration timeout = const Duration(seconds: 20),
+  }) async {
+    final http = httpClient ?? (HttpClient()..connectionTimeout = timeout);
+    final ownsClient = httpClient == null;
+    try {
+      final request = await http.getUrl(_path(baseUri, ''));
+      headers.forEach(request.headers.set);
+      final response = await request.close().timeout(timeout);
+      final text = await response.transform(const Utf8Decoder(allowMalformed: true)).join().timeout(timeout);
+      return text.contains('pocket-login');
+    } on SocketException catch (error) {
+      throw PocketLoginException(PocketLoginReason.unreachable, detail: error.message);
+    } on TimeoutException catch (error) {
+      throw PocketLoginException(PocketLoginReason.unreachable, detail: '$error');
+    } on HttpException catch (error) {
+      throw PocketLoginException(PocketLoginReason.unreachable, detail: error.message);
+    } on HandshakeException catch (error) {
+      throw PocketLoginException(PocketLoginReason.unreachable, detail: error.message);
+    } finally {
+      if (ownsClient) http.close(force: true);
+    }
+  }
+
   /// Null when the proxy does not know the POST route (fallback is allowed).
   static Future<String?> _post(
     HttpClient http,

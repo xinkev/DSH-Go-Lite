@@ -134,6 +134,33 @@ void main() {
     );
   });
 
+  test('a gate is detected by its login form, with one unauthenticated GET', () async {
+    handle = (request) async => respond(request, body: '<form method="post" action="/pocket-login"><input name="token"></form>');
+
+    expect(await PocketAuth.needsPin(base), isTrue);
+    expect(seen, hasLength(1));
+    expect(seen.single.method, 'GET');
+    expect(seen.single.path, '/');
+    expect(seen.single.body, isEmpty);
+  });
+
+  test('a host without the gate (LAN PIN off, plain dsh web) asks for no PIN', () async {
+    handle = (request) async => respond(request, body: '<html><body>DSH</body></html>');
+
+    expect(await PocketAuth.needsPin(base), isFalse);
+    expect(seen, hasLength(1));
+  });
+
+  test('an unreachable host cannot be asked for a PIN', () async {
+    final port = server.port;
+    await server.close(force: true);
+
+    await expectLater(
+      PocketAuth.needsPin(Uri.parse('http://127.0.0.1:$port')),
+      throwsA(isA<PocketLoginException>().having((e) => e.retryable, 'retryable', isTrue)),
+    );
+  });
+
   test('an unreachable proxy is retryable', () async {
     final port = server.port;
     await server.close(force: true);

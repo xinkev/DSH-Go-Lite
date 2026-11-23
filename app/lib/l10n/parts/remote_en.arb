@@ -520,5 +520,10 @@
   "remoteScanQrHint": "Point at the QR code shown by dsh-pocket or dsh web; it is added and connected automatically.",
   "remoteScanQrInvalid": "That is not a usable pairing code",
   "remoteScanQrUnavailable": "The camera cannot start on this phone",
-  "remoteScanQrPermissionDenied": "Camera access is off for this app. Allow the camera in system settings, then open the scanner again"
+  "remoteScanQrPermissionDenied": "Camera access is off for this app. Allow the camera in system settings, then open the scanner again",
+  "remoteScanPinTitle": "Enter the access PIN",
+  "remoteScanPinHint": "The PIN shown on the computer next to the QR code. It is stored encrypted and only used for this address.",
+  "remoteScanPinWrong": "That PIN was not accepted",
+  "remoteScanPinLocked": "Too many wrong PINs. Wait a minute on the computer, then try again",
+  "remoteScanPinConnect": "Connect"
 }

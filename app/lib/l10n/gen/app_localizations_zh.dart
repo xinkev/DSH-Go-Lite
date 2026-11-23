@@ -15366,6 +15366,21 @@ class L10nZh extends L10n {
   String get remoteScanQrPermissionDenied => '这个 App 的相机权限被关掉了。到系统设置里允许相机，再回来打开扫码';
 
   @override
+  String get remoteScanPinTitle => '输入访问密码';
+
+  @override
+  String get remoteScanPinHint => '电脑上二维码旁边显示的那串密码。只用于这个地址，加密保存。';
+
+  @override
+  String get remoteScanPinWrong => '这串密码不对';
+
+  @override
+  String get remoteScanPinLocked => '密码错太多次了。等一分钟再试';
+
+  @override
+  String get remoteScanPinConnect => '连接';
+
+  @override
   String get remotePairEntry => '扫码配对电脑';
 
   @override

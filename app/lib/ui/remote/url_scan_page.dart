@@ -11,7 +11,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../l10n/l10n.dart';
 import '../../remote/url/barcode_scanner.dart';
-import '../../remote/url/url_host_config.dart';
+import '../../remote/url/pocket_auth.dart';
 import '../../state/hosts_state.dart';
 import '../theme/theme.dart';
 
@@ -68,16 +68,60 @@ class _UrlScanPageState extends ConsumerState<UrlScanPage> {
       _handled = false;
       return;
     }
-    final token = parsed.launchToken;
+    // The QR carries only the address: dsh-pocket keeps the PIN on the computer.
+    // A dsh web QR carries its own `?token=`, which then serves as both the
+    // pocket PIN and the engine token.
+    var pin = parsed.launchToken;
+    String? pocketCookie;
+    try {
+      if (pin == null && await PocketAuth.needsPin(parsed.baseUri)) {
+        final signedIn = await _askPin(parsed.baseUri);
+        if (signedIn == null) {
+          _handled = false;
+          return;
+        }
+        pin = signedIn.pin;
+        pocketCookie = signedIn.cookie;
+      }
+    } on PocketLoginException catch (failure) {
+      if (!mounted) return;
+      setState(() => _error = failure.retryable ? l10n.remoteUrlErrUnreachable : l10n.remoteScanPinWrong);
+      _handled = false;
+      return;
+    }
+    if (!mounted) return;
     final config = UrlHostConfig(id: UrlHostConfig.newId(), name: parsed.baseUri.host, baseUri: parsed.baseUri);
     setState(() => _saving = true);
     await ref.read(hostsProvider.notifier).saveUrl(
       config,
-      secrets: UrlHostSecrets(launchToken: token, pocketPin: token),
+      secrets: UrlHostSecrets(launchToken: parsed.launchToken, pocketPin: pin, pocketCookie: pocketCookie),
     );
-    if (!mounted) return;
     await _controller.stop();
+    if (!mounted) return;
     Navigator.of(context).pop(config);
+  }
+
+  /// Asks for the pocket PIN until it signs in, or the person gives up.
+  ///
+  /// A wrong PIN reopens the dialog with the reason; a locked or unreachable
+  /// host gives up, so the page can say what happened.
+  Future<({String pin, String cookie})?> _askPin(Uri baseUri) async {
+    String? error;
+    while (true) {
+      if (!mounted) return null;
+      final entered = await showDialog<String>(context: context, builder: (_) => _PinDialog(error: error));
+      if (entered == null || entered.isEmpty) return null;
+      try {
+        final cookie = await PocketAuth.login(baseUri, entered);
+        return (pin: entered, cookie: cookie);
+      } on PocketLoginException catch (failure) {
+        if (failure.retryable || !mounted) rethrow;
+        error = failure.reason == PocketLoginReason.locked
+            ? context.l10n.remoteScanPinLocked
+            : context.l10n.remoteScanPinWrong;
+      }
+    }
+    return null;
   }
 
   Widget _message(String text) => Center(
@@ -123,3 +167,56 @@ class _UrlScanPageState extends ConsumerState<UrlScanPage> {
     );
   }
 }
+
+/// The pocket access PIN, typed once and verified before the host is saved.
+class _PinDialog extends StatefulWidget {
+  const _PinDialog({this.error});
+
+  final String? error;
+
+  @override
+  State<_PinDialog> createState() => _PinDialogState();
+}
+
+class _PinDialogState extends State<_PinDialog> {
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _submit() => Navigator.of(context).pop(_controller.text.trim());
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return AlertDialog(
+      title: Text(l10n.remoteScanPinTitle),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(l10n.remoteScanPinHint),
+          const SizedBox(height: 12),
+          TextField(
+            controller: _controller,
+            autofocus: true,
+            obscureText: true,
+            autocorrect: false,
+            enableSuggestions: false,
+            keyboardType: TextInputType.visiblePassword,
+            decoration: InputDecoration(labelText: l10n.remoteUrlPocketPin, errorText: widget.error),
+            onSubmitted: (_) => _submit(),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(l10n.commonCancel)),
+        FilledButton(onPressed: _submit, child: Text(l10n.remoteScanPinConnect)),
+      ],
+    );
+  }
+}
+

@@ -1117,5 +1117,10 @@
   "remoteScanQrHint": "对着 dsh-pocket 或 dsh web 显示的二维码扫描，扫到就自动添加并连接。",
   "remoteScanQrInvalid": "这不是可用的配对二维码",
   "remoteScanQrUnavailable": "这台手机打不开相机",
-  "remoteScanQrPermissionDenied": "这个 App 的相机权限被关掉了。到系统设置里允许相机，再回来打开扫码"
+  "remoteScanQrPermissionDenied": "这个 App 的相机权限被关掉了。到系统设置里允许相机，再回来打开扫码",
+  "remoteScanPinTitle": "输入访问密码",
+  "remoteScanPinHint": "电脑上二维码旁边显示的那串密码。只用于这个地址，加密保存。",
+  "remoteScanPinWrong": "这串密码不对",
+  "remoteScanPinLocked": "密码错太多次了。等一分钟再试",
+  "remoteScanPinConnect": "连接"
 }

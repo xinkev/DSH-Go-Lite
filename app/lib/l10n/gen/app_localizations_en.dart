@@ -16202,6 +16202,22 @@ class L10nEn extends L10n {
       'Camera access is off for this app. Allow the camera in system settings, then open the scanner again';
 
   @override
+  String get remoteScanPinTitle => 'Enter the access PIN';
+
+  @override
+  String get remoteScanPinHint =>
+      'The PIN shown on the computer next to the QR code. It is stored encrypted and only used for this address.';
+
+  @override
+  String get remoteScanPinWrong => 'That PIN was not accepted';
+
+  @override
+  String get remoteScanPinLocked => 'Too many wrong PINs. Wait a minute on the computer, then try again';
+
+  @override
+  String get remoteScanPinConnect => 'Connect';
+
+  @override
   String get remotePairEntry => 'Pair a computer by scanning';
 
   @override

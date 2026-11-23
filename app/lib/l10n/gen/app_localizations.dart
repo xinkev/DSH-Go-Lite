@@ -28256,6 +28256,36 @@ abstract class L10n {
   /// **'这个 App 的相机权限被关掉了。到系统设置里允许相机，再回来打开扫码'**
   String get remoteScanQrPermissionDenied;
 
+  /// No description provided for @remoteScanPinTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'输入访问密码'**
+  String get remoteScanPinTitle;
+
+  /// No description provided for @remoteScanPinHint.
+  ///
+  /// In zh, this message translates to:
+  /// **'电脑上二维码旁边显示的那串密码。只用于这个地址，加密保存。'**
+  String get remoteScanPinHint;
+
+  /// No description provided for @remoteScanPinWrong.
+  ///
+  /// In zh, this message translates to:
+  /// **'这串密码不对'**
+  String get remoteScanPinWrong;
+
+  /// No description provided for @remoteScanPinLocked.
+  ///
+  /// In zh, this message translates to:
+  /// **'密码错太多次了。等一分钟再试'**
+  String get remoteScanPinLocked;
+
+  /// No description provided for @remoteScanPinConnect.
+  ///
+  /// In zh, this message translates to:
+  /// **'连接'**
+  String get remoteScanPinConnect;
+
   /// No description provided for @remotePairEntry.
   ///
   /// In zh, this message translates to:
