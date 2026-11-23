@@ -54,7 +54,10 @@ ParsedUrlHost parseUrlHost(String raw) {
   }
   final token = tokens.isEmpty ? null : tokens.single;
   if (token != null && token.isEmpty) throw const UrlHostFormatException(UrlHostProblem.query);
-  if (uri.scheme == 'http' && !_isLoopbackName(uri.host)) {
+  // Plain http carries the launch token and the session cookie in the clear.
+  // On loopback and on a home or office LAN (dsh-pocket's LAN mode hands out
+  // `http://192.168.x.x:port`) there is no one in between to read them.
+  if (uri.scheme == 'http' && !_isLoopbackName(uri.host) && !_isPrivateHost(uri.host)) {
     throw const UrlHostFormatException(UrlHostProblem.insecure);
   }
   var path = uri.path;
@@ -72,6 +75,29 @@ String _bareHost(String candidate) {
   final hostPort = authority.split('@').last;
   if (hostPort.startsWith('[')) return hostPort.substring(0, hostPort.indexOf(']') + 1);
   return hostPort.split(':').first;
+}
+
+/// RFC 1918, link-local, mDNS and IPv6 ULA/link-local: an address only the
+/// local network can route to.
+bool _isPrivateHost(String host) {
+  final name = host.toLowerCase();
+  if (name.endsWith('.local')) return true;
+  if (name.contains(':')) {
+    // IPv6: fc00::/7 (ULA) and fe80::/10 (link-local).
+    final head = name.replaceAll('[', '').replaceAll(']', '');
+    return head.startsWith('fc') ||
+        head.startsWith('fd') ||
+        head.startsWith('fe8') ||
+        head.startsWith('fe9') ||
+        head.startsWith('fea') ||
+        head.startsWith('feb');
+  }
+  final parts = name.split('.');
+  if (parts.length != 4) return false;
+  final octets = [for (final part in parts) int.tryParse(part)];
+  if (octets.any((o) => o == null || o < 0 || o > 255)) return false;
+  final a = octets[0]!, b = octets[1]!;
+  return a == 10 || (a == 172 && b >= 16 && b <= 31) || (a == 192 && b == 168) || (a == 169 && b == 254);
 }
 
 bool _isLoopbackName(String host) {

@@ -50,10 +50,25 @@ void main() {
     });
 
     test('plain http off loopback is refused', () {
-      expect(
-        () => parseUrlHost('http://dsh.example.com'),
-        throwsA(isA<UrlHostFormatException>().having((e) => e.problem, 'problem', UrlHostProblem.insecure)),
-      );
+      for (final raw in ['http://dsh.example.com', 'http://8.8.8.8:3080', 'http://example.local.evil.com']) {
+        expect(
+          () => parseUrlHost(raw),
+          throwsA(isA<UrlHostFormatException>().having((e) => e.problem, 'problem', UrlHostProblem.insecure)),
+          reason: raw,
+        );
+      }
+    });
+
+    test('a LAN address may use plain http: dsh-pocket hands out one', () {
+      for (final raw in [
+        'http://192.168.151.16:3081',
+        'http://10.0.2.2:3080',
+        'http://172.16.4.9:3080',
+        'http://169.254.10.20:3080',
+        'http://dsh-pc.local:3080',
+      ]) {
+        expect(parseUrlHost(raw).baseUri.toString(), raw, reason: raw);
+      }
     });
 
     test('the whole dsh web line is accepted and its token separated', () {
