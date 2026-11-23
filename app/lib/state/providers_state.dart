@@ -465,6 +465,13 @@ final customProvidersProvider = FutureProvider.autoDispose<ProvidersSnapshot?>((
     if (ref.mounted) {
       cache.stamp(value, identity, backend is ClientProviderBackend ? backend.client : backend);
       cache.put(readListKey(identity, ReadListKind.providers), value, () => CachedProviders(value));
+      // The engine's own list is what "has a model" must follow: a provider
+      // added through the engine (or on another client) never reaches the
+      // phone's key vault, and the first-run gate used to ask for a DeepSeek
+      // key over it.
+      if (value.local) {
+        ref.read(settingsProvider.notifier).adoptEngineProviders({for (final p in value.providers) p.id});
+      }
     }
     return value;
   }

@@ -27,6 +27,7 @@ class AppSettings {
     this.foldCompletedTurns = true,
     this.visualReplies = true,
     this.customProviderIds = const {},
+    this.engineProviderIds = const {},
     this.loaded = false,
   });
 
@@ -76,12 +77,18 @@ class AppSettings {
   /// phone ([ProviderKeyVault]). Known at launch, before the engine runs, so
   /// the first-run gate can tell "has a model to talk to" without it.
   final Set<String> customProviderIds;
+
+  /// Custom providers the connected engine reports. A provider added through
+  /// the engine itself (its settings, or another client) never reaches the
+  /// vault, and the gate must not ask for a DeepSeek key over it.
+  final Set<String> engineProviderIds;
   final bool loaded;
 
   bool get hasApiKey => apiKey.trim().isNotEmpty;
 
-  /// A DeepSeek key or a custom provider on the local engine.
-  bool get hasModelAccess => hasApiKey || customProviderIds.isNotEmpty;
+  /// A DeepSeek key, a provider key kept on the phone, or a provider the
+  /// engine already has.
+  bool get hasModelAccess => hasApiKey || customProviderIds.isNotEmpty || engineProviderIds.isNotEmpty;
 
   AppSettings copyWith({
     String? apiKey,
@@ -98,6 +105,7 @@ class AppSettings {
     bool? foldCompletedTurns,
     bool? visualReplies,
     Set<String>? customProviderIds,
+    Set<String>? engineProviderIds,
     bool? loaded,
   }) => AppSettings(
     apiKey: apiKey ?? this.apiKey,
@@ -114,6 +122,7 @@ class AppSettings {
     foldCompletedTurns: foldCompletedTurns ?? this.foldCompletedTurns,
     visualReplies: visualReplies ?? this.visualReplies,
     customProviderIds: customProviderIds ?? this.customProviderIds,
+    engineProviderIds: engineProviderIds ?? this.engineProviderIds,
     loaded: loaded ?? this.loaded,
   );
 }
@@ -220,6 +229,13 @@ class SettingsController extends Notifier<AppSettings> {
     }
     if (!ref.mounted) return;
     state = state.copyWith(apiKey: apiKey, customProviderIds: providerIds);
+  }
+
+  /// The engine's own provider list: kept in memory only (the vault holds the
+  /// keys the phone has), so "has a model" follows what the engine reports.
+  void adoptEngineProviders(Set<String> ids) {
+    if (state.engineProviderIds.length == ids.length && state.engineProviderIds.containsAll(ids)) return;
+    state = state.copyWith(engineProviderIds: ids);
   }
 
   /// Keeps [key] for the local engine's custom provider [id] (see
