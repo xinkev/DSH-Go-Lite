@@ -8,7 +8,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import '../transport/peer_connection.dart' show RemoteIceServer;
 import '../util/bytes.dart';
 
 /// Default hosted Server (李国宝's deployment).
@@ -533,35 +532,6 @@ class RemoteServerApi {
 
   /// `DELETE /api/v1/devices/self`: revokes this device on the Server.
   Future<void> revokeSelf(String accessToken) => _request('DELETE', '/api/v1/devices/self', bearer: accessToken);
-
-  /// `GET /api/v1/turn/credentials?connection_id=`: STUN / TURN servers for
-  /// one authorized connection (TURN credentials are short-lived). Entries
-  /// without usable `urls` are skipped.
-  Future<List<RemoteIceServer>> turnCredentials(String accessToken, String connectionId) async {
-    final body = asMap(
-      await _request(
-        'GET',
-        '/api/v1/turn/credentials?connection_id=${Uri.encodeQueryComponent(connectionId)}',
-        bearer: accessToken,
-      ),
-    );
-    final servers = body?['iceServers'];
-    if (servers is! List) return const [];
-    final result = <RemoteIceServer>[];
-    for (final raw in servers) {
-      final server = asMap(raw);
-      final urls = switch (server?['urls']) {
-        final String url => [url],
-        final List<Object?> list when list.isNotEmpty && list.every((u) => u is String) => list.cast<String>(),
-        _ => null,
-      };
-      if (server == null || urls == null) continue;
-      result.add(
-        RemoteIceServer(urls, username: asString(server['username']), credential: asString(server['credential'])),
-      );
-    }
-    return result;
-  }
 
   // ---------------------------------------------------------------------------
   // Device pairing v1 (upstream docs/device-pairing-v1.md)

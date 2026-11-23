@@ -3,23 +3,14 @@
 /// Every transport delivers opaque Noise messages between this client and
 /// one Host connection authorized by the Server (`connect.accepted`), and
 /// relays the two Noise handshake messages (always over the Server Control
-/// channel). Implementations:
-///
-/// * [RelayTransport] — ciphertext inside `relay` frames, on the Control
-///   socket or on the Relay node data socket the Server assigns;
-/// * [WebRtcTransport] — LAN / P2P / TURN: a DataChannel named `dsh`
-///   (`ordered: true`) carrying binary ciphertext, negotiated with
-///   `signal.offer/answer/ice` and announced with `transport.selected`
-///   before the handshake; a failed attempt falls back to the Relay.
-///
-/// Both implement this interface, so the secure channel, RPC layer and
-/// carrier do not change.
+/// channel). The only implementation is [RelayTransport]: ciphertext inside
+/// `relay` frames, on the Control socket or on the Relay node data socket the
+/// Server assigns.
 library;
 
 import 'dart:typed_data';
 
 import 'relay_transport.dart' show RelayTransport;
-import 'webrtc_transport.dart' show WebRtcTransport;
 
 /// Data plane in use; mirrors the `transport.selected` vocabulary.
 enum RemoteTransportMode { lan, p2p, turn, relay }

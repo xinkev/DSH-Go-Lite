@@ -1,6 +1,6 @@
 # dsh_remote
 
-Pure-Dart client for [ds-harness-remote](https://github.com/liguobao/ds-harness-remote) (李国宝, MIT). It reaches a remote Host's DSH Harness API through the Server Relay, or directly over a WebRTC DataChannel (LAN / P2P / TURN) when the app supplies a WebRTC stack, end-to-end encrypted with `Noise_IK_25519_ChaChaPoly_SHA256` either way. The result is an ordinary `DshClient` from `package:dsh_client`, so chat, watch, approvals, models and keys work exactly as they do with the local engine.
+Pure-Dart client for [ds-harness-remote](https://github.com/liguobao/ds-harness-remote) (李国宝, MIT). It reaches a remote Host's DSH Harness API through the Server Relay, end-to-end encrypted with `Noise_IK_25519_ChaChaPoly_SHA256`. The result is an ordinary `DshClient` from `package:dsh_client`, so chat, watch, approvals, models and keys work exactly as they do with the local engine.
 
 Status (2026-10-30, upstream `7e387df`, Host plugin 0.6.0):
 
@@ -10,7 +10,6 @@ Status (2026-10-30, upstream `7e387df`, Host plugin 0.6.0):
 | Control frames / negotiation | Passes upstream `fixtures/protocol/v1` (84 client-relevant cases), including duplicate-key rejection, canonical Base64URL and the list limits |
 | Relay transport (Control socket, or a Relay node data socket via `transport.relay.attach`), DSHF framing, RPC, tunnel carrier | Unit-tested against an in-process fake Server, Relay node and Host |
 | Whole stack vs real upstream | **E2E passes** against self-hosted `apps/server` (upstream `7e387df`) + `dsh web` 0.2.1-rc.5 with the `ds-harness-remote` Host plugin 0.6.0 (packed from `7e387df`, not on npm yet), both on the Control socket and, with `RELAY_ATTACH=1`, through a Relay node data socket; also plugin 0.5.23 from npm (`tool/e2e/run_e2e.sh`; `PLUGIN_SPEC=<tarball>` for unreleased builds) |
-| WebRTC / LAN / TURN (`WebRtcTransport`, opt-in through `peerConnector`) | Unit-tested: signaling order, selection before Noise, `RTCH`, fresh-connection Relay fallback and TURN configuration/selection. **Real P2P and Relay-only probes pass on Android 35 x86_64**, each with a 120 KiB request, 38,328-byte response and 20 round trips. No live TURN or WAN/device validation. See [verification and APK size](VERIFICATION.md) |
 
 ## Quick start (Flutter app)
 
@@ -68,7 +67,6 @@ await client.close();                                // or account.logout()
 | Member | Notes |
 |---|---|
 | `RemoteAccount({required SecretStore secrets, Object? serverUrl, deviceName, platform, clientVersion, ...})` | `serverUrl` defaults to `https://dsh.r2049.cn`. It is normalized to an origin, and plain HTTP is accepted only for loopback or private hosts. Storage is partitioned by origin |
-| `RemotePeerConnector? peerConnector` (settable), `onDirectFallback`, `directTimeout = 8 s` | The WebRTC stack for the direct path; `null` (the default) keeps every connection on the Relay exactly as before. Read at each (re)connect. The package has no WebRTC of its own: the app implements `RemotePeerConnection` (flutter_webrtc). `onDirectFallback` reports why a direct attempt fell back |
 | `bool compactHistory` (settable, default `false`) | Captured per new `connectHost` client, then reconfigured on each authenticated reconnect when the Host declares `remote.history.compact.v1`. Changing it never changes an existing client's history mode or live streams; losing compact support on an existing compact client fails with terminal `HISTORY_MODE_CHANGED` rather than mixing cached formats |
 | `Future<RemoteUser?> currentUser()` | Restores stored credentials. Returns `null` when signed out or when the refresh token has expired. `RemoteUser.provider` is the provider the device signed in with (`github`, `zhihu`, `password`, ...), or `null` for credentials stored before it was recorded |
 | `Future<List<OAuthProvider>> loginProviders()` | Server-defined QR-capable providers (`github`, `google`, `zhihu`, ...). Empty on a self-hosted Server |

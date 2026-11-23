@@ -19,10 +19,8 @@ import '../protocol/control.dart' show maxRemoteCapabilityEntries;
 import '../pairing/device_pairing.dart';
 import '../server/server_api.dart';
 import '../state.dart';
-import '../transport/peer_connection.dart';
 import '../transport/relay_transport.dart';
 import '../transport/transport.dart';
-import '../transport/webrtc_transport.dart';
 import '../util/bytes.dart';
 import 'secret_store.dart';
 
@@ -376,12 +374,7 @@ class RemoteAccount {
     this.loginPollInterval = const Duration(seconds: 2),
     this.pairingPollInterval = const Duration(milliseconds: 2500),
     this.controlTracer,
-    this.peerConnector,
-    this.preferredTransports,
-    this.onDirectFallback,
     this.compactHistory = false,
-    this.directTimeout = const Duration(seconds: 8),
-    this.iceServersTimeout = const Duration(seconds: 10),
   }) : serverUrl = normalizeServerUrl(serverUrl ?? defaultRemoteServer),
        _secrets = secrets,
        _socketConnector = socketConnector {
@@ -405,19 +398,6 @@ class RemoteAccount {
   /// Optional Control-frame tracer (tokens and ciphertext redacted).
   final ControlTracer? controlTracer;
 
-  /// WebRTC stack for the direct path (LAN / P2P / TURN); `null` keeps every
-  /// connection on the Relay. Read at each (re)connect, so a change applies
-  /// from the next connection on.
-  RemotePeerConnector? peerConnector;
-
-  /// Optional native network hint. Actual selection still requires a working
-  /// ICE pair. Exceptions or a stalled hint retain automatic defaults.
-  Future<List<RemoteTransportMode>> Function()? preferredTransports;
-
-  /// Payload-free fallback code ([RemoteNetworkFallbackReason.name]), never
-  /// raw native exception text, SDP or candidate addresses.
-  void Function(String reason)? onDirectFallback;
-
   /// Requests bounded history summaries from supporting Hosts. Captured by
   /// [connectHost] for that client's lifetime, including automatic reconnects.
   /// Changing it only affects the next [connectHost], not live streams or
@@ -425,13 +405,6 @@ class RemoteAccount {
   /// an unsupported Host stays full even if it gains support on reconnect.
   bool compactHistory;
 
-  /// How long a direct attempt may take to open its DataChannel before the
-  /// next path is tried (the Server's larger deadline is capped at 15 s).
-  final Duration directTimeout;
-
-  /// Budget for each connection's fresh STUN/TURN credential request,
-  /// separate from the DataChannel negotiation deadline.
-  final Duration iceServersTimeout;
   late final RemoteServerApi api;
   final SecretStore _secrets;
   final ControlSocketConnector? _socketConnector;
@@ -447,9 +420,6 @@ class RemoteAccount {
   Map<String, _Pin>? _pins;
   ({_Credentials owner, Future<String> result})? _refreshing;
   _ActiveConnection? _active;
-  final Map<String, DateTime> _directCooldown = {};
-  final Map<String, DateTime> _turnCooldown = {};
-  final Map<String, String> _networkHints = {};
   final StreamController<RemoteConnectionState> _connectionStates = StreamController.broadcast();
 
   String get _identityKey => 'dsh_remote.v1.$_scope.identity';
@@ -1275,17 +1245,15 @@ class RemoteAccount {
     // Exclude a first-use trust prompt's human response time.
     final setup = Stopwatch()..start();
 
-    // 2. Data plane: direct when enabled and negotiated, else the Relay
-    // (refresh once when the token is refused).
-    _TransportSelection selection;
+    // 2. Data plane: the Server Relay (refresh once when the token is refused).
+    RelayTransport transport;
     try {
-      selection = await _connectTransport(token, host.id, isCancelled);
+      transport = await _connectRelay(token, host.id, isCancelled: isCancelled);
     } on RemoteTransportException catch (error) {
       if (error.code != 'AUTH_INVALID' && error.code != 'TOKEN_EXPIRED') rethrow;
       token = await accessToken(forceRefresh: true);
-      selection = await _connectTransport(token, host.id, isCancelled);
+      transport = await _connectRelay(token, host.id, isCancelled: isCancelled);
     }
-    final transport = selection.transport;
 
     // 3. Noise IK (client = initiator) against the pinned key.
     final channel = await SecureChannel.establish(
@@ -1297,23 +1265,6 @@ class RemoteAccount {
       hostIdentityKey: hostKey,
     );
     final rpc = RemoteRpcClient(channel);
-    // A failed live carrier needs a fresh Noise session on a different path.
-    // Cooldowns are short, account-local hints; no candidate or token is kept.
-    unawaited(
-      rpc.done.then((reason) {
-        if (!reason.retryable || reason.code == 'CLIENT_CLOSED') return;
-        final until = DateTime.now().add(const Duration(seconds: 45));
-        switch (transport is WebRtcTransport ? transport.actualMode ?? transport.mode : transport.mode) {
-          case RemoteTransportMode.lan || RemoteTransportMode.p2p:
-            _directCooldown[host.id] = until;
-          case RemoteTransportMode.turn:
-            _directCooldown[host.id] = until;
-            _turnCooldown[host.id] = until;
-          case RemoteTransportMode.relay:
-            break;
-        }
-      }),
-    );
 
     // 4. Capability probe: the first RPC must be harness.transport.describe.
     var probingCapabilities = true;
@@ -1378,15 +1329,8 @@ class RemoteAccount {
       historyMode.negotiated = compact;
       setup.stop();
       RemoteNetworkDiagnostics snapshot() => RemoteNetworkDiagnostics(
-        transportMode: transport is WebRtcTransport ? transport.actualMode : transport.mode,
+        transportMode: RemoteTransportMode.relay,
         connectionDuration: setup.elapsed,
-        roundTripTime: transport is WebRtcTransport ? transport.roundTripTime : null,
-        peerNetwork: transport is WebRtcTransport ? transport.peerNetwork : null,
-        fallbackReason:
-            selection.fallbackReason ??
-            (transport is WebRtcTransport && transport.actualMode == null
-                ? RemoteNetworkFallbackReason.pathUnverified
-                : null),
         observedAt: DateTime.now(),
       );
       return RemoteHostSession(
@@ -1398,10 +1342,7 @@ class RemoteAccount {
         workspaceTypes: description!['workspaceTypes'],
         transport: transport.mode.name,
         networkDiagnostics: snapshot(),
-        inspectNetwork: () async {
-          if (transport is WebRtcTransport) await transport.inspectNetwork();
-          return snapshot();
-        },
+        inspectNetwork: () async => snapshot(),
       );
     } on RemoteRpcException catch (error) {
       await rpc.close();
@@ -1423,117 +1364,10 @@ class RemoteAccount {
     }
   }
 
-  /// Tries LAN/P2P without relay candidates, then TURN with relay-only ICE,
-  /// then the Relay. Each failed stage gets a fresh authorized connection:
-  /// the Host may still hold state for the old one. Noise always starts only
-  /// after the final data plane is chosen. Recent failures skip the bad path
-  /// for 45 seconds; a changed native network hint clears that cooldown.
-  Future<_TransportSelection> _connectTransport(String token, String hostId, bool Function() isCancelled) async {
-    final connector = peerConnector;
-    if (connector == null) {
-      return _TransportSelection(
-        await _connectRelay(token, hostId, isCancelled: isCancelled),
-        RemoteNetworkFallbackReason.webrtcUnavailable,
-      );
-    }
-    var preferred = RemoteTransportMode.values;
-    try {
-      final hint = preferredTransports;
-      if (hint != null) preferred = (await hint().timeout(const Duration(milliseconds: 500))).toSet().toList();
-    } on Object {
-      // Native connectivity can be unavailable during startup.
-    }
-    preferred = [...preferred.where((p) => p != RemoteTransportMode.relay), RemoteTransportMode.relay];
-    final hintKey = preferred.map((p) => p.name).join(',');
-    final oldHint = _networkHints[hostId];
-    _networkHints[hostId] = hintKey;
-    if (oldHint != null && oldHint != hintKey) {
-      _directCooldown.remove(hostId);
-      _turnCooldown.remove(hostId);
-    }
-    final now = DateTime.now();
-    final skipDirect = _directCooldown[hostId]?.isAfter(now) ?? false;
-    final skipTurn = _turnCooldown[hostId]?.isAfter(now) ?? false;
-    RemoteNetworkFallbackReason? reason = skipDirect ? RemoteNetworkFallbackReason.directRecentlyFailed : null;
-    var wantDirect = !skipDirect && preferred.any((p) => p == RemoteTransportMode.lan || p == RemoteTransportMode.p2p);
-    var wantTurn = !skipTurn && preferred.contains(RemoteTransportMode.turn);
-    // Credentials belong to a connectionId. A failed direct-stage lookup
-    // must not suppress a fresh lookup on the separately authorized TURN stage.
-    Future<List<RemoteIceServer>> fetchIce(String id) => api.turnCredentials(token, id);
-
-    if (!wantDirect && !wantTurn) {
-      return _TransportSelection(await _connectRelay(token, hostId, isCancelled: isCancelled), reason);
-    }
-    var control = await _connectRelay(token, hostId, direct: true, preferred: preferred, isCancelled: isCancelled);
-    if (control.directTransports.isEmpty) {
-      return _TransportSelection(control, RemoteNetworkFallbackReason.webrtcUnavailable);
-    }
-    wantDirect = wantDirect && control.directTransports.any((p) => p == 'lan' || p == 'p2p');
-    wantTurn = wantTurn && control.directTransports.contains('turn');
-    var directFailed = false;
-    if (wantDirect) {
-      try {
-        final rtc = await WebRtcTransport.negotiate(
-          control: control,
-          connector: connector,
-          iceServers: fetchIce,
-          timeout: directTimeout,
-          iceServersTimeout: iceServersTimeout,
-        );
-        return _TransportSelection(rtc, reason);
-      } on WebRtcUnavailable catch (error) {
-        directFailed = true;
-        reason = error.timedOut ? RemoteNetworkFallbackReason.directTimeout : RemoteNetworkFallbackReason.directFailed;
-        _directCooldown[hostId] = DateTime.now().add(const Duration(seconds: 45));
-        _notifyFallback(reason);
-      }
-      if (wantTurn) {
-        control = await _connectRelay(token, hostId, direct: true, preferred: preferred, isCancelled: isCancelled);
-      }
-    }
-    if (wantTurn) {
-      try {
-        final rtc = await WebRtcTransport.negotiate(
-          control: control,
-          connector: connector,
-          iceServers: fetchIce,
-          timeout: directTimeout,
-          iceServersTimeout: iceServersTimeout,
-          relayOnly: true,
-        );
-        return _TransportSelection(rtc, reason);
-      } on WebRtcUnavailable catch (error) {
-        if (error.turnUnavailable) {
-          reason ??= RemoteNetworkFallbackReason.turnUnavailable;
-        } else {
-          reason = error.timedOut ? RemoteNetworkFallbackReason.turnTimeout : RemoteNetworkFallbackReason.turnFailed;
-        }
-        _turnCooldown[hostId] = DateTime.now().add(const Duration(seconds: 45));
-        // Missing credentials should not duplicate the direct-stage reason.
-        if (!error.turnUnavailable || !directFailed) {
-          _notifyFallback(reason);
-        }
-      }
-    } else if (!wantDirect) {
-      await control.close();
-    }
-    return _TransportSelection(await _connectRelay(token, hostId, isCancelled: isCancelled), reason);
-  }
-
-  void _notifyFallback(RemoteNetworkFallbackReason reason) {
-    try {
-      onDirectFallback?.call(reason.name);
-    } on Object {
-      // Diagnostic consumers cannot prevent transport fallback.
-    }
-  }
-
   Future<RelayTransport> _connectRelay(
     String token,
     String hostId, {
     required bool Function() isCancelled,
-    bool direct = false,
-    List<RemoteTransportMode>? preferred,
   }) => RelayTransport.connect(
     url: controlSocketUrl(serverUrl),
     deviceId: _identity!.deviceId,
@@ -1543,8 +1377,6 @@ class RemoteAccount {
     connector: _socketConnector,
     isCancelled: isCancelled,
     tracer: controlTracer,
-    offerDirect: direct,
-    preferredTransports: preferred,
   );
 
   Future<String> _checkPin(RemoteHost host, AuthorizedPeer peer, HostTrustPrompt? confirm) async {
@@ -1664,10 +1496,4 @@ class _ActiveConnection {
     await Future<void>.delayed(Duration.zero);
     await stateSub?.cancel();
   }
-}
-
-class _TransportSelection {
-  const _TransportSelection(this.transport, this.fallbackReason);
-  final SecureHandshakeTransport transport;
-  final RemoteNetworkFallbackReason? fallbackReason;
 }

@@ -6,6 +6,8 @@
 
 ## 验证范围
 
+> 说明（后续变更）：App 端 WebRTC 直连与 `flutter_webrtc` 已移除，本文件保留当时的验证记录，不再描述当前代码。
+
 实现基础为 `ef2d69b1` 与 `3b2d9918`。App 的「直连优先（P2P）」默认关闭；开启后才在后续连接尝试直连。纯 Dart 协议层通过平台接口使用 WebRTC，App 适配器固定依赖 `flutter_webrtc 1.6.3`，Android SDK 为 `io.github.webrtc-sdk:android:150.7871.04`。
 
 本轮原生验证使用独立 probe 入口 `app/lib/dev/remote_p2p_probe_main.dart`，连接本机自建上游 Server（`7e387df`，仅测试时补齐 WebRTC 信令转发）与打包的 Host 插件 `0.6.0`，Host 运行在 `dsh web 0.2.1-rc.5` 并使用原生 `@roamhq/wrtc`。Server 未配置 STUN/TURN，模拟器通过 `10.0.2.2` 访问宿主机。日志中的 `p2p` 是实际选路结果，不代表已覆盖公网穿透。
