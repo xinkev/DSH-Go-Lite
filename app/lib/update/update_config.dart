@@ -20,8 +20,9 @@
 ///   replaces the public GitHub accelerator list (empty string = none).
 library;
 
-/// GitHub repository the releases live in.
-const updateRepo = 'ccch1mneyyy/dsh-go';
+/// GitHub repository the releases live in: this Lite build's own releases,
+/// versioned after the upstream DSH Go it follows (1.3.0-lite.YYYYMMDD).
+const updateRepo = 'xinkev/DSH-Go-Lite';
 
 /// `releases/latest` of the REST API: tag, notes, assets with sizes and
 /// SHA-256 digests. Unauthenticated: 60 requests per hour per IP.

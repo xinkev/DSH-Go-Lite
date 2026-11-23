@@ -93,9 +93,12 @@ for arg in "${extra[@]}"; do
   esac
 done
 
-# Version name: pubspec's `version:` without the `+N` placeholder.
+# Version name: pubspec's `version:` without the `+N` placeholder, plus this
+# fork's own marker — `1.3.0-lite.20261123`: the upstream release it follows
+# and the day it was built. --build-name still overrides the whole name.
 if [[ -z $name ]]; then
-  name=$(sed -n 's/^version:[[:space:]]*\([^+[:space:]]*\).*/\1/p' "$APP/pubspec.yaml")
+  base=$(sed -n 's/^version:[[:space:]]*\([^+[:space:]]*\).*/\1/p' "$APP/pubspec.yaml")
+  name="$base-lite.$(date +%Y%m%d)"
 fi
 [[ $name =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]] || die "not a version name: '$name'"
 
