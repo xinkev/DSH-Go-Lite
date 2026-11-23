@@ -71,9 +71,14 @@ Future<DshClient> connectUrlHost({
     if (pocketCookie != null || launch.isEmpty) {
       // No saved engine session (or a refused one): force the handshake the
       // browser does after signing in, rather than letting a cookie the gate
-      // considers present skip the launch-token exchange.
-      final path = cookie == null ? '/?dsh-pocket-auth=1' : '/';
-      final response = await connection.get(path, followRedirects: false);
+      // considers present skip the launch-token exchange. The flag is a query
+      // parameter: written into the path it would be percent-encoded and the
+      // gate would answer 404.
+      final response = await connection.get(
+        '/',
+        query: cookie == null ? const {'dsh-pocket-auth': '1'} : null,
+        followRedirects: false,
+      );
       if (_isPocketLoginPage(response.statusCode, response.text)) {
         throw const PocketGateRefused(200);
       }
