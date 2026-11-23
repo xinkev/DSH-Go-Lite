@@ -16089,6 +16089,19 @@ class L10nEn extends L10n {
   String get searchKwRemoteCompactHistory => 'compact slim lite history tools transfer bandwidth remote';
 
   @override
+  String get remoteScanQr => 'Scan QR code';
+
+  @override
+  String get remoteScanQrHint =>
+      'Point at the QR code shown by dsh-pocket or dsh web; it is added and connected automatically.';
+
+  @override
+  String get remoteScanQrInvalid => 'That is not a usable pairing code';
+
+  @override
+  String get remoteScanQrUnavailable => 'The camera cannot start on this phone';
+
+  @override
   String get remotePairEntry => 'Pair a computer by scanning';
 
   @override

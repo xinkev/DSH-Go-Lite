@@ -28052,6 +28052,30 @@ abstract class L10n {
   /// **'精简 简洁 历史 工具 传输 流量 远程 compact slim lite'**
   String get searchKwRemoteCompactHistory;
 
+  /// No description provided for @remoteScanQr.
+  ///
+  /// In zh, this message translates to:
+  /// **'扫描二维码'**
+  String get remoteScanQr;
+
+  /// No description provided for @remoteScanQrHint.
+  ///
+  /// In zh, this message translates to:
+  /// **'对着 dsh-pocket 或 dsh web 显示的二维码扫描，扫到就自动添加并连接。'**
+  String get remoteScanQrHint;
+
+  /// No description provided for @remoteScanQrInvalid.
+  ///
+  /// In zh, this message translates to:
+  /// **'这不是可用的配对二维码'**
+  String get remoteScanQrInvalid;
+
+  /// No description provided for @remoteScanQrUnavailable.
+  ///
+  /// In zh, this message translates to:
+  /// **'这台手机打不开相机'**
+  String get remoteScanQrUnavailable;
+
   /// No description provided for @remotePairEntry.
   ///
   /// In zh, this message translates to:

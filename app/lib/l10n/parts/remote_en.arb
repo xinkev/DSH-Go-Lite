@@ -515,5 +515,9 @@
   "remoteCompactHistory": "Compact history",
   "remoteErrHistoryModeChanged": "The Host no longer supports compact history. Switch to another host and back, or restart the app, to reload history.",
   "remoteCompactHistoryHint": "Reduces historical tool details on supporting DSH Remote Hosts; live replies and approvals stay unchanged. Switch hosts or restart the app to apply. Older Hosts keep full history.",
-  "searchKwRemoteCompactHistory": "compact slim lite history tools transfer bandwidth remote"
+  "searchKwRemoteCompactHistory": "compact slim lite history tools transfer bandwidth remote",
+  "remoteScanQr": "Scan QR code",
+  "remoteScanQrHint": "Point at the QR code shown by dsh-pocket or dsh web; it is added and connected automatically.",
+  "remoteScanQrInvalid": "That is not a usable pairing code",
+  "remoteScanQrUnavailable": "The camera cannot start on this phone"
 }

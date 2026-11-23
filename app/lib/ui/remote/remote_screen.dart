@@ -27,6 +27,7 @@ import 'network_details_sheet.dart';
 import 'relay_login_sheet.dart';
 import 'ssh_host_form.dart';
 import 'url_host_form.dart';
+import 'url_scan_page.dart';
 import 'session_backup_page.dart';
 import 'remote_web/remote_web_entry.dart';
 
@@ -155,6 +156,16 @@ class RemoteScreen extends ConsumerWidget {
               title: l10n.remoteAddUrlHost,
               subtitle: urls.isEmpty ? l10n.remoteUrlDirect : null,
               onTap: () => unawaited(_addUrl(context, ref)),
+            ),
+            SettingsTile(
+              icon: AppIcons.qrCode,
+              tinted: false,
+              title: l10n.remoteScanQr,
+              subtitle: l10n.remoteScanQrHint,
+              onTap: () async {
+                final config = await Navigator.of(context).push(UrlScanPage.route());
+                if (config != null && context.mounted) await _use(context, ref, HostRef.url(config.id));
+              },
             ),
           ],
         ),

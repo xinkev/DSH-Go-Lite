@@ -15256,6 +15256,18 @@ class L10nZh extends L10n {
   String get searchKwRemoteCompactHistory => '精简 简洁 历史 工具 传输 流量 远程 compact slim lite';
 
   @override
+  String get remoteScanQr => '扫描二维码';
+
+  @override
+  String get remoteScanQrHint => '对着 dsh-pocket 或 dsh web 显示的二维码扫描，扫到就自动添加并连接。';
+
+  @override
+  String get remoteScanQrInvalid => '这不是可用的配对二维码';
+
+  @override
+  String get remoteScanQrUnavailable => '这台手机打不开相机';
+
+  @override
   String get remotePairEntry => '扫码配对电脑';
 
   @override
