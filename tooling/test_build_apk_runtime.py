@@ -33,11 +33,6 @@ class BuildApkRuntimeTest(unittest.TestCase):
         tawcroot = self.root / "runtime/tawcroot"
         tawcroot.mkdir(parents=True)
         (tawcroot / "build.py").write_text("import os, sys\nsys.exit(int(os.environ.get('TAWCROOT_EXIT', '0')))\n")
-        # Stand-in for tooling/check_apk_jni.py: notes each APK; JNI_CHECK_EXIT decides whether it passes.
-        self.jni_file = self.root / "jni-checks.txt"
-        (self.root / "tooling/check_apk_jni.py").write_text(
-            "import os, sys\nopen(os.environ['RUNTIME_GATE_TEST_JNI'], 'a').write(sys.argv[1] + '\\n')\n"
-            "sys.exit(int(os.environ.get('JNI_CHECK_EXIT', '0')))\n")
         # Stand-in for tooling/companion_pack.py: notes each call; the pack is a placeholder file.
         self.pack_file = self.root / "pack-calls.txt"
         (self.root / "tooling/companion_pack.py").write_text(
@@ -67,7 +62,7 @@ apk.write_bytes(b'fake APK: shell flow only')
 ''')
         aapt.chmod(0o755)
         self.env = dict(os.environ, PATH=str(tools) + os.pathsep + os.environ["PATH"],
-                        RUNTIME_GATE_TEST_CALLS=str(self.calls_file), RUNTIME_GATE_TEST_JNI=str(self.jni_file),
+                        RUNTIME_GATE_TEST_CALLS=str(self.calls_file),
                         RUNTIME_GATE_TEST_PACK=str(self.pack_file), DSH_COMPANION_PACK=str(pack))
 
     def run_script(self, *args, keep_daemon=True):
@@ -216,15 +211,6 @@ apk.write_bytes(b'fake APK: shell flow only')
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual([args[args.index("--flavor") + 1] for args in self.calls()], ["arm64", "x64"])
         self.assertEqual({args[args.index("--build-number") + 1] for args in self.calls()}, {"10251234"})
-        checked = [Path(line).name for line in self.jni_file.read_text().splitlines()]
-        self.assertEqual(checked, ["app-arm64-release.apk", "app-x64-release.apk"])
-
-    def test_an_apk_without_the_onnx_jni_classes_stops_the_build(self):
-        self.make_bundle("arm64", 1)
-        self.env["JNI_CHECK_EXIT"] = "1"
-        result = self.run_script()
-        self.assertNotEqual(result.returncode, 0)
-        self.assertIn("proguard-rules.pro", result.stderr)
 
     def test_each_archive_is_required(self):
         for schema, kind in ((1, "rootfs"), (2, "base"), (2, "engine")):

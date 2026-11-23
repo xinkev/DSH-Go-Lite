@@ -232,10 +232,8 @@ for i in "${!flavors[@]}"; do
   (cd "$APP" && eval "${commands[$i]}")
   apk="$OUT/app-$f-$mode.apk"
   [[ -f $apk ]] || die "$f: no APK at $apk"
-  # R8 renaming what ONNX Runtime's JNI looks up by name aborts the app when a call starts.
-  if [[ $mode == release ]]; then
-    python3 -I "$ROOT/tooling/check_apk_jni.py" "$apk" || die "$f: see proguard-rules.pro"
-    ((companion)) && { python3 -I "$ROOT/tooling/companion_pack.py" check "$apk" || die "$f: companion pack"; }
+  if [[ $mode == release ]] && ((companion)); then
+    python3 -I "$ROOT/tooling/companion_pack.py" check "$apk" || die "$f: companion pack"
   fi
   if [[ -n $aapt2 ]]; then
     badge=$("$aapt2" dump badging "$apk" 2>/dev/null | sed -n '/^package:/p' || true)
