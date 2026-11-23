@@ -5064,6 +5064,7 @@
   "shellChatsArchived": "{count, plural, =1{Archived 1 chat} other{Archived {count} chats}}",
   "shellFilterLabel": "Filter: {label}",
   "shellFolders": "Folders",
+  "shellNoProject": "No project",
   "shellNoRunningChats": "No running chats",
   "shellNoPendingChats": "No chats need approval",
   "shellNoUnreadChats": "No unread chats",

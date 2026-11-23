@@ -90,7 +90,7 @@ void main() {
   group('drawerBlocks', () {
     test('no folders: pinned, then one flat run by activity', () {
       final blocks = _blocks(pinned: ['b']);
-      expect(blocks.map((b) => b.runtimeType), [PinnedBlock, FlatBlock]);
+      expect(blocks.map((b) => b.runtimeType), [PinnedBlock, ProjectBlock]);
       expect(_ids(blocks[0]), ['b']);
       expect(_ids(blocks[1]), ['a', 'c', 'd', 'e']);
     });

@@ -624,9 +624,13 @@ final class FolderBlock extends DrawerBlock {
   final DrawerFolder folder;
 }
 
-/// The rest: one flat run in the drawer's sort order, no day headings.
-final class FlatBlock extends DrawerBlock {
-  const FlatBlock(super.items);
+/// The rest, grouped by the project (workspace) a conversation belongs to,
+/// the way the official sidebar groups them.
+final class ProjectBlock extends DrawerBlock {
+  const ProjectBlock(this.projectId, this.title, super.items);
+
+  final String projectId;
+  final String title;
 }
 
 /// A status filter's matches, flat (no folders or days).
@@ -646,6 +650,11 @@ List<DrawerBlock> drawerBlocks({
   required Map<String, PendingKind> pending,
   required Set<String> unread,
   required Map<String, DateTime> createdAt,
+  /// sessionId -> workspace id (from the host's registry); absent means the
+  /// conversation is in no project.
+  Map<String, String> projectOf = const {},
+  /// Title for a project id (null: no project).
+  String Function(String? projectId)? projectTitle,
   bool scoped = false,
 }) {
   DateTime keyOf(SessionSummary s) =>
@@ -695,11 +704,18 @@ List<DrawerBlock> drawerBlocks({
       ]),
     );
   }
-  final rest = [
-    for (final s in sorted)
-      if (!folderOf.containsKey(s.sessionId) && !pinnedSet.contains(s.sessionId)) s,
-  ];
-  if (rest.isNotEmpty) blocks.add(FlatBlock(rest));
+  final groups = <String, List<SessionSummary>>{};
+  for (final s in sorted) {
+    if (folderOf.containsKey(s.sessionId) || pinnedSet.contains(s.sessionId)) continue;
+    groups.putIfAbsent(projectOf[s.sessionId] ?? '', () => []).add(s);
+  }
+  // Projects by their newest conversation; the list is already newest first.
+  final ordered = groups.entries.toList()
+    ..sort((a, b) => keyOf(b.value.first).compareTo(keyOf(a.value.first)));
+  for (final group in ordered) {
+    final title = projectTitle?.call(group.key.isEmpty ? null : group.key) ?? group.key;
+    blocks.add(ProjectBlock(group.key, title, group.value));
+  }
   return blocks;
 }
 
@@ -716,9 +732,21 @@ List<DrawerBlock>? watchDrawerBlocks(WidgetRef ref) {
   final scope = ref.watch(drawerScopeProvider);
   if (scope == null) return null;
   final view = ref.watch(drawerViewProvider);
+  final workspaces = ref.watch(workspacesProvider);
+  final projectOf = <String, String>{};
+  for (final w in workspaces.workspaces) {
+    for (final id in w.sessionIds) {
+      projectOf[id] = w.workspaceId;
+    }
+  }
   return drawerBlocks(
     sessions: scope.sessions,
     pinnedIds: ref.watch(workspacesProvider.select((s) => s.pinnedSessionIds)),
+    projectOf: projectOf,
+    projectTitle: (id) {
+      if (id == null) return appL10n.shellNoProject;
+      return workspaces.byId(id)?.title ?? appL10n.shellNoProject;
+    },
     view: view,
     filter: ref.watch(drawerFilterProvider),
     pending: scope.readOnly ? const {} : ref.watch(pendingInteractionsProvider),

@@ -132,6 +132,7 @@
     }
   },
   "shellFolders": "文件夹",
+  "shellNoProject": "未归入项目",
   "shellNoRunningChats": "没有运行中的对话",
   "shellNoPendingChats": "没有待确认的对话",
   "shellNoUnreadChats": "没有未读对话",

@@ -17489,6 +17489,9 @@ class L10nEn extends L10n {
   String get shellFolders => 'Folders';
 
   @override
+  String get shellNoProject => 'No project';
+
+  @override
   String get shellNoRunningChats => 'No running chats';
 
   @override

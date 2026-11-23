@@ -149,7 +149,9 @@ class DrawerConversationList extends ConsumerWidget {
               childrenBuilder: () => [for (final s in items) tile(s, inFolder: true)],
             ),
           );
-        case FlatBlock(:final items):
+        case ProjectBlock(:final projectId, :final title, :final items):
+          final key = ValueKey('project-$projectId');
+          add(key, (_) => DrawerEyebrow(title, key: key));
           addSessions(items);
       }
     }

@@ -30476,6 +30476,12 @@ abstract class L10n {
   /// **'文件夹'**
   String get shellFolders;
 
+  /// No description provided for @shellNoProject.
+  ///
+  /// In zh, this message translates to:
+  /// **'未归入项目'**
+  String get shellNoProject;
+
   /// No description provided for @shellNoRunningChats.
   ///
   /// In zh, this message translates to:

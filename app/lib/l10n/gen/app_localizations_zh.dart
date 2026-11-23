@@ -16548,6 +16548,9 @@ class L10nZh extends L10n {
   String get shellFolders => '文件夹';
 
   @override
+  String get shellNoProject => '未归入项目';
+
+  @override
   String get shellNoRunningChats => '没有运行中的对话';
 
   @override
